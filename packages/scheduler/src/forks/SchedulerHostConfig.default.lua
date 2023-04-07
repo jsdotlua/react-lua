@@ -78,10 +78,7 @@ local function performWorkUntilDeadline()
 
 		local ok, result
 		local function doWork()
-			local hasMoreWork = (scheduledHostCallback :: any)(
-				hasTimeRemaining,
-				currentTime
-			)
+			local hasMoreWork = (scheduledHostCallback :: any)(hasTimeRemaining, currentTime)
 			if not hasMoreWork then
 				isMessageLoopRunning = false
 				scheduledHostCallback = nil

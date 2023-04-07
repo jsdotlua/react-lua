@@ -18,8 +18,7 @@ type Fiber = ReactInternalTypes.Fiber
 local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
 type Container = ReactFiberHostConfig.Container
 type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require(script.Parent["ReactFiberSuspenseComponent.new"])
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
 local invariant = require(Packages.Shared).invariant
@@ -39,8 +38,7 @@ local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
 local NoFlags = ReactFiberFlags.NoFlags
 local Placement = ReactFiberFlags.Placement
 local Hydrating = ReactFiberFlags.Hydrating
-local enableFundamentalAPI =
-	require(Packages.Shared).ReactFeatureFlags.enableFundamentalAPI
+local enableFundamentalAPI = require(Packages.Shared).ReactFeatureFlags.enableFundamentalAPI
 
 local ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner
 
@@ -137,10 +135,7 @@ exports.isMounted = function(component): boolean
 end
 
 local function assertIsMounted(fiber)
-	invariant(
-		getNearestMountedFiber(fiber) == fiber,
-		"Unable to find node on an unmounted component."
-	)
+	invariant(getNearestMountedFiber(fiber) == fiber, "Unable to find node on an unmounted component.")
 end
 
 local function findCurrentFiberUsingSlowPath(fiber: Fiber): Fiber?
@@ -361,9 +356,7 @@ end
 
 exports.isFiberSuspenseAndTimedOut = function(fiber: Fiber): boolean
 	local memoizedState = fiber.memoizedState
-	return fiber.tag == SuspenseComponent
-		and memoizedState ~= nil
-		and memoizedState.dehydrated == nil
+	return fiber.tag == SuspenseComponent and memoizedState ~= nil and memoizedState.dehydrated == nil
 end
 
 exports.doesFiberContain = function(parentFiber: Fiber, childFiber: Fiber): boolean

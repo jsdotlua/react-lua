@@ -36,8 +36,7 @@ local NO_CONTEXT: NoContextT = {}
 
 local contextStackCursor: StackCursor<HostContext | NoContextT> = createCursor(NO_CONTEXT)
 local contextFiberStackCursor: StackCursor<Fiber | NoContextT> = createCursor(NO_CONTEXT)
-local rootInstanceStackCursor: StackCursor<Container | NoContextT> =
-	createCursor(NO_CONTEXT)
+local rootInstanceStackCursor: StackCursor<Container | NoContextT> = createCursor(NO_CONTEXT)
 
 function requiredContext<Value>(c: Value | NoContextT): Value
 	-- ROBLOX performance: eliminate expensive optional cmp in hot path

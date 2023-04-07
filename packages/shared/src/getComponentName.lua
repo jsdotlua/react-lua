@@ -44,10 +44,7 @@ local function getWrappedName(outerType: any, innerType: any, wrapperName: strin
 		functionName = innerType.displayName or innerType.name or ""
 	end
 	return outerType.displayName
-		or (
-			functionName ~= "" and string.format("%s(%s)", wrapperName, functionName)
-			or wrapperName
-		)
+		or (functionName ~= "" and string.format("%s(%s)", wrapperName, functionName) or wrapperName)
 end
 
 local function getContextName(type: ReactContext<any>): string

@@ -46,8 +46,7 @@ local updateContainer = ReactFiberReconciler.updateContainer
 -- local findHostInstanceWithNoPortals = ReactFiberReconciler.findHostInstanceWithNoPortals
 -- local registerMutableSourceForHydration = ReactFiberReconciler.registerMutableSourceForHydration
 local invariant = require(Packages.Shared).invariant
-local enableEagerRootListeners =
-	require(Packages.Shared).ReactFeatureFlags.enableEagerRootListeners
+local enableEagerRootListeners = require(Packages.Shared).ReactFeatureFlags.enableEagerRootListeners
 
 local BlockingRoot = ReactFiberReconciler.ReactRootTags.BlockingRoot
 local ConcurrentRoot = ReactFiberReconciler.ReactRootTags.ConcurrentRoot
@@ -65,11 +64,7 @@ function ReactRobloxRoot.new(container: Container, options: RootOptions?): RootT
 	return root
 end
 
-local function createBlockingRoot(
-	container: Container,
-	tag: RootTag,
-	options: RootOptions?
-): RootType
+local function createBlockingRoot(container: Container, tag: RootTag, options: RootOptions?): RootType
 	-- deviation: We can just share the logic here via metatables
 	local root: RootType = (setmetatable({}, ReactRobloxRoot) :: any) :: RootType
 	root._internalRoot = createRootImpl(container, tag, options)
@@ -202,16 +197,15 @@ exports.createRoot = function(container: Container, options: RootOptions?): Root
 	return ReactRobloxRoot.new(container, options)
 end
 
-exports.createBlockingRoot =
-	function(container: Container, options: RootOptions?): RootType
-		invariant(
-			isValidContainer(container),
-			-- ROBLOX deviation: Use roblox engine terminology
-			"createRoot(...): Target container is not a Roblox Instance."
-		)
-		warnIfReactDOMContainerInDEV(container)
-		return createBlockingRoot(container, BlockingRoot, options)
-	end
+exports.createBlockingRoot = function(container: Container, options: RootOptions?): RootType
+	invariant(
+		isValidContainer(container),
+		-- ROBLOX deviation: Use roblox engine terminology
+		"createRoot(...): Target container is not a Roblox Instance."
+	)
+	warnIfReactDOMContainerInDEV(container)
+	return createBlockingRoot(container, BlockingRoot, options)
+end
 
 exports.createLegacyRoot = function(container: Container, options: RootOptions?): RootType
 	return createBlockingRoot(container, LegacyRoot, options)

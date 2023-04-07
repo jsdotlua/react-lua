@@ -14,10 +14,7 @@ local ReactTypes = require(Packages.Shared)
 type MutableSourceGetVersionFn = ReactTypes.MutableSourceGetVersionFn
 type MutableSource<T> = ReactTypes.MutableSource<T>
 
-local function createMutableSource<Source>(
-	source: Source,
-	getVersion: MutableSourceGetVersionFn
-): MutableSource<Source>
+local function createMutableSource<Source>(source: Source, getVersion: MutableSourceGetVersionFn): MutableSource<Source>
 	local mutableSource: MutableSource<Source> = {
 		_getVersion = getVersion,
 		_source = source,

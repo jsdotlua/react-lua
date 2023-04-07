@@ -79,18 +79,10 @@ function SingleEventManager:connectEvent(key, listener)
 end
 
 function SingleEventManager:connectPropertyChange(key, listener)
-	local success, event =
-		pcall(self._instance.GetPropertyChangedSignal, self._instance, key)
+	local success, event = pcall(self._instance.GetPropertyChangedSignal, self._instance, key)
 
 	if not success then
-		error(
-			string.format(
-				"Cannot get changed signal on property %q: %s",
-				tostring(key),
-				event
-			),
-			0
-		)
+		error(string.format("Cannot get changed signal on property %q: %s", tostring(key), event), 0)
 	end
 
 	self:_connect(CHANGE_PREFIX .. key, event, listener)
@@ -115,10 +107,7 @@ function SingleEventManager:_connect(eventKey, event, listener)
 					-- called.
 
 					local argumentCount = select("#", ...)
-					table.insert(
-						self._suspendedEventQueue,
-						{ eventKey, argumentCount, ... }
-					)
+					table.insert(self._suspendedEventQueue, { eventKey, argumentCount, ... })
 				end
 			end)
 		end
@@ -152,11 +141,8 @@ function SingleEventManager:resume()
 			-- Wrap the listener in a coroutine to catch errors and handle
 			-- yielding correctly.
 			local listenerCo = coroutine.create(listener)
-			local success, result = coroutine.resume(
-				listenerCo,
-				self._instance,
-				unpack(eventInvocation, 3, 2 + argumentCount)
-			)
+			local success, result =
+				coroutine.resume(listenerCo, self._instance, unpack(eventInvocation, 3, 2 + argumentCount))
 
 			-- If the listener threw an error, we log it as a warning, since
 			-- there's no way to write error text in Roblox Lua without killing

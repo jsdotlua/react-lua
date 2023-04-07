@@ -95,8 +95,7 @@ end
 
 local function attachBinding(hostInstance, key, newBinding): ()
 	local function updateBoundProperty(newValue)
-		local success, errorMessage =
-			xpcall(setRobloxInstanceProperty, identity, hostInstance, key, newValue)
+		local success, errorMessage = xpcall(setRobloxInstanceProperty, identity, hostInstance, key, newValue)
 
 		if not success then
 			local source = newBinding._source or "<enable DEV mode for stack>"
@@ -120,8 +119,7 @@ local function attachBinding(hostInstance, key, newBinding): ()
 		instanceToBindings[hostInstance] = {}
 	end
 
-	instanceToBindings[hostInstance][key] =
-		React.__subscribeToBinding(newBinding, updateBoundProperty)
+	instanceToBindings[hostInstance][key] = React.__subscribeToBinding(newBinding, updateBoundProperty)
 
 	updateBoundProperty(newBinding:getValue())
 end
@@ -187,8 +185,7 @@ local function applyProp(hostInstance: Instance, key, newValue, oldValue): ()
 	end
 
 	-- Handle bindings
-	local newIsBinding = typeof(newValue) == "table"
-		and newValue["$$typeof"] == ReactSymbols.REACT_BINDING_TYPE
+	local newIsBinding = typeof(newValue) == "table" and newValue["$$typeof"] == ReactSymbols.REACT_BINDING_TYPE
 	local oldIsBinding = oldValue ~= nil
 		and typeof(oldValue) == "table"
 		and oldValue["$$typeof"] == ReactSymbols.REACT_BINDING_TYPE
@@ -228,12 +225,7 @@ local function setInitialProperties(
 	-- were created the way that legacy Roact did, but DEV mode should include
 	-- component stack traces as a separate warning
 	if not success then
-		local fullMessage = string.format(
-			applyPropsError,
-			domElement.Name,
-			domElement.ClassName,
-			errorMessage
-		)
+		local fullMessage = string.format(applyPropsError, domElement.Name, domElement.ClassName, errorMessage)
 		console.error(fullMessage)
 		-- FIXME: Until console.error can be instrumented to send telemetry, we need
 		-- to keep the hard error here
@@ -245,11 +237,7 @@ local function setInitialProperties(
 	end
 end
 
-local function safelyApplyProperties(
-	domElement: HostInstance,
-	updatePayload: Array<any>,
-	lastProps: Object
-): ()
+local function safelyApplyProperties(domElement: HostInstance, updatePayload: Array<any>, lastProps: Object): ()
 	local updatePayloadCount = #updatePayload
 	for i = 1, updatePayloadCount, 2 do
 		local propKey = updatePayload[i]
@@ -264,29 +252,19 @@ local function safelyApplyProperties(
 	end
 end
 
-local function updateProperties(
-	domElement: HostInstance,
-	updatePayload: Array<any>,
-	lastProps: Object
-): ()
+local function updateProperties(domElement: HostInstance, updatePayload: Array<any>, lastProps: Object): ()
 	-- deviation: Use Roact's prop application logic
 	if instanceToEventManager[domElement] ~= nil then
 		instanceToEventManager[domElement]:suspend()
 	end
 
-	local success, errorMessage =
-		xpcall(safelyApplyProperties, identity, domElement, updatePayload, lastProps)
+	local success, errorMessage = xpcall(safelyApplyProperties, identity, domElement, updatePayload, lastProps)
 
 	if not success then
 		-- ROBLOX deviation: Roblox renderer doesn't currently track where instances
 		-- were created the way that legacy Roact did, but DEV mode should include
 		-- component stack traces as a separate warning
-		local fullMessage = string.format(
-			updatePropsError,
-			domElement.Name,
-			domElement.ClassName,
-			errorMessage
-		)
+		local fullMessage = string.format(updatePropsError, domElement.Name, domElement.ClassName, errorMessage)
 		console.error(fullMessage)
 		-- FIXME: Until console.error can be instrumented to send telemetry, we need
 		-- to keep the hard error here

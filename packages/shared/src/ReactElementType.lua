@@ -13,9 +13,7 @@ type Object = LuauPolyfill.Object
 
 local flowtypes = require(script.Parent["flowtypes.roblox"])
 type React_Element<ElementType> = flowtypes.React_Element<ElementType>
-type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<
-	P
->
+type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<P>
 type React_ComponentType<P> = flowtypes.React_ComponentType<P>
 
 export type Source = {

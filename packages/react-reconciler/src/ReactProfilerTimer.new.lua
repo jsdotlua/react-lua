@@ -71,10 +71,7 @@ function stopProfilerTimerIfRunning(fiber: Fiber): ()
 	profilerStartTime = -1
 end
 
-function stopProfilerTimerIfRunningAndRecordDelta(
-	fiber: Fiber,
-	overrideBaseTime: boolean
-): ()
+function stopProfilerTimerIfRunningAndRecordDelta(fiber: Fiber, overrideBaseTime: boolean): ()
 	if not enableProfilerTimer then
 		return
 	end

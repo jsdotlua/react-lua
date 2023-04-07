@@ -519,9 +519,7 @@ end
 
 export type IntersectionObserverOptions = Object
 
-export type ObserveVisibleRectsCallback = (
-	intersections: Array<{ ratio: number, rect: BoundingRect }>
-) -> ()
+export type ObserveVisibleRectsCallback = (intersections: Array<{ ratio: number, rect: BoundingRect }>) -> ()
 
 -- exports.observeVisibleRects(
 --   hostRoot: Instance,

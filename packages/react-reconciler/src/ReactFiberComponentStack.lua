@@ -29,10 +29,8 @@ local SimpleMemoComponent = ReactWorkTags.SimpleMemoComponent
 local ClassComponent = ReactWorkTags.ClassComponent
 
 local ReactComponentStackFrame = require(Packages.Shared).ReactComponentStackFrame
-local describeBuiltInComponentFrame =
-	ReactComponentStackFrame.describeBuiltInComponentFrame
-local describeFunctionComponentFrame =
-	ReactComponentStackFrame.describeFunctionComponentFrame
+local describeBuiltInComponentFrame = ReactComponentStackFrame.describeBuiltInComponentFrame
+local describeFunctionComponentFrame = ReactComponentStackFrame.describeFunctionComponentFrame
 local describeClassComponentFrame = ReactComponentStackFrame.describeClassComponentFrame
 
 local function describeFiber(fiber: Fiber): string
@@ -86,15 +84,8 @@ return {
 
 		if not ok then
 			local message = "\nError generating stack: "
-			if
-				typeof(result) == "table"
-				and (result :: Error).message
-				and (result :: Error).stack
-			then
-				return message
-					.. (result :: Error).message
-					.. "\n"
-					.. tostring((result :: Error).stack)
+			if typeof(result) == "table" and (result :: Error).message and (result :: Error).stack then
+				return message .. (result :: Error).message .. "\n" .. tostring((result :: Error).stack)
 			end
 			return message .. tostring(result)
 		end

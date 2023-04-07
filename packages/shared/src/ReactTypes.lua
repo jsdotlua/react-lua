@@ -179,10 +179,7 @@ type CoreReactBinding<T> = {
 	_source: string?,
 }
 type ReactBindingMap = {
-	map: <T, U>(
-		self: CoreReactBinding<T> & ReactBindingMap,
-		(T) -> U
-	) -> ReactBindingMap & CoreReactBinding<U>,
+	map: <T, U>(self: CoreReactBinding<T> & ReactBindingMap, (T) -> U) -> ReactBindingMap & CoreReactBinding<U>,
 }
 
 export type ReactBinding<T> = CoreReactBinding<T> & ReactBindingMap
@@ -200,9 +197,7 @@ export type MutableSourceSubscribeFn<Source, Snapshot> = (
 	callback: (snapshot: Snapshot) -> ()
 ) -> (() -> ())
 
-export type MutableSourceGetVersionFn = (
-	_source: NonMaybeType<any>
-) -> MutableSourceVersion
+export type MutableSourceGetVersionFn = (_source: NonMaybeType<any>) -> MutableSourceVersion
 
 export type MutableSource<Source> = {
 	_source: Source,
@@ -248,11 +243,7 @@ export type Wakeable = {
 -- then function.
 -- ROBLOX FIXME: workaround for Luau recursive type used with different parameters. delete this copy once that issue is resolved.
 export type _Thenable<R> = {
-	andThen: <U>(
-		self: _Thenable<R>,
-		onFulfill: (R) -> ...U,
-		onReject: (error: any) -> ...U
-	) -> (),
+	andThen: <U>(self: _Thenable<R>, onFulfill: (R) -> ...U, onReject: (error: any) -> ...U) -> (),
 }
 
 export type Thenable<R> = {

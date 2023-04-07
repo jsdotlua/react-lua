@@ -34,8 +34,7 @@ local Snapshot = ReactFiberFlags.Snapshot
 local MountLayoutDev = ReactFiberFlags.MountLayoutDev
 
 local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
-local debugRenderPhaseSideEffectsForStrictMode =
-	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode
+local debugRenderPhaseSideEffectsForStrictMode = ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode
 local disableLegacyContext = ReactFeatureFlags.disableLegacyContext
 local enableDebugTracing = ReactFeatureFlags.enableDebugTracing
 local enableSchedulingProfiler = ReactFeatureFlags.enableSchedulingProfiler
@@ -56,18 +55,15 @@ local ReactSymbols = require(Packages.Shared).ReactSymbols
 local REACT_CONTEXT_TYPE = ReactSymbols.REACT_CONTEXT_TYPE
 local REACT_PROVIDER_TYPE = ReactSymbols.REACT_PROVIDER_TYPE
 
-local resolveDefaultProps =
-	require(script.Parent["ReactFiberLazyComponent.new"]).resolveDefaultProps
+local resolveDefaultProps = require(script.Parent["ReactFiberLazyComponent.new"]).resolveDefaultProps
 local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
 local DebugTracingMode = ReactTypeOfMode.DebugTracingMode
 local StrictMode = ReactTypeOfMode.StrictMode
 
 local enqueueUpdate = ReactUpdateQueue.enqueueUpdate
 local processUpdateQueue = ReactUpdateQueue.processUpdateQueue
-local checkHasForceUpdateAfterProcessing =
-	ReactUpdateQueue.checkHasForceUpdateAfterProcessing
-local resetHasForceUpdateBeforeProcessing =
-	ReactUpdateQueue.resetHasForceUpdateBeforeProcessing
+local checkHasForceUpdateAfterProcessing = ReactUpdateQueue.checkHasForceUpdateAfterProcessing
+local resetHasForceUpdateBeforeProcessing = ReactUpdateQueue.resetHasForceUpdateBeforeProcessing
 local createUpdate = ReactUpdateQueue.createUpdate
 local ReplaceState = ReactUpdateQueue.ReplaceState
 local ForceUpdate = ReactUpdateQueue.ForceUpdate
@@ -143,8 +139,7 @@ if __DEV__ then
 		if not didWarnOnInvalidCallback[key] then
 			didWarnOnInvalidCallback[key] = true
 			console.error(
-				"%s(...): Expected the last optional `callback` argument to be a "
-					.. "function. Instead received: %s.",
+				"%s(...): Expected the last optional `callback` argument to be a " .. "function. Instead received: %s.",
 				callerName,
 				tostring(callback)
 			)
@@ -203,14 +198,10 @@ local function applyDerivedStateFromProps<Props, State>(
 	local prevState = workInProgress.memoizedState
 
 	if __DEV__ then
-		if
-			debugRenderPhaseSideEffectsForStrictMode
-			and bit32.band(workInProgress.mode, StrictMode) ~= 0
-		then
+		if debugRenderPhaseSideEffectsForStrictMode and bit32.band(workInProgress.mode, StrictMode) ~= 0 then
 			disableLogs()
 			-- Invoke the function an extra time to help detect side-effects.
-			local ok, result =
-				xpcall(getDerivedStateFromProps, describeError, nextProps, prevState)
+			local ok, result = xpcall(getDerivedStateFromProps, describeError, nextProps, prevState)
 
 			reenableLogs()
 
@@ -226,9 +217,7 @@ local function applyDerivedStateFromProps<Props, State>(
 		warnOnUndefinedDerivedState(ctor, partialState)
 	end
 	-- Merge the partial state and the previous state.
-	local memoizedState = if partialState == nil
-		then prevState
-		else Object.assign({}, prevState, partialState)
+	local memoizedState = if partialState == nil then prevState else Object.assign({}, prevState, partialState)
 	workInProgress.memoizedState = memoizedState
 
 	-- Once the update queue is empty, persist the derived state onto the
@@ -353,36 +342,16 @@ local function getClassComponentUpdater()
 	return classComponentUpdater
 end
 
-function checkShouldComponentUpdate(
-	workInProgress,
-	ctor,
-	oldProps,
-	newProps,
-	oldState,
-	newState,
-	nextContext
-)
+function checkShouldComponentUpdate(workInProgress, ctor, oldProps, newProps, oldState, newState, nextContext)
 	local instance = workInProgress.stateNode
-	if
-		instance.shouldComponentUpdate ~= nil
-		and type(instance.shouldComponentUpdate) == "function"
-	then
+	if instance.shouldComponentUpdate ~= nil and type(instance.shouldComponentUpdate) == "function" then
 		if __DEV__ then
-			if
-				debugRenderPhaseSideEffectsForStrictMode
-				and bit32.band(workInProgress.mode, StrictMode) ~= 0
-			then
+			if debugRenderPhaseSideEffectsForStrictMode and bit32.band(workInProgress.mode, StrictMode) ~= 0 then
 				disableLogs()
 				-- deviation: Pass instance so that the method receives self
 				-- Invoke the function an extra time to help detect side-effects.
-				local ok, result = xpcall(
-					instance.shouldComponentUpdate,
-					describeError,
-					instance,
-					newProps,
-					newState,
-					nextContext
-				)
+				local ok, result =
+					xpcall(instance.shouldComponentUpdate, describeError, instance, newProps, newState, nextContext)
 				-- finally
 				reenableLogs()
 				if not ok then
@@ -391,8 +360,7 @@ function checkShouldComponentUpdate(
 			end
 		end
 		-- deviation: Call with ":" so that the method receives self
-		local shouldUpdate =
-			instance:shouldComponentUpdate(newProps, newState, nextContext)
+		local shouldUpdate = instance:shouldComponentUpdate(newProps, newState, nextContext)
 
 		if __DEV__ then
 			if shouldUpdate == nil then
@@ -410,9 +378,7 @@ function checkShouldComponentUpdate(
 	-- ROBLOX deviation: for us, the isPureReactComponent flag will be visible as a
 	-- direct member of the 'ctor', which in reality is the component definition
 	if type(ctor) == "table" and ctor.isPureReactComponent then
-		return (
-			not shallowEqual(oldProps, newProps) or not shallowEqual(oldState, newState)
-		)
+		return (not shallowEqual(oldProps, newProps) or not shallowEqual(oldState, newState))
 	end
 
 	return true
@@ -442,11 +408,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 			end
 		end
 
-		if
-			instance.getInitialState
-			and not instance.getInitialState.isReactClassApproved
-			and not instance.state
-		then
+		if instance.getInitialState and not instance.getInitialState.isReactClassApproved and not instance.state then
 			console.error(
 				"getInitialState was defined on %s, a plain JavaScript class. "
 					.. "This is only supported for classes created using React.createClass. "
@@ -454,10 +416,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 				name
 			)
 		end
-		if
-			instance.getDefaultProps
-			and not instance.getDefaultProps.isReactClassApproved
-		then
+		if instance.getDefaultProps and not instance.getDefaultProps.isReactClassApproved then
 			console.error(
 				"getDefaultProps was defined on %s, a plain JavaScript class. "
 					.. "This is only supported for classes created using React.createClass. "
@@ -533,11 +492,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 			)
 		end
 		-- ROBLOX deviation: don't access fields on a function
-		if
-			type(ctor) == "table"
-			and ctor.isPureReactComponent
-			and instance.shouldComponentUpdate ~= nil
-		then
+		if type(ctor) == "table" and ctor.isPureReactComponent and instance.shouldComponentUpdate ~= nil then
 			console.error(
 				"%s has a method called shouldComponentUpdate(). "
 					.. "shouldComponentUpdate should not be used when extending React.PureComponent. "
@@ -565,8 +520,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 		end
 		if type(instance.componentWillRecieveProps) == "function" then
 			console.error(
-				"%s has a method called "
-					.. "componentWillRecieveProps(). Did you mean componentWillReceiveProps()?",
+				"%s has a method called " .. "componentWillRecieveProps(). Did you mean componentWillReceiveProps()?",
 				name
 			)
 		end
@@ -644,8 +598,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 			and type(ctor.childContextTypes) ~= "table"
 		then
 			console.error(
-				"%s.getChildContext(): childContextTypes must be defined in order to "
-					.. "use getChildContext().",
+				"%s.getChildContext(): childContextTypes must be defined in order to " .. "use getChildContext().",
 				name
 			)
 		end
@@ -716,17 +669,12 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 		unmaskedContext = getUnmaskedContext(workInProgress, ctor, true)
 		local contextTypes = ctor.contextTypes
 		isLegacyContextConsumer = contextTypes ~= nil
-		context = isLegacyContextConsumer
-				and getMaskedContext(workInProgress, unmaskedContext)
-			or emptyContextObject
+		context = isLegacyContextConsumer and getMaskedContext(workInProgress, unmaskedContext) or emptyContextObject
 	end
 
 	-- Instantiate twice to help detect side-effects.
 	if __DEV__ then
-		if
-			debugRenderPhaseSideEffectsForStrictMode
-			and bit32.band(workInProgress.mode, StrictMode) ~= 0
-		then
+		if debugRenderPhaseSideEffectsForStrictMode and bit32.band(workInProgress.mode, StrictMode) ~= 0 then
 			disableLogs()
 			-- deviation: ctor will actually refer to a class component, we use the
 			-- `__ctor` function that it exposes
@@ -755,10 +703,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 	if __DEV__ then
 		-- ROBLOX deviation: Instead of checking if state is nil, we check if it is our
 		-- UninitializedState singleton.
-		if
-			type(ctor.getDerivedStateFromProps) == "function"
-			and state == UninitializedState
-		then
+		if type(ctor.getDerivedStateFromProps) == "function" and state == UninitializedState then
 			local componentName = getComponentName(ctor) or "Component"
 			if not didWarnAboutUninitializedState[componentName] then
 				didWarnAboutUninitializedState[componentName] = true
@@ -813,11 +758,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 			elseif type(instance.UNSAFE_componentWillUpdate) == "function" then
 				foundWillUpdateName = "UNSAFE_componentWillUpdate"
 			end
-			if
-				foundWillMountName ~= nil
-				or foundWillReceivePropsName ~= nil
-				or foundWillUpdateName ~= nil
-			then
+			if foundWillMountName ~= nil or foundWillReceivePropsName ~= nil or foundWillUpdateName ~= nil then
 				local componentName = getComponentName(ctor) or "Component"
 				local newApiName
 				if type(ctor.getDerivedStateFromProps) == "function" then
@@ -835,9 +776,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 
 				local willReceievePropsName
 				if foundWillReceivePropsName ~= nil then
-					willReceievePropsName = (
-						"\n  " .. tostring(foundWillReceivePropsName)
-					)
+					willReceievePropsName = ("\n  " .. tostring(foundWillReceivePropsName))
 				else
 					willReceievePropsName = ""
 				end
@@ -879,18 +818,12 @@ end
 local function callComponentWillMount(workInProgress, instance)
 	local oldState = instance.state
 
-	if
-		instance.componentWillMount ~= nil
-		and type(instance.componentWillMount) == "function"
-	then
+	if instance.componentWillMount ~= nil and type(instance.componentWillMount) == "function" then
 		-- deviation: Call with ":" so that the method receives self
 		instance:componentWillMount()
 	end
 	-- ROBLOX TODO: Should we really run both of these?
-	if
-		instance.UNSAFE_componentWillMount ~= nil
-		and type(instance.UNSAFE_componentWillMount) == "function"
-	then
+	if instance.UNSAFE_componentWillMount ~= nil and type(instance.UNSAFE_componentWillMount) == "function" then
 		-- deviation: Call with ":" so that the method receives self
 		instance:UNSAFE_componentWillMount()
 	end
@@ -910,10 +843,7 @@ end
 
 function callComponentWillReceiveProps(workInProgress, instance, newProps, nextContext)
 	local oldState = instance.state
-	if
-		instance.componentWillReceiveProps ~= nil
-		and type(instance.componentWillReceiveProps) == "function"
-	then
+	if instance.componentWillReceiveProps ~= nil and type(instance.componentWillReceiveProps) == "function" then
 		-- deviation: Call with ":" so that the method receives self
 		instance:componentWillReceiveProps(newProps, nextContext)
 	end
@@ -943,12 +873,7 @@ function callComponentWillReceiveProps(workInProgress, instance, newProps, nextC
 end
 
 -- Invokes the mount life-cycles on a previously never rendered instance.
-local function mountClassInstance(
-	workInProgress: Fiber,
-	ctor: any,
-	newProps: any,
-	renderLanes: Lanes
-)
+local function mountClassInstance(workInProgress: Fiber, ctor: any, newProps: any, renderLanes: Lanes)
 	if __DEV__ then
 		checkClassInstance(workInProgress, ctor, newProps)
 	end
@@ -996,10 +921,7 @@ local function mountClassInstance(
 		end
 
 		if warnAboutDeprecatedLifecycles then
-			ReactStrictModeWarnings.recordUnsafeLifecycleWarnings(
-				workInProgress,
-				instance
-			)
+			ReactStrictModeWarnings.recordUnsafeLifecycleWarnings(workInProgress, instance)
 		end
 	end
 
@@ -1012,16 +934,8 @@ local function mountClassInstance(
 	if type(ctor) == "table" then
 		getDerivedStateFromProps = ctor.getDerivedStateFromProps
 	end
-	if
-		getDerivedStateFromProps ~= nil
-		and type(getDerivedStateFromProps) == "function"
-	then
-		applyDerivedStateFromProps(
-			workInProgress,
-			ctor,
-			getDerivedStateFromProps,
-			newProps
-		)
+	if getDerivedStateFromProps ~= nil and type(getDerivedStateFromProps) == "function" then
+		applyDerivedStateFromProps(workInProgress, ctor, getDerivedStateFromProps, newProps)
 		instance.state = workInProgress.memoizedState
 	end
 
@@ -1032,10 +946,7 @@ local function mountClassInstance(
 		typeofCtor == "table"
 		and type(ctor.getDerivedStateFromProps) ~= "function"
 		and type(instance.getSnapshotBeforeUpdate) ~= "function"
-		and (
-			type(instance.UNSAFE_componentWillMount) == "function"
-			or type(instance.componentWillMount) == "function"
-		)
+		and (type(instance.UNSAFE_componentWillMount) == "function" or type(instance.componentWillMount) == "function")
 	then
 		callComponentWillMount(workInProgress, instance)
 		-- If we had additional state updates during this life-cycle, let's
@@ -1046,20 +957,14 @@ local function mountClassInstance(
 
 	if type(instance.componentDidMount) == "function" then
 		if __DEV__ and enableDoubleInvokingEffects then
-			workInProgress.flags =
-				bit32.bor(workInProgress.flags, bit32.bor(MountLayoutDev, Update))
+			workInProgress.flags = bit32.bor(workInProgress.flags, bit32.bor(MountLayoutDev, Update))
 		else
 			workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 		end
 	end
 end
 
-function resumeMountClassInstance(
-	workInProgress: Fiber,
-	ctor: any,
-	newProps: any,
-	renderLanes: Lanes
-): boolean
+function resumeMountClassInstance(workInProgress: Fiber, ctor: any, newProps: any, renderLanes: Lanes): boolean
 	local instance = workInProgress.stateNode
 
 	local oldProps = workInProgress.memoizedProps
@@ -1116,8 +1021,7 @@ function resumeMountClassInstance(
 		-- effect even though we're bailing out, so that cWU/cDU are called.
 		if type(instance.componentDidMount) == "function" then
 			if __DEV__ and enableDoubleInvokingEffects then
-				workInProgress.flags =
-					bit32.bor(workInProgress.flags, MountLayoutDev, Update)
+				workInProgress.flags = bit32.bor(workInProgress.flags, MountLayoutDev, Update)
 			else
 				workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 			end
@@ -1125,29 +1029,13 @@ function resumeMountClassInstance(
 		return false
 	end
 
-	if
-		getDerivedStateFromProps ~= nil
-		and type(getDerivedStateFromProps) == "function"
-	then
-		applyDerivedStateFromProps(
-			workInProgress,
-			ctor,
-			getDerivedStateFromProps,
-			newProps
-		)
+	if getDerivedStateFromProps ~= nil and type(getDerivedStateFromProps) == "function" then
+		applyDerivedStateFromProps(workInProgress, ctor, getDerivedStateFromProps, newProps)
 		newState = workInProgress.memoizedState
 	end
 
 	local shouldUpdate = checkHasForceUpdateAfterProcessing()
-		or checkShouldComponentUpdate(
-			workInProgress,
-			ctor,
-			oldProps,
-			newProps,
-			oldState,
-			newState,
-			nextContext
-		)
+		or checkShouldComponentUpdate(workInProgress, ctor, oldProps, newProps, oldState, newState, nextContext)
 
 	if shouldUpdate then
 		-- In order to support react-lifecycles-compat polyfilled components,
@@ -1168,8 +1056,7 @@ function resumeMountClassInstance(
 		end
 		if type(instance.componentDidMount) == "function" then
 			if __DEV__ and enableDoubleInvokingEffects then
-				workInProgress.flags =
-					bit32.bor(workInProgress.flags, MountLayoutDev, Update)
+				workInProgress.flags = bit32.bor(workInProgress.flags, MountLayoutDev, Update)
 			else
 				workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 			end
@@ -1179,8 +1066,7 @@ function resumeMountClassInstance(
 		-- effect even though we're bailing out, so that cWU/cDU are called.
 		if type(instance.componentDidMount) == "function" then
 			if __DEV__ and enableDoubleInvokingEffects then
-				workInProgress.flags =
-					bit32.bor(workInProgress.flags, MountLayoutDev, Update)
+				workInProgress.flags = bit32.bor(workInProgress.flags, MountLayoutDev, Update)
 			else
 				workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 			end
@@ -1236,14 +1122,8 @@ local function updateClassInstance(
 		nextContext = getMaskedContext(workInProgress, nextUnmaskedContext)
 	end
 
-	local hasNewLifecycles = (
-		getDerivedStateFromProps ~= nil
-		and type(getDerivedStateFromProps) == "function"
-	)
-		or (
-			instance.getSnapshotBeforeUpdate ~= nil
-			and type(instance.getSnapshotBeforeUpdate) == "function"
-		)
+	local hasNewLifecycles = (getDerivedStateFromProps ~= nil and type(getDerivedStateFromProps) == "function")
+		or (instance.getSnapshotBeforeUpdate ~= nil and type(instance.getSnapshotBeforeUpdate) == "function")
 
 	-- Note: During these life-cycles, instance.props/instance.state are what
 	-- ever the previously attempted to render - not the "current". However,
@@ -1258,10 +1138,7 @@ local function updateClassInstance(
 				instance.UNSAFE_componentWillReceiveProps ~= nil
 				and type(instance.UNSAFE_componentWillReceiveProps) == "function"
 			)
-			or (
-				instance.componentWillReceiveProps ~= nil
-				and type(instance.componentWillReceiveProps) == "function"
-			)
+			or (instance.componentWillReceiveProps ~= nil and type(instance.componentWillReceiveProps) == "function")
 		)
 	then
 		if unresolvedOldProps ~= unresolvedNewProps or oldContext ~= nextContext then
@@ -1285,54 +1162,26 @@ local function updateClassInstance(
 	then
 		-- If an update was already in progress, we should schedule an Update
 		-- effect even though we're bailing out, so that cWU/cDU are called.
-		if
-			instance.componentDidUpdate ~= nil
-			and type(instance.componentDidUpdate) == "function"
-		then
-			if
-				unresolvedOldProps ~= current.memoizedProps
-				or oldState ~= current.memoizedState
-			then
+		if instance.componentDidUpdate ~= nil and type(instance.componentDidUpdate) == "function" then
+			if unresolvedOldProps ~= current.memoizedProps or oldState ~= current.memoizedState then
 				workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 			end
 		end
-		if
-			instance.getSnapshotBeforeUpdate ~= nil
-			and type(instance.getSnapshotBeforeUpdate) == "function"
-		then
-			if
-				unresolvedOldProps ~= current.memoizedProps
-				or oldState ~= current.memoizedState
-			then
+		if instance.getSnapshotBeforeUpdate ~= nil and type(instance.getSnapshotBeforeUpdate) == "function" then
+			if unresolvedOldProps ~= current.memoizedProps or oldState ~= current.memoizedState then
 				workInProgress.flags = bit32.bor(workInProgress.flags, Snapshot)
 			end
 		end
 		return false
 	end
 
-	if
-		getDerivedStateFromProps ~= nil
-		and type(getDerivedStateFromProps) == "function"
-	then
-		applyDerivedStateFromProps(
-			workInProgress,
-			ctor,
-			getDerivedStateFromProps,
-			newProps
-		)
+	if getDerivedStateFromProps ~= nil and type(getDerivedStateFromProps) == "function" then
+		applyDerivedStateFromProps(workInProgress, ctor, getDerivedStateFromProps, newProps)
 		newState = workInProgress.memoizedState
 	end
 
 	local shouldUpdate = checkHasForceUpdateAfterProcessing()
-		or checkShouldComponentUpdate(
-			workInProgress,
-			ctor,
-			oldProps,
-			newProps,
-			oldState,
-			newState,
-			nextContext
-		)
+		or checkShouldComponentUpdate(workInProgress, ctor, oldProps, newProps, oldState, newState, nextContext)
 
 	if shouldUpdate then
 		-- In order to support react-lifecycles-compat polyfilled components,
@@ -1340,20 +1189,11 @@ local function updateClassInstance(
 		if
 			not hasNewLifecycles
 			and (
-				(
-					instance.UNSAFE_componentWillUpdate ~= nil
-					and type(instance.UNSAFE_componentWillUpdate) == "function"
-				)
-				or (
-					instance.componentWillUpdate ~= nil
-					and type(instance.componentWillUpdate) == "function"
-				)
+				(instance.UNSAFE_componentWillUpdate ~= nil and type(instance.UNSAFE_componentWillUpdate) == "function")
+				or (instance.componentWillUpdate ~= nil and type(instance.componentWillUpdate) == "function")
 			)
 		then
-			if
-				instance.componentWillUpdate ~= nil
-				and type(instance.componentWillUpdate) == "function"
-			then
+			if instance.componentWillUpdate ~= nil and type(instance.componentWillUpdate) == "function" then
 				-- deviation: Call with ":" so that the method receives self
 				instance:componentWillUpdate(newProps, newState, nextContext)
 			end
@@ -1365,40 +1205,22 @@ local function updateClassInstance(
 				instance:UNSAFE_componentWillUpdate(newProps, newState, nextContext)
 			end
 		end
-		if
-			instance.componentDidUpdate ~= nil
-			and type(instance.componentDidUpdate) == "function"
-		then
+		if instance.componentDidUpdate ~= nil and type(instance.componentDidUpdate) == "function" then
 			workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 		end
-		if
-			instance.getSnapshotBeforeUpdate ~= nil
-			and type(instance.getSnapshotBeforeUpdate) == "function"
-		then
+		if instance.getSnapshotBeforeUpdate ~= nil and type(instance.getSnapshotBeforeUpdate) == "function" then
 			workInProgress.flags = bit32.bor(workInProgress.flags, Snapshot)
 		end
 	else
 		-- If an update was already in progress, we should schedule an Update
 		-- effect even though we're bailing out, so that cWU/cDU are called.
-		if
-			instance.componentDidUpdate ~= nil
-			and type(instance.componentDidUpdate) == "function"
-		then
-			if
-				unresolvedOldProps ~= current.memoizedProps
-				or oldState ~= current.memoizedState
-			then
+		if instance.componentDidUpdate ~= nil and type(instance.componentDidUpdate) == "function" then
+			if unresolvedOldProps ~= current.memoizedProps or oldState ~= current.memoizedState then
 				workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 			end
 		end
-		if
-			instance.getSnapshotBeforeUpdate ~= nil
-			and type(instance.getSnapshotBeforeUpdate) == "function"
-		then
-			if
-				unresolvedOldProps ~= current.memoizedProps
-				or oldState ~= current.memoizedState
-			then
+		if instance.getSnapshotBeforeUpdate ~= nil and type(instance.getSnapshotBeforeUpdate) == "function" then
+			if unresolvedOldProps ~= current.memoizedProps or oldState ~= current.memoizedState then
 				workInProgress.flags = bit32.bor(workInProgress.flags, Snapshot)
 			end
 		end

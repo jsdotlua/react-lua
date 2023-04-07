@@ -70,67 +70,59 @@ if _G.__DEV__ then
 	-- Tracks components we have already warned about.
 	local didWarnAboutUnsafeLifecycles = {}
 
-	ReactStrictModeWarnings.recordUnsafeLifecycleWarnings =
-		function(fiber: Fiber, instance: any)
-			-- Dedupe strategy: Warn once per component.
-			if didWarnAboutUnsafeLifecycles[fiber.type] then
-				return
-			end
-
-			if
-				typeof(instance.componentWillMount) == "function"
-				-- Don't warn about react-lifecycles-compat polyfilled components.
-				-- ROBLOX deviation: Lua doesn't allow fields on function
-				-- instance.componentWillMount.__suppressDeprecationWarning ~= true
-			then
-				table.insert(pendingComponentWillMountWarnings, fiber)
-			end
-
-			if
-				bit32.band(fiber.mode, StrictMode) ~= 0
-				and typeof(instance.UNSAFE_componentWillMount) == "function"
-			then
-				table.insert(pendingUNSAFE_ComponentWillMountWarnings, fiber)
-			end
-
-			if
-				typeof(instance.componentWillReceiveProps) == "function"
-				-- ROBLOX deviation: Lua doesn't allow fields on function
-				-- instance.componentWillReceiveProps.__suppressDeprecationWarning ~= true
-			then
-				table.insert(pendingComponentWillReceivePropsWarnings, fiber)
-			end
-
-			if
-				bit32.band(fiber.mode, StrictMode) ~= 0
-				and typeof(instance.UNSAFE_componentWillReceiveProps) == "function"
-			then
-				table.insert(pendingUNSAFE_ComponentWillReceivePropsWarnings, fiber)
-			end
-
-			if
-				typeof(instance.componentWillUpdate) == "function"
-				-- ROBLOX deviation: Lua doesn't allow fields on function
-				-- instance.componentWillUpdate.__suppressDeprecationWarning ~= true
-			then
-				table.insert(pendingComponentWillUpdateWarnings, fiber)
-			end
-
-			if
-				bit32.band(fiber.mode, StrictMode) ~= 0
-				and typeof(instance.UNSAFE_componentWillUpdate) == "function"
-			then
-				table.insert(pendingUNSAFE_ComponentWillUpdateWarnings, fiber)
-			end
+	ReactStrictModeWarnings.recordUnsafeLifecycleWarnings = function(fiber: Fiber, instance: any)
+		-- Dedupe strategy: Warn once per component.
+		if didWarnAboutUnsafeLifecycles[fiber.type] then
+			return
 		end
+
+		if
+			typeof(instance.componentWillMount) == "function"
+			-- Don't warn about react-lifecycles-compat polyfilled components.
+			-- ROBLOX deviation: Lua doesn't allow fields on function
+			-- instance.componentWillMount.__suppressDeprecationWarning ~= true
+		then
+			table.insert(pendingComponentWillMountWarnings, fiber)
+		end
+
+		if bit32.band(fiber.mode, StrictMode) ~= 0 and typeof(instance.UNSAFE_componentWillMount) == "function" then
+			table.insert(pendingUNSAFE_ComponentWillMountWarnings, fiber)
+		end
+
+		if
+			typeof(instance.componentWillReceiveProps) == "function"
+			-- ROBLOX deviation: Lua doesn't allow fields on function
+			-- instance.componentWillReceiveProps.__suppressDeprecationWarning ~= true
+		then
+			table.insert(pendingComponentWillReceivePropsWarnings, fiber)
+		end
+
+		if
+			bit32.band(fiber.mode, StrictMode) ~= 0
+			and typeof(instance.UNSAFE_componentWillReceiveProps) == "function"
+		then
+			table.insert(pendingUNSAFE_ComponentWillReceivePropsWarnings, fiber)
+		end
+
+		if
+			typeof(instance.componentWillUpdate) == "function"
+			-- ROBLOX deviation: Lua doesn't allow fields on function
+			-- instance.componentWillUpdate.__suppressDeprecationWarning ~= true
+		then
+			table.insert(pendingComponentWillUpdateWarnings, fiber)
+		end
+
+		if bit32.band(fiber.mode, StrictMode) ~= 0 and typeof(instance.UNSAFE_componentWillUpdate) == "function" then
+			table.insert(pendingUNSAFE_ComponentWillUpdateWarnings, fiber)
+		end
+	end
 
 	ReactStrictModeWarnings.flushPendingUnsafeLifecycleWarnings = function()
 		-- We do an initial pass to gather component names
 		local componentWillMountUniqueNames = {}
 		if #pendingComponentWillMountWarnings > 0 then
 			for i, fiber in pendingComponentWillMountWarnings do
-				componentWillMountUniqueNames[getComponentName(fiber.type) or "Component"] =
-					true
+				componentWillMountUniqueNames[getComponentName(fiber.type) or "Component"] = true
 				didWarnAboutUnsafeLifecycles[fiber.type] = true
 			end
 			table.clear(pendingComponentWillMountWarnings)
@@ -139,8 +131,7 @@ if _G.__DEV__ then
 		local UNSAFE_componentWillMountUniqueNames = {}
 		if #pendingUNSAFE_ComponentWillMountWarnings > 0 then
 			for i, fiber in pendingUNSAFE_ComponentWillMountWarnings do
-				UNSAFE_componentWillMountUniqueNames[getComponentName(fiber.type) or "Component"] =
-					true
+				UNSAFE_componentWillMountUniqueNames[getComponentName(fiber.type) or "Component"] = true
 				didWarnAboutUnsafeLifecycles[fiber.type] = true
 			end
 			table.clear(pendingUNSAFE_ComponentWillMountWarnings)
@@ -149,8 +140,7 @@ if _G.__DEV__ then
 		local componentWillReceivePropsUniqueNames = {}
 		if #pendingComponentWillReceivePropsWarnings > 0 then
 			for i, fiber in pendingComponentWillReceivePropsWarnings do
-				componentWillReceivePropsUniqueNames[getComponentName(fiber.type) or "Component"] =
-					true
+				componentWillReceivePropsUniqueNames[getComponentName(fiber.type) or "Component"] = true
 				didWarnAboutUnsafeLifecycles[fiber.type] = true
 			end
 
@@ -160,8 +150,7 @@ if _G.__DEV__ then
 		local UNSAFE_componentWillReceivePropsUniqueNames = {}
 		if #pendingUNSAFE_ComponentWillReceivePropsWarnings > 0 then
 			for i, fiber in pendingUNSAFE_ComponentWillReceivePropsWarnings do
-				UNSAFE_componentWillReceivePropsUniqueNames[getComponentName(fiber.type) or "Component"] =
-					true
+				UNSAFE_componentWillReceivePropsUniqueNames[getComponentName(fiber.type) or "Component"] = true
 				didWarnAboutUnsafeLifecycles[fiber.type] = true
 			end
 
@@ -171,8 +160,7 @@ if _G.__DEV__ then
 		local componentWillUpdateUniqueNames = {}
 		if #pendingComponentWillUpdateWarnings > 0 then
 			for i, fiber in pendingComponentWillUpdateWarnings do
-				componentWillUpdateUniqueNames[getComponentName(fiber.type) or "Component"] =
-					true
+				componentWillUpdateUniqueNames[getComponentName(fiber.type) or "Component"] = true
 				didWarnAboutUnsafeLifecycles[fiber.type] = true
 			end
 
@@ -182,8 +170,7 @@ if _G.__DEV__ then
 		local UNSAFE_componentWillUpdateUniqueNames = {}
 		if #pendingUNSAFE_ComponentWillUpdateWarnings > 0 then
 			for i, fiber in pendingUNSAFE_ComponentWillUpdateWarnings do
-				UNSAFE_componentWillUpdateUniqueNames[getComponentName(fiber.type) or "Component"] =
-					true
+				UNSAFE_componentWillUpdateUniqueNames[getComponentName(fiber.type) or "Component"] = true
 				didWarnAboutUnsafeLifecycles[fiber.type] = true
 			end
 
@@ -206,8 +193,7 @@ if _G.__DEV__ then
 
 		-- deviation: use `next` to determine whether set is empty
 		if next(UNSAFE_componentWillReceivePropsUniqueNames) ~= nil then
-			local sortedNames =
-				setToSortedString(UNSAFE_componentWillReceivePropsUniqueNames)
+			local sortedNames = setToSortedString(UNSAFE_componentWillReceivePropsUniqueNames)
 			console.error(
 				"Using UNSAFE_componentWillReceiveProps in strict mode is not recommended "
 					.. "and may indicate bugs in your code. "
@@ -297,45 +283,41 @@ if _G.__DEV__ then
 	-- Tracks components we have already warned about.
 	local didWarnAboutLegacyContext = {}
 
-	ReactStrictModeWarnings.recordLegacyContextWarning =
-		function(fiber: Fiber, instance: any)
-			local strictRoot = findStrictRoot(fiber)
-			if strictRoot == nil then
-				console.error(
-					"Expected to find a StrictMode component in a strict mode tree. "
-						.. "This error is likely caused by a bug in React. Please file an issue."
-				)
-				return
-			end
-
-			-- Dedup strategy: Warn once per component.
-			if didWarnAboutLegacyContext[fiber.type] then
-				return
-			end
-
-			-- ROBLOX FIXME Luau: Luau should narrow based on the nil guard
-			local warningsForRoot = pendingLegacyContextWarning[strictRoot :: Fiber]
-
-			-- ROBLOX deviation: Lua can't have fields on functions
-			if
-				typeof(fiber.type) ~= "function"
-				and (
-					fiber.type.contextTypes ~= nil
-					or fiber.type.childContextTypes ~= nil
-					or (
-						instance ~= nil
-						and typeof(instance.getChildContext) == "function"
-					)
-				)
-			then
-				if warningsForRoot == nil then
-					warningsForRoot = {}
-					-- ROBLOX FIXME Luau: Luau should narrow based on the nil guard
-					pendingLegacyContextWarning[strictRoot :: Fiber] = warningsForRoot
-				end
-				table.insert(warningsForRoot, fiber)
-			end
+	ReactStrictModeWarnings.recordLegacyContextWarning = function(fiber: Fiber, instance: any)
+		local strictRoot = findStrictRoot(fiber)
+		if strictRoot == nil then
+			console.error(
+				"Expected to find a StrictMode component in a strict mode tree. "
+					.. "This error is likely caused by a bug in React. Please file an issue."
+			)
+			return
 		end
+
+		-- Dedup strategy: Warn once per component.
+		if didWarnAboutLegacyContext[fiber.type] then
+			return
+		end
+
+		-- ROBLOX FIXME Luau: Luau should narrow based on the nil guard
+		local warningsForRoot = pendingLegacyContextWarning[strictRoot :: Fiber]
+
+		-- ROBLOX deviation: Lua can't have fields on functions
+		if
+			typeof(fiber.type) ~= "function"
+			and (
+				fiber.type.contextTypes ~= nil
+				or fiber.type.childContextTypes ~= nil
+				or (instance ~= nil and typeof(instance.getChildContext) == "function")
+			)
+		then
+			if warningsForRoot == nil then
+				warningsForRoot = {}
+				-- ROBLOX FIXME Luau: Luau should narrow based on the nil guard
+				pendingLegacyContextWarning[strictRoot :: Fiber] = warningsForRoot
+			end
+			table.insert(warningsForRoot, fiber)
+		end
+	end
 
 	ReactStrictModeWarnings.flushLegacyContextWarning = function()
 		for strictRoot, fiberArray in pendingLegacyContextWarning do

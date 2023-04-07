@@ -34,14 +34,8 @@ type ReactContext<T> = ReactTypes.ReactContext<T>
 type ReactBinding<T> = ReactTypes.ReactBinding<T>
 type ReactBindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
 type MutableSource<T> = ReactTypes.MutableSource<T>
-type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<
-	Source,
-	Snapshot
->
-type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<
-	Source,
-	Snapshot
->
+type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<Source, Snapshot>
+type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<Source, Snapshot>
 
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
 type Fiber = ReactInternalTypes.Fiber
@@ -92,16 +86,14 @@ local HookHasEffect = ReactHookEffectTags.HasEffect
 local HookLayout = ReactHookEffectTags.Layout
 local HookPassive = ReactHookEffectTags.Passive
 local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
-local warnIfNotCurrentlyActingUpdatesInDEV =
-	ReactFiberWorkLoop.warnIfNotCurrentlyActingUpdatesInDEV
+local warnIfNotCurrentlyActingUpdatesInDEV = ReactFiberWorkLoop.warnIfNotCurrentlyActingUpdatesInDEV
 local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber
 local warnIfNotScopedWithMatchingAct = ReactFiberWorkLoop.warnIfNotScopedWithMatchingAct
 local requestEventTime = ReactFiberWorkLoop.requestEventTime
 local requestUpdateLane = ReactFiberWorkLoop.requestUpdateLane
 local markSkippedUpdateLanes = ReactFiberWorkLoop.markSkippedUpdateLanes
 local getWorkInProgressRoot = ReactFiberWorkLoop.getWorkInProgressRoot
-local warnIfNotCurrentlyActingEffectsInDEV =
-	ReactFiberWorkLoop.warnIfNotCurrentlyActingEffectsInDEV
+local warnIfNotCurrentlyActingEffectsInDEV = ReactFiberWorkLoop.warnIfNotCurrentlyActingEffectsInDEV
 -- local {
 --   getWorkInProgressRoot,
 --   requestUpdateLane,
@@ -123,8 +115,7 @@ local markWorkInProgressReceivedUpdate =
 --   runWithPriority,
 --   getCurrentPriorityLevel,
 -- } = require(script.Parent.SchedulerWithReactIntegration.new)
-local getIsHydrating =
-	require(script.Parent["ReactFiberHydrationContext.new"]).getIsHydrating
+local getIsHydrating = require(script.Parent["ReactFiberHydrationContext.new"]).getIsHydrating
 -- local {
 --   makeClientId,
 --   makeClientIdInDEV,
@@ -141,10 +132,8 @@ local setWorkInProgressVersion = ReactMutableSource.setWorkInProgressVersion
 local markSourceAsDirty = ReactMutableSource.markSourceAsDirty
 
 -- local getIsRendering = require(script.Parent.ReactCurrentFiber).getIsRendering
-local logStateUpdateScheduled =
-	require(script.Parent.DebugTracing).logStateUpdateScheduled
-local markStateUpdateScheduled =
-	require(script.Parent.SchedulingProfiler).markStateUpdateScheduled
+local logStateUpdateScheduled = require(script.Parent.DebugTracing).logStateUpdateScheduled
+local markStateUpdateScheduled = require(script.Parent.SchedulingProfiler).markStateUpdateScheduled
 
 local ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher
 -- local ReactCurrentBatchConfig = ReactSharedInternals.ReactCurrentBatchConfig
@@ -324,8 +313,7 @@ end
 function warnOnHookMismatchInDev(currentHookName: HookType)
 	if __DEV__ then
 		-- ROBLOX deviation: getComponentName will return nil in most Hook cases, use same fallback as elsewhere
-		local componentName = getComponentName(currentlyRenderingFiber.type)
-			or "Component"
+		local componentName = getComponentName(currentlyRenderingFiber.type) or "Component"
 		if not didWarnAboutMismatchedHooksForComponent[componentName] then
 			didWarnAboutMismatchedHooksForComponent[componentName] = true
 
@@ -458,20 +446,10 @@ exports.bailoutHooks = function(current: Fiber, workInProgress: Fiber, lanes: La
 	if __DEV__ and enableDoubleInvokingEffects then
 		workInProgress.flags = bit32.band(
 			workInProgress.flags,
-			bit32.bnot(
-				bit32.bor(
-					MountPassiveDevEffect,
-					PassiveEffect,
-					MountLayoutDevEffect,
-					UpdateEffect
-				)
-			)
+			bit32.bnot(bit32.bor(MountPassiveDevEffect, PassiveEffect, MountLayoutDevEffect, UpdateEffect))
 		)
 	else
-		workInProgress.flags = bit32.band(
-			workInProgress.flags,
-			bit32.bnot(bit32.bor(PassiveEffect, UpdateEffect))
-		)
+		workInProgress.flags = bit32.band(workInProgress.flags, bit32.bnot(bit32.bor(PassiveEffect, UpdateEffect)))
 	end
 	current.lanes = removeLanes(current.lanes, lanes)
 end
@@ -629,11 +607,7 @@ function basicStateReducer<S>(state: S, action: BasicStateAction<S>): S
 	end
 end
 
-function mountReducer<S, I, A>(
-	reducer: (S, A) -> S,
-	initialArg: I,
-	init: ((I) -> S)?
-): (S, Dispatch<A>)
+function mountReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 	local hook = mountWorkInProgressHook()
 	local initialState
 	if init ~= nil then
@@ -666,18 +640,11 @@ function mountReducer<S, I, A>(
 	-- ROBLOX deviation END: Lua version of useState and useReducer return two items, not list like upstream
 end
 
-function updateReducer<S, I, A>(
-	reducer: (S, A) -> S,
-	initialArg: I,
-	init: ((I) -> S)?
-): (S, Dispatch<A>)
+function updateReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 	local hook = updateWorkInProgressHook()
 	local queue = hook.queue
 	-- ROBLOX deviation: change from invariant to avoid funtion call in hot path
-	assert(
-		queue ~= nil,
-		"Should have a queue. This is likely a bug in React. Please file an issue."
-	)
+	assert(queue ~= nil, "Should have a queue. This is likely a bug in React. Please file an issue.")
 
 	queue.lastRenderedReducer = reducer
 
@@ -749,8 +716,7 @@ function updateReducer<S, I, A>(
 				-- Update the remaining priority in the queue.
 				-- TODO: Don't need to accumulate this. Instead, we can remove
 				-- renderLanes from the original lanes.
-				currentlyRenderingFiber.lanes =
-					mergeLanes(currentlyRenderingFiber.lanes, updateLane)
+				currentlyRenderingFiber.lanes = mergeLanes(currentlyRenderingFiber.lanes, updateLane)
 				markSkippedUpdateLanes(updateLane)
 			else
 				-- This update does have sufficient priority.
@@ -807,18 +773,11 @@ function updateReducer<S, I, A>(
 	return hook.memoizedState, dispatch
 end
 
-function rerenderReducer<S, I, A>(
-	reducer: (S, A) -> S,
-	initialArg: I,
-	init: ((I) -> S)?
-): (S, Dispatch<A>)
+function rerenderReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 	local hook = updateWorkInProgressHook()
 	local queue = hook.queue
 	-- ROBLOX performance: changed from invariant to avoid function call in hot path
-	assert(
-		queue ~= nil,
-		"Should have a queue. This is likely a bug in React. Please file an issue."
-	)
+	assert(queue ~= nil, "Should have a queue. This is likely a bug in React. Please file an issue.")
 
 	queue.lastRenderedReducer = reducer
 
@@ -875,10 +834,7 @@ type MutableSourceMemoizedState<Source, Snapshot> = {
 function readFromUnsubcribedMutableSource<Source, Snapshot>(
 	root: FiberRoot,
 	source: MutableSource<Source>,
-	getSnapshot: MutableSourceGetSnapshotFn<
-		Source,
-		Snapshot
-	>
+	getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>
 ): Snapshot
 	if __DEV__ then
 		warnAboutMultipleRenderersDEV(source)
@@ -958,20 +914,11 @@ end
 function useMutableSource<Source, Snapshot>(
 	hook: Hook,
 	source: MutableSource<Source>,
-	getSnapshot: MutableSourceGetSnapshotFn<
-		Source,
-		Snapshot
-	>,
-	subscribe: MutableSourceSubscribeFn<
-		Source,
-		Snapshot
-	>
+	getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+	subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 ): Snapshot
 	local root: FiberRoot = getWorkInProgressRoot()
-	invariant(
-		root ~= nil,
-		"Expected a work-in-progress root. This is a bug in React. Please file an issue."
-	)
+	invariant(root ~= nil, "Expected a work-in-progress root. This is a bug in React. Please file an issue.")
 
 	local getVersion = source._getVersion
 	local version_ = getVersion(source._source)
@@ -1076,9 +1023,7 @@ function useMutableSource<Source, Snapshot>(
 		local unsubscribe = subscribe(source._source, handleChange)
 		if __DEV__ then
 			if type(unsubscribe) ~= "function" then
-				console.error(
-					"Mutable source subscribe function must return an unsubscribe function."
-				)
+				console.error("Mutable source subscribe function must return an unsubscribe function.")
 			end
 		end
 
@@ -1097,11 +1042,7 @@ function useMutableSource<Source, Snapshot>(
 	--
 	-- In both cases, we need to throw away pending updates (since they are no longer relevant)
 	-- and treat reading from the source as we do in the mount case.
-	if
-		not is(prevGetSnapshot, getSnapshot)
-		or not is(prevSource, source)
-		or not is(prevSubscribe, subscribe)
-	then
+	if not is(prevGetSnapshot, getSnapshot) or not is(prevSource, source) or not is(prevSubscribe, subscribe) then
 		-- Create a new queue and setState method,
 		-- So if there are interleaved updates, they get pushed to the older queue.
 		-- When this becomes current, the previous queue and dispatch method will be discarded,
@@ -1132,14 +1073,8 @@ end
 
 function mountMutableSource<Source, Snapshot>(
 	source: MutableSource<Source>,
-	getSnapshot: MutableSourceGetSnapshotFn<
-		Source,
-		Snapshot
-	>,
-	subscribe: MutableSourceSubscribeFn<
-		Source,
-		Snapshot
-	>
+	getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+	subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 ): Snapshot
 	local hook = mountWorkInProgressHook()
 	hook.memoizedState = {
@@ -1155,14 +1090,8 @@ end
 
 function updateMutableSource<Source, Snapshot>(
 	source: MutableSource<Source>,
-	getSnapshot: MutableSourceGetSnapshotFn<
-		Source,
-		Snapshot
-	>,
-	subscribe: MutableSourceSubscribeFn<
-		Source,
-		Snapshot
-	>
+	getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+	subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 ): Snapshot
 	local hook = updateWorkInProgressHook()
 	return useMutableSource(hook, source, getSnapshot, subscribe)
@@ -1216,8 +1145,7 @@ local function pushEffect(tag, create, destroy, deps)
 		-- Circular
 		next = nil :: any,
 	}
-	local componentUpdateQueue: FunctionComponentUpdateQueue =
-		currentlyRenderingFiber.updateQueue :: any
+	local componentUpdateQueue: FunctionComponentUpdateQueue = currentlyRenderingFiber.updateQueue :: any
 	if componentUpdateQueue == nil then
 		-- ROBLOX performance: inline simple function in hot path
 		-- componentUpdateQueue = createFunctionComponentUpdateQueue()
@@ -1284,8 +1212,7 @@ local function mountEffectImpl(fiberFlags, hookFlags, create, deps): ()
 	local nextDeps = deps
 	currentlyRenderingFiber.flags = bit32.bor(currentlyRenderingFiber.flags, fiberFlags)
 
-	hook.memoizedState =
-		pushEffect(bit32.bor(HookHasEffect, hookFlags), create, nil, nextDeps)
+	hook.memoizedState = pushEffect(bit32.bor(HookHasEffect, hookFlags), create, nil, nextDeps)
 end
 
 -- ROBLOX deviation START: must explicitly mark deps argument as optional/nil-able
@@ -1311,8 +1238,7 @@ function updateEffectImpl(fiberFlags, hookFlags, create, deps: Array<any>?): ()
 
 	currentlyRenderingFiber.flags = bit32.bor(currentlyRenderingFiber.flags, fiberFlags)
 
-	hook.memoizedState =
-		pushEffect(bit32.bor(HookHasEffect, hookFlags), create, destroy, nextDeps)
+	hook.memoizedState = pushEffect(bit32.bor(HookHasEffect, hookFlags), create, destroy, nextDeps)
 end
 
 local function mountEffect(
@@ -1329,19 +1255,9 @@ local function mountEffect(
 	end
 
 	if __DEV__ and enableDoubleInvokingEffects then
-		mountEffectImpl(
-			bit32.bor(MountPassiveDevEffect, PassiveEffect, PassiveStaticEffect),
-			HookPassive,
-			create,
-			deps
-		)
+		mountEffectImpl(bit32.bor(MountPassiveDevEffect, PassiveEffect, PassiveStaticEffect), HookPassive, create, deps)
 	else
-		mountEffectImpl(
-			bit32.bor(PassiveEffect, PassiveStaticEffect),
-			HookPassive,
-			create,
-			deps
-		)
+		mountEffectImpl(bit32.bor(PassiveEffect, PassiveStaticEffect), HookPassive, create, deps)
 	end
 end
 
@@ -1366,12 +1282,7 @@ local function mountLayoutEffect(
 	deps: Array<any>?
 ): ()
 	if __DEV__ and enableDoubleInvokingEffects then
-		mountEffectImpl(
-			bit32.bor(MountLayoutDevEffect, UpdateEffect),
-			HookLayout,
-			create,
-			deps
-		)
+		mountEffectImpl(bit32.bor(MountLayoutDevEffect, UpdateEffect), HookLayout, create, deps)
 	else
 		mountEffectImpl(UpdateEffect, HookLayout, create, deps)
 	end
@@ -1405,15 +1316,12 @@ function imperativeHandleEffect<T>(
 			-- explicit way to know that something is a ref object; instead, we check
 			-- that it's an empty object with a metatable, which is what Roact refs
 			-- look like since they indirect to bindings via their metatable
-			local isRefObject = getmetatable(refObject) ~= nil
-				and #Object.keys(refObject) == 0
+			local isRefObject = getmetatable(refObject) ~= nil and #Object.keys(refObject) == 0
 			if not isRefObject then
 				console.error(
 					"Expected useImperativeHandle() first argument to either be a "
 						.. "ref callback or React.createRef() object. Instead received: %s.",
-					"an object with keys {"
-						.. Array.join(Object.keys(refObject), ", ")
-						.. "}"
+					"an object with keys {" .. Array.join(Object.keys(refObject), ", ") .. "}"
 				)
 			end
 		end
@@ -1448,14 +1356,9 @@ function mountImperativeHandle<T>(
 	local effectDeps = if deps ~= nil then Array.concat(deps, { ref }) else nil
 
 	if __DEV__ and enableDoubleInvokingEffects then
-		return mountEffectImpl(
-			bit32.bor(MountLayoutDevEffect, UpdateEffect),
-			HookLayout,
-			function()
-				return imperativeHandleEffect(create, ref)
-			end,
-			effectDeps
-		)
+		return mountEffectImpl(bit32.bor(MountLayoutDevEffect, UpdateEffect), HookLayout, function()
+			return imperativeHandleEffect(create, ref)
+		end, effectDeps)
 	else
 		return mountEffectImpl(UpdateEffect, HookLayout, function()
 			return imperativeHandleEffect(create, ref)
@@ -1830,19 +1733,14 @@ function dispatchAction<S, A>(fiber: Fiber, queue: UpdateQueue<S, A>, action: A,
 	queue.pending = update
 
 	local alternate = fiber.alternate
-	if
-		fiber == currentlyRenderingFiber
-		or (alternate ~= nil and alternate == currentlyRenderingFiber)
-	then
+	if fiber == currentlyRenderingFiber or (alternate ~= nil and alternate == currentlyRenderingFiber) then
 		-- This is a render phase update. Stash it in a lazily-created map of
 		-- queue -> linked list of updates. After this render pass, we'll restart
 		-- and apply the stashed updates on top of the work-in-progress hook.
 		didScheduleRenderPhaseUpdate = true
 		didScheduleRenderPhaseUpdateDuringThisPass = true
 	else
-		if
-			fiber.lanes == NoLanes and (alternate == nil or alternate.lanes == NoLanes)
-		then
+		if fiber.lanes == NoLanes and (alternate == nil or alternate.lanes == NoLanes) then
 			-- The queue is currently empty, which means we can eagerly compute the
 			-- next state before entering the render phase. If the new state is the
 			-- same as the current state, we may be able to bail out entirely.
@@ -1851,8 +1749,7 @@ function dispatchAction<S, A>(fiber: Fiber, queue: UpdateQueue<S, A>, action: A,
 				local prevDispatcher
 				if __DEV__ then
 					prevDispatcher = ReactCurrentDispatcher.current
-					ReactCurrentDispatcher.current =
-						InvalidNestedHooksDispatcherOnUpdateInDEV
+					ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV
 				end
 				-- ROBLOX try
 				local currentState: S = queue.lastRenderedState :: any
@@ -2088,11 +1985,7 @@ if __DEV__ then
 			-- ROBLOX FIXME Luau: TypeError: Type 'boolean' could not be converted into 'T'
 			return unpack(results, 2)
 		end :: any,
-		useReducer = function<S, I, A>(
-			reducer: (S, A) -> S,
-			initialArg: I,
-			init: ((I) -> S)?
-		): (S, Dispatch<A>)
+		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 			currentHookNameInDev = "useReducer"
 			mountHookTypesDev()
 			local prevDispatcher = ReactCurrentDispatcher.current
@@ -2149,14 +2042,8 @@ if __DEV__ then
 		--     },
 		useMutableSource = function<Source, Snapshot>(
 			source: MutableSource<Source>,
-			getSnapshot: MutableSourceGetSnapshotFn<
-				Source,
-				Snapshot
-			>,
-			subscribe: MutableSourceSubscribeFn<
-				Source,
-				Snapshot
-			>
+			getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+			subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 		): Snapshot
 			currentHookNameInDev = "useMutableSource"
 			mountHookTypesDev()
@@ -2230,11 +2117,7 @@ if __DEV__ then
 			end
 			return unpack(results, 2)
 		end :: any,
-		useReducer = function<S, I, A>(
-			reducer: (S, A) -> S,
-			initialArg: I,
-			init: ((I) -> S)?
-		): (S, Dispatch<A>)
+		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 			currentHookNameInDev = "useReducer"
 			updateHookTypesDev()
 			local prevDispatcher = ReactCurrentDispatcher.current
@@ -2291,14 +2174,8 @@ if __DEV__ then
 		--     },
 		useMutableSource = function<Source, Snapshot>(
 			source: MutableSource<Source>,
-			getSnapshot: MutableSourceGetSnapshotFn<
-				Source,
-				Snapshot
-			>,
-			subscribe: MutableSourceSubscribeFn<
-				Source,
-				Snapshot
-			>
+			getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+			subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 		): Snapshot
 			currentHookNameInDev = "useMutableSource"
 			updateHookTypesDev()
@@ -2371,11 +2248,7 @@ if __DEV__ then
 			end
 			return unpack(results, 2)
 		end :: any,
-		useReducer = function<S, I, A>(
-			reducer: (S, A) -> S,
-			initialArg: I,
-			init: ((I) -> S)?
-		): (S, Dispatch<A>)
+		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 			currentHookNameInDev = "useReducer"
 			updateHookTypesDev()
 			local prevDispatcher = ReactCurrentDispatcher.current
@@ -2432,14 +2305,8 @@ if __DEV__ then
 		--     },
 		useMutableSource = function<Source, Snapshot>(
 			source: MutableSource<Source>,
-			getSnapshot: MutableSourceGetSnapshotFn<
-				Source,
-				Snapshot
-			>,
-			subscribe: MutableSourceSubscribeFn<
-				Source,
-				Snapshot
-			>
+			getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+			subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 		): Snapshot
 			currentHookNameInDev = "useMutableSource"
 			updateHookTypesDev()
@@ -2512,17 +2379,12 @@ if __DEV__ then
 			end
 			return unpack(results, 2)
 		end :: any,
-		useReducer = function<S, I, A>(
-			reducer: (S, A) -> S,
-			initialArg: I,
-			init: ((I) -> S)?
-		): (S, Dispatch<A>)
+		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 			currentHookNameInDev = "useReducer"
 			updateHookTypesDev()
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnRerenderInDEV
-			local ok, result, setResult =
-				pcall(rerenderReducer, reducer, initialArg, init)
+			local ok, result, setResult = pcall(rerenderReducer, reducer, initialArg, init)
 			-- ROBLOX finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
@@ -2574,14 +2436,8 @@ if __DEV__ then
 		--     },
 		useMutableSource = function<Source, Snapshot>(
 			source: MutableSource<Source>,
-			getSnapshot: MutableSourceGetSnapshotFn<
-				Source,
-				Snapshot
-			>,
-			subscribe: MutableSourceSubscribeFn<
-				Source,
-				Snapshot
-			>
+			getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+			subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 		): Snapshot
 			currentHookNameInDev = "useMutableSource"
 			updateHookTypesDev()
@@ -2661,11 +2517,7 @@ if __DEV__ then
 			end
 			return unpack(results, 2)
 		end :: any,
-		useReducer = function<S, I, A>(
-			reducer: (S, A) -> S,
-			initialArg: I,
-			init: ((I) -> S)?
-		): (S, Dispatch<A>)
+		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 			currentHookNameInDev = "useReducer"
 			warnInvalidHookAccess()
 			mountHookTypesDev()
@@ -2729,14 +2581,8 @@ if __DEV__ then
 		-- },
 		useMutableSource = function<Source, Snapshot>(
 			source: MutableSource<Source>,
-			getSnapshot: MutableSourceGetSnapshotFn<
-				Source,
-				Snapshot
-			>,
-			subscribe: MutableSourceSubscribeFn<
-				Source,
-				Snapshot
-			>
+			getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+			subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 		): Snapshot
 			currentHookNameInDev = "useMutableSource"
 			warnInvalidHookAccess()
@@ -2818,11 +2664,7 @@ if __DEV__ then
 			end
 			return unpack(results, 2)
 		end :: any,
-		useReducer = function<S, I, A>(
-			reducer: (S, A) -> S,
-			initialArg: I,
-			init: ((I) -> S)?
-		): (S, Dispatch<A>)
+		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 			currentHookNameInDev = "useReducer"
 			warnInvalidHookAccess()
 			updateHookTypesDev()
@@ -2887,14 +2729,8 @@ if __DEV__ then
 		--     },
 		useMutableSource = function<Source, Snapshot>(
 			source: MutableSource<Source>,
-			getSnapshot: MutableSourceGetSnapshotFn<
-				Source,
-				Snapshot
-			>,
-			subscribe: MutableSourceSubscribeFn<
-				Source,
-				Snapshot
-			>
+			getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+			subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 		): Snapshot
 			currentHookNameInDev = "useMutableSource"
 			warnInvalidHookAccess()
@@ -2976,18 +2812,13 @@ if __DEV__ then
 			end
 			return unpack(results, 2)
 		end :: any,
-		useReducer = function<S, I, A>(
-			reducer: (S, A) -> S,
-			initialArg: I,
-			init: ((I) -> S)?
-		): (S, Dispatch<A>)
+		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 			currentHookNameInDev = "useReducer"
 			warnInvalidHookAccess()
 			updateHookTypesDev()
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV
-			local ok, result, setResult =
-				pcall(rerenderReducer, reducer, initialArg, init)
+			local ok, result, setResult = pcall(rerenderReducer, reducer, initialArg, init)
 			-- ROBLOX finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
@@ -3045,14 +2876,8 @@ if __DEV__ then
 		--     },
 		useMutableSource = function<Source, Snapshot>(
 			source: MutableSource<Source>,
-			getSnapshot: MutableSourceGetSnapshotFn<
-				Source,
-				Snapshot
-			>,
-			subscribe: MutableSourceSubscribeFn<
-				Source,
-				Snapshot
-			>
+			getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+			subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 		): Snapshot
 			currentHookNameInDev = "useMutableSource"
 			warnInvalidHookAccess()
@@ -3082,9 +2907,7 @@ local function renderWithHooks<Props, SecondArg>(
 	currentlyRenderingFiber = workInProgress
 
 	if __DEV__ then
-		hookTypesDev = if current ~= nil
-			then (current._debugHookTypes :: any) :: Array<HookType>
-			else nil
+		hookTypesDev = if current ~= nil then (current._debugHookTypes :: any) :: Array<HookType> else nil
 		-- ROBLOX deviation START: index variable offset by one for Lua
 		hookTypesUpdateIndexDev = 0
 		-- ROBLOX deviation END
@@ -3126,8 +2949,7 @@ local function renderWithHooks<Props, SecondArg>(
 			ReactCurrentDispatcher.current = HooksDispatcherOnMountInDEV
 		end
 	else
-		ReactCurrentDispatcher.current = (current == nil or current.memoizedState == nil)
-				and HooksDispatcherOnMount
+		ReactCurrentDispatcher.current = (current == nil or current.memoizedState == nil) and HooksDispatcherOnMount
 			or HooksDispatcherOnUpdate
 	end
 
@@ -3144,8 +2966,7 @@ local function renderWithHooks<Props, SecondArg>(
 			if numberOfReRenders >= RE_RENDER_LIMIT then
 				error(
 					Error.new(
-						"Too many re-renders. React limits the number of renders to prevent "
-							.. "an infinite loop."
+						"Too many re-renders. React limits the number of renders to prevent " .. "an infinite loop."
 					)
 				)
 			end
@@ -3170,8 +2991,7 @@ local function renderWithHooks<Props, SecondArg>(
 				hookTypesUpdateIndexDev = 0
 			end
 
-			ReactCurrentDispatcher.current = __DEV__ and HooksDispatcherOnRerenderInDEV
-				or HooksDispatcherOnRerender
+			ReactCurrentDispatcher.current = __DEV__ and HooksDispatcherOnRerenderInDEV or HooksDispatcherOnRerender
 
 			children = Component(props, secondArg)
 		until not didScheduleRenderPhaseUpdateDuringThisPass
@@ -3207,8 +3027,7 @@ local function renderWithHooks<Props, SecondArg>(
 	if didRenderTooFewHooks then
 		error(
 			Error.new(
-				"Rendered fewer hooks than expected. This may be caused by an accidental "
-					.. "early return statement."
+				"Rendered fewer hooks than expected. This may be caused by an accidental " .. "early return statement."
 			)
 		)
 	end

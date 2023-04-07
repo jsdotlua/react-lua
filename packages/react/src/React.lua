@@ -38,8 +38,7 @@ local ReactSymbols = SharedModule.ReactSymbols
 
 local shouldValidate = _G.__DEV__ or _G.__DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__
 local ReactTypes = require(Packages.Shared)
-export type React_StatelessFunctionalComponent<P> =
-	ReactTypes.React_StatelessFunctionalComponent<P>
+export type React_StatelessFunctionalComponent<P> = ReactTypes.React_StatelessFunctionalComponent<P>
 export type React_ComponentType<P> = ReactTypes.React_ComponentType<P>
 type React_AbstractComponent<P, T> = ReactTypes.React_AbstractComponent<P, T>
 export type React_ElementProps<ElementType> = ReactTypes.React_ElementProps<ElementType>
@@ -47,10 +46,7 @@ export type ReactElement<P = Object, T = any> = ReactTypes.ReactElement<P, T>
 export type ReactContext<T> = ReactTypes.ReactContext<T>
 export type ReactProviderType<T> = ReactTypes.ReactProviderType<T>
 export type React_Node = ReactTypes.React_Node
-export type PureComponent<Props, State = nil> = ReactTypes.React_PureComponent<
-	Props,
-	State
->
+export type PureComponent<Props, State = nil> = ReactTypes.React_PureComponent<Props, State>
 -- ROBLOX deviation START: bindings support
 export type ReactBinding<T> = ReactTypes.ReactBinding<T>
 export type ReactBindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
@@ -68,11 +64,7 @@ type createElementFn = <P, T>(
 	...(React_Node | (...any) -> React_Node)
 ) -> ReactElement<P, T>
 
-type cloneElementFn = <P, T>(
-	element: ReactElement<P, T>,
-	config: P?,
-	...React_Node
-) -> ReactElement<P, T>
+type cloneElementFn = <P, T>(element: ReactElement<P, T>, config: P?, ...React_Node) -> ReactElement<P, T>
 -- ROBLOX FIXME Luau: these yield Cannot call non-function because the identical unions don't collapse
 -- ROBLOX FIXME Luau: the next step is to add createElementFn here and work through issues, AFTER normalization and type packs work
 local createElement = if shouldValidate

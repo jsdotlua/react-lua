@@ -80,20 +80,12 @@ export type React_Component<Props, State = nil> = {
 
 	-- lifecycle methods
 
-	init: ((
-		self: React_Component<Props, State>,
-		props: Props,
-		context: any?
-	) -> ())?,
+	init: ((self: React_Component<Props, State>, props: Props, context: any?) -> ())?,
 	render: (self: React_Component<Props, State>) -> React_Node,
 	componentWillMount: ((self: React_Component<Props, State>) -> ())?,
 	UNSAFE_componentWillMount: ((self: React_Component<Props, State>) -> ())?,
 	componentDidMount: ((self: React_Component<Props, State>) -> ())?,
-	componentWillReceiveProps: ((
-		self: React_Component<Props, State>,
-		nextProps: Props,
-		nextContext: any
-	) -> ())?,
+	componentWillReceiveProps: ((self: React_Component<Props, State>, nextProps: Props, nextContext: any) -> ())?,
 	UNSAFE_componentWillReceiveProps: ((
 		self: React_Component<Props, State>,
 		nextProps: Props,
@@ -169,10 +161,7 @@ export type React_Component<Props, State = nil> = {
 }
 
 -- ROBLOX deviation: Lua doesn't allow fields on functions, and we haven't implemented callable tables as "function" components
-export type React_StatelessFunctionalComponent<Props> = (
-	props: Props,
-	context: any
-) -> React_Node
+export type React_StatelessFunctionalComponent<Props> = (props: Props, context: any) -> React_Node
 export type React_ComponentType<Config> = React_Component<Config, any>
 
 export type React_ElementType = string | React_Component<any, any>

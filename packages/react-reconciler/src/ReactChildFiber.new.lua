@@ -145,11 +145,7 @@ function coerceRef(returnFiber: Fiber, current: Fiber | nil, element: ReactEleme
 	local mixedRef = element.ref
 	if mixedRef ~= nil and type(mixedRef) == "string" then
 		-- ROBLOX deviation: we do not support string refs, and will not coerce
-		if
-			not element._owner
-			or not element._self
-			or element._owner.stateNode == element._self
-		then
+		if not element._owner or not element._self or element._owner.stateNode == element._self then
 			-- ROBLOX performance: don't get component name unless we have to use it
 			local componentName
 			if __DEV__ then
@@ -174,9 +170,7 @@ function coerceRef(returnFiber: Fiber, current: Fiber | nil, element: ReactEleme
 		end
 
 		if not element._owner then
-			error(
-				"Expected ref to be a function or an object returned by React.createRef(), or nil."
-			)
+			error("Expected ref to be a function or an object returned by React.createRef(), or nil.")
 		end
 
 		-- if __DEV__ then
@@ -366,10 +360,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 		end
 	end
 
-	local function deleteRemainingChildren(
-		returnFiber: Fiber,
-		currentFirstChild: Fiber | nil
-	)
+	local function deleteRemainingChildren(returnFiber: Fiber, currentFirstChild: Fiber | nil)
 		if not shouldTrackSideEffects then
 			-- Noop.
 			return nil
@@ -385,10 +376,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 		return nil
 	end
 
-	local function mapRemainingChildren(
-		returnFiber: Fiber,
-		currentFirstChild: Fiber
-	): { [string | number]: Fiber }
+	local function mapRemainingChildren(returnFiber: Fiber, currentFirstChild: Fiber): { [string | number]: Fiber }
 		-- Add the remaining children to a temporary map so that we can find them by
 		-- keys quickly. Implicit (null) keys get added to this set with their index
 		-- instead.
@@ -417,11 +405,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 		return clone
 	end
 
-	local function placeChild(
-		newFiber: Fiber,
-		lastPlacedIndex: number,
-		newIndex: number
-	): number
+	local function placeChild(newFiber: Fiber, lastPlacedIndex: number, newIndex: number): number
 		newFiber.index = newIndex
 		if not shouldTrackSideEffects then
 			-- Noop.
@@ -454,12 +438,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 		return newFiber
 	end
 
-	local function updateTextNode(
-		returnFiber: Fiber,
-		current: Fiber | nil,
-		textContent: string,
-		lanes: Lanes
-	)
+	local function updateTextNode(returnFiber: Fiber, current: Fiber | nil, textContent: string, lanes: Lanes)
 		-- ROBLOX FIXME: Luau narrowing issue
 		if current == nil or (current :: Fiber).tag ~= HostText then
 			-- Insert
@@ -474,12 +453,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 		end
 	end
 
-	local function updateElement(
-		returnFiber: Fiber,
-		current: Fiber | nil,
-		element: ReactElement,
-		lanes: Lanes
-	): Fiber
+	local function updateElement(returnFiber: Fiber, current: Fiber | nil, element: ReactElement, lanes: Lanes): Fiber
 		if current ~= nil then
 			if
 				(current :: Fiber).elementType == element.type
@@ -504,10 +478,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 				if type(type_) == "table" and type_["$$typeof"] == REACT_LAZY_TYPE then
 					type_ = resolveLazyType(type_) :: LazyComponent<any, any>
 				end
-				if
-					type_["$$typeof"] == REACT_BLOCK_TYPE
-					and type_._render == (current :: Fiber).type._render
-				then
+				if type_["$$typeof"] == REACT_BLOCK_TYPE and type_._render == (current :: Fiber).type._render then
 					-- Same as above but also update the .type field.
 					local existing = useFiber(current :: Fiber, element.props)
 					existing.return_ = returnFiber
@@ -527,12 +498,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 		return created
 	end
 
-	local function updatePortal(
-		returnFiber: Fiber,
-		current: Fiber | nil,
-		portal: ReactPortal,
-		lanes: Lanes
-	): Fiber
+	local function updatePortal(returnFiber: Fiber, current: Fiber | nil, portal: ReactPortal, lanes: Lanes): Fiber
 		-- ROBLOX FIXME: type narrowing.
 		if
 			current == nil
@@ -563,8 +529,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 	): Fiber
 		if current == nil or (current :: Fiber).tag ~= Fragment then
 			-- Insert
-			local created =
-				createFiberFromFragment(fragment, returnFiber.mode, lanes, key)
+			local created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key)
 			created.return_ = returnFiber
 			return created
 		else
@@ -641,8 +606,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 
 			-- ROBLOX deviation peformance: this is the equiv of checking for a table, and we already know typeof(newChild) is a table in this branch
 			-- if isArray(newChild) or getIteratorFn(newChild) then
-			local created =
-				createFiberFromFragment(newChild, returnFiber.mode, lanes, nil)
+			local created = createFiberFromFragment(newChild, returnFiber.mode, lanes, nil)
 			created.return_ = returnFiber
 			return created
 
@@ -654,8 +618,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 			-- Text nodes don't have keys. If the previous node is implicitly keyed
 			-- we can continue to replace it without aborting even if it is not a text
 			-- node.
-			local created =
-				createFiberFromText(tostring(newChild), returnFiber.mode, lanes)
+			local created = createFiberFromText(tostring(newChild), returnFiber.mode, lanes)
 			created.return_ = returnFiber
 			return created
 		end
@@ -697,13 +660,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 			if newChildTypeof == REACT_ELEMENT_TYPE then
 				if newChild.key == key then
 					if newChild.type == REACT_FRAGMENT_TYPE then
-						return updateFragment(
-							returnFiber,
-							oldFiber,
-							newChild.props.children,
-							lanes,
-							key :: string?
-						)
+						return updateFragment(returnFiber, oldFiber, newChild.props.children, lanes, key :: string?)
 					end
 					return updateElement(returnFiber, oldFiber, newChild, lanes)
 				else
@@ -789,13 +746,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 				end
 				local matchedFiber = existingChildren[existingChildrenKey]
 				if newChild.type == REACT_FRAGMENT_TYPE then
-					return updateFragment(
-						returnFiber,
-						matchedFiber,
-						newChild.props.children,
-						lanes,
-						newChild.key
-					)
+					return updateFragment(returnFiber, matchedFiber, newChild.props.children, lanes, newChild.key)
 				end
 				return updateElement(returnFiber, matchedFiber, newChild, lanes)
 			elseif newChildTypeof == REACT_PORTAL_TYPE then
@@ -812,13 +763,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 					local init = newChild._init
 					-- ROBLOX deviation: Roact stable keys - Since the table key was
 					-- already applied to `newChild` above, we don't need to pass it along
-					return updateFromMap(
-						existingChildren,
-						returnFiber,
-						newIdx,
-						init(payload),
-						lanes
-					)
+					return updateFromMap(existingChildren, returnFiber, newIdx, init(payload), lanes)
 				end
 			end
 
@@ -851,11 +796,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 	--[[
 	Warns if there is a duplicate or missing key
   ]]
-	local function warnOnInvalidKey(
-		child: any,
-		knownKeys: Set<string> | nil,
-		returnFiber: Fiber
-	): Set<string> | nil
+	local function warnOnInvalidKey(child: any, knownKeys: Set<string> | nil, returnFiber: Fiber): Set<string> | nil
 		if __DEV__ then
 			if child == nil or type(child) ~= "table" then
 				return knownKeys
@@ -952,13 +893,8 @@ local function ChildReconciler(shouldTrackSideEffects)
 			local newFiber
 			-- ROBLOX performance: avoid repeated indexing of newChildren to newIdx
 			local newChildNewIdx = newChildren[newIdx]
-			if
-				newChildNewIdx ~= nil
-				and type(newChildNewIdx) == "table"
-				and newChildNewIdx["$$typeof"] ~= nil
-			then
-				newFiber =
-					updateSlot(returnFiber, oldFiber, newChildNewIdx, lanes, newIdx)
+			if newChildNewIdx ~= nil and type(newChildNewIdx) == "table" and newChildNewIdx["$$typeof"] ~= nil then
+				newFiber = updateSlot(returnFiber, oldFiber, newChildNewIdx, lanes, newIdx)
 			else
 				newFiber = updateSlot(returnFiber, oldFiber, newChildNewIdx, lanes)
 			end
@@ -1018,11 +954,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 				local newFiber
 				-- ROBLOX performance: avoid repeated indexing of newChildren to newIdx
 				local newChildNewIdx = newChildren[newIdx]
-				if
-					newChildNewIdx ~= nil
-					and type(newChildNewIdx) == "table"
-					and newChildNewIdx["$$typeof"] ~= nil
-				then
+				if newChildNewIdx ~= nil and type(newChildNewIdx) == "table" and newChildNewIdx["$$typeof"] ~= nil then
 					newFiber = createChild(returnFiber, newChildNewIdx, lanes, newIdx)
 				else
 					newFiber = createChild(returnFiber, newChildNewIdx, lanes)
@@ -1070,10 +1002,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 						-- current, that means that we reused the fiber. We need to delete
 						-- it from the child list so that we don't add it to the deletion
 						-- list.
-						existingChildren[if newFiber.key == nil
-							then newIdx
-							else newFiber.key] =
-							nil
+						existingChildren[if newFiber.key == nil then newIdx else newFiber.key] = nil
 					end
 				end
 				lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx)
@@ -1146,8 +1075,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 			if newChildrenIterable.entries == iteratorFn then
 				if not didWarnAboutMaps then
 					console.error(
-						"Using Maps as children is not supported. "
-							.. "Use an array of keyed ReactElements instead."
+						"Using Maps as children is not supported. " .. "Use an array of keyed ReactElements instead."
 					)
 				end
 				didWarnAboutMaps = true
@@ -1187,8 +1115,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 			else
 				nextOldFiber = oldFiber.sibling
 			end
-			local newFiber =
-				updateSlot(returnFiber, oldFiber, step.value, lanes, step.key)
+			local newFiber = updateSlot(returnFiber, oldFiber, step.value, lanes, step.key)
 			if newFiber == nil then
 				-- TODO: This breaks on empty slots like nil children. That's
 				-- unfortunate because it triggers the slow path all the time. We need
@@ -1267,14 +1194,7 @@ local function ChildReconciler(shouldTrackSideEffects)
 				-- ROBLOX FIXME LUau: need type states to understand the guard+return above
 				existingChildren = mapRemainingChildren(returnFiber, oldFiber :: Fiber)
 			end
-			local newFiber = updateFromMap(
-				existingChildren,
-				returnFiber,
-				newIdx,
-				step.value,
-				lanes,
-				step.key
-			)
+			local newFiber = updateFromMap(existingChildren, returnFiber, newIdx, step.value, lanes, step.key)
 			if newFiber ~= nil then
 				if shouldTrackSideEffects then
 					if newFiber.alternate ~= nil then
@@ -1506,63 +1426,34 @@ local function ChildReconciler(shouldTrackSideEffects)
 
 		-- Handle object types
 		-- ROBLOX deviation: upstream checks for `object`, but we need to manually exclude array
-		local isObject = newChild ~= nil
-			and typeOfNewChild == "table"
-			and not newChildIsArray
+		local isObject = newChild ~= nil and typeOfNewChild == "table" and not newChildIsArray
 
 		if isObject then
 			-- ROBLOX performance: avoid repeated indexing of $$typeof
 			local newChildTypeof = newChild["$$typeof"]
 			if newChildTypeof == REACT_ELEMENT_TYPE then
-				return placeSingleChild(
-					reconcileSingleElement(
-						returnFiber,
-						currentFirstChild,
-						newChild,
-						lanes
-					)
-				)
+				return placeSingleChild(reconcileSingleElement(returnFiber, currentFirstChild, newChild, lanes))
 			elseif newChildTypeof == REACT_PORTAL_TYPE then
-				return placeSingleChild(
-					reconcileSinglePortal(returnFiber, currentFirstChild, newChild, lanes)
-				)
+				return placeSingleChild(reconcileSinglePortal(returnFiber, currentFirstChild, newChild, lanes))
 			elseif newChildTypeof == REACT_LAZY_TYPE then
 				if enableLazyElements then
 					local payload = newChild._payload
 					local init = newChild._init
 					-- TODO: This function is supposed to be non-recursive.
-					return reconcileChildFibers(
-						returnFiber,
-						currentFirstChild,
-						init(payload),
-						lanes
-					)
+					return reconcileChildFibers(returnFiber, currentFirstChild, init(payload), lanes)
 				end
 			end
 		-- ROBLOX performance: make these next blocks `elseif`, as they're mutually exclusive to `isObject` above
 		elseif newChildIsArray then
 			return reconcileChildrenArray(returnFiber, currentFirstChild, newChild, lanes)
 		elseif typeOfNewChild == "string" or typeOfNewChild == "number" then
-			return placeSingleChild(
-				reconcileSingleTextNode(
-					returnFiber,
-					currentFirstChild,
-					tostring(newChild),
-					lanes
-				)
-			)
+			return placeSingleChild(reconcileSingleTextNode(returnFiber, currentFirstChild, tostring(newChild), lanes))
 		end
 
 		-- ROBLOX performance? only call getIteratorFn once, pass in the value
 		local newChildIteratorFn = getIteratorFn(newChild)
 		if newChildIteratorFn then
-			return reconcileChildrenIterator(
-				returnFiber,
-				currentFirstChild,
-				newChild,
-				lanes,
-				newChildIteratorFn
-			)
+			return reconcileChildrenIterator(returnFiber, currentFirstChild, newChild, lanes, newChildIteratorFn)
 		end
 
 		-- ROBLOX performance? eliminate a cmp in hot path for something unimplemented anyway

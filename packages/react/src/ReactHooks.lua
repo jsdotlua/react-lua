@@ -20,14 +20,8 @@ local ReactTypes = require(Packages.Shared)
 -- ROBLOX TODO: we only pull in Dispatcher here for the typecheck, remove once Luau narrowing improves
 type Dispatcher = ReactTypes.Dispatcher
 type MutableSource<T> = ReactTypes.MutableSource<T>
-type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<
-	Source,
-	Snapshot
->
-type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<
-	Source,
-	Snapshot
->
+type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<Source, Snapshot>
+type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<Source, Snapshot>
 type ReactProviderType<T> = ReactTypes.ReactProviderType<T>
 type ReactContext<T> = ReactTypes.ReactContext<T>
 local ReactFiberHostConfig = require(Packages.Shared)
@@ -35,8 +29,7 @@ type OpaqueIDType = ReactFiberHostConfig.OpaqueIDType
 
 -- local invariant = require(Packages.Shared).invariant
 
-local ReactCurrentDispatcher =
-	require(Packages.Shared).ReactSharedInternals.ReactCurrentDispatcher
+local ReactCurrentDispatcher = require(Packages.Shared).ReactSharedInternals.ReactCurrentDispatcher
 
 type BasicStateAction<S> = ((S) -> S) | S
 type Dispatch<A> = (A) -> ()
@@ -106,20 +99,13 @@ local function useContext<T>(
 end
 exports.useContext = useContext
 
-local function useState<S>(
-	initialState: (() -> S) | S,
-	...
-): (S, Dispatch<BasicStateAction<S>>)
+local function useState<S>(initialState: (() -> S) | S, ...): (S, Dispatch<BasicStateAction<S>>)
 	local dispatcher = resolveDispatcher()
 	return dispatcher.useState(initialState, ...)
 end
 exports.useState = useState
 
-local function useReducer<S, I, A>(
-	reducer: (S, A) -> S,
-	initialArg: I,
-	init: ((I) -> S)?
-): (S, Dispatch<A>)
+local function useReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 	local dispatcher = resolveDispatcher()
 	return dispatcher.useReducer(reducer, initialArg, init)
 end
@@ -135,12 +121,7 @@ end
 exports.useRef = useRef
 
 -- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
-local function useBinding<T>(
-	initialValue: T
-): (
-	ReactTypes.ReactBinding<T>,
-	ReactTypes.ReactBindingUpdater<T>
-)
+local function useBinding<T>(initialValue: T): (ReactTypes.ReactBinding<T>, ReactTypes.ReactBindingUpdater<T>)
 	-- ROBLOX deviation END
 	local dispatcher = resolveDispatcher()
 	return dispatcher.useBinding(initialValue)
@@ -219,14 +200,13 @@ exports.useOpaqueIdentifier = function(): OpaqueIDType | nil
 	return dispatcher.useOpaqueIdentifier()
 end
 
-exports.useMutableSource =
-	function<Source, Snapshot>(
-		source: MutableSource<Source>,
-		getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
-		subscribe: MutableSourceSubscribeFn<Source, Snapshot>
-	): Snapshot
-		local dispatcher = resolveDispatcher()
-		return dispatcher.useMutableSource(source, getSnapshot, subscribe)
-	end
+exports.useMutableSource = function<Source, Snapshot>(
+	source: MutableSource<Source>,
+	getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+	subscribe: MutableSourceSubscribeFn<Source, Snapshot>
+): Snapshot
+	local dispatcher = resolveDispatcher()
+	return dispatcher.useMutableSource(source, getSnapshot, subscribe)
+end
 
 return exports

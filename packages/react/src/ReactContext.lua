@@ -21,10 +21,7 @@ type ReactProviderType<T> = Shared.ReactProviderType<T>
 
 local exports = {}
 
-exports.createContext = function<T>(
-	defaultValue: T,
-	calculateChangedBits: ((a: T, b: T) -> number)?
-): ReactContext<T>
+exports.createContext = function<T>(defaultValue: T, calculateChangedBits: ((a: T, b: T) -> number)?): ReactContext<T>
 	local context: ReactContext<any> = {
 		["$$typeof"] = REACT_CONTEXT_TYPE,
 		_calculateChangedBits = calculateChangedBits,

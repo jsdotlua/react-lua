@@ -121,11 +121,7 @@ local Tag = require(Packages.Shared).Tag
 --   batchedEventUpdates
 -- )
 
-local function createPortal(
-	children: ReactNodeList,
-	container: Container,
-	key: string?
-): any
+local function createPortal(children: ReactNodeList, container: Container, key: string?): any
 	-- ): React$Portal
 	invariant(
 		isValidContainer(container),

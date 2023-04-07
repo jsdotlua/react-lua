@@ -58,10 +58,7 @@ local function errorToString(error_: Error | Object | string | Array<any>): stri
 			-- Adding these clear dividers helps us split this error back up
 			-- into pieces later. We include one at the beginning so that the
 			-- final stack frame added by rethrowing can be carved off
-			errorString = DIVIDER
-				.. (error_ :: Error).message
-				.. DIVIDER
-				.. tostring((error_ :: Error).stack)
+			errorString = DIVIDER .. (error_ :: Error).message .. DIVIDER .. tostring((error_ :: Error).stack)
 		else
 			errorString = inspect(error_)
 		end

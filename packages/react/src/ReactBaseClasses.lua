@@ -100,18 +100,10 @@ local function handleNewLifecycle(self, key, value)
 			warnAboutExistingLifecycle(self.__componentName, key, lifecycleNames[key])
 		-- special case for willUpdate which can be defined properly with 2 different names
 		elseif key == "willUpdate" and self["componentWillUpdate"] then
-			warnAboutExistingLifecycle(
-				self.__componentName,
-				key,
-				"UNSAFE_componentWillUpdate"
-			)
+			warnAboutExistingLifecycle(self.__componentName, key, "UNSAFE_componentWillUpdate")
 		-- otherwise if not previously defined, just warn about deprecated name
 		else
-			warnAboutDeprecatedLifecycleName(
-				self.__componentName,
-				key,
-				lifecycleNames[key]
-			)
+			warnAboutDeprecatedLifecycleName(self.__componentName, key, lifecycleNames[key])
 		end
 		-- update key to proper name
 		key = lifecycleNames[key]
@@ -158,11 +150,7 @@ for i = 1, InstancePoolSize do
 	})
 end
 
-local function setStateInInit(
-	componentInstance: React_Component<any, any>,
-	statePayload: any,
-	callback: nil
-): ()
+local function setStateInInit(componentInstance: React_Component<any, any>, statePayload: any, callback: nil): ()
 	if __DEV__ and (callback :: any) ~= nil then
 		console.warn(
 			"Received a `callback` argument to `setState` during initialization of "
@@ -175,10 +163,7 @@ local function setStateInInit(
 
 	-- Use the same warning as in the "real" `setState` below
 	local typeStatePayload = statePayload and type(statePayload)
-	if
-		statePayload == nil
-		or (typeStatePayload ~= "table" and typeStatePayload ~= "function")
-	then
+	if statePayload == nil or (typeStatePayload ~= "table" and typeStatePayload ~= "function") then
 		error(
 			"setState(...): takes an object of state variables to update or a "
 				.. "function which returns an object of state variables."
@@ -325,11 +310,7 @@ end
  * @protected
  ]]
 function Component:setState(partialState, callback)
-	if
-		partialState ~= nil
-		and type(partialState) ~= "table"
-		and type(partialState) ~= "function"
-	then
+	if partialState ~= nil and type(partialState) ~= "table" and type(partialState) ~= "function" then
 		error(
 			"setState(...): takes an object of state variables to update or a "
 				.. "function which returns an object of state variables."
@@ -372,18 +353,13 @@ if __DEV__ then
 		},
 		replaceState = {
 			"replaceState",
-			"Refactor your code to use setState instead (see "
-				.. "https://github.com/facebook/react/issues/3236).",
+			"Refactor your code to use setState instead (see " .. "https://github.com/facebook/react/issues/3236).",
 		},
 	} :: any
 
 	local defineDeprecationWarning = function(methodName, info)
 		(Component :: any)[methodName] = function()
-			console.warn(
-				"%s(...) is deprecated in plain JavaScript React classes. %s",
-				info[1],
-				info[2]
-			)
+			console.warn("%s(...) is deprecated in plain JavaScript React classes. %s", info[1], info[2])
 			return nil
 		end
 	end

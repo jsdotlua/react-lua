@@ -21,9 +21,7 @@ type Function = (...any) -> ...any
 
 -- ROBLOX deviation START: import extra types
 local ReactTypes = require(Packages.Shared)
-type React_StatelessFunctionalComponent<P> = ReactTypes.React_StatelessFunctionalComponent<
-	P
->
+type React_StatelessFunctionalComponent<P> = ReactTypes.React_StatelessFunctionalComponent<P>
 type React_ComponentType<P> = ReactTypes.React_ComponentType<P>
 type React_Element<ElementType> = ReactTypes.React_Element<ElementType>
 type React_ElementProps<ElementType> = ReactTypes.React_ElementProps<ElementType>
@@ -41,8 +39,7 @@ local _REACT_MEMO_TYPE = ReactSymbols.REACT_MEMO_TYPE
 local REACT_FRAGMENT_TYPE = ReactSymbols.REACT_FRAGMENT_TYPE
 local REACT_ELEMENT_TYPE = ReactSymbols.REACT_ELEMENT_TYPE
 
-local warnAboutSpreadingKeyToJSX =
-	require(Packages.Shared).ReactFeatureFlags.warnAboutSpreadingKeyToJSX
+local warnAboutSpreadingKeyToJSX = require(Packages.Shared).ReactFeatureFlags.warnAboutSpreadingKeyToJSX
 local checkPropTypes = require(Packages.Shared).checkPropTypes
 local ReactCurrentOwner = require(Packages.Shared).ReactSharedInternals.ReactCurrentOwner
 
@@ -52,8 +49,7 @@ local createElement = ReactElement.createElement
 local cloneElement = ReactElement.cloneElement
 local jsxDEV = ReactElement.jsxDEV
 
-local setExtraStackFrame =
-	require(Packages.Shared).ReactSharedInternals.ReactDebugCurrentFrame.setExtraStackFrame
+local setExtraStackFrame = require(Packages.Shared).ReactSharedInternals.ReactDebugCurrentFrame.setExtraStackFrame
 local describeUnknownElementTypeFrameInDEV =
 	require(Packages.Shared).ReactComponentStackFrame.describeUnknownElementTypeFrameInDEV
 
@@ -68,11 +64,7 @@ local function setCurrentlyValidatingElement(element: ReactElement<any, any> | n
 			if owner then
 				ownerArgument = owner.type
 			end
-			local stack = describeUnknownElementTypeFrameInDEV(
-				element.type,
-				element._source,
-				ownerArgument
-			);
+			local stack = describeUnknownElementTypeFrameInDEV(element.type, element._source, ownerArgument);
 			-- ROBLOX FIXME Luau: needs normalization: Cannot call non-function (() -> ()) | ((string?) -> (...any))
 			(setExtraStackFrame :: (...any) -> ())(stack)
 		else
@@ -113,9 +105,7 @@ local function getSourceInfoErrorAddendum(source: Source | nil): string
 end
 
 -- ROBLOX FIXME Luau: needs explicit annotation, even though call site and nil check should be enough
-local function getSourceInfoErrorAddendumForProps(
-	elementProps: React_ElementProps<any>?
-): string
+local function getSourceInfoErrorAddendumForProps(elementProps: React_ElementProps<any>?): string
 	if elementProps ~= nil then
 		return getSourceInfoErrorAddendum(elementProps.__source)
 	end
@@ -130,17 +120,13 @@ end
 local ownerHasKeyUseWarning = {}
 
 -- ROBLOX FIXME Luau: shouldn't need this annotation on parentType
-local function getCurrentComponentErrorInfo(
-	parentType: React_ComponentType<any> | string | Function
-): string
+local function getCurrentComponentErrorInfo(parentType: React_ComponentType<any> | string | Function): string
 	local info = getDeclarationErrorAddendum()
 
 	if not Boolean.toJSBoolean(info) then
 		local parentName = if typeof(parentType) == "string"
 			then parentType
-			else if typeof(parentType) == "table"
-				then parentType.displayName or parentType.name
-				else nil
+			else if typeof(parentType) == "table" then parentType.displayName or parentType.name else nil
 
 		-- ROBLOX deviation: Lua doesn't store fields on functions, so try and get the name via reflection
 		if not parentName and typeof(parentType) == "function" then
@@ -150,10 +136,7 @@ local function getCurrentComponentErrorInfo(
 		end
 
 		if parentName then
-			info = string.format(
-				"\n\nCheck the top-level render call using <%s>.",
-				parentName
-			)
+			info = string.format("\n\nCheck the top-level render call using <%s>.", parentName)
 		end
 	end
 	return info
@@ -172,11 +155,7 @@ end
 --  * @param {*} tableKey ROBLOX deviation: key provided by the children table
 --  */
 -- ROBLOX deviation START: add explicit optional table key parameter, move key check to after we mark it validated, since we may not have an explicit key (and will use tableKey to validate)
-local function validateExplicitKey<P>(
-	element: ReactElement<P, any>,
-	parentType,
-	tableKey: any?
-)
+local function validateExplicitKey<P>(element: ReactElement<P, any>, parentType, tableKey: any?)
 	if element._store == nil or element._store.validated then
 		return
 	end
@@ -200,10 +179,7 @@ local function validateExplicitKey<P>(
 	local childOwner = ""
 	if element and element._owner and element._owner ~= ReactCurrentOwner.current then
 		-- // Give the component that originally created this child.
-		childOwner = string.format(
-			" It was passed a child from %s.",
-			tostring(getComponentName(element._owner.type))
-		)
+		childOwner = string.format(" It was passed a child from %s.", tostring(getComponentName(element._owner.type)))
 	end
 
 	if _G.__DEV__ then
@@ -498,9 +474,7 @@ end
 
 -- ROBLOX deviation START: add strong types based on definitely-typed approach on createElement
 local function createElementWithValidation<P, T>(
-	type_: React_StatelessFunctionalComponent<
-		P
-	> | React_ComponentType<P> | string,
+	type_: React_StatelessFunctionalComponent<P> | React_ComponentType<P> | string,
 	props: (P & React_ElementProps<T>)?,
 	...: React_Node
 ): ReactElement<P, T>
@@ -527,15 +501,8 @@ local function createElementWithValidation<P, T>(
 			typeString = "nil"
 		elseif Array.isArray(type_) then
 			typeString = "array"
-		elseif
-			type_ ~= nil
-			and typeof(type_) == "table"
-			and type_["$$typeof"] == REACT_ELEMENT_TYPE
-		then
-			typeString = string.format(
-				"<%s />",
-				getComponentName((type_ :: any).type) or "Unknown"
-			)
+		elseif type_ ~= nil and typeof(type_) == "table" and type_["$$typeof"] == REACT_ELEMENT_TYPE then
+			typeString = string.format("<%s />", getComponentName((type_ :: any).type) or "Unknown")
 			info ..= " Did you accidentally export a JSX literal or Element instead of a component?"
 		else
 			typeString = typeof(type_)

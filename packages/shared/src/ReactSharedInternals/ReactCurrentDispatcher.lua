@@ -28,33 +28,17 @@ type ReactBindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
 -- ROBLOX deviation END: binding support
 type MutableSourceVersion = ReactTypes.MutableSourceVersion
 type MutableSource<Source> = ReactTypes.MutableSource<Source>
-type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<
-	Source,
-	Snapshot
->
-type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<
-	Source,
-	Snapshot
->
+type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<Source, Snapshot>
+type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<Source, Snapshot>
 
 type BasicStateAction<S> = ((S) -> S) | S
 type Dispatch<A> = (A) -> ()
 
 export type Dispatcher = {
-	readContext: <T>(
-		context: ReactContext<T>,
-		observedBits: nil | number | boolean
-	) -> T,
+	readContext: <T>(context: ReactContext<T>, observedBits: nil | number | boolean) -> T,
 	useState: <S>(initialState: (() -> S) | S) -> (S, Dispatch<BasicStateAction<S>>),
-	useReducer: <S, I, A>(
-		reducer: (S, A) -> S,
-		initialArg: I,
-		init: ((I) -> S)?
-	) -> (S, Dispatch<A>),
-	useContext: <T>(
-		context: ReactContext<T>,
-		observedBits: nil | number | boolean
-	) -> T,
+	useReducer: <S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?) -> (S, Dispatch<A>),
+	useContext: <T>(context: ReactContext<T>, observedBits: nil | number | boolean) -> T,
 	-- ROBLOX deviation START: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 	useRef: <T>(initialValue: T) -> { current: T | nil },
 	-- ROBLOX deviation END

@@ -17,7 +17,9 @@ local function onlyInTestError(functionName: string)
 	end
 end
 
-local Scheduler = initializeScheduler(nil --[[ no host config, use default ]])
+local Scheduler = initializeScheduler(
+	nil --[[ no host config, use default ]]
+)
 local Tracing = require(script.Tracing)
 local TracingSubscriptions = require(script.TracingSubscriptions)
 -- ROBLOX deviation export Tracing type from the package exports to avoid direct file access
@@ -50,9 +52,7 @@ local exports = {
 	unstable_getFirstCallbackNode = Scheduler.unstable_getFirstCallbackNode,
 	unstable_now = Scheduler.unstable_now,
 	unstable_forceFrameRate = Scheduler.unstable_forceFrameRate,
-	unstable_flushAllWithoutAsserting = onlyInTestError(
-		"unstable_flushAllWithoutAsserting"
-	) :: any,
+	unstable_flushAllWithoutAsserting = onlyInTestError("unstable_flushAllWithoutAsserting") :: any,
 	unstable_flushAll = onlyInTestError("unstable_flushAll"),
 	unstable_flushNumberOfYields = onlyInTestError("unstable_flushNumberOfYields"),
 	unstable_clearYields = onlyInTestError("unstable_clearYields") :: any,

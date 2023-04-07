@@ -31,8 +31,7 @@ type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
 type Container = ReactFiberHostConfig.Container
 type HostContext = ReactFiberHostConfig.HostContext
 
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require(script.Parent["ReactFiberSuspenseComponent.new"])
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
 local ReactWorkTags = require(script.Parent.ReactWorkTags)
@@ -62,10 +61,8 @@ local hydrateTextInstance = ReactFiberHostConfig.hydrateTextInstance
 local hydrateSuspenseInstance = ReactFiberHostConfig.hydrateSuspenseInstance
 local getNextHydratableInstanceAfterSuspenseInstance =
 	ReactFiberHostConfig.getNextHydratableInstanceAfterSuspenseInstance
-local didNotMatchHydratedContainerTextInstance =
-	ReactFiberHostConfig.didNotMatchHydratedContainerTextInstance
-local didNotMatchHydratedTextInstance =
-	ReactFiberHostConfig.didNotMatchHydratedTextInstance
+local didNotMatchHydratedContainerTextInstance = ReactFiberHostConfig.didNotMatchHydratedContainerTextInstance
+local didNotMatchHydratedTextInstance = ReactFiberHostConfig.didNotMatchHydratedTextInstance
 local shouldSetTextContent = ReactFiberHostConfig.shouldSetTextContent
 
 -- local {
@@ -78,8 +75,7 @@ local shouldSetTextContent = ReactFiberHostConfig.shouldSetTextContent
 --   didNotFindHydratableTextInstance,
 --   didNotFindHydratableSuspenseInstance,
 -- } = require(Packages../ReactFiberHostConfig'
-local enableSuspenseServerRenderer =
-	require(Packages.Shared).ReactFeatureFlags.enableSuspenseServerRenderer
+local enableSuspenseServerRenderer = require(Packages.Shared).ReactFeatureFlags.enableSuspenseServerRenderer
 local OffscreenLane = require(script.Parent.ReactFiberLane).OffscreenLane
 
 -- The deepest Fiber on the stack involved in a hydration context.
@@ -91,9 +87,7 @@ local isHydrating: boolean = false
 function warnIfHydrating()
 	if _G.__DEV__ then
 		if isHydrating then
-			console.error(
-				"We should not be hydrating here. This is a bug in React. Please file a bug."
-			)
+			console.error("We should not be hydrating here. This is a bug in React. Please file a bug.")
 		end
 	end
 end
@@ -110,10 +104,7 @@ function enterHydrationState(fiber: Fiber): boolean
 	return true
 end
 
-function reenterHydrationStateFromDehydratedSuspenseInstance(
-	fiber: Fiber,
-	suspenseInstance: SuspenseInstance
-): boolean
+function reenterHydrationStateFromDehydratedSuspenseInstance(fiber: Fiber, suspenseInstance: SuspenseInstance): boolean
 	if not supportsHydration then
 		return false
 	end
@@ -243,8 +234,7 @@ function tryHydrate(fiber, nextInstance)
 		return false
 	elseif fiber.tag == SuspenseComponent then
 		if enableSuspenseServerRenderer then
-			local suspenseInstance: nil | SuspenseInstance =
-				canHydrateSuspenseInstance(nextInstance)
+			local suspenseInstance: nil | SuspenseInstance = canHydrateSuspenseInstance(nextInstance)
 			if suspenseInstance ~= nil then
 				local suspenseState: SuspenseState = {
 					dehydrated = suspenseInstance,
@@ -255,8 +245,7 @@ function tryHydrate(fiber, nextInstance)
 				-- This simplifies the code for getHostSibling and deleting nodes,
 				-- since it doesn't have to consider all Suspense boundaries and
 				-- check if they're dehydrated ones or not.
-				local dehydratedFragment =
-					createFiberFromDehydratedFragment(suspenseInstance)
+				local dehydratedFragment = createFiberFromDehydratedFragment(suspenseInstance)
 				dehydratedFragment.return_ = fiber
 				fiber.child = dehydratedFragment
 				return true
@@ -304,11 +293,7 @@ function tryToClaimNextHydratableInstance(fiber: Fiber)
 	nextHydratableInstance = getFirstHydratableChild(nextInstance)
 end
 
-function prepareToHydrateHostInstance(
-	fiber: Fiber,
-	rootContainerInstance: Container,
-	hostContext: HostContext
-): boolean
+function prepareToHydrateHostInstance(fiber: Fiber, rootContainerInstance: Container, hostContext: HostContext): boolean
 	if not supportsHydration then
 		invariant(
 			false,
@@ -318,14 +303,8 @@ function prepareToHydrateHostInstance(
 	end
 
 	local instance: Instance = fiber.stateNode
-	local updatePayload = hydrateInstance(
-		instance,
-		fiber.type,
-		fiber.memoizedProps,
-		rootContainerInstance,
-		hostContext,
-		fiber
-	)
+	local updatePayload =
+		hydrateInstance(instance, fiber.type, fiber.memoizedProps, rootContainerInstance, hostContext, fiber)
 	-- TODO: Type this specific to this type of component.
 	fiber.updateQueue = updatePayload
 	-- If the update payload indicates that there is a change or if there
@@ -356,22 +335,12 @@ function prepareToHydrateHostTextInstance(fiber: Fiber): boolean
 			if returnFiber ~= nil then
 				if returnFiber.tag == HostRoot then
 					local parentContainer = returnFiber.stateNode.containerInfo
-					didNotMatchHydratedContainerTextInstance(
-						parentContainer,
-						textInstance,
-						textContent
-					)
+					didNotMatchHydratedContainerTextInstance(parentContainer, textInstance, textContent)
 				elseif returnFiber.tag == HostComponent then
 					local parentType = returnFiber.type
 					local parentProps = returnFiber.memoizedProps
 					local parentInstance = returnFiber.stateNode
-					didNotMatchHydratedTextInstance(
-						parentType,
-						parentProps,
-						parentInstance,
-						textInstance,
-						textContent
-					)
+					didNotMatchHydratedTextInstance(parentType, parentProps, parentInstance, textInstance, textContent)
 				end
 			end
 		end
@@ -467,11 +436,7 @@ function popHydrationState(fiber: Fiber): boolean
 	-- TODO: Better heuristic.
 	if
 		fiber.tag ~= HostComponent
-		or (
-			type_ ~= "head"
-			and type_ ~= "body"
-			and not shouldSetTextContent(type_, fiber.memoizedProps)
-		)
+		or (type_ ~= "head" and type_ ~= "body" and not shouldSetTextContent(type_, fiber.memoizedProps))
 	then
 		local nextInstance = nextHydratableInstance
 		while nextInstance do

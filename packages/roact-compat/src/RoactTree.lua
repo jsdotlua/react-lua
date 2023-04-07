@@ -104,14 +104,10 @@ local function update(roactHandle: RoactHandle, element)
 	-- `act` explicitly
 	if _G.__ROACT_17_INLINE_ACT__ then
 		ReactRoblox.act(function()
-			roactHandle.root:render(
-				ReactRoblox.createPortal({ [key :: string] = element }, parent)
-			)
+			roactHandle.root:render(ReactRoblox.createPortal({ [key :: string] = element }, parent))
 		end)
 	else
-		roactHandle.root:render(
-			ReactRoblox.createPortal({ [key :: string] = element }, parent)
-		)
+		roactHandle.root:render(ReactRoblox.createPortal({ [key :: string] = element }, parent))
 	end
 
 	return roactHandle

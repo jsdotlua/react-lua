@@ -22,8 +22,7 @@ local warnedAbout = {}
 local function warnOnce(name: string, message: string)
 	if not warnedAbout[name] then
 		console.warn(
-			"The legacy Roact API '%s' is deprecated, and will be removed "
-				.. "in a future release.\n\n%s",
+			"The legacy Roact API '%s' is deprecated, and will be removed " .. "in a future release.\n\n%s",
 			name,
 			message
 		)

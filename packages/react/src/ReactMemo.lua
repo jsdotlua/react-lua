@@ -15,16 +15,11 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local inspect = LuauPolyfill.util.inspect
-type React_StatelessFunctionalComponent<Props> = Shared.React_StatelessFunctionalComponent<
-	Props
->
+type React_StatelessFunctionalComponent<Props> = Shared.React_StatelessFunctionalComponent<Props>
 type React_ElementType = Shared.React_ElementType
 type React_Component<Props, State> = Shared.React_Component<Props, State>
 type React_ComponentType<Props> = Shared.React_ComponentType<Props>
-type React_AbstractComponent<Config, Instance> = Shared.React_AbstractComponent<
-	Config,
-	Instance
->
+type React_AbstractComponent<Config, Instance> = Shared.React_AbstractComponent<Config, Instance>
 
 local ReactSymbols = Shared.ReactSymbols
 local REACT_MEMO_TYPE = ReactSymbols.REACT_MEMO_TYPE
@@ -48,10 +43,7 @@ exports.memo = function<Props, T>(
 		-- succeed and there will likely be errors in render.
 		if not validType then
 			local info = ""
-			if
-				type_ == nil
-				or (typeof(type_) == "table" and #Object.keys(type_) == 0)
-			then
+			if type_ == nil or (typeof(type_) == "table" and #Object.keys(type_) == 0) then
 				info = info
 					.. (
 						" You likely forgot to export your component from the file "
@@ -63,17 +55,9 @@ exports.memo = function<Props, T>(
 				typeString = "nil"
 			elseif Array.isArray(type_) then
 				typeString = "array"
-			elseif
-				type_ ~= nil
-				and typeof(type_) == "table"
-				and (type_)["$$typeof"] == REACT_ELEMENT_TYPE
-			then
-				typeString = string.format(
-					"<%s />",
-					getComponentName((type_ :: any).type) or "UNKNOWN"
-				)
-				info =
-					" Did you accidentally export a JSX literal or Element instead of a component?"
+			elseif type_ ~= nil and typeof(type_) == "table" and (type_)["$$typeof"] == REACT_ELEMENT_TYPE then
+				typeString = string.format("<%s />", getComponentName((type_ :: any).type) or "UNKNOWN")
+				info = " Did you accidentally export a JSX literal or Element instead of a component?"
 			else
 				typeString = typeof(type_)
 				if type_ ~= nil then
@@ -81,11 +65,7 @@ exports.memo = function<Props, T>(
 					info = "\n" .. inspect(type_)
 				end
 			end
-			console.error(
-				"memo: The first argument must be a component. Instead received: `%s`.%s",
-				typeString,
-				info
-			)
+			console.error("memo: The first argument must be a component. Instead received: `%s`.%s", typeString, info)
 		end
 	end
 
@@ -109,11 +89,7 @@ exports.memo = function<Props, T>(
 				if key == "displayName" then
 					name = value
 					-- ROBLOX deviation: render is a function and cannot have properties
-					if
-						typeof(type_) == "table"
-						and (type_ :: React_AbstractComponent<Props, T>).displayName
-							== nil
-					then
+					if typeof(type_) == "table" and (type_ :: React_AbstractComponent<Props, T>).displayName == nil then
 						(type_ :: React_AbstractComponent<Props, T>).displayName = name
 					end
 				else

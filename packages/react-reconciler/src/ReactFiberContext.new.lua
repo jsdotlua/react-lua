@@ -9,8 +9,7 @@
  * @flow
 ]]
 local __DEV__ = _G.__DEV__ :: boolean
-local __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ =
-	_G.__DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ :: boolean
+local __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ = _G.__DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ :: boolean
 
 local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -26,8 +25,7 @@ local ReactFiberStack = require(script.Parent["ReactFiberStack.new"])
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
 
 local isFiberMounted = require(script.Parent.ReactFiberTreeReflection).isFiberMounted
-local disableLegacyContext =
-	require(Packages.Shared).ReactFeatureFlags.disableLegacyContext
+local disableLegacyContext = require(Packages.Shared).ReactFeatureFlags.disableLegacyContext
 local ReactWorkTags = require(script.Parent.ReactWorkTags)
 local ClassComponent = ReactWorkTags.ClassComponent
 local HostRoot = ReactWorkTags.HostRoot
@@ -65,11 +63,7 @@ local previousContext: Object = emptyContextObject
 local isContextProvider
 
 -- deviation: FIXME: `Component: Function` - lock down component type def
-local function getUnmaskedContext(
-	workInProgress: Fiber,
-	Component: any,
-	didPushOwnContextIfProvider: boolean
-): Object
+local function getUnmaskedContext(workInProgress: Fiber, Component: any, didPushOwnContextIfProvider: boolean): Object
 	-- ROBLOX performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return emptyContextObject
@@ -85,11 +79,7 @@ local function getUnmaskedContext(
 	-- end
 end
 
-local function cacheContext(
-	workInProgress: Fiber,
-	unmaskedContext: Object,
-	maskedContext: Object
-): ()
+local function cacheContext(workInProgress: Fiber, unmaskedContext: Object, maskedContext: Object): ()
 	-- ROBLOX performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return
@@ -121,10 +111,7 @@ local function getMaskedContext(workInProgress: Fiber, unmaskedContext: Object):
 	-- Failing to do this will result in unnecessary calls to componentWillReceiveProps.
 	-- This may trigger infinite loops if componentWillReceiveProps calls setState.
 	local instance = workInProgress.stateNode
-	if
-		instance
-		and instance.__reactInternalMemoizedUnmaskedChildContext == unmaskedContext
-	then
+	if instance and instance.__reactInternalMemoizedUnmaskedChildContext == unmaskedContext then
 		return instance.__reactInternalMemoizedMaskedChildContext
 	end
 
@@ -193,11 +180,7 @@ local function popTopLevelContextObject(fiber: Fiber): ()
 	-- end
 end
 
-local function pushTopLevelContextObject(
-	fiber: Fiber,
-	context: Object,
-	didChange: boolean
-): ()
+local function pushTopLevelContextObject(fiber: Fiber, context: Object, didChange: boolean): ()
 	-- ROBLOX performance: disable always-false cmp in hot path
 	-- if disableLegacyContext then
 	-- 	return
@@ -216,11 +199,7 @@ local function pushTopLevelContextObject(
 	-- end
 end
 
-local function processChildContext(
-	fiber: Fiber,
-	type_: any,
-	parentContext: Object
-): Object
+local function processChildContext(fiber: Fiber, type_: any, parentContext: Object): Object
 	-- ROBLOX performance: eliminate always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return parentContext
@@ -230,10 +209,7 @@ local function processChildContext(
 
 	-- TODO (bvaughn) Replace this behavior with an invariant() in the future.
 	-- It has only been added in Fiber to match the (unintentional) behavior in Stack.
-	if
-		instance.getChildContext == nil
-		or type(instance.getChildContext) ~= "function"
-	then
+	if instance.getChildContext == nil or type(instance.getChildContext) ~= "function" then
 		if __DEV__ then
 			local componentName = getComponentName(type_) or "Unknown"
 
@@ -285,9 +261,8 @@ local function pushContextProvider(workInProgress: Fiber): boolean
 	-- We push the context as early as possible to ensure stack integrity.
 	-- If the instance does not exist yet, we will push nil at first,
 	-- and replace it on the stack later when invalidating the context.
-	local memoizedMergedChildContext = (
-		instance and instance.__reactInternalMemoizedMergedChildContext
-	) or emptyContextObject
+	local memoizedMergedChildContext = (instance and instance.__reactInternalMemoizedMergedChildContext)
+		or emptyContextObject
 
 	-- Remember the parent context so we can merge with it later.
 	-- Inherit the parent's did-perform-work value to avoid inadvertently blocking updates.
@@ -299,11 +274,7 @@ local function pushContextProvider(workInProgress: Fiber): boolean
 	-- end
 end
 
-local function invalidateContextProvider(
-	workInProgress: Fiber,
-	type_: any,
-	didChange: boolean
-): ()
+local function invalidateContextProvider(workInProgress: Fiber, type_: any, didChange: boolean): ()
 	-- ROBLOX performance: eliminate always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return

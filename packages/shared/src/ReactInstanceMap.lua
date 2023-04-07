@@ -33,10 +33,7 @@ local getComponentName = require(script.Parent.getComponentName)
 local exports = {}
 
 local function isValidFiber(fiber): boolean
-	return fiber.tag ~= nil
-		and fiber.subtreeFlags ~= nil
-		and fiber.lanes ~= nil
-		and fiber.childLanes ~= nil
+	return fiber.tag ~= nil and fiber.subtreeFlags ~= nil and fiber.lanes ~= nil and fiber.childLanes ~= nil
 end
 
 exports.remove = function(key)
@@ -94,10 +91,7 @@ exports.set = function(key, value)
 				message ..= " (from original fiber " .. (getComponentName(key) or "UNNAMED Component") .. ")"
 			end
 			error(Error.new(message))
-		elseif
-			(parent :: any).alternate ~= nil
-			and not isValidFiber((parent :: any).alternate)
-		then
+		elseif (parent :: any).alternate ~= nil and not isValidFiber((parent :: any).alternate) then
 			message = "invalid alternate fiber ("
 				.. (getComponentName(key) or "UNNAMED alternate")
 				.. ") in "

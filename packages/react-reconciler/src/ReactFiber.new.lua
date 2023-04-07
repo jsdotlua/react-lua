@@ -85,10 +85,8 @@ local ReactFiberDevToolsHook = require(script.Parent["ReactFiberDevToolsHook.new
 local isDevToolsPresent = ReactFiberDevToolsHook.isDevToolsPresent
 local ReactFiberHotReloading = require(script.Parent["ReactFiberHotReloading.new"])
 local resolveClassForHotReloading = ReactFiberHotReloading.resolveClassForHotReloading
-local resolveFunctionForHotReloading =
-	ReactFiberHotReloading.resolveFunctionForHotReloading
-local resolveForwardRefForHotReloading =
-	ReactFiberHotReloading.resolveForwardRefForHotReloading
+local resolveFunctionForHotReloading = ReactFiberHotReloading.resolveFunctionForHotReloading
+local resolveForwardRefForHotReloading = ReactFiberHotReloading.resolveForwardRefForHotReloading
 local NoLanes = ReactFiberLane.NoLanes
 local NoMode = ReactTypeOfMode.NoMode
 local ConcurrentMode = ReactTypeOfMode.ConcurrentMode
@@ -415,8 +413,7 @@ local function resetWorkInProgress(workInProgress: Fiber, renderLanes: Lanes)
 
 	-- Reset the effect tag but keep any Placement tags, since that's something
 	-- that child fiber is setting, not the reconciliation.
-	workInProgress.flags =
-		bit32.band(workInProgress.flags, bit32.bor(StaticMask, Placement))
+	workInProgress.flags = bit32.band(workInProgress.flags, bit32.bor(StaticMask, Placement))
 
 	-- The effects are no longer valid
 
@@ -589,10 +586,7 @@ local function createFiberFromTypeAndProps(
 			if not shouldBreak then
 				local info = ""
 				if __DEV__ then
-					if
-						type_ == nil
-						or (typeOfType_ == "table" and #Object.keys(type_) == 0)
-					then
+					if type_ == nil or (typeOfType_ == "table" and #Object.keys(type_) == 0) then
 						info ..= " You likely forgot to export your component from the file " .. "it's defined in, or you might have mixed up default and " .. "named imports."
 					elseif type_ ~= nil and typeOfType_ == "table" then
 						-- ROBLOX deviation: print the table/string in readable form to give a clue, if no other info was gathered
@@ -618,10 +612,8 @@ local function createFiberFromTypeAndProps(
 				elseif Array.isArray(type_) then
 					typeString = "array"
 				elseif typeOfType_ == "table" and type_typeof == REACT_ELEMENT_TYPE then
-					typeString =
-						string.format("<%s />", getComponentName(type_.type) or "Unknown")
-					info =
-						" Did you accidentally export a JSX literal or Element instead of a component?"
+					typeString = string.format("<%s />", getComponentName(type_.type) or "Unknown")
+					info = " Did you accidentally export a JSX literal or Element instead of a component?"
 				else
 					typeString = typeOfType_
 				end
@@ -639,8 +631,7 @@ local function createFiberFromTypeAndProps(
 	end
 
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
-	local fiber =
-		createFiber(fiberTag, pendingProps, key, mode, type_, resolvedType, nil, lanes)
+	local fiber = createFiber(fiberTag, pendingProps, key, mode, type_, resolvedType, nil, lanes)
 
 	-- fiber.elementType = type_
 	-- fiber.type = resolvedType
@@ -654,11 +645,7 @@ local function createFiberFromTypeAndProps(
 	return fiber
 end
 
-local function createFiberFromElement(
-	element: ReactElement,
-	mode: TypeOfMode,
-	lanes: Lanes
-): Fiber
+local function createFiberFromElement(element: ReactElement, mode: TypeOfMode, lanes: Lanes): Fiber
 	local owner = nil
 	if __DEV__ then
 		owner = element._owner
@@ -682,12 +669,7 @@ local function createFiberFromElement(
 	return fiber
 end
 
-function createFiberFromFragment(
-	elements: ReactFragment,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: string?
-): Fiber
+function createFiberFromFragment(elements: ReactFragment, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(Fragment, elements, key, mode, nil, nil, nil, lanes)
 	-- fiber.lanes = lanes
@@ -720,16 +702,9 @@ function createFiberFromFundamental(
 	return fiber
 end
 
-function createFiberFromScope(
-	scope: ReactScope,
-	pendingProps: any,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: string?
-): Fiber
+function createFiberFromScope(scope: ReactScope, pendingProps: any, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
-	local fiber =
-		createFiber(ScopeComponent, pendingProps, key, mode, scope, scope, nil, lanes)
+	local fiber = createFiber(ScopeComponent, pendingProps, key, mode, scope, scope, nil, lanes)
 	-- fiber.type = scope
 	-- fiber.elementType = scope
 	-- fiber.lanes = lanes
@@ -737,12 +712,7 @@ function createFiberFromScope(
 	return fiber
 end
 
-function createFiberFromProfiler(
-	pendingProps: any,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: string?
-): Fiber
+function createFiberFromProfiler(pendingProps: any, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
 	if __DEV__ then
 		if typeof(pendingProps.id) ~= "string" then
 			console.error('Profiler must specify an "id" as a prop')
@@ -781,23 +751,10 @@ function createFiberFromProfiler(
 	return fiber
 end
 
-function createFiberFromSuspense(
-	pendingProps: any,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: string?
-): Fiber
+function createFiberFromSuspense(pendingProps: any, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
-	local fiber = createFiber(
-		SuspenseComponent,
-		pendingProps,
-		key,
-		mode,
-		REACT_SUSPENSE_TYPE,
-		REACT_SUSPENSE_TYPE,
-		nil,
-		lanes
-	)
+	local fiber =
+		createFiber(SuspenseComponent, pendingProps, key, mode, REACT_SUSPENSE_TYPE, REACT_SUSPENSE_TYPE, nil, lanes)
 
 	-- TODO: The SuspenseComponent fiber shouldn't have a type. It has a tag.
 	-- This needs to be fixed in getComponentName so that it relies on the tag
@@ -810,12 +767,7 @@ function createFiberFromSuspense(
 	return fiber
 end
 
-function createFiberFromSuspenseList(
-	pendingProps: any,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: string?
-): Fiber
+function createFiberFromSuspenseList(pendingProps: any, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		SuspenseListComponent,
@@ -839,12 +791,7 @@ function createFiberFromSuspenseList(
 	return fiber
 end
 
-function createFiberFromOffscreen(
-	pendingProps: OffscreenProps,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: string?
-): Fiber
+function createFiberFromOffscreen(pendingProps: OffscreenProps, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		OffscreenComponent,
@@ -868,12 +815,7 @@ function createFiberFromOffscreen(
 	return fiber
 end
 
-function createFiberFromLegacyHidden(
-	pendingProps: OffscreenProps,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: string?
-): Fiber
+function createFiberFromLegacyHidden(pendingProps: OffscreenProps, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		LegacyHiddenComponent,
@@ -917,18 +859,13 @@ end
 
 local function createFiberFromDehydratedFragment(dehydratedNode: SuspenseInstance): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
-	local fiber =
-		createFiber(DehydratedFragment, nil, nil, NoMode, nil, nil, dehydratedNode)
+	local fiber = createFiber(DehydratedFragment, nil, nil, NoMode, nil, nil, dehydratedNode)
 	-- fiber.stateNode = dehydratedNode
 	-- ROBLOX deviation END
 	return fiber
 end
 
-local function createFiberFromPortal(
-	portal: ReactPortal,
-	mode: TypeOfMode,
-	lanes: Lanes
-): Fiber
+local function createFiberFromPortal(portal: ReactPortal, mode: TypeOfMode, lanes: Lanes): Fiber
 	local pendingProps = if portal.children ~= nil then portal.children else {}
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(HostPortal, pendingProps, portal.key, mode, nil, nil, {

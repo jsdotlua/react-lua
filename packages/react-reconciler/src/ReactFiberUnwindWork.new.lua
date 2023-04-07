@@ -15,8 +15,7 @@ local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
 type Fiber = ReactInternalTypes.Fiber
 local ReactFiberLane = require(script.Parent.ReactFiberLane)
 type Lanes = ReactFiberLane.Lanes
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require(script.Parent["ReactFiberSuspenseComponent.new"])
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
 local resetMutableSourceWorkInProgressVersions =
@@ -33,10 +32,8 @@ local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 local ReactFiberHostContext = require(script.Parent["ReactFiberHostContext.new"])
 local popHostContainer = ReactFiberHostContext.popHostContainer
 local popHostContext = ReactFiberHostContext.popHostContext
-local popSuspenseContext =
-	require(script.Parent["ReactFiberSuspenseContext.new"]).popSuspenseContext
-local resetHydrationState =
-	require(script.Parent["ReactFiberHydrationContext.new"]).resetHydrationState
+local popSuspenseContext = require(script.Parent["ReactFiberSuspenseContext.new"]).popSuspenseContext
+local resetHydrationState = require(script.Parent["ReactFiberHydrationContext.new"]).resetHydrationState
 local ReactFiberContext = require(script.Parent["ReactFiberContext.new"])
 local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local popLegacyContext = ReactFiberContext.popContext
@@ -46,13 +43,11 @@ local popProvider = require(script.Parent["ReactFiberNewContext.new"]).popProvid
 local popRenderLanesRef
 local popRenderLanes = function(...)
 	if not popRenderLanesRef then
-		popRenderLanesRef =
-			require(script.Parent["ReactFiberWorkLoop.new"]).popRenderLanes
+		popRenderLanesRef = require(script.Parent["ReactFiberWorkLoop.new"]).popRenderLanes
 	end
 	return popRenderLanesRef(...)
 end
-local transferActualDuration =
-	require(script.Parent["ReactProfilerTimer.new"]).transferActualDuration
+local transferActualDuration = require(script.Parent["ReactProfilerTimer.new"]).transferActualDuration
 
 local invariant = require(Packages.Shared).invariant
 
@@ -64,14 +59,11 @@ local function unwindWork(workInProgress: Fiber, renderLanes: Lanes): Fiber?
 		end
 		local flags = workInProgress.flags
 		if bit32.band(flags, ReactFiberFlags.ShouldCapture) ~= 0 then
-			workInProgress.flags = bit32.bor(
-				bit32.band(flags, bit32.bnot(ReactFiberFlags.ShouldCapture)),
-				ReactFiberFlags.DidCapture
-			)
+			workInProgress.flags =
+				bit32.bor(bit32.band(flags, bit32.bnot(ReactFiberFlags.ShouldCapture)), ReactFiberFlags.DidCapture)
 			if
 				enableProfilerTimer
-				and bit32.band(workInProgress.mode, ReactTypeOfMode.ProfileMode)
-					~= ReactTypeOfMode.NoMode
+				and bit32.band(workInProgress.mode, ReactTypeOfMode.ProfileMode) ~= ReactTypeOfMode.NoMode
 			then
 				transferActualDuration(workInProgress)
 			end
@@ -85,13 +77,10 @@ local function unwindWork(workInProgress: Fiber, renderLanes: Lanes): Fiber?
 		local flags = workInProgress.flags
 		invariant(
 			bit32.band(flags, ReactFiberFlags.DidCapture) == ReactFiberFlags.NoFlags,
-			"The root failed to unmount after an error. This is likely a bug in "
-				.. "React. Please file an issue."
+			"The root failed to unmount after an error. This is likely a bug in " .. "React. Please file an issue."
 		)
-		workInProgress.flags = bit32.bor(
-			bit32.band(flags, bit32.bnot(ReactFiberFlags.ShouldCapture)),
-			ReactFiberFlags.DidCapture
-		)
+		workInProgress.flags =
+			bit32.bor(bit32.band(flags, bit32.bnot(ReactFiberFlags.ShouldCapture)), ReactFiberFlags.DidCapture)
 		return workInProgress
 	elseif workInProgress.tag == ReactWorkTags.HostComponent then
 		-- TODO: popHydrationState
@@ -112,17 +101,12 @@ local function unwindWork(workInProgress: Fiber, renderLanes: Lanes): Fiber?
 		end
 		local flags = workInProgress.flags
 		if bit32.band(flags, ReactFiberFlags.ShouldCapture) ~= 0 then
-			workInProgress.flags = bit32.bor(
-				bit32.band(flags, bit32.bnot(ReactFiberFlags.ShouldCapture)),
-				ReactFiberFlags.DidCapture
-			)
+			workInProgress.flags =
+				bit32.bor(bit32.band(flags, bit32.bnot(ReactFiberFlags.ShouldCapture)), ReactFiberFlags.DidCapture)
 			-- Captured a suspense effect. Re-render the boundary.
 			if
 				enableProfilerTimer
-				and (
-					bit32.band(workInProgress.mode, ReactTypeOfMode.ProfileMode)
-					~= ReactTypeOfMode.NoMode
-				)
+				and (bit32.band(workInProgress.mode, ReactTypeOfMode.ProfileMode) ~= ReactTypeOfMode.NoMode)
 			then
 				transferActualDuration(workInProgress)
 			end

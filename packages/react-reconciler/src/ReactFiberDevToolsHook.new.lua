@@ -110,8 +110,7 @@ exports.onScheduleRoot = function(root: FiberRoot, children: ReactNodeList)
 			-- ROBLOX deviation: our mocked functions are tables with __call, since they have fields
 			and isCallable(injectedHook.onScheduleFiberRoot)
 		then
-			local ok, err =
-				pcall(injectedHook.onScheduleFiberRoot, rendererID, root, children)
+			local ok, err = pcall(injectedHook.onScheduleFiberRoot, rendererID, root, children)
 
 			if not ok then
 				if _G.__DEV__ and not hasLoggedError then
