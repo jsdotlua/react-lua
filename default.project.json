@@ -1,0 +1,24 @@
+{
+    "name": "react-lua",
+    "tree": {
+        "$className": "Folder",
+        "React": {
+            "$path": "packages/react/default.project.json"
+        },
+        "ReactReconciler": {
+            "$path": "packages/react-reconciler/default.project.json"
+        },
+        "ReactRoblox": {
+            "$path": "packages/react-roblox/default.project.json"
+        },
+        "RoactCompat": {
+            "$path": "packages/roact-compat/default.project.json"
+        },
+        "scheduler": {
+            "$path": "packages/scheduler/default.project.json"
+        },
+        "Shared": {
+            "$path": "packages/shared/default.project.json"
+        }
+    }
+}

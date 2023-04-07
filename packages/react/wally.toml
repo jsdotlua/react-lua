@@ -1,0 +1,12 @@
+[package]
+name = 'core-packages/react'
+description = 'https://github.com/grilme99/CorePackages'
+version = '17.0.1-rc.19'
+license = 'MIT + Apache 2.0'
+authors = ['Roblox Corporation']
+registry = 'https://github.com/UpliftGames/wally-index'
+realm = 'shared'
+
+[dependencies]
+LuauPolyfill = 'core-packages/luau-polyfill@1.2.3'
+Shared = 'core-packages/shared@17.0.1-rc.19'

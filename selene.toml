@@ -1,0 +1,5 @@
+std = "roblox"
+
+[lints]
+# _G is used for global development feature flags
+global_usage = "allow"

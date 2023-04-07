@@ -1,0 +1,6 @@
+{
+  "name": "shared",
+  "tree": {
+    "$path": "src/"
+  }
+}

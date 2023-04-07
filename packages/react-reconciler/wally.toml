@@ -1,0 +1,15 @@
+[package]
+name = 'core-packages/react-reconciler'
+description = 'https://github.com/grilme99/CorePackages'
+version = '17.0.1-rc.19'
+license = 'MIT'
+authors = ['Roblox Corporation']
+registry = 'https://github.com/UpliftGames/wally-index'
+realm = 'shared'
+
+[dependencies]
+LuauPolyfill = 'core-packages/luau-polyfill@1.2.3'
+Promise = 'evaera/promise@4.0.0'
+React = 'core-packages/react@17.0.1-rc.19'
+Scheduler = 'core-packages/scheduler@17.0.1-rc.19'
+Shared = 'core-packages/shared@17.0.1-rc.19'
