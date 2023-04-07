@@ -217,39 +217,43 @@ local updateHostText
 if supportsMutation then
 	-- Mutation mode
 
-	appendAllChildren =
-		function(parent: Instance, workInProgress: Fiber, needsVisibilityToggle: boolean, isHidden: boolean)
-			-- We only have the top Fiber that was created but we need recurse down its
-			-- children to find all the terminal nodes.
-			local node = workInProgress.child
-			while node ~= nil do
-				if node.tag == HostComponent or node.tag == HostText then
-					appendInitialChild(parent, node.stateNode)
-				elseif enableFundamentalAPI and node.tag == FundamentalComponent then
-					appendInitialChild(parent, node.stateNode.instance)
-				elseif node.tag == HostPortal then
+	appendAllChildren = function(
+		parent: Instance,
+		workInProgress: Fiber,
+		needsVisibilityToggle: boolean,
+		isHidden: boolean
+	)
+		-- We only have the top Fiber that was created but we need recurse down its
+		-- children to find all the terminal nodes.
+		local node = workInProgress.child
+		while node ~= nil do
+			if node.tag == HostComponent or node.tag == HostText then
+				appendInitialChild(parent, node.stateNode)
+			elseif enableFundamentalAPI and node.tag == FundamentalComponent then
+				appendInitialChild(parent, node.stateNode.instance)
+			elseif node.tag == HostPortal then
 				-- If we have a portal child, then we don't want to traverse
 				-- down its children. Instead, we'll get insertions from each child in
 				-- the portal directly.
-				elseif node.child ~= nil then
-					node.child.return_ = node
-					node = node.child
-					continue
-				end
-				if node == workInProgress then
+			elseif node.child ~= nil then
+				node.child.return_ = node
+				node = node.child
+				continue
+			end
+			if node == workInProgress then
+				return
+			end
+			while node.sibling == nil do
+				if node.return_ == nil or node.return_ == workInProgress then
 					return
 				end
-				while node.sibling == nil do
-					if node.return_ == nil or node.return_ == workInProgress then
-						return
-					end
-					node = node.return_
-				end
-				-- ROBLOX FIXME Luau: Luau doesn't understand loop predicates above results in node.sibling ~= nil
-				(node.sibling :: Fiber).return_ = node.return_
-				node = node.sibling
+				node = node.return_
 			end
+			-- ROBLOX FIXME Luau: Luau doesn't understand loop predicates above results in node.sibling ~= nil
+			(node.sibling :: Fiber).return_ = node.return_
+			node = node.sibling
 		end
+	end
 
 	updateHostContainer = function(current: nil | Fiber, workInProgress: Fiber)
 		-- Noop
@@ -297,95 +301,99 @@ if supportsMutation then
 	end
 elseif supportsPersistence then
 	-- Persistent host tree mode
-	appendAllChildren =
-		function(parent: Instance, workInProgress: Fiber, needsVisibilityToggle: boolean, isHidden: boolean)
-			unimplemented("appendAllChildren")
-			--     -- We only have the top Fiber that was created but we need recurse down its
-			--     -- children to find all the terminal nodes.
-			--     local node = workInProgress.child
-			--     while (node ~= nil)
-			--       -- eslint-disable-next-line no-labels
-			--       branches: if node.tag == HostComponent)
-			--         local instance = node.stateNode
-			--         if needsVisibilityToggle and isHidden)
-			--           -- This child is inside a timed out tree. Hide it.
-			--           local props = node.memoizedProps
-			--           local type = node.type
-			--           instance = cloneHiddenInstance(instance, type, props, node)
-			--         end
-			--         appendInitialChild(parent, instance)
-			--       } else if node.tag == HostText)
-			--         local instance = node.stateNode
-			--         if needsVisibilityToggle and isHidden)
-			--           -- This child is inside a timed out tree. Hide it.
-			--           local text = node.memoizedProps
-			--           instance = cloneHiddenTextInstance(instance, text, node)
-			--         end
-			--         appendInitialChild(parent, instance)
-			--       } else if enableFundamentalAPI and node.tag == FundamentalComponent)
-			--         local instance = node.stateNode.instance
-			--         if needsVisibilityToggle and isHidden)
-			--           -- This child is inside a timed out tree. Hide it.
-			--           local props = node.memoizedProps
-			--           local type = node.type
-			--           instance = cloneHiddenInstance(instance, type, props, node)
-			--         end
-			--         appendInitialChild(parent, instance)
-			--       } else if node.tag == HostPortal)
-			--         -- If we have a portal child, then we don't want to traverse
-			--         -- down its children. Instead, we'll get insertions from each child in
-			--         -- the portal directly.
-			--       } else if node.tag == SuspenseComponent)
-			--         if (node.flags & Update) ~= NoFlags)
-			--           -- Need to toggle the visibility of the primary children.
-			--           local newIsHidden = node.memoizedState ~= nil
-			--           if newIsHidden)
-			--             local primaryChildParent = node.child
-			--             if primaryChildParent ~= nil)
-			--               if primaryChildParent.child ~= nil)
-			--                 primaryChildParent.child.return = primaryChildParent
-			--                 appendAllChildren(
-			--                   parent,
-			--                   primaryChildParent,
-			--                   true,
-			--                   newIsHidden,
-			--                 )
-			--               end
-			--               local fallbackChildParent = primaryChildParent.sibling
-			--               if fallbackChildParent ~= nil)
-			--                 fallbackChildParent.return = node
-			--                 node = fallbackChildParent
-			--                 continue
-			--               end
-			--             end
-			--           end
-			--         end
-			--         if node.child ~= nil)
-			--           -- Continue traversing like normal
-			--           node.child.return = node
-			--           node = node.child
-			--           continue
-			--         end
-			--       } else if node.child ~= nil)
-			--         node.child.return = node
-			--         node = node.child
-			--         continue
-			--       end
-			--       -- $FlowFixMe This is correct but Flow is confused by the labeled break.
-			--       node = (node: Fiber)
-			--       if node == workInProgress)
-			--         return
-			--       end
-			--       while (node.sibling == nil)
-			--         if node.return == nil or node.return == workInProgress)
-			--           return
-			--         end
-			--         node = node.return
-			--       end
-			--       node.sibling.return = node.return
-			--       node = node.sibling
-			--     end
-		end
+	appendAllChildren = function(
+		parent: Instance,
+		workInProgress: Fiber,
+		needsVisibilityToggle: boolean,
+		isHidden: boolean
+	)
+		unimplemented("appendAllChildren")
+		--     -- We only have the top Fiber that was created but we need recurse down its
+		--     -- children to find all the terminal nodes.
+		--     local node = workInProgress.child
+		--     while (node ~= nil)
+		--       -- eslint-disable-next-line no-labels
+		--       branches: if node.tag == HostComponent)
+		--         local instance = node.stateNode
+		--         if needsVisibilityToggle and isHidden)
+		--           -- This child is inside a timed out tree. Hide it.
+		--           local props = node.memoizedProps
+		--           local type = node.type
+		--           instance = cloneHiddenInstance(instance, type, props, node)
+		--         end
+		--         appendInitialChild(parent, instance)
+		--       } else if node.tag == HostText)
+		--         local instance = node.stateNode
+		--         if needsVisibilityToggle and isHidden)
+		--           -- This child is inside a timed out tree. Hide it.
+		--           local text = node.memoizedProps
+		--           instance = cloneHiddenTextInstance(instance, text, node)
+		--         end
+		--         appendInitialChild(parent, instance)
+		--       } else if enableFundamentalAPI and node.tag == FundamentalComponent)
+		--         local instance = node.stateNode.instance
+		--         if needsVisibilityToggle and isHidden)
+		--           -- This child is inside a timed out tree. Hide it.
+		--           local props = node.memoizedProps
+		--           local type = node.type
+		--           instance = cloneHiddenInstance(instance, type, props, node)
+		--         end
+		--         appendInitialChild(parent, instance)
+		--       } else if node.tag == HostPortal)
+		--         -- If we have a portal child, then we don't want to traverse
+		--         -- down its children. Instead, we'll get insertions from each child in
+		--         -- the portal directly.
+		--       } else if node.tag == SuspenseComponent)
+		--         if (node.flags & Update) ~= NoFlags)
+		--           -- Need to toggle the visibility of the primary children.
+		--           local newIsHidden = node.memoizedState ~= nil
+		--           if newIsHidden)
+		--             local primaryChildParent = node.child
+		--             if primaryChildParent ~= nil)
+		--               if primaryChildParent.child ~= nil)
+		--                 primaryChildParent.child.return = primaryChildParent
+		--                 appendAllChildren(
+		--                   parent,
+		--                   primaryChildParent,
+		--                   true,
+		--                   newIsHidden,
+		--                 )
+		--               end
+		--               local fallbackChildParent = primaryChildParent.sibling
+		--               if fallbackChildParent ~= nil)
+		--                 fallbackChildParent.return = node
+		--                 node = fallbackChildParent
+		--                 continue
+		--               end
+		--             end
+		--           end
+		--         end
+		--         if node.child ~= nil)
+		--           -- Continue traversing like normal
+		--           node.child.return = node
+		--           node = node.child
+		--           continue
+		--         end
+		--       } else if node.child ~= nil)
+		--         node.child.return = node
+		--         node = node.child
+		--         continue
+		--       end
+		--       -- $FlowFixMe This is correct but Flow is confused by the labeled break.
+		--       node = (node: Fiber)
+		--       if node == workInProgress)
+		--         return
+		--       end
+		--       while (node.sibling == nil)
+		--         if node.return == nil or node.return == workInProgress)
+		--           return
+		--         end
+		--         node = node.return
+		--       end
+		--       node.sibling.return = node.return
+		--       node = node.sibling
+		--     end
+	end
 
 	-- An unfortunate fork of appendAllChildren because we have two different parent types.
 	local function appendAllChildrenToContainer(

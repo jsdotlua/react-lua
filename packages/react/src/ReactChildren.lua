@@ -139,11 +139,13 @@ local function mapIntoArray(
 					-- traverseAllChildren used to do for objects as children
 					escapedPrefix
 						-- $FlowFixMe Flow incorrectly thinks React.Portal doesn't have a key
-						.. (if mappedChildKey
-								and (not child or (child :: ReactElement<Object, any>).key ~= mappedChildKey)
-							-- $FlowFixMe Flow incorrectly thinks existing element's key can be a number
-							then escapeUserProvidedKey(tostring(mappedChildKey)) .. "/"
-							else "")
+						.. (
+							if mappedChildKey
+									and (not child or (child :: ReactElement<Object, any>).key ~= mappedChildKey)
+								-- $FlowFixMe Flow incorrectly thinks existing element's key can be a number
+								then escapeUserProvidedKey(tostring(mappedChildKey)) .. "/"
+								else ""
+						)
 						.. childKey
 				)
 			end

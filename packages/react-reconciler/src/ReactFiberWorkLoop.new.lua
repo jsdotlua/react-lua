@@ -2538,17 +2538,21 @@ mod.commitMutationEffectsImpl = function(fiber: Fiber, root: FiberRoot, renderPr
 	end
 end
 
-mod.commitMutationEffectsDeletions =
-	function(deletions: Array<Fiber>, fiber: Fiber, root: FiberRoot, renderPriorityLevel)
-		-- ROBLOX performance: align to React 18, which ditches the __DEV__ branch and use of invokeGuardedCallback
-		for _, childToDelete in deletions do
-			-- ROBLOX FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
-			local ok, error_ = xpcall(commitDeletion, describeError, root, childToDelete, fiber, renderPriorityLevel)
-			if not ok then
-				exports.captureCommitPhaseError(childToDelete, fiber, error_)
-			end
+mod.commitMutationEffectsDeletions = function(
+	deletions: Array<Fiber>,
+	fiber: Fiber,
+	root: FiberRoot,
+	renderPriorityLevel
+)
+	-- ROBLOX performance: align to React 18, which ditches the __DEV__ branch and use of invokeGuardedCallback
+	for _, childToDelete in deletions do
+		-- ROBLOX FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
+		local ok, error_ = xpcall(commitDeletion, describeError, root, childToDelete, fiber, renderPriorityLevel)
+		if not ok then
+			exports.captureCommitPhaseError(childToDelete, fiber, error_)
 		end
 	end
+end
 
 exports.schedulePassiveEffectCallback = function()
 	if not rootDoesHavePassiveEffects then

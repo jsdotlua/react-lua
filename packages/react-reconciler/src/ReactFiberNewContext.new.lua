@@ -186,84 +186,88 @@ exports.scheduleWorkOnParentPath = function(parent: Fiber | nil, renderLanes: La
 	end
 end
 
-exports.propagateContextChange =
-	function<T>(workInProgress: Fiber, context: ReactContext<T>, changedBits: number, renderLanes: Lanes): ()
-		local fiber = workInProgress.child
-		if fiber ~= nil then
-			-- Set the return pointer of the child to the work-in-progress fiber.
-			fiber.return_ = workInProgress
-		end
-		while fiber ~= nil do
-			local nextFiber
+exports.propagateContextChange = function<T>(
+	workInProgress: Fiber,
+	context: ReactContext<T>,
+	changedBits: number,
+	renderLanes: Lanes
+): ()
+	local fiber = workInProgress.child
+	if fiber ~= nil then
+		-- Set the return pointer of the child to the work-in-progress fiber.
+		fiber.return_ = workInProgress
+	end
+	while fiber ~= nil do
+		local nextFiber
 
-			-- Visit this fiber.
-			local list = fiber.dependencies
-			if list ~= nil then
-				nextFiber = fiber.child
+		-- Visit this fiber.
+		local list = fiber.dependencies
+		if list ~= nil then
+			nextFiber = fiber.child
 
-				local dependency = list.firstContext
-				while dependency ~= nil do
-					-- Check if the context matches.
-					if
-						dependency.context == context
-						-- ROBLOX performance: unstable observedBits is removed in React 18
-						and bit32.band(dependency.observedBits, changedBits) ~= 0
-					then
-						-- Match! Schedule an update on this fiber.
+			local dependency = list.firstContext
+			while dependency ~= nil do
+				-- Check if the context matches.
+				if
+					dependency.context == context
+					-- ROBLOX performance: unstable observedBits is removed in React 18
+					and bit32.band(dependency.observedBits, changedBits) ~= 0
+				then
+					-- Match! Schedule an update on this fiber.
 
-						if fiber.tag == ClassComponent then
-							-- Schedule a force update on the work-in-progress.
-							local update = createUpdate(NoTimestamp, pickArbitraryLane(renderLanes))
-							update.tag = ForceUpdate
-							-- TODO: Because we don't have a work-in-progress, this will add the
-							-- update to the current fiber, too, which means it will persist even if
-							-- this render is thrown away. Since it's a race condition, not sure it's
-							-- worth fixing.
+					if fiber.tag == ClassComponent then
+						-- Schedule a force update on the work-in-progress.
+						local update = createUpdate(NoTimestamp, pickArbitraryLane(renderLanes))
+						update.tag = ForceUpdate
+						-- TODO: Because we don't have a work-in-progress, this will add the
+						-- update to the current fiber, too, which means it will persist even if
+						-- this render is thrown away. Since it's a race condition, not sure it's
+						-- worth fixing.
 
-							-- Inlined `enqueueUpdate` to remove interleaved update check
-							local updateQueue = fiber.updateQueue
-							if updateQueue == nil then
+						-- Inlined `enqueueUpdate` to remove interleaved update check
+						local updateQueue = fiber.updateQueue
+						if updateQueue == nil then
 							-- Only occurs if the fiber has been unmounted.
+						else
+							local sharedQueue: SharedQueue<any> = (updateQueue :: any).shared
+							local pending = sharedQueue.pending
+							if pending == nil then
+								-- This is the first update. Create a circular list.
+								update.next = update
 							else
-								local sharedQueue: SharedQueue<any> = (updateQueue :: any).shared
-								local pending = sharedQueue.pending
-								if pending == nil then
-									-- This is the first update. Create a circular list.
-									update.next = update
-								else
-									update.next = pending.next
-									pending.next = update
-								end
-								sharedQueue.pending = update
+								update.next = pending.next
+								pending.next = update
 							end
+							sharedQueue.pending = update
 						end
-
-						-- ROBLOX performance: inline mergeLanes(fiber.lanes, renderLanes)
-						fiber.lanes = bit32.bor(fiber.lanes, renderLanes)
-						local alternate = fiber.alternate
-						if alternate ~= nil then
-							-- ROBLOX performance: inline mergeLanes(alternate.lanes, renderLanes)
-							alternate.lanes = bit32.bor(alternate.lanes, renderLanes)
-						end
-						exports.scheduleWorkOnParentPath(fiber.return_, renderLanes)
-
-						-- Mark the updated lanes on the list, too.
-						-- ROBLOX performance: inline mergeLanes(list.lanes, renderLanes)
-						list.lanes = bit32.bor(list.lanes, renderLanes)
-
-						-- Since we already found a match, we can stop traversing the
-						-- dependency list.
-						break
 					end
-					dependency = dependency.next
+
+					-- ROBLOX performance: inline mergeLanes(fiber.lanes, renderLanes)
+					fiber.lanes = bit32.bor(fiber.lanes, renderLanes)
+					local alternate = fiber.alternate
+					if alternate ~= nil then
+						-- ROBLOX performance: inline mergeLanes(alternate.lanes, renderLanes)
+						alternate.lanes = bit32.bor(alternate.lanes, renderLanes)
+					end
+					exports.scheduleWorkOnParentPath(fiber.return_, renderLanes)
+
+					-- Mark the updated lanes on the list, too.
+					-- ROBLOX performance: inline mergeLanes(list.lanes, renderLanes)
+					list.lanes = bit32.bor(list.lanes, renderLanes)
+
+					-- Since we already found a match, we can stop traversing the
+					-- dependency list.
+					break
 				end
-			elseif fiber.tag == ContextProvider then
-				-- Don't scan deeper if this is a matching provider
-				if fiber.type == workInProgress.type then
-					nextFiber = nil
-				else
-					nextFiber = fiber.child
-				end
+				dependency = dependency.next
+			end
+		elseif fiber.tag == ContextProvider then
+			-- Don't scan deeper if this is a matching provider
+			if fiber.type == workInProgress.type then
+				nextFiber = nil
+			else
+				nextFiber = fiber.child
+			end
 			-- ROBLOX performance: eliminate always-false compare in tab switching hot path
 			-- elseif
 			--   enableSuspenseServerRenderer and
@@ -287,58 +291,61 @@ exports.propagateContextChange =
 			--   -- this fiber to indicate that a context has changed.
 			--   exports.scheduleWorkOnParentPath(parentSuspense, renderLanes)
 			--   nextFiber = fiber.sibling
-			else
-				-- Traverse down.
-				nextFiber = fiber.child
-			end
-
-			if nextFiber ~= nil then
-				-- Set the return pointer of the child to the work-in-progress fiber.
-				nextFiber.return_ = fiber
-			else
-				-- No child. Traverse to next sibling.
-				nextFiber = fiber
-				while nextFiber ~= nil do
-					if nextFiber == workInProgress then
-						-- We're back to the root of this subtree. Exit.
-						nextFiber = nil
-						break
-					end
-					local sibling = nextFiber.sibling
-					if sibling ~= nil then
-						-- Set the return pointer of the sibling to the work-in-progress fiber.
-						sibling.return_ = nextFiber.return_
-						nextFiber = sibling
-						break
-					end
-					-- No more siblings. Traverse up.
-					nextFiber = nextFiber.return_
-				end
-			end
-			fiber = nextFiber
+		else
+			-- Traverse down.
+			nextFiber = fiber.child
 		end
+
+		if nextFiber ~= nil then
+			-- Set the return pointer of the child to the work-in-progress fiber.
+			nextFiber.return_ = fiber
+		else
+			-- No child. Traverse to next sibling.
+			nextFiber = fiber
+			while nextFiber ~= nil do
+				if nextFiber == workInProgress then
+					-- We're back to the root of this subtree. Exit.
+					nextFiber = nil
+					break
+				end
+				local sibling = nextFiber.sibling
+				if sibling ~= nil then
+					-- Set the return pointer of the sibling to the work-in-progress fiber.
+					sibling.return_ = nextFiber.return_
+					nextFiber = sibling
+					break
+				end
+				-- No more siblings. Traverse up.
+				nextFiber = nextFiber.return_
+			end
+		end
+		fiber = nextFiber
 	end
+end
 
 -- deviation: third argument added to eliminate cycle
-exports.prepareToReadContext =
-	function(workInProgress: Fiber, renderLanes: Lanes, markWorkInProgressReceivedUpdate: () -> ()): ()
-		currentlyRenderingFiber = workInProgress
-		lastContextDependency = nil
-		lastContextWithAllBitsObserved = nil
+exports.prepareToReadContext = function(
+	workInProgress: Fiber,
+	renderLanes: Lanes,
+	markWorkInProgressReceivedUpdate: () -> ()
+): ()
+	currentlyRenderingFiber = workInProgress
+	lastContextDependency = nil
+	lastContextWithAllBitsObserved = nil
 
-		local dependencies = workInProgress.dependencies
-		if dependencies ~= nil then
-			local firstContext = dependencies.firstContext
-			if firstContext ~= nil then
-				if includesSomeLane(dependencies.lanes, renderLanes) then
-					-- Context list has a pending update. Mark that this fiber performed work.
-					markWorkInProgressReceivedUpdate()
-				end
-				-- Reset the work-in-progress list
-				dependencies.firstContext = nil
+	local dependencies = workInProgress.dependencies
+	if dependencies ~= nil then
+		local firstContext = dependencies.firstContext
+		if firstContext ~= nil then
+			if includesSomeLane(dependencies.lanes, renderLanes) then
+				-- Context list has a pending update. Mark that this fiber performed work.
+				markWorkInProgressReceivedUpdate()
 			end
+			-- Reset the work-in-progress list
+			dependencies.firstContext = nil
 		end
 	end
+end
 
 exports.readContext = function<T>(context: ReactContext<T>, observedBits: nil | number | boolean): T
 	if _G.__DEV__ then

@@ -55,7 +55,7 @@ export type Family = {
 -- |}
 
 -- Resolves type to a family.
-type RefreshHandler = (any) -> (Family?)
+type RefreshHandler = (any) -> Family?
 
 -- -- Used by React Refresh runtime through DevTools Global Hook.
 -- export type SetRefreshHandler = (handler: RefreshHandler | nil) => void

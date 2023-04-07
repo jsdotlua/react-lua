@@ -205,106 +205,80 @@ exports.unstable_trace = function(name: string, timestamp: number, callback: Fun
 	return returnValue
 end
 
-exports.unstable_wrap =
-	function(callback: Function, threadID: number): any -- ROLBOX deviation: any, since __call doesn't map to Function
-		-- ROBLOX: default argument value
-		if threadID == nil then
-			threadID = DEFAULT_THREAD_ID
-		end
+exports.unstable_wrap = function(
+	callback: Function,
+	threadID: number
+): any -- ROLBOX deviation: any, since __call doesn't map to Function
+	-- ROBLOX: default argument value
+	if threadID == nil then
+		threadID = DEFAULT_THREAD_ID
+	end
 
-		if not enableSchedulerTracing then
-			return callback
-		end
+	if not enableSchedulerTracing then
+		return callback
+	end
 
-		local wrappedInteractions = interactionsRef.current
+	local wrappedInteractions = interactionsRef.current
 
-		local subscriber = subscriberRef.current
-		if subscriber ~= nil then
-			subscriber.onWorkScheduled(wrappedInteractions, threadID)
-		end
+	local subscriber = subscriberRef.current
+	if subscriber ~= nil then
+		subscriber.onWorkScheduled(wrappedInteractions, threadID)
+	end
 
-		-- Update the pending async work count for the current interactions.
-		-- Update after calling subscribers in case of error.
-		for _, interaction in wrappedInteractions do
-			interaction.__count += 1
-		end
+	-- Update the pending async work count for the current interactions.
+	-- Update after calling subscribers in case of error.
+	for _, interaction in wrappedInteractions do
+		interaction.__count += 1
+	end
 
-		local hasRun = false
+	local hasRun = false
 
-		local function _wrapped(self, ...)
-			local prevInteractions = interactionsRef.current
-			interactionsRef.current = wrappedInteractions
+	local function _wrapped(self, ...)
+		local prevInteractions = interactionsRef.current
+		interactionsRef.current = wrappedInteractions
 
-			subscriber = subscriberRef.current
+		subscriber = subscriberRef.current
 
-			-- ROBLOX try
-			local ok, result = pcall(function(...)
-				local returnValue
+		-- ROBLOX try
+		local ok, result = pcall(function(...)
+			local returnValue
 
-				-- ROBLOX try 2
-				local ok2, result2 = pcall(function()
-					if subscriber ~= nil then
-						subscriber.onWorkStarted(wrappedInteractions, threadID)
-					end
-				end)
-				-- ROBLOX finally 2
-				-- ROBLOX try 3
-				local ok3, result3 = pcall(function(...)
-					returnValue = callback(...)
-				end, ...)
-				-- ROBLOX finally 3
-				interactionsRef.current = prevInteractions
-
+			-- ROBLOX try 2
+			local ok2, result2 = pcall(function()
 				if subscriber ~= nil then
-					subscriber.onWorkStopped(wrappedInteractions, threadID)
-				end
-
-				if not ok3 then
-					error(result3)
-				end
-
-				if not ok2 then
-					error(result2)
-				end
-
-				return returnValue
-			end, ...)
-
-			-- ROBLOX finally {
-			if not hasRun then
-				-- We only expect a wrapped function to be executed once,
-				-- But in the event that it's executed more than once–
-				-- Only decrement the outstanding interaction counts once.
-				hasRun = true
-
-				-- Update pending async counts for all wrapped interactions.
-				-- If this was the last scheduled async work for any of them,
-				-- Mark them as completed.
-				for _, interaction in wrappedInteractions do
-					interaction.__count -= 1
-
-					if subscriber ~= nil and interaction.__count == 0 then
-						subscriber.onInteractionScheduledWorkCompleted(interaction)
-					end
-				end
-			end
-
-			if not ok then
-				error(result)
-			end
-
-			return result
-		end
-
-		local _cancel = function()
-			subscriber = subscriberRef.current
-
-			local ok, result = pcall(function()
-				if subscriber ~= nil then
-					subscriber.onWorkCanceled(wrappedInteractions, threadID)
+					subscriber.onWorkStarted(wrappedInteractions, threadID)
 				end
 			end)
-			--ROBLOX finally {
+			-- ROBLOX finally 2
+			-- ROBLOX try 3
+			local ok3, result3 = pcall(function(...)
+				returnValue = callback(...)
+			end, ...)
+			-- ROBLOX finally 3
+			interactionsRef.current = prevInteractions
+
+			if subscriber ~= nil then
+				subscriber.onWorkStopped(wrappedInteractions, threadID)
+			end
+
+			if not ok3 then
+				error(result3)
+			end
+
+			if not ok2 then
+				error(result2)
+			end
+
+			return returnValue
+		end, ...)
+
+		-- ROBLOX finally {
+		if not hasRun then
+			-- We only expect a wrapped function to be executed once,
+			-- But in the event that it's executed more than once–
+			-- Only decrement the outstanding interaction counts once.
+			hasRun = true
+
 			-- Update pending async counts for all wrapped interactions.
 			-- If this was the last scheduled async work for any of them,
 			-- Mark them as completed.
@@ -315,19 +289,47 @@ exports.unstable_wrap =
 					subscriber.onInteractionScheduledWorkCompleted(interaction)
 				end
 			end
+		end
 
-			if not ok then
-				error(result)
+		if not ok then
+			error(result)
+		end
+
+		return result
+	end
+
+	local _cancel = function()
+		subscriber = subscriberRef.current
+
+		local ok, result = pcall(function()
+			if subscriber ~= nil then
+				subscriber.onWorkCanceled(wrappedInteractions, threadID)
+			end
+		end)
+		--ROBLOX finally {
+		-- Update pending async counts for all wrapped interactions.
+		-- If this was the last scheduled async work for any of them,
+		-- Mark them as completed.
+		for _, interaction in wrappedInteractions do
+			interaction.__count -= 1
+
+			if subscriber ~= nil and interaction.__count == 0 then
+				subscriber.onInteractionScheduledWorkCompleted(interaction)
 			end
 		end
 
-		local wrapped = {}
-		setmetatable(wrapped, {
-			__call = _wrapped,
-		})
-		wrapped.cancel = _cancel
-
-		return wrapped
+		if not ok then
+			error(result)
+		end
 	end
+
+	local wrapped = {}
+	setmetatable(wrapped, {
+		__call = _wrapped,
+	})
+	wrapped.cancel = _cancel
+
+	return wrapped
+end
 
 return exports

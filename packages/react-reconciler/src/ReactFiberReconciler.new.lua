@@ -289,79 +289,83 @@ exports.createContainer = function(
 	return createFiberRoot(containerInfo, tag, hydrate, hydrationCallbacks)
 end
 
-exports.updateContainer =
-	function(element: ReactNodeList, container: OpaqueRoot, parentComponent, callback: Function?): Lane
-		if __DEV__ then
-			onScheduleRoot(container, element)
+exports.updateContainer = function(
+	element: ReactNodeList,
+	container: OpaqueRoot,
+	parentComponent,
+	callback: Function?
+): Lane
+	if __DEV__ then
+		onScheduleRoot(container, element)
+	end
+	local current = container.current
+	local eventTime = requestEventTime()
+	if __DEV__ then
+		-- deviation: use TestEZ's __TESTEZ_RUNNING_TEST__ (no jest global)
+		-- $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
+		if _G.__TESTEZ_RUNNING_TEST__ then
+			warnIfUnmockedScheduler(current)
+			warnIfNotScopedWithMatchingAct(current)
 		end
-		local current = container.current
-		local eventTime = requestEventTime()
-		if __DEV__ then
-			-- deviation: use TestEZ's __TESTEZ_RUNNING_TEST__ (no jest global)
-			-- $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
-			if _G.__TESTEZ_RUNNING_TEST__ then
-				warnIfUnmockedScheduler(current)
-				warnIfNotScopedWithMatchingAct(current)
-			end
-		end
-		local lane = requestUpdateLane(current)
+	end
+	local lane = requestUpdateLane(current)
 
-		if enableSchedulingProfiler then
-			markRenderScheduled(lane)
-		end
+	if enableSchedulingProfiler then
+		markRenderScheduled(lane)
+	end
 
-		local context = getContextForSubtree(parentComponent)
-		if container.context == nil then
-			container.context = context
-		else
-			container.pendingContext = context
-		end
+	local context = getContextForSubtree(parentComponent)
+	if container.context == nil then
+		container.context = context
+	else
+		container.pendingContext = context
+	end
 
+	if __DEV__ then
+		if ReactCurrentFiberIsRendering and ReactCurrentFiber.current ~= nil and not didWarnAboutNestedUpdates then
+			didWarnAboutNestedUpdates = true
+			console.error(
+				"Render methods should be a pure function of props and state; "
+					.. "triggering nested component updates from render is not allowed. "
+					.. "If necessary, trigger nested updates in componentDidUpdate.\n\n"
+					.. "Check the render method of %s.",
+				getComponentName((ReactCurrentFiber.current :: any).type) or "Unknown"
+			)
+		end
+	end
+
+	local update = createUpdate(eventTime, lane)
+	-- deviation: We need to set element to a placeholder so that it gets
+	-- removed from previous state when merging tables
+	if element == nil then
+		element = Object.None
+	end
+	-- Caution: React DevTools currently depends on this property
+	-- being called "element".
+	update.payload = {
+		element = element,
+	}
+
+	-- deviation: no undefined, so not needed
+	-- callback = callback == undefined ? nil : callback
+	if callback ~= nil then
 		if __DEV__ then
-			if ReactCurrentFiberIsRendering and ReactCurrentFiber.current ~= nil and not didWarnAboutNestedUpdates then
-				didWarnAboutNestedUpdates = true
+			if typeof(callback) ~= "function" then
 				console.error(
-					"Render methods should be a pure function of props and state; "
-						.. "triggering nested component updates from render is not allowed. "
-						.. "If necessary, trigger nested updates in componentDidUpdate.\n\n"
-						.. "Check the render method of %s.",
-					getComponentName((ReactCurrentFiber.current :: any).type) or "Unknown"
+					"render(...): Expected the last optional `callback` argument to be a "
+						.. "function. Instead received: %s.",
+					tostring(callback)
 				)
 			end
 		end
-
-		local update = createUpdate(eventTime, lane)
-		-- deviation: We need to set element to a placeholder so that it gets
-		-- removed from previous state when merging tables
-		if element == nil then
-			element = Object.None
-		end
-		-- Caution: React DevTools currently depends on this property
-		-- being called "element".
-		update.payload = {
-			element = element,
-		}
-
-		-- deviation: no undefined, so not needed
-		-- callback = callback == undefined ? nil : callback
-		if callback ~= nil then
-			if __DEV__ then
-				if typeof(callback) ~= "function" then
-					console.error(
-						"render(...): Expected the last optional `callback` argument to be a "
-							.. "function. Instead received: %s.",
-						tostring(callback)
-					)
-				end
-			end
-			update.callback = callback
-		end
-
-		enqueueUpdate(current, update)
-		scheduleUpdateOnFiber(current, lane, eventTime)
-
-		return lane
+		update.callback = callback
 	end
+
+	enqueueUpdate(current, update)
+	scheduleUpdateOnFiber(current, lane, eventTime)
+
+	return lane
+end
 
 -- FIXME: WIP
 exports.batchedEventUpdates = batchedEventUpdates
@@ -671,24 +675,28 @@ if __DEV__ then
 			scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp)
 		end
 	end
-	overrideHookStateRenamePath =
-		function(fiber: Fiber, id: number, oldPath: Array<string | number>, newPath: Array<string | number>)
-			local hook = findHook(fiber, id)
-			if hook ~= nil then
-				local newState = copyWithRename(hook.memoizedState, oldPath, newPath)
-				hook.memoizedState = newState
-				hook.baseState = newState
+	overrideHookStateRenamePath = function(
+		fiber: Fiber,
+		id: number,
+		oldPath: Array<string | number>,
+		newPath: Array<string | number>
+	)
+		local hook = findHook(fiber, id)
+		if hook ~= nil then
+			local newState = copyWithRename(hook.memoizedState, oldPath, newPath)
+			hook.memoizedState = newState
+			hook.baseState = newState
 
-				-- We aren't actually adding an update to the queue,
-				-- because there is no update we can add for useReducer hooks that won't trigger an error.
-				-- (There's no appropriate action type for DevTools overrides.)
-				-- As a result though, React will see the scheduled update as a noop and bailout.
-				-- Shallow cloning props works as a workaround for now to bypass the bailout check.
-				fiber.memoizedProps = table.clone(fiber.memoizedProps)
+			-- We aren't actually adding an update to the queue,
+			-- because there is no update we can add for useReducer hooks that won't trigger an error.
+			-- (There's no appropriate action type for DevTools overrides.)
+			-- As a result though, React will see the scheduled update as a noop and bailout.
+			-- Shallow cloning props works as a workaround for now to bypass the bailout check.
+			fiber.memoizedProps = table.clone(fiber.memoizedProps)
 
-				scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp)
-			end
+			scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp)
 		end
+	end
 
 	-- Support DevTools props for function components, forwardRef, memo, host components, etc.
 	overrideProps = function(fiber: Fiber, path: Array<string | number>, value: any)
@@ -723,7 +731,7 @@ if __DEV__ then
 		scheduleUpdateOnFiber(fiber, SyncLane, NoTimestamp)
 	end
 
-	setSuspenseHandler = function(newShouldSuspendImpl: (Fiber) -> (boolean))
+	setSuspenseHandler = function(newShouldSuspendImpl: (Fiber) -> boolean)
 		shouldSuspendImpl = newShouldSuspendImpl
 	end
 end

@@ -258,23 +258,26 @@ exports.getRootHostContext = function(rootContainerInstance: Container): HostCon
 	-- return namespace
 end
 
-exports.getChildHostContext =
-	function(parentHostContext: HostContext, type: string, rootContainerInstance: Container): HostContext
-		-- ROBLOX deviation: unclear on the purpose here just yet, might be fine to
-		-- just return parent's hostContext for now
-		return parentHostContext
-		-- if _G.__DEV__ then
-		--   local parentHostContextDev = ((parentHostContext: any): HostContextDev)
-		--   local namespace = getChildNamespace(parentHostContextDev.namespace, type)
-		--   local ancestorInfo = updatedAncestorInfo(
-		--     parentHostContextDev.ancestorInfo,
-		--     type,
-		--   )
-		--   return {namespace, ancestorInfo}
-		-- end
-		-- local parentNamespace = ((parentHostContext: any): HostContextProd)
-		-- return getChildNamespace(parentNamespace, type)
-	end
+exports.getChildHostContext = function(
+	parentHostContext: HostContext,
+	type: string,
+	rootContainerInstance: Container
+): HostContext
+	-- ROBLOX deviation: unclear on the purpose here just yet, might be fine to
+	-- just return parent's hostContext for now
+	return parentHostContext
+	-- if _G.__DEV__ then
+	--   local parentHostContextDev = ((parentHostContext: any): HostContextDev)
+	--   local namespace = getChildNamespace(parentHostContextDev.namespace, type)
+	--   local ancestorInfo = updatedAncestorInfo(
+	--     parentHostContextDev.ancestorInfo,
+	--     type,
+	--   )
+	--   return {namespace, ancestorInfo}
+	-- end
+	-- local parentNamespace = ((parentHostContext: any): HostContextProd)
+	-- return getChildNamespace(parentNamespace, type)
+end
 
 exports.getPublicInstance = function(instance: Instance): any
 	return instance

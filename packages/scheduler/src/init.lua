@@ -17,9 +17,7 @@ local function onlyInTestError(functionName: string)
 	end
 end
 
-local Scheduler = initializeScheduler(
-	nil --[[ no host config, use default ]]
-)
+local Scheduler = initializeScheduler(nil --[[ no host config, use default ]])
 local Tracing = require(script.Tracing)
 local TracingSubscriptions = require(script.TracingSubscriptions)
 -- ROBLOX deviation export Tracing type from the package exports to avoid direct file access
