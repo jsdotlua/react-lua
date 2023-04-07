@@ -19,6 +19,39 @@
         },
         "Shared": {
             "$path": "packages/shared/default.project.json"
+        },
+        "Boolean": {
+            "$path": "vendor/luau-polyfill/packages/boolean/default.project.json"
+        },
+        "Collections": {
+            "$path": "vendor/luau-polyfill/packages/collections/default.project.json"
+        },
+        "Console": {
+            "$path": "vendor/luau-polyfill/packages/console/default.project.json"
+        },
+        "ES7Types": {
+            "$path": "vendor/luau-polyfill/packages/es7-types/default.project.json"
+        },
+        "InstanceOf": {
+            "$path": "vendor/luau-polyfill/packages/instance-of/default.project.json"
+        },
+        "LuauPolyfill": {
+            "$path": "vendor/luau-polyfill/packages/luau-polyfill/default.project.json"
+        },
+        "Math": {
+            "$path": "vendor/luau-polyfill/packages/math/default.project.json"
+        },
+        "Number": {
+            "$path": "vendor/luau-polyfill/packages/number/default.project.json"
+        },
+        "String": {
+            "$path": "vendor/luau-polyfill/packages/string/default.project.json"
+        },
+        "Symbol": {
+            "$path": "vendor/luau-polyfill/packages/symbol/default.project.json"
+        },
+        "Timers": {
+            "$path": "vendor/luau-polyfill/packages/timers/default.project.json"
         }
     }
 }
