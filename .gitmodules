@@ -1,0 +1,3 @@
+[submodule "vendor/luau-polyfill"]
+	path = vendor/luau-polyfill
+	url = https://github.com/jsdotlua/luau-polyfill
