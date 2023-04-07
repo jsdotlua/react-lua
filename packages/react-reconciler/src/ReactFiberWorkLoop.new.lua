@@ -2789,8 +2789,7 @@ flushPassiveEffectsImpl = function()
 end
 
 exports.isAlreadyFailedLegacyErrorBoundary = function(instance): boolean
-	return
-legacyErrorBoundariesThatAlreadyFailed ~= nil and legacyErrorBoundariesThatAlreadyFailed:has(instance)
+	return legacyErrorBoundariesThatAlreadyFailed ~= nil and legacyErrorBoundariesThatAlreadyFailed:has(instance)
 end
 
 exports.markLegacyErrorBoundaryAsFailed = function(instance)
