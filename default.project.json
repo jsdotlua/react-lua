@@ -5,6 +5,15 @@
         "React": {
             "$path": "packages/react/default.project.json"
         },
+        "ReactDebugTools": {
+            "$path": "packages/react-debug-tools/default.project.json"
+        },
+        "ReactDevtoolsShared": {
+            "$path": "packages/react-devtools-shared/default.project.json"
+        },
+        "ReactIs": {
+            "$path": "packages/react-is/default.project.json"
+        },
         "ReactReconciler": {
             "$path": "packages/react-reconciler/default.project.json"
         },

@@ -1,0 +1,6 @@
+{
+  "name": "react-devtools-shared",
+  "tree": {
+    "$path": "src/"
+  }
+}
