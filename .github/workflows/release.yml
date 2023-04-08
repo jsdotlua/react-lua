@@ -17,7 +17,7 @@ jobs:
 
       - name: Authenticate Wally
         run: |
-          cd packages/boolean
+          cd packages/react
           wally login --token ${{ secrets.WALLY_ACCESS_TOKEN }}
           cd ../..
 
