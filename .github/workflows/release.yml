@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Aftman
+        uses: ok-nick/setup-aftman@v0
+
+      - name: Authenticate Wally
+        run: |
+          cd packages/boolean
+          wally login --token ${{ secrets.WALLY_ACCESS_TOKEN }}
+          cd ../..
+
+      - name: Get latest release
+        id: latest-release
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true # This will error if no tags have been made yet, in which case publish.sh will fallback.
+
+      - name: Publish changed packages
+        run: bash ./scripts/publish.sh ${{ steps.latest-release.outputs.tag_name }}
+
+      - name: Build project
+        run: rojo build --output ReactLua.rbxm
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: Release ${{ github.ref }}
+          tag: ${{ github.ref }}
+          draft: true
+
+      - name: Upload build artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ReactLua.rbxm
+          asset_name: ReactLua.rbxm
+          asset_content_type: application/octet-stream
