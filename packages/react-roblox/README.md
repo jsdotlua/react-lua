@@ -1,4 +1,4 @@
-# `react-dom`
+# `react-roblox`
 
 This package serves as a Roblox renderer for React. It is intended to be paired with the generic React package, which is shipped as `core-packages/react` to Wally.
 

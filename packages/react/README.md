@@ -2,7 +2,7 @@
 
 React is a library for creating user interfaces.
 
-The `react` package contains only the functionality necessary to define React components. It is typically used together with a React renderer like `react-dom` for the web, or `react-native` for the native environments.
+The `react` package contains only the functionality necessary to define React components. It is typically used together with a React renderer like `react-roblox`.
 
 ## Usage
 
