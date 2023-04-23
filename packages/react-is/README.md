@@ -1,106 +1,105 @@
 # `react-is`
 
-**NOTE:** This README is copied directly from React upstream.
+**NOTE:** This README is copied directly from React upstream and transpiled to Lua.
 
 This package allows you to test arbitrary values and see if they're a particular React element type.
-
-## Installation
-
-```sh
-# Yarn
-yarn add react-is
-
-# NPM
-npm install react-is
-```
 
 ## Usage
 
 ### Determining if a Component is Valid
 
-```js
-import React from "react";
-import * as ReactIs from "react-is";
+```lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local React = require(ReplicatedStorage.Packages.React)
+local ReactIs = require(ReplicatedStorage.Packages.ReactIs)
 
-class ClassComponent extends React.Component {
-  render() {
-    return React.createElement("div");
-  }
-}
+local ClassComponent = React.Component:extend("ClassComponent")
 
-const FunctionComponent = () => React.createElement("div");
+function ClassComponent:render()
+    return React.createElement("Frame")
+end
 
-const ForwardRefComponent = React.forwardRef((props, ref) =>
-  React.createElement(Component, { forwardedRef: ref, ...props })
-);
+local function FunctionComponent()
+	return React.createElement("Frame")
+end
 
-const Context = React.createContext(false);
+local ForwardRefComponent = React.forwardRef(function(props, ref)
+	return React.createElement(FunctionComponent, {
+		forwardRef = ref,
+	})
+end)
 
-ReactIs.isValidElementType("div"); // true
-ReactIs.isValidElementType(ClassComponent); // true
-ReactIs.isValidElementType(FunctionComponent); // true
-ReactIs.isValidElementType(ForwardRefComponent); // true
-ReactIs.isValidElementType(Context.Provider); // true
-ReactIs.isValidElementType(Context.Consumer); // true
-ReactIs.isValidElementType(React.createFactory("div")); // true
+local Context = React.createContext(false)
+
+ReactIs.isValidElementType("Frame") -- true
+ReactIs.isValidElementType(ClassComponent) -- true
+ReactIs.isValidElementType(FunctionComponent) -- true
+ReactIs.isValidElementType(ForwardRefComponent) -- true
+ReactIs.isValidElementType(Context.Provider) -- true
+ReactIs.isValidElementType(Context.Consumer) -- true
 ```
 
 ### Determining an Element's Type
 
 #### Context
 
-```js
-import React from "react";
-import * as ReactIs from 'react-is';
+```lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local React = require(ReplicatedStorage.Packages.React)
+local ReactIs = require(ReplicatedStorage.Packages.ReactIs)
 
-const ThemeContext = React.createContext("blue");
+local ThemeContext = React.createContext("blue")
 
-ReactIs.isContextConsumer(<ThemeContext.Consumer />); // true
-ReactIs.isContextProvider(<ThemeContext.Provider />); // true
-ReactIs.typeOf(<ThemeContext.Provider />) === ReactIs.ContextProvider; // true
-ReactIs.typeOf(<ThemeContext.Consumer />) === ReactIs.ContextConsumer; // true
+ReactIs.isContextConsumer(React.createElement(ThemeContext.Consumer)) -- true
+ReactIs.isContextProvider(React.createElement(ThemeContext.Provider)) -- true
+ReactIs.typeOf(React.createElement(ThemeContext.Provider)) == ReactIs.ContextProvider -- true
+ReactIs.typeOf(React.createElement(ThemeContext.Consumer)) == ReactIs.ContextConsumer -- true
 ```
 
 #### Element
 
-```js
-import React from "react";
-import * as ReactIs from 'react-is';
+```lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local React = require(ReplicatedStorage.Packages.React)
+local ReactIs = require(ReplicatedStorage.Packages.ReactIs)
 
-ReactIs.isElement(<div />); // true
-ReactIs.typeOf(<div />) === ReactIs.Element; // true
+ReactIs.isElement(React.createElement("Frame")) -- true
+ReactIs.typeOf(React.createElement("Frame")) == ReactIs.Element -- true
 ```
 
 #### Fragment
 
-```js
-import React from "react";
-import * as ReactIs from 'react-is';
+```lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local React = require(ReplicatedStorage.Packages.React)
+local ReactIs = require(ReplicatedStorage.Packages.ReactIs)
 
-ReactIs.isFragment(<></>); // true
-ReactIs.typeOf(<></>) === ReactIs.Fragment; // true
+ReactIs.isFragment(React.createElement(React.Fragment)) -- true
+ReactIs.typeOf(React.createElement(React.Fragment)) == ReactIs.Fragment -- true
 ```
 
 #### Portal
 
-```js
-import React from "react";
-import ReactDOM from "react-dom";
-import * as ReactIs from 'react-is';
+```lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local React = require(ReplicatedStorage.Packages.React)
+local ReactRoblox = require(ReplicatedStorage.Packages.ReactRoblox)
+local ReactIs = require(ReplicatedStorage.Packages.ReactIs)
 
-const div = document.createElement("div");
-const portal = ReactDOM.createPortal(<div />, div);
+local container = Instance.new("Folder")
+local portal = ReactRoblox.createPortal(React.createElement("Frame"), container)
 
-ReactIs.isPortal(portal); // true
-ReactIs.typeOf(portal) === ReactIs.Portal; // true
+ReactIs.isPortal(portal) -- true
+ReactIs.typeOf(portal) == ReactIs.Portal -- true
 ```
 
 #### StrictMode
 
-```js
-import React from "react";
-import * as ReactIs from 'react-is';
+```lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local React = require(ReplicatedStorage.Packages.React)
+local ReactIs = require(ReplicatedStorage.Packages.ReactIs)
 
-ReactIs.isStrictMode(<React.StrictMode />); // true
-ReactIs.typeOf(<React.StrictMode />) === ReactIs.StrictMode; // true
+ReactIs.isStrictMode(React.createElement(React.StrictMode)) -- true
+ReactIs.typeOf(React.createElement(React.StrictMode)) == ReactIs.StrictMode -- true
 ```
