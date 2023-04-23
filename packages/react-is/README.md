@@ -1,7 +1,5 @@
 # `react-is`
 
-**NOTE:** This README is copied directly from React upstream and transpiled to Lua.
-
 This package allows you to test arbitrary values and see if they're a particular React element type.
 
 ## Usage
@@ -9,9 +7,8 @@ This package allows you to test arbitrary values and see if they're a particular
 ### Determining if a Component is Valid
 
 ```lua
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local React = require(ReplicatedStorage.Packages.React)
-local ReactIs = require(ReplicatedStorage.Packages.ReactIs)
+local React = require(Path.To.React)
+local ReactIs = require(Path.To.ReactIs)
 
 local ClassComponent = React.Component:extend("ClassComponent")
 
