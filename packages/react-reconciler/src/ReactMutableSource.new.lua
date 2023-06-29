@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/142d4f1c00c66f3d728177082dbc027fd6335115/packages/react-reconciler/src/ReactMutableSource.new.js
+-- upstream: https://github.com/facebook/react/blob/142d4f1c00c66f3d728177082dbc027fd6335115/packages/react-reconciler/src/ReactMutableSource.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -9,7 +9,7 @@
  ]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 type Array<T> = { [number]: T }
@@ -104,7 +104,7 @@ exports.registerMutableSourceForHydration = function(root: FiberRoot, mutableSou
 	if root.mutableSourceEagerHydrationData == nil then
 		root.mutableSourceEagerHydrationData = { mutableSource, version_ }
 	else
-		-- ROBLOX FIXME: having trouble with type coercion in this case
+		-- FIXME: having trouble with type coercion in this case
 		-- table.insert(root.mutableSourceEagerHydrationData, mutableSource)
 		-- table.insert(root.mutableSourceEagerHydrationData, version_)
 	end

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/b61174fb7b09580c1ec2a8f55e73204b706d2935/packages/shared/ReactSymbols.js
+-- upstream: https://github.com/facebook/react/blob/b61174fb7b09580c1ec2a8f55e73204b706d2935/packages/shared/ReactSymbols.js
 --!strict
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -43,7 +43,7 @@ exports.REACT_OFFSCREEN_TYPE = 0xeae2
 exports.REACT_LEGACY_HIDDEN_TYPE = 0xeae3
 exports.REACT_BINDING_TYPE = 0xeae4
 
--- ROBLOX TODO: Use Symbol again once jest-mock knows to exclude the LuauPolyfill module from being reset
+-- TODO: Use Symbol again once jest-mock knows to exclude the LuauPolyfill module from being reset
 -- deviation: In Lua, Symbol will be a callable table, not a function
 -- if typeof(Symbol) == "table" and Symbol.for_ ~= nil then
 --   local symbolFor = Symbol.for_
@@ -80,10 +80,10 @@ type Iterator<T> = {
 		done: boolean,
 	},
 }
--- ROBLOX deviation: upstream type is incorrect, as returned function takes a parameter in reconcileChildrenIterator()
+-- deviation: upstream type is incorrect, as returned function takes a parameter in reconcileChildrenIterator()
 exports.getIteratorFn = function(maybeIterable): nil | (...any) -> Iterator<any>
 	if typeof(maybeIterable) == "table" then
-		-- ROBLOX deviation: Upstream understands that portal objects are not
+		-- deviation: Upstream understands that portal objects are not
 		-- iterable; we need to check explicitly
 		if maybeIterable["$$typeof"] == exports.REACT_PORTAL_TYPE then
 			return nil

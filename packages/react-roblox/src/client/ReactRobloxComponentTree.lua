@@ -1,6 +1,6 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMComponentTree.js
--- ROBLOX upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/react-native-renderer/src/ReactNativeComponentTree.js
+-- upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMComponentTree.js
+-- upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/react-native-renderer/src/ReactNativeComponentTree.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -47,7 +47,7 @@ local invariant = Shared.invariant
 
 local exports: { [any]: any } = {}
 
--- ROBLOX deviation: Use internal maps, since we can't set properties on Containers
+-- deviation: Use internal maps, since we can't set properties on Containers
 -- (which are Instances). We might consider using the Attributes feature for
 -- this when it releases
 local containerToRoot: { [Container]: Fiber } = {}
@@ -96,9 +96,9 @@ end
 -- pass the Container node as the targetNode, you will not actually get the
 -- HostRoot back. To get to the HostRoot, you need to pass a child of it.
 -- The same thing applies to Suspense boundaries.
--- ROBLOX TODO: This function is untested and may not work!
+-- TODO: This function is untested and may not work!
 exports.getClosestInstanceFromNode = function(targetNode: Instance): Fiber?
-	-- ROBLOX deviation: Use internal maps since we can't set properties on Containers
+	-- deviation: Use internal maps since we can't set properties on Containers
 	local targetInst = instanceToFiber[targetNode]
 	if targetInst then
 		-- Don't return HostRoot or SuspenseComponent here.
@@ -133,7 +133,7 @@ exports.getClosestInstanceFromNode = function(targetNode: Instance): Fiber?
 			-- root.
 			local alternate = targetInst.alternate
 			if targetInst.child ~= nil or (alternate ~= nil and alternate.child ~= nil) then
-				-- ROBLOX deviation: lazy initialize to work around circular dependency
+				-- deviation: lazy initialize to work around circular dependency
 				if getParentSuspenseInstance == nil then
 					getParentSuspenseInstance = (require(script.Parent.ReactRobloxHostConfig) :: any).getParentSuspenseInstance
 				end
@@ -177,7 +177,7 @@ end
  * instance, or nil if the node was not rendered by this React.
  ]]
 exports.getInstanceFromNode = function(node): Fiber?
-	-- ROBLOX deviation: lazy initialize to avoid circular dependency
+	-- deviation: lazy initialize to avoid circular dependency
 	if ReactWorkTags == nil then
 		local ReactReconciler = require(script.Parent.Parent["ReactReconciler.roblox"]) :: any
 		ReactWorkTags = ReactReconciler.ReactWorkTags
@@ -218,7 +218,7 @@ exports.getNodeFromInstance = function(inst: Fiber): Instance | TextInstance
 	-- Without this first invariant, passing a non-DOM-component triggers the next
 	-- invariant for a missing parent, which is super confusing.
 	invariant(false, "getNodeFromInstance: Invalid argument.")
-	-- ROBLOX deviation: Luau analysis doesn't understand that invariant(false,...) is always-throw
+	-- deviation: Luau analysis doesn't understand that invariant(false,...) is always-throw
 	error("getNodeFromInstance: Invalid argument.")
 end
 

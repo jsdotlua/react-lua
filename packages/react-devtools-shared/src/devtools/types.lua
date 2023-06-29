@@ -49,7 +49,7 @@ export type Capabilities = { hasOwnerMetadata: boolean, supportsProfiling: boole
 export type Store = EventEmitter<{
 	collapseNodesByDefault: Array<any>,
 	componentFilters: Array<any>,
-	mutated: Array<any>, -- ROBLOX deviation: can't express jagged array types in Luau
+	mutated: Array<any>, -- deviation: can't express jagged array types in Luau
 	recordChangeDescriptions: Array<any>,
 	roots: Array<any>,
 	supportsNativeStyleEditor: Array<any>,
@@ -172,9 +172,9 @@ export type ProfilingCache = {
 }
 
 export type ProfilerStore = EventEmitter<{
-	isProcessingData: any, --[[ ROBLOX TODO: Unhandled node for type: TupleTypeAnnotation ]] --[[ [] ]]
-	isProfiling: any, --[[ ROBLOX TODO: Unhandled node for type: TupleTypeAnnotation ]] --[[ [] ]]
-	profilingData: any, --[[ ROBLOX TODO: Unhandled node for type: TupleTypeAnnotation ]] --[[ [] ]]
+	isProcessingData: any, --[[ TODO: Unhandled node for type: TupleTypeAnnotation ]] --[[ [] ]]
+	isProfiling: any, --[[ TODO: Unhandled node for type: TupleTypeAnnotation ]] --[[ [] ]]
+	profilingData: any, --[[ TODO: Unhandled node for type: TupleTypeAnnotation ]] --[[ [] ]]
 }> & {
 	_bridge: FrontendBridge, -- Suspense cache for lazily calculating derived profiling data.
 	_cache: ProfilingCache, -- Temporary store of profiling data from the backend renderer(s).

@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/ddd1faa1972b614dfbfae205f2aa4a6c0b39a759/packages/react/src/ReactHooks.js
+-- upstream: https://github.com/facebook/react/blob/ddd1faa1972b614dfbfae205f2aa4a6c0b39a759/packages/react/src/ReactHooks.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -13,11 +13,11 @@ local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactTypes = require(Packages.Shared)
--- ROBLOX TODO: we only pull in Dispatcher here for the typecheck, remove once Luau narrowing improves
+-- TODO: we only pull in Dispatcher here for the typecheck, remove once Luau narrowing improves
 type Dispatcher = ReactTypes.Dispatcher
 type MutableSource<T> = ReactTypes.MutableSource<T>
 type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<Source, Snapshot>
@@ -34,10 +34,10 @@ local ReactCurrentDispatcher = require(Packages.Shared).ReactSharedInternals.Rea
 type BasicStateAction<S> = ((S) -> S) | S
 type Dispatch<A> = (A) -> ()
 
--- ROBLOX FIXME Luau: we shouldn't need to explicitly annotate this
+-- FIXME Luau: we shouldn't need to explicitly annotate this
 local function resolveDispatcher(): Dispatcher
 	local dispatcher = ReactCurrentDispatcher.current
-	-- ROBLOX performance: upstream main only does this check in DEV mode and then not as an invariant
+	-- performance: upstream main only does this check in DEV mode and then not as an invariant
 	if _G.__DEV__ then
 		if dispatcher == nil then
 			console.error(
@@ -61,7 +61,7 @@ local exports = {}
 local function useContext<T>(
 	Context: ReactContext<T>,
 	unstable_observedBits: number | boolean | nil,
-	... -- ROBLOX deviation: Lua must specify ... here to capture additional args
+	... -- deviation: Lua must specify ... here to capture additional args
 ): T
 	local dispatcher = resolveDispatcher()
 	if _G.__DEV__ then
@@ -111,25 +111,25 @@ local function useReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((
 end
 exports.useReducer = useReducer
 
--- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
--- ROBLOX TODO: reconciling this with bindings and sharing any relevant Ref types (there may be different ones depending on whether it's just a loose ref, vs one being assigned to the ref prop
+-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+-- TODO: reconciling this with bindings and sharing any relevant Ref types (there may be different ones depending on whether it's just a loose ref, vs one being assigned to the ref prop
 local function useRef<T>(initialValue: T): { current: T | nil }
-	-- ROBLOX deviation END
+	-- deviation END
 	local dispatcher = resolveDispatcher()
 	return dispatcher.useRef(initialValue)
 end
 exports.useRef = useRef
 
--- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 local function useBinding<T>(initialValue: T): (ReactTypes.ReactBinding<T>, ReactTypes.ReactBindingUpdater<T>)
-	-- ROBLOX deviation END
+	-- deviation END
 	local dispatcher = resolveDispatcher()
 	return dispatcher.useBinding(initialValue)
 end
 exports.useBinding = useBinding
 
 local function useEffect(
-	-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+	-- TODO: Luau needs union type packs for this type to translate idiomatically
 	create: (() -> ()) | (() -> (() -> ())),
 	deps: Array<any> | nil
 ): ()
@@ -139,7 +139,7 @@ end
 exports.useEffect = useEffect
 
 local function useLayoutEffect(
-	-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+	-- TODO: Luau needs union type packs for this type to translate idiomatically
 	create: (() -> ()) | (() -> (() -> ())),
 	deps: Array<any> | nil
 ): ()
@@ -183,13 +183,13 @@ exports.useDebugValue = useDebugValue
 
 exports.emptyObject = {}
 
--- ROBLOX TODO: enable useTransition later
+-- TODO: enable useTransition later
 -- exports.useTransition = function(): ((() -> ()) -> (), boolean)
 -- 	local dispatcher = resolveDispatcher()
 -- 	return dispatcher.useTransition()
 -- end
 
--- ROBLOX TODO: enable useDeferredValue later
+-- TODO: enable useDeferredValue later
 -- exports.useDeferredValue = function<T>(value: T): T
 -- 	local dispatcher = resolveDispatcher()
 -- 	return dispatcher.useDeferredValue(value)

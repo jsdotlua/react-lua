@@ -14,7 +14,7 @@
 	* limitations under the License.
 ]]
 
--- ROBLOX deviation: Promote `shared` to an actual unpublished package with a
+-- deviation: Promote `shared` to an actual unpublished package with a
 -- real interface instead of just a bag of loose source code
 local Packages = script.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -44,10 +44,10 @@ export type ReactFundamentalComponent<C, H> = ReactTypes.ReactFundamentalCompone
 export type ReactScope = ReactTypes.ReactScope
 export type ReactScopeQuery = ReactTypes.ReactScopeQuery
 export type ReactScopeInstance = ReactTypes.ReactScopeInstance
--- ROBLOX deviation START: Re-export bindings types
+-- deviation START: Re-export bindings types
 export type ReactBinding<T> = ReactTypes.ReactBinding<T>
 export type ReactBindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
--- ROBLOX deviation END
+-- deviation END
 export type MutableSourceVersion = ReactTypes.MutableSourceVersion
 export type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<Source, Snapshot>
 export type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<Source, Snapshot>
@@ -95,10 +95,10 @@ return {
 	ReactErrorUtils = require(script.ReactErrorUtils),
 	ReactFeatureFlags = require(script.ReactFeatureFlags),
 	ReactInstanceMap = require(script.ReactInstanceMap),
-	-- ROBLOX deviation: Instead of re-exporting from here, Shared actually owns
+	-- deviation: Instead of re-exporting from here, Shared actually owns
 	-- these files itself
 	ReactSharedInternals = ReactSharedInternals,
-	-- ROBLOX deviation: Instead of extracting these out of the reconciler and
+	-- deviation: Instead of extracting these out of the reconciler and
 	-- then re-injecting the host config _into_ the reconciler, export these
 	-- from shared for easier reuse
 	ReactFiberHostConfig = ReactFiberHostConfig,
@@ -109,17 +109,17 @@ return {
 	UninitializedState = require(script["UninitializedState.roblox"]),
 	ReactTypes = ReactTypes,
 
-	-- ROBLOX DEVIATION: export error-stack-preserving utilities for use in
+	-- deviation: export error-stack-preserving utilities for use in
 	-- scheduler and reconciler, and parsing function for use in public API
 	describeError = ErrorHandling.describeError,
 	errorToString = ErrorHandling.errorToString,
 	parseReactError = ErrorHandling.parseReactError,
 
-	-- ROBLOX DEVIATION: export Symbol and Type from Shared
+	-- deviation: export Symbol and Type from Shared
 	Symbol = require(script["Symbol.roblox"]),
 	Type = require(script["Type.roblox"]),
 
-	-- ROBLOX DEVIATION: export propmarkers from Shared
+	-- deviation: export propmarkers from Shared
 	Change = require(script.PropMarkers.Change),
 	Event = require(script.PropMarkers.Event),
 	Tag = require(script.PropMarkers.Tag),

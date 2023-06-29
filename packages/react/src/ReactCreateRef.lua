@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react/src/ReactCreateRef.js
+-- upstream: https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react/src/ReactCreateRef.js
 --!strict
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -12,7 +12,7 @@ local Packages = script.Parent.Parent
 local ReactTypes = require(Packages.Shared)
 type RefObject = ReactTypes.RefObject
 
--- ROBLOX DEVIATION: In Roact, refs are implemented in terms of bindings
+-- deviation: In Roact, refs are implemented in terms of bindings
 --[[
   A ref is nothing more than a binding with a special field 'current'
   that maps to the getValue method of the binding
@@ -27,12 +27,12 @@ exports.createRef = function(): RefObject
 
 	local ref = {}
 
-	-- ROBLOX DEVIATION: Since refs are used as bindings, they can often be
+	-- deviation: Since refs are used as bindings, they can often be
 	-- assigned to fields of other Instances; we track creation here parallel to
 	-- how we do with bindings created via `createBinding` to improve messaging
 	-- when something goes wrong
 	if _G.__DEV__ then
-		-- ROBLOX TODO: LUAFDN-619 - improve debug stacktraces for refs
+		-- TODO: LUAFDN-619 - improve debug stacktraces for refs
 		binding._source = debug.traceback("Ref created at:", 1)
 	end
 
@@ -49,7 +49,7 @@ exports.createRef = function(): RefObject
 		end,
 		__newindex = function(self, key, value)
 			if key == "current" then
-				-- ROBLOX FIXME: Bindings - This is not allowed in Roact, but is okay in
+				-- FIXME: Bindings - This is not allowed in Roact, but is okay in
 				-- React. Lots of discussion at
 				-- https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31065
 				-- error("Cannot assign to the 'current' property of refs", 2)

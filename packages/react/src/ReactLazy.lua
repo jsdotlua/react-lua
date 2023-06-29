@@ -1,5 +1,5 @@
 --!nonstrict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react/src/ReactLazy.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react/src/ReactLazy.js
 --[[
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -10,7 +10,7 @@
  *]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local Shared = require(Packages.Shared)
 local console = Shared.console
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -29,28 +29,28 @@ local Resolved = 1
 local Rejected = 2
 
 type UninitializedPayload<T> = {
-	-- ROBLOX deviaton: Luau doesn't support literals
+	-- deviation: Luau doesn't support literals
 	--   _status: -1,
 	_status: number,
 	_result: () -> Thenable<{ default: T, [string]: any }>,
 }
 
 type PendingPayload = {
-	-- ROBLOX deviaton: Luau doesn't support literals
+	-- deviation: Luau doesn't support literals
 	-- _status: 0,
 	_status: number,
 	_result: Wakeable,
 }
 
 type ResolvedPayload<T> = {
-	-- ROBLOX deviaton: Luau doesn't support literals
+	-- deviation: Luau doesn't support literals
 	-- _status: 1,
 	_status: number,
 	_result: { default: T, [string]: any },
 }
 
 type RejectedPayload = {
-	-- ROBLOX deviaton: Luau doesn't support literals
+	-- deviation: Luau doesn't support literals
 	-- _status: 2,
 	_status: number,
 	_result: any,
@@ -82,7 +82,7 @@ function lazyInitializer<T>(payload: Payload<T>): T
 							"lazy: Expected the result of a dynamic import() call. "
 								.. "Instead received: `%s`\n\nYour code should look like: \n  "
 								-- Break up imports to avoid accidentally parsing them as dependencies.
-								-- ROBLOX deviation: Lua syntax in message
+								-- deviation: Lua syntax in message
 								.. "local MyComponent = lazy(function() return req"
 								.. "quire(script.Parent.MyComponent) end)",
 							inspect(moduleObject)
@@ -122,7 +122,7 @@ exports.lazy = function<T>(ctor: () -> Thenable<{ default: T, [string]: any }>):
 	local lazyType: LazyComponent<T, Payload<T>> = {
 		["$$typeof"] = REACT_LAZY_TYPE,
 		_payload = payload,
-		-- ROBLOX FIXME Luau: needs something even beyond normalization to avoid Property '_init' is not compatible. Type '<T>(Payload<T>) -> T?' could not be converted into '(Payload<T>) -> T?'; different number of generic type parameters
+		-- FIXME Luau: needs something even beyond normalization to avoid Property '_init' is not compatible. Type '<T>(Payload<T>) -> T?' could not be converted into '(Payload<T>) -> T?'; different number of generic type parameters
 		_init = lazyInitializer :: any,
 	}
 

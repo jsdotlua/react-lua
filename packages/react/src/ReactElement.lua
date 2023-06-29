@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react/src/ReactElement.js
+-- upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react/src/ReactElement.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -12,7 +12,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 type Object = LuauPolyfill.Object
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 local ReactTypes = require(Packages.Shared)
 type React_StatelessFunctionalComponent<P> = ReactTypes.React_StatelessFunctionalComponent<P>
@@ -29,13 +29,13 @@ local ReactLazy = require(script.Parent.ReactLazy)
 type LazyComponent<T, P> = ReactLazy.LazyComponent<T, P>
 
 local getComponentName = require(Packages.Shared).getComponentName
--- ROBLOX deviation START: we eliminate invariant like in React 18 to avoid string formatting and function call overhead
+-- deviation START: we eliminate invariant like in React 18 to avoid string formatting and function call overhead
 -- local invariant = require(Packages.Shared).invariant
--- ROBLOX deviation END
+-- deviation END
 local REACT_ELEMENT_TYPE = require(Packages.Shared).ReactSymbols.REACT_ELEMENT_TYPE
 local ReactCurrentOwner = require(Packages.Shared).ReactSharedInternals.ReactCurrentOwner
 --local hasOwnProperty = Object.prototype.hasOwnProperty
--- ROBLOX deviation START: upstream iterates over this table, but we manually unroll those loops for hot path performance
+-- deviation START: upstream iterates over this table, but we manually unroll those loops for hot path performance
 -- IF THIS TABLE UPDATES, YOU MUST UPDATE THE UNROLLED LOOPS AS WELL
 local RESERVED_PROPS = {
 	key = true,
@@ -43,7 +43,7 @@ local RESERVED_PROPS = {
 	__self = true,
 	__source = true,
 }
--- ROBLOX deviation END
+-- deviation END
 
 local specialPropKeyWarningShown, specialPropRefWarningShown, didWarnAboutStringRefs
 
@@ -55,7 +55,7 @@ local exports = {}
 
 local function hasValidRef(config)
 	if __DEV__ then
-		-- ROBLOX DEVIATION: instead of getters, use `__index` metamethod to
+		-- deviation: instead of getters, use `__index` metamethod to
 		-- detect if it's a warning object
 		if config.ref ~= nil and type(config.ref) == "table" then
 			if (config.ref :: any).isReactWarning then
@@ -69,7 +69,7 @@ end
 
 local function hasValidKey(config)
 	if __DEV__ then
-		-- ROBLOX DEVIATION: instead of getters, use `__index` metamethod to
+		-- deviation: instead of getters, use `__index` metamethod to
 		-- detect if it's a warning object
 		if config.key ~= nil and type(config.key) == "table" then
 			if (config.key :: any).isReactWarning then
@@ -83,7 +83,7 @@ end
 
 local reactWarning = { isReactWarning = true }
 
--- ROBLOX FIXME: These two warning 'getter' definitions both override the
+-- FIXME: These two warning 'getter' definitions both override the
 -- metatable, and won't both work at the same time. The easy solution is to
 -- define one metatable that does both instead of overwriting
 local function defineKeyPropWarningGetter(props, displayName: string)
@@ -102,17 +102,17 @@ local function defineKeyPropWarningGetter(props, displayName: string)
 		end
 	end
 
-	-- ROBLOX deviation: clear key to ensure metamethod is called,
+	-- deviation: clear key to ensure metamethod is called,
 	-- then set key getter to call warnAboutAccessingKey
 	props.key = nil
 	setmetatable(props, {
 		__index = function(t, k)
 			if k == "key" then
 				warnAboutAccessingKey()
-				-- ROBLOX deviation: returns sentinel object that mimics upstream ability to check isReactWarning field
+				-- deviation: returns sentinel object that mimics upstream ability to check isReactWarning field
 				return reactWarning
 			end
-			-- ROBLOX FIXME Luau: needs deferred constraint resolution
+			-- FIXME Luau: needs deferred constraint resolution
 			return nil :: any
 		end,
 	})
@@ -136,17 +136,17 @@ local function defineRefPropWarningGetter(props, displayName: string)
 		end
 	end
 
-	-- ROBLOX deviation: clear key to ensure metamethod is called,
+	-- deviation: clear key to ensure metamethod is called,
 	-- then set key getter to call warnAboutAccessingKey
 	props.ref = nil
 	setmetatable(props :: any, {
 		__index = function(t, k)
 			if k == "ref" then
 				warnAboutAccessingRef()
-				-- ROBLOX deviation: returns sentinel object that mimics upstream ability to check isReactWarning field
+				-- deviation: returns sentinel object that mimics upstream ability to check isReactWarning field
 				return reactWarning
 			end
-			-- ROBLOX FIXME Luau: needs deferred constraint resolution
+			-- FIXME Luau: needs deferred constraint resolution
 			return nil :: any
 		end,
 	})
@@ -155,14 +155,14 @@ end
 local function warnIfStringRefCannotBeAutoConverted(config)
 	if __DEV__ then
 		if
-			-- ROBLOX deviation: We removed support for string refs, so all stringrefs cannot be auto-converted regardless
+			-- deviation: We removed support for string refs, so all stringrefs cannot be auto-converted regardless
 			type(config.ref) == "string" and ReactCurrentOwner.current
 			-- and config.__self
 			-- and ReactCurrentOwner.current.stateNode ~= config.__self
 		then
 			local componentName = getComponentName(ReactCurrentOwner.current.type)
 
-			-- ROBLOX deviation: we don't support string refs and hard error instead of warn
+			-- deviation: we don't support string refs and hard error instead of warn
 			if not didWarnAboutStringRefs[componentName] then
 				error(
 					string.format(
@@ -202,9 +202,9 @@ end
  * @internal
  ]]
 
--- ROBLOX deviation BEGIN: extra annotations here inspired by TS and flowtype to facilitate prop checking at analyze-time
+-- deviation BEGIN: extra annotations here inspired by TS and flowtype to facilitate prop checking at analyze-time
 local function ReactElement<P, T>(type_: T, key, ref, self, source: Source?, owner, props: P): ReactElement<P, T>
-	-- ROBLOX deviation END
+	-- deviation END
 	local element = {
 		-- Built-in properties that belong on the element
 		type = type_,
@@ -251,7 +251,7 @@ local function ReactElement<P, T>(type_: T, key, ref, self, source: Source?, own
 		})
 	end
 
-	-- ROBLOX FIXME Luau: this cast is needed until normalization lands
+	-- FIXME Luau: this cast is needed until normalization lands
 	return element :: any
 end
 
@@ -264,7 +264,7 @@ end
 --
 --
 exports.jsx = function(type, config, maybeKey)
-	-- ROBLOX deviation START: skipping JSX for now, as it may never apply to Roblox
+	-- deviation START: skipping JSX for now, as it may never apply to Roblox
 	error("JSX is currently unsupported")
 	--  local propName; -- Reserved names are extracted
 	--
@@ -308,7 +308,7 @@ exports.jsx = function(type, config, maybeKey)
 	-- end
 	--
 	--  return ReactElement(type, key, ref, nil, nil, ReactCurrentOwner.current, props)
-	-- ROBLOX deviation END
+	-- deviation END
 end
 
 --[[*
@@ -319,7 +319,7 @@ end
 -- ]]
 --
 exports.jsxDEV = function(type, config, maybeKey, source, self)
-	-- ROBLOX deviation START: we may never support JSX
+	-- deviation START: we may never support JSX
 	error("JSX is currently unsupported")
 	--  local propName; -- Reserved names are extracted
 	--
@@ -382,14 +382,14 @@ exports.jsxDEV = function(type, config, maybeKey, source, self)
 	--
 	--  return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props)
 	return nil
-	-- ROBLOX deviation END
+	-- deviation END
 end
 
 --[[*
  * Create and return a new ReactElement of the given type.
  * See https://reactjs.org/docs/react-api.html#createelement
  ]]
--- ROBLOX deviation: this is TypeScript-derived annotation, but using flowtypes
+-- deviation: this is TypeScript-derived annotation, but using flowtypes
 --  function createElement<P extends {}>(
 -- 	type: FunctionComponent<P> | ComponentClass<P> | string,
 -- 	props?: Attributes & P | null,
@@ -399,17 +399,17 @@ local function createElement<P, T>(
 	config: P?,
 	...: React_Node | (...any) -> React_Node
 ): ReactElement<P, T>
-	-- ROBLOX deviation START: extreme hot path, so manually unroll RESERVED_PROPS loop and use table.clone
+	-- deviation START: extreme hot path, so manually unroll RESERVED_PROPS loop and use table.clone
 	local props = if config ~= nil then table.clone(config :: any) :: any else {}
-	-- ROBLOX deviation END
+	-- deviation END
 	local key: (string | number)? = nil
 	local ref = nil
 	local self = nil
 	local source: Source? = nil
 
 	if config ~= nil then
-		-- ROBLOX deviation START: inline hasValidRef and hasValidKey success in hot path, still call in error case for warning
-		-- ROBLOX FIXME Luau: needs normalization: Type 'P & React_ElementProps<T>' could not be converted into 'React_ElementProps<T>'; none of the intersection parts are compatible
+		-- deviation START: inline hasValidRef and hasValidKey success in hot path, still call in error case for warning
+		-- FIXME Luau: needs normalization: Type 'P & React_ElementProps<T>' could not be converted into 'React_ElementProps<T>'; none of the intersection parts are compatible
 		if hasValidRef(config :: any) then
 			ref = ((config :: any) :: React_ElementProps<T>).ref
 
@@ -418,31 +418,31 @@ local function createElement<P, T>(
 			end
 		end
 
-		-- ROBLOX FIXME Luau: when configKey is inline: Type 'P & React_ElementProps<T>' could not be converted into 'React_ElementProps<T>'; none of the intersection parts are compatible
+		-- FIXME Luau: when configKey is inline: Type 'P & React_ElementProps<T>' could not be converted into 'React_ElementProps<T>'; none of the intersection parts are compatible
 		if hasValidKey(config :: any) then
 			local configKey = (config :: any).key
-			-- ROBLOX deviation: call tostring instead of concatenating with an
+			-- deviation: call tostring instead of concatenating with an
 			-- empty string, which can throw in luau. If the string is a number,
 			-- then do not use tostring
 			if type(configKey) == "number" then
 				key = configKey
 			else
-				-- ROBLOX FIXME Luau: narrowing bug: Type 'string' could not be converted into 'number'
+				-- FIXME Luau: narrowing bug: Type 'string' could not be converted into 'number'
 				key = tostring(configKey :: any)
 			end
 		end
-		-- ROBLOX deviation END
+		-- deviation END
 
-		-- ROBLOX deviation START: seemingly only used for string ref warnings, which we don't support
+		-- deviation START: seemingly only used for string ref warnings, which we don't support
 		-- self = if config.__self == nil then nil else config.__self
-		-- ROBLOX deviation END
+		-- deviation END
 
 		source = if ((config :: any) :: React_ElementProps<T>).__source == nil
 			then nil
 			else ((config :: any) :: React_ElementProps<T>).__source
 
 		-- Remaining properties are added to a new props object
-		-- ROBLOX deviation START: extreme hot path, so manually unroll RESERVED_PROPS loop and use table.clone
+		-- deviation START: extreme hot path, so manually unroll RESERVED_PROPS loop and use table.clone
 		if props.key ~= nil then
 			props.key = nil
 		end
@@ -455,18 +455,18 @@ local function createElement<P, T>(
 		if props.__source ~= nil then
 			props.__source = nil
 		end
-		-- ROBLOX deviation END
+		-- deviation END
 	end
 
 	-- Children can be more than one argument, and those are transferred onto
 	-- the newly allocated props object.
-	-- ROBLOX deviation START: we have a shortcut for capturing varargs into an array in Lua, which is more performant
+	-- deviation START: we have a shortcut for capturing varargs into an array in Lua, which is more performant
 	local childrenLength = select("#", ...)
 
 	if childrenLength == 1 then
 		props.children = select(1, ...)
 	elseif childrenLength > 1 then
-		-- ROBLOX TODO: there's a snapshot difference in storeOwners where key is 2 instead of 1 if we do `{...}`. does it matter?
+		-- TODO: there's a snapshot difference in storeOwners where key is 2 instead of 1 if we do `{...}`. does it matter?
 		-- local childArray = {...}
 		local childArray = table.create(childrenLength)
 		for i = 1, childrenLength do
@@ -474,7 +474,7 @@ local function createElement<P, T>(
 			table.insert(childArray, toInsert)
 		end
 
-		-- ROBLOX deviation END
+		-- deviation END
 
 		if __DEV__ then
 			table.freeze(childArray)
@@ -484,14 +484,14 @@ local function createElement<P, T>(
 	end
 
 	-- Resolve default props
-	-- ROBLOX deviation START: Lua can't index defaultProps on a function
-	-- ROBLOX FIXME Luau: should know this can be a table due to type_ intersection with React_ComponentType<>. needs normalization?
+	-- deviation START: Lua can't index defaultProps on a function
+	-- FIXME Luau: should know this can be a table due to type_ intersection with React_ComponentType<>. needs normalization?
 	if type(type_ :: any) == "table" and (type_ :: T & React_ComponentType<P>).defaultProps then
-		-- ROBLOX deviation END
-		-- ROBLOX FIXME Luau: defaultProps isn't narrowed by the guard above
+		-- deviation END
+		-- FIXME Luau: defaultProps isn't narrowed by the guard above
 		local defaultProps = (type_ :: T & React_ComponentType<P>).defaultProps :: P
 
-		-- ROBLOX Luau TODO: defaultProps isn't known to be a table, since Luau doesn't allow us to do `<P extends {}>` yet
+		-- TODO Luau: defaultProps isn't known to be a table, since Luau doesn't allow us to do `<P extends {}>` yet
 		for propName, _ in (defaultProps :: any) :: Object do
 			if props[propName] == nil then
 				props[propName] = ((defaultProps :: any) :: Object)[propName]
@@ -501,7 +501,7 @@ local function createElement<P, T>(
 
 	if __DEV__ then
 		if key or ref then
-			-- ROBLOX deviation START: Lua can't store fields like displayName on functions
+			-- deviation START: Lua can't store fields like displayName on functions
 			local displayName
 
 			if type(type_) == "function" then
@@ -512,10 +512,10 @@ local function createElement<P, T>(
 					(type_ :: T & React_ComponentType<P>).displayName or (type_ :: T & React_ComponentType<P>).name
 				) or "Unknown"
 			else
-				-- ROBLOX Luau FIXME: Luau should have narrowed type_ to string based on this above branches
+				-- FIXME Luau: Luau should have narrowed type_ to string based on this above branches
 				displayName = type_ :: string
 			end
-			-- ROBLOX deviation END
+			-- deviation END
 
 			if key then
 				defineKeyPropWarningGetter(props, displayName)
@@ -526,7 +526,7 @@ local function createElement<P, T>(
 			end
 		end
 
-		-- ROBLOX deviation START: In upstream, JSX transformation is what
+		-- deviation START: In upstream, JSX transformation is what
 		-- produces the `__source` field, so we'll just simulate it here for now
 		if source == nil then
 			-- go up one more because of ReactElementValidator indirection
@@ -535,10 +535,10 @@ local function createElement<P, T>(
 				lineNumber = debug.info(3, "l"),
 			}
 		end
-		-- ROBLOX deviation END
+		-- deviation END
 	end
 
-	-- ROBLOX FIXME Luau: this cast is needed until normalization lands
+	-- FIXME Luau: this cast is needed until normalization lands
 	return ReactElement(type_, key, ref, self, source, ReactCurrentOwner.current, props) :: any
 end
 exports.createElement = createElement
@@ -581,7 +581,7 @@ exports.cloneElement = function<P, T>(
 	config: (P & React_ElementProps<T>)?,
 	...: React_Node
 ): ReactElement<P, T>
-	-- ROBLOX deviation START: use if instead of variant to avoid error message formatting even when there's no problem
+	-- deviation START: use if instead of variant to avoid error message formatting even when there's no problem
 	if element == nil then
 		error(
 			Error.new(
@@ -601,7 +601,7 @@ exports.cloneElement = function<P, T>(
 	local ref = element.ref
 
 	-- Self is preserved since the owner is preserved.
-	-- ROBLOX deviation: _self field only used for string ref checking
+	-- deviation: _self field only used for string ref checking
 	-- local self = element._self
 
 	-- Source is preserved since cloneElement is unlikely to be targeted by a
@@ -613,7 +613,7 @@ exports.cloneElement = function<P, T>(
 	local owner = element._owner
 
 	if config ~= nil then
-		-- ROBLOX deviation START: inline hasValidRef and hasValidKey success in hot path, still call in error case for warning
+		-- deviation START: inline hasValidRef and hasValidKey success in hot path, still call in error case for warning
 		local configRef = config.ref
 		if configRef ~= nil then
 			-- Silently steal the ref from the parent.
@@ -624,32 +624,32 @@ exports.cloneElement = function<P, T>(
 		end
 
 		local configKey = config.key
-		-- ROBLOX FIXME Luau: needs normalization, generic subtype escaping scope
+		-- FIXME Luau: needs normalization, generic subtype escaping scope
 		if configKey ~= nil then
 			if type(configKey) == "number" then
 				key = configKey
 			else
-				-- ROBLOX FIXME Luau: narrowing bug: Type 'string' could not be converted into 'number'
+				-- FIXME Luau: narrowing bug: Type 'string' could not be converted into 'number'
 				key = configKey :: any or "nil"
 			end
 		else
 			hasValidKey((config :: any) :: React_ElementProps<T>)
 		end
-		-- ROBLOX deviation END
+		-- deviation END
 	end
 
 	-- Remaining properties override existing props
 	local elementType = element.type
 	local defaultProps: P? = if type(elementType) == "table" then elementType.defaultProps else nil
 
-	-- ROBLOX deviation: cannot call pairs on nil the way you can use `for...in`
+	-- deviation: cannot call pairs on nil the way you can use `for...in`
 	-- on nil in JS, so we check for nil before iterating
 	if config ~= nil then
 		for propName, _ in config :: any do
 			if (config :: any)[propName] ~= nil and not RESERVED_PROPS[propName] then
 				if (config :: any)[propName] == nil and defaultProps ~= nil then
 					-- Resolve default props
-					-- ROBLOX FIXME Luau: force-cast required to avoid TypeError: Expected type table, got 'P' instead
+					-- FIXME Luau: force-cast required to avoid TypeError: Expected type table, got 'P' instead
 					(props :: any)[propName] = (defaultProps :: any)[propName]
 				else
 					(props :: any)[propName] = (config :: any)[propName]
@@ -660,7 +660,7 @@ exports.cloneElement = function<P, T>(
 
 	-- Children can be more than one argument, and those are transferred onto
 	-- the newly allocated props object.
-	-- ROBLOX deviation START: we have a shortcut for capturing varargs into an array in Lua, which is more performant
+	-- deviation START: we have a shortcut for capturing varargs into an array in Lua, which is more performant
 	local childrenLength = select("#", ...)
 
 	if childrenLength == 1 then
@@ -668,9 +668,9 @@ exports.cloneElement = function<P, T>(
 	elseif childrenLength > 1 then
 		(props :: any).children = { ... }
 	end
-	-- ROBLOX deviation END
+	-- deviation END
 
-	-- ROBLOX FIXME Luau: this cast is needed until normalization lands
+	-- FIXME Luau: this cast is needed until normalization lands
 	return ReactElement(element.type, key, ref, nil, source, owner, (props :: any) :: P & React_ElementProps<T>) :: any
 end
 --[[*

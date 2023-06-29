@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/b0cb137bcbd3a11d8eff3c2229cd6b8379d29785/packages/react-reconciler/src/ReactCurrentFiber.js
+-- upstream: https://github.com/facebook/react/blob/b0cb137bcbd3a11d8eff3c2229cd6b8379d29785/packages/react-reconciler/src/ReactCurrentFiber.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -39,7 +39,7 @@ exports.getCurrentFiberOwnerNameInDevOrNull = function(): string?
 		if exports.current == nil then
 			return nil
 		end
-		-- ROBLOX FIXME Luau: Luau doesn't understand guard above
+		-- FIXME Luau: Luau doesn't understand guard above
 		local owner = (exports.current :: Fiber)._debugOwner
 		if owner then
 			return getComponentName(owner.type)
@@ -55,7 +55,7 @@ local function getCurrentFiberStackInDev(): string
 		end
 		-- Safe because if current fiber exists, we are reconciling,
 		-- and it is guaranteed to be the work-in-progress version.
-		-- ROBLOX FIXME Luau: Luau doesn't understand guard above
+		-- FIXME Luau: Luau doesn't understand guard above
 		return getStackByFiberInDevAndProd(exports.current :: Fiber)
 	end
 	return ""
@@ -63,7 +63,7 @@ end
 
 exports.resetCurrentFiber = function(): ()
 	if __DEV__ then
-		-- ROBLOX FIXME Luau: Expected type table, got 'ReactDebugCurrentFrame | { setExtraStackFrame: () -> () }' instead
+		-- FIXME Luau: Expected type table, got 'ReactDebugCurrentFrame | { setExtraStackFrame: () -> () }' instead
 		(ReactDebugCurrentFrame :: any).getCurrentStack = nil
 		exports.current = nil
 		exports.isRendering = false
@@ -72,7 +72,7 @@ end
 
 exports.setCurrentFiber = function(fiber: Fiber): ()
 	if __DEV__ then
-		-- ROBLOX FIXME Luau: Expected type table, got 'ReactDebugCurrentFrame | { setExtraStackFrame: () -> () }' instead
+		-- FIXME Luau: Expected type table, got 'ReactDebugCurrentFrame | { setExtraStackFrame: () -> () }' instead
 		(ReactDebugCurrentFrame :: any).getCurrentStack = getCurrentFiberStackInDev
 		exports.current = fiber
 		exports.isRendering = false

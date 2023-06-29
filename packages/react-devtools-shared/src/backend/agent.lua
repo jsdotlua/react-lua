@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/agent.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/agent.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -18,7 +18,7 @@ type Object = { [string]: any }
 
 local EventEmitter = require(script.Parent.Parent.events)
 type EventEmitter<Events> = EventEmitter.EventEmitter<Events>
--- ROBLOX FIXME: need to implement lodash.throttle, pass through for now
+-- FIXME: need to implement lodash.throttle, pass through for now
 -- import throttle from 'lodash.throttle';
 local throttle = function(fn: Function, _limit: number): Function
 	return fn
@@ -34,19 +34,19 @@ local sessionStorageRemoveItem = storage.sessionStorageRemoveItem
 local sessionStorageSetItem = storage.sessionStorageSetItem
 -- local Highlighter = require(script.Parent.views.Highlighter)
 -- local setupHighlighter = Highlighter.default
--- ROBLOX TODO: stub for now
+-- TODO: stub for now
 local setupHighlighter = function(bridge, agent) end
 -- local TraceUpdates = require(script.Parent.views.TraceUpdates)
 -- local setupTraceUpdates = TraceUpdates.initialize
 -- local setTraceUpdatesEnabled = TraceUpdates.toggleEnabled
--- ROBLOX TODO: stub these for now
+-- TODO: stub these for now
 local setupTraceUpdates = function(agent) end
 local setTraceUpdatesEnabled = function(enabled: boolean) end
 
 -- local console = require(script.Parent.console)
 -- local patchConsole = console.patch
 -- local unpatchConsole = console.unpatch
--- ROBLOX TODO: stub these for now. they're used to force the debugger to break immediately when console.error is called
+-- TODO: stub these for now. they're used to force the debugger to break immediately when console.error is called
 local patchConsole = function(obj) end
 local unpatchConsole = function() end
 
@@ -67,7 +67,7 @@ type ComponentFilter = SharedTypes.ComponentFilter
 
 local debug_ = function(methodName, ...)
 	if __DEBUG__ then
-		-- ROBLOX deviation: simpler print
+		-- deviation: simpler print
 		print(methodName, ...)
 	end
 end
@@ -110,7 +110,7 @@ type SetInParams = {
 	value: any,
 }
 
--- ROBLOX deviation: Luau can't do literal enumerations: 'props' | 'hooks' | 'state' | 'context';
+-- deviation: Luau can't do literal enumerations: 'props' | 'hooks' | 'state' | 'context';
 type PathType = string
 
 type DeletePathParams = {
@@ -204,12 +204,12 @@ type Agent_Statics = {
 local Agent: Agent & Agent_Statics = setmetatable({}, { __index = EventEmitter }) :: any
 
 local AgentMetatable = { __index = Agent }
--- ROBLOX deviation: equivalent of sub-class
+-- deviation: equivalent of sub-class
 
 function Agent.new(bridge: BackendBridge)
 	local self = setmetatable(EventEmitter.new() :: any, AgentMetatable)
 
-	-- ROBLOX deviation: define fields in constructor
+	-- deviation: define fields in constructor
 	self._bridge = bridge
 	self._isProfiling = false
 	self._recordChangeDescriptions = false
@@ -274,18 +274,18 @@ function Agent.new(bridge: BackendBridge)
 
 	-- Notify the frontend if the backend supports the Storage API (e.g. localStorage).
 	-- If not, features like reload-and-profile will not work correctly and must be disabled.
-	-- ROBLOX deviation: Storage is supported, but we don't use localStorage per se
+	-- deviation: Storage is supported, but we don't use localStorage per se
 	local isBackendStorageAPISupported = true
 
 	bridge:send("isBackendStorageAPISupported", isBackendStorageAPISupported)
-	-- ROBLOX TODO: implement Highlighter stub
+	-- TODO: implement Highlighter stub
 	setupHighlighter(bridge, self)
 	setupTraceUpdates(self)
 
 	return self
 end
 
--- ROBLOX FIXME: this needs to be a property getter via an __index override
+-- FIXME: this needs to be a property getter via an __index override
 function Agent:getRendererInterfaces()
 	return self._rendererInterfaces
 end

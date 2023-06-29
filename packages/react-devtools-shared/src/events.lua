@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/events.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/events.js
 -- /*
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -20,12 +20,12 @@ type EventListener = (...ElementType<any, string>) -> ...any
 
 export type EventEmitter<Events> = {
 	listenersMap: Map<string, Array<Function>>,
-	-- ROBLOX TODO: function generics <Event: $Keys<Events>>(
+	-- TODO: function generics <Event: $Keys<Events>>(
 	addListener: (self: EventEmitter<Events>, event: string, listener: EventListener) -> (),
-	-- ROBLOX TODO: function generics <Event: $Keys<Events>>(
+	-- TODO: function generics <Event: $Keys<Events>>(
 	emit: (EventEmitter<Events>, string, ...ElementType<Events, string>) -> (),
 	removeAllListeners: (EventEmitter<Events>) -> (),
-	-- ROBLOX deviation: Luau doesn't support $Keys<Events> for first non-self param
+	-- deviation: Luau doesn't support $Keys<Events> for first non-self param
 	removeListener: (self: EventEmitter<Events>, event: string, listener: Function) -> (),
 }
 type EventEmitter_statics = {
@@ -53,7 +53,7 @@ function EventEmitter:addListener(event: string, listener: EventListener): ()
 	end
 end
 
--- ROBLOX deviation: Luau doesn't support $Keys<Events> for first non-self param
+-- deviation: Luau doesn't support $Keys<Events> for first non-self param
 function EventEmitter:emit(event: string, ...: ElementType<string, string>): ()
 	local listeners = self.listenersMap:get(event)
 	if listeners ~= nil then
@@ -76,7 +76,7 @@ function EventEmitter:emit(event: string, ...: ElementType<string, string>): ()
 				end
 			end
 			if didThrow then
-				-- ROBLOX note: stringify error to avoid "nil output from lua" error
+				-- NOTE: stringify error to avoid "nil output from lua" error
 				error(tostring(caughtError))
 			end
 		end
@@ -87,7 +87,7 @@ function EventEmitter:removeAllListeners(): ()
 	self.listenersMap:clear()
 end
 
--- ROBLOX deviation: Luau doesn't support $Keys<Events> for first non-self param
+-- deviation: Luau doesn't support $Keys<Events> for first non-self param
 function EventEmitter:removeListener(event: string, listener: Function): ()
 	local listeners = self.listenersMap:get(event)
 

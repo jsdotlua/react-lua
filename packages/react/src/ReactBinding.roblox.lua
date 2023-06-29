@@ -89,7 +89,7 @@ function BindingInternalApi.create<T>(initialValue: T): (Binding<T>, BindingUpda
 
 	local source
 	if _G.__DEV__ then
-		-- ROBLOX TODO: LUAFDN-619 - improve debug stacktraces for bindings
+		-- TODO: LUAFDN-619 - improve debug stacktraces for bindings
 		source = debug.traceback("Binding created at:", 3)
 	end
 
@@ -103,7 +103,7 @@ end
 
 function BindingInternalApi.map<T, U>(upstreamBinding: BindingInternal<T>, predicate: (T) -> U): Binding<U>
 	if _G.__DEV__ then
-		-- ROBLOX TODO: More informative error messages here
+		-- TODO: More informative error messages here
 		assert(
 			typeof(upstreamBinding) == "table" and upstreamBinding["$$typeof"] == ReactSymbols.REACT_BINDING_TYPE,
 			"Expected `self` to be a binding"
@@ -129,7 +129,7 @@ function BindingInternalApi.map<T, U>(upstreamBinding: BindingInternal<T>, predi
 
 	local source
 	if _G.__DEV__ then
-		-- ROBLOX TODO: LUAFDN-619 - improve debug stacktraces for bindings
+		-- TODO: LUAFDN-619 - improve debug stacktraces for bindings
 		source = debug.traceback("Mapped binding created at:", 3)
 	end
 
@@ -163,7 +163,7 @@ function BindingInternalApi.join<T>(upstreamBindings: { [string | number]: Bindi
 	local function getValue()
 		local value = {}
 
-		-- ROBLOX FIXME Luau: needs CLI-56711 resolved to eliminate ipairs()
+		-- FIXME Luau: needs CLI-56711 resolved to eliminate ipairs()
 		for key, upstream in pairs(upstreamBindings) do
 			value[key] = upstream:getValue()
 		end
@@ -172,7 +172,7 @@ function BindingInternalApi.join<T>(upstreamBindings: { [string | number]: Bindi
 	end
 
 	function impl.subscribe(callback)
-		-- ROBLOX FIXME: type refinements
+		-- FIXME: type refinements
 		local disconnects: any = {}
 
 		for key, upstream in upstreamBindings do
@@ -204,7 +204,7 @@ function BindingInternalApi.join<T>(upstreamBindings: { [string | number]: Bindi
 
 	local source
 	if _G.__DEV__ then
-		-- ROBLOX TODO: LUAFDN-619 - improve debug stacktraces for bindings
+		-- TODO: LUAFDN-619 - improve debug stacktraces for bindings
 		source = debug.traceback("Joined binding created at:", 2)
 	end
 

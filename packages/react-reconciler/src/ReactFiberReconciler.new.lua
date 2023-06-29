@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/50d9451f320a9aaf94304209193562cc385567d8/packages/react-reconciler/src/ReactFiberReconciler.new.js
+-- upstream: https://github.com/facebook/react/blob/50d9451f320a9aaf94304209193562cc385567d8/packages/react-reconciler/src/ReactFiberReconciler.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -17,7 +17,7 @@ local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 type Function = (...any) -> ...any
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 type Object = { [string]: any }
@@ -121,12 +121,12 @@ local markRenderScheduled = require(script.Parent.SchedulingProfiler).markRender
 
 local exports = {}
 
--- ROBLOX deviation: explicitly export internal type definitions used by the noop and test renderers
+-- deviation: explicitly export internal type definitions used by the noop and test renderers
 exports.ReactRootTags = ReactRootTags
--- ROBLOX deviation: explicitly export internal type definitions used by the test renderer
+-- deviation: explicitly export internal type definitions used by the test renderer
 exports.ReactWorkTags = ReactWorkTags
 
--- ROBLOX deviation: explicitly export internal type definitions used by the dev tools
+-- deviation: explicitly export internal type definitions used by the dev tools
 exports.ReactTypeOfMode = ReactTypeOfMode
 exports.ReactFiberFlags = ReactFiberFlags
 exports.getNearestMountedFiber = ReactFiberTreeReflection.getNearestMountedFiber
@@ -136,7 +136,7 @@ exports.findCurrentFiberUsingSlowPath = ReactFiberTreeReflection.findCurrentFibe
 exports.createPortal = require(script.Parent.ReactPortal).createPortal
 -- local ReactTestSelectors = require(script.Parent.ReactTestSelectors)
 -- exports.createComponentSelector = ReactTestSelectors.createComponentSelector
--- ROBLOX FIXME: Should we deviate and fix this typo?
+-- FIXME: Should we deviate and fix this typo?
 -- exports.createHasPsuedoClassSelector = ReactTestSelectors.createHasPsuedoClassSelector
 -- exports.createRoleSelector = ReactTestSelectors.createRoleSelector
 -- exports.createTestNameSelector = ReactTestSelectors.createTestNameSelector
@@ -157,7 +157,7 @@ type DevToolsConfig = {
 	bundleType: BundleType,
 	version: string,
 	rendererPackageName: string,
-	-- Note: this actually *does* depend on Fiber internal fields.
+	-- NOTE: this actually *does* depend on Fiber internal fields.
 	-- Used by "inspect clicked DOM element" in React DevTools.
 	findFiberByHostInstance: ((Instance | TextInstance) -> Fiber)?,
 	rendererConfig: RendererInspectionConfig?,
@@ -198,7 +198,7 @@ local function findHostInstance(component: Object): PublicInstance | nil
 			invariant(
 				false,
 				"Argument appears to not be a ReactComponent. Keys: %s",
-				-- ROBLOX deviation: explicitly coerce the array of strings into a string
+				-- deviation: explicitly coerce the array of strings into a string
 				table.concat(Object.keys(component))
 			)
 		end
@@ -220,7 +220,7 @@ local function findHostInstanceWithWarning(component: Object, methodName: string
 				invariant(
 					false,
 					"Argument appears to not be a ReactComponent. Keys: %s",
-					-- ROBLOX deviation: explicitly convert array into string
+					-- deviation: explicitly convert array into string
 					table.concat(Object.keys(component))
 				)
 			end
@@ -428,7 +428,7 @@ end
 -- Increases the priority of thennables when they resolve within this boundary.
 markRetryLaneIfNotHydrated = function(fiber: Fiber, retryLane: Lane)
 	markRetryLaneImpl(fiber, retryLane)
-	-- ROBLOX TODO: grab local for this since Luau can't deal with nested type narrowing
+	-- TODO: grab local for this since Luau can't deal with nested type narrowing
 	local alternate = fiber.alternate
 	if alternate then
 		markRetryLaneImpl(alternate, retryLane)
@@ -477,7 +477,7 @@ end
 
 exports.runWithPriority = function<T>(priority: LanePriority, fn: () -> T): T
 	local previousPriority = getCurrentUpdateLanePriority()
-	-- ROBLOX performance: hoist non-throwable out of try{} to eliminate anon function
+	-- performance: hoist non-throwable out of try{} to eliminate anon function
 	setCurrentUpdateLanePriority(priority)
 	local ok, result = xpcall(fn, describeError)
 	setCurrentUpdateLanePriority(previousPriority)
@@ -701,7 +701,7 @@ if __DEV__ then
 	-- Support DevTools props for function components, forwardRef, memo, host components, etc.
 	overrideProps = function(fiber: Fiber, path: Array<string | number>, value: any)
 		fiber.pendingProps = copyWithSet(fiber.memoizedProps, path, value)
-		-- ROBLOX TODO: grab local for this since Luau can't deal with nested type narrowing
+		-- TODO: grab local for this since Luau can't deal with nested type narrowing
 		local alternate = fiber.alternate
 		if alternate then
 			alternate.pendingProps = fiber.pendingProps
@@ -710,7 +710,7 @@ if __DEV__ then
 	end
 	overridePropsDeletePath = function(fiber: Fiber, path: Array<string | number>)
 		fiber.pendingProps = copyWithDelete(fiber.memoizedProps, path)
-		-- ROBLOX TODO: grab local for this since Luau can't deal with nested type narrowing
+		-- TODO: grab local for this since Luau can't deal with nested type narrowing
 		local alternate = fiber.alternate
 		if alternate then
 			alternate.pendingProps = fiber.pendingProps
@@ -719,7 +719,7 @@ if __DEV__ then
 	end
 	overridePropsRenamePath = function(fiber: Fiber, oldPath: Array<string | number>, newPath: Array<string | number>)
 		fiber.pendingProps = copyWithRename(fiber.memoizedProps, oldPath, newPath)
-		-- ROBLOX TODO: grab local for this since Luau can't deal with nested type narrowing
+		-- TODO: grab local for this since Luau can't deal with nested type narrowing
 		local alternate = fiber.alternate
 		if alternate then
 			alternate.pendingProps = fiber.pendingProps

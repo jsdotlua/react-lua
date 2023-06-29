@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/96ac799eace5d989de3b4f80e6414e94a08ff77a/packages/react-reconciler/src/ReactFiberRoot.new.js
+-- upstream: https://github.com/facebook/react/blob/96ac799eace5d989de3b4f80e6414e94a08ff77a/packages/react-reconciler/src/ReactFiberRoot.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -34,7 +34,7 @@ local createLaneMap = ReactFiberLane.createLaneMap
 local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 local enableSuspenseCallback = ReactFeatureFlags.enableSuspenseCallback
--- ROBLOX deviation: import from tracing from Scheduler export to avoid direct file access
+-- deviation: import from tracing from Scheduler export to avoid direct file access
 local Scheduler = require(Packages.Scheduler).tracing
 local unstable_getThreadID = Scheduler.unstable_getThreadID
 local ReactUpdateQueue = require(script.Parent["ReactUpdateQueue.new"])
@@ -46,12 +46,12 @@ local ConcurrentRoot = ReactRootTags.ConcurrentRoot
 local exports = {}
 
 local function FiberRootNode(containerInfo, tag, hydrate)
-	-- ROBLOX performance: See if this kind of object init is faster in Luau
+	-- performance: See if this kind of object init is faster in Luau
 	local rootNode = {
 		tag = tag,
 		containerInfo = containerInfo,
 		pendingChildren = nil,
-		-- ROBLOX TODO: this isn't typesafe upstream
+		-- TODO: this isn't typesafe upstream
 		current = (nil :: any) :: Fiber,
 		pingCache = nil,
 		finishedWork = nil,

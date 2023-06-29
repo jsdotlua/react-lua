@@ -36,7 +36,7 @@ local function getChartData(ref: { profilerStore: ProfilerStore, rootID: number 
 	if dataForRoot == nil then
 		error(string.format('Could not find profiling data for root "%s"', tostring(rootID)))
 	end
-	-- ROBLOX FIXME Luau: any cast necessary to work around: Property 'interactions' is not compatible. Type 'Array<Interaction> | Array<a> | Array<string>' could not be converted into 'Array<Interaction>'
+	-- FIXME Luau: any cast necessary to work around: Property 'interactions' is not compatible. Type 'Array<Interaction> | Array<a> | Array<string>' could not be converted into 'Array<Interaction>'
 	local commitData, interactions: any = dataForRoot.commitData, dataForRoot.interactions
 	local lastInteractionTime = if #commitData > 0 then commitData[#commitData].timestamp else 0
 	local maxCommitDuration = 0

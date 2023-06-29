@@ -24,7 +24,7 @@ local warnOnce = require(script.Parent.warnOnce)
 type RoactHandle = {
 	root: RootType,
 	key: string | number,
-	parent: any, -- ROBLOX TODO: Instance?
+	parent: any, -- TODO: Instance?
 }
 
 local function mount(element: any, parent: any, key: string?): RoactHandle
@@ -74,7 +74,7 @@ local function mount(element: any, parent: any, key: string?): RoactHandle
 		end
 	end
 
-	-- ROBLOX TODO: remove INLINE_ACT flag when all tests are updated to use
+	-- TODO: remove INLINE_ACT flag when all tests are updated to use
 	-- `act` explicitly
 	if _G.__ROACT_17_INLINE_ACT__ then
 		ReactRoblox.act(function()
@@ -100,7 +100,7 @@ local function update(roactHandle: RoactHandle, element)
 
 	local key = roactHandle.key
 	local parent = roactHandle.parent
-	-- ROBLOX TODO: remove INLINE_ACT flag when all tests are updated to use
+	-- TODO: remove INLINE_ACT flag when all tests are updated to use
 	-- `act` explicitly
 	if _G.__ROACT_17_INLINE_ACT__ then
 		ReactRoblox.act(function()
@@ -118,7 +118,7 @@ local function unmount(roactHandle: RoactHandle)
 		warnOnce("unmount", "Please use the createRoot API in ReactRoblox")
 	end
 
-	-- ROBLOX TODO: remove INLINE_ACT flag when all tests are updated to use
+	-- TODO: remove INLINE_ACT flag when all tests are updated to use
 	-- `act` explicitly
 	if _G.__ROACT_17_INLINE_ACT__ then
 		ReactRoblox.act(function()

@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://raw.githubusercontent.com/facebook/react/v17.0.1/packages/react-devtools-shared/src/hook.js
+-- upstream: https://raw.githubusercontent.com/facebook/react/v17.0.1/packages/react-devtools-shared/src/hook.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -31,9 +31,9 @@ exports.installHook = function(target: any): DevToolsHook | nil
 		return nil
 	end
 
-	-- ROBLOX deviation: hoist decls to top
+	-- deviation: hoist decls to top
 	local hook: DevToolsHook
-	-- ROBLOX deviation: always false, only relevant in context of optimizing bundler
+	-- deviation: always false, only relevant in context of optimizing bundler
 	local hasDetectedBadDCE = false
 	-- TODO: More meaningful names for "rendererInterfaces" and "renderers".
 	local fiberRoots = {}
@@ -42,14 +42,14 @@ exports.installHook = function(target: any): DevToolsHook | nil
 	local renderers = Map.new()
 
 	local function detectReactBuildType(renderer)
-		-- ROBLOX TODO? do we need to distinguish between prod and dev bundles?
+		-- TODO? do we need to distinguish between prod and dev bundles?
 		return "production"
 	end
 	local function checkDCE(fn: Function)
-		-- ROBLOX deviation: not needed in the absence of optimizing bundler
+		-- deviation: not needed in the absence of optimizing bundler
 	end
 
-	-- ROBLOX deviation: start at 1
+	-- deviation: start at 1
 	local uidCounter = 1
 	local function PREFIX_INCREMENT()
 		uidCounter += 1
@@ -63,7 +63,7 @@ exports.installHook = function(target: any): DevToolsHook | nil
 
 		local reactBuildType = if hasDetectedBadDCE then "deadcode" else detectReactBuildType(renderer)
 
-		-- ROBLOX deviation: instead of checking if `process.env.NODE_ENV ~= "production"`
+		-- deviation: instead of checking if `process.env.NODE_ENV ~= "production"`
 		-- we use the __DEV__ global
 		if _G.__DEV__ then
 			pcall(function()

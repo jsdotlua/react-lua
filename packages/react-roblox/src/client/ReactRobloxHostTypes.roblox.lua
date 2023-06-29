@@ -1,6 +1,6 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMHostConfig.js
--- ROBLOX upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/react-native-renderer/src/ReactNativeHostConfig.js
+-- upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMHostConfig.js
+-- upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/react-native-renderer/src/ReactNativeHostConfig.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -32,7 +32,7 @@ export type HostInstance = Instance
 
 export type TextInstance = Instance
 
--- ROBLOX TODO: Revisit this type for suspense
+-- TODO: Revisit this type for suspense
 -- export type SuspenseInstance = Comment & {_reactRetry?: () => void, ...}
 export type SuspenseInstance = any
 
@@ -53,15 +53,15 @@ export type Props = {
 	[any]: any,
 }
 
--- ROBLOX TODO: Revisit this type for hydration
+-- TODO: Revisit this type for hydration
 -- export type HydratableInstance = Instance | TextInstance | SuspenseInstance
 export type HydratableInstance = Instance | SuspenseInstance
 
--- ROBLOX TODO: Revisit this to make sure it makes sense
+-- TODO: Revisit this to make sure it makes sense
 -- export type PublicInstance = Element | Text
 export type PublicInstance = HostInstance
 
--- ROBLOX TODO: See if these actually make sense
+-- TODO: See if these actually make sense
 type HostContextDev = {
 	namespace: string,
 	ancestorInfo: any,

@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiberErrorDialog.js
+-- upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiberErrorDialog.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -15,7 +15,7 @@
 local exports = {}
 
 exports.showErrorDialog = function(boundary, errorInfo): boolean
-	-- ROBLOX TODO: we may replace this with something that sends telemetry LUAFDN-222
+	-- TODO: we may replace this with something that sends telemetry LUAFDN-222
 	return true
 end
 

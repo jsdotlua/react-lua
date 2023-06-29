@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/shared/invokeGuardedCallbackImpl.js
+-- upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/shared/invokeGuardedCallbackImpl.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -15,7 +15,7 @@ local describeError = require(script.Parent["ErrorHandling.roblox"]).describeErr
 local function invokeGuardedCallbackProd(reporter, name, func, context, ...)
 	-- local funcArgs = Array.prototype.slice.call(arguments, 3)
 
-	-- ROBLOX deviation: YOLO flag for disabling pcall
+	-- deviation: YOLO flag for disabling pcall
 	local ok, result
 	if not _G.__YOLO__ then
 		-- deviation: Since functions in lua _explicitly_ accept 'self' as a

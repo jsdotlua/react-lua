@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/SchedulingProfiler.js
+-- upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/SchedulingProfiler.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -69,7 +69,7 @@ exports.markCommitStopped = function(): ()
 	end
 end
 
--- ROBLOX deviation: we use our custom Map
+-- deviation: we use our custom Map
 -- local PossiblyWeakMap = typeof WeakMap === 'function' ? WeakMap : Map
 
 -- $FlowFixMe: Flow cannot handle polymorphic WeakMaps

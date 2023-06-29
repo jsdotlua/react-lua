@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/0cf22a56a18790ef34c71bef14f64695c0498619/packages/react/src/ReactNoopUpdateQueue.js
+-- upstream: https://github.com/facebook/react/blob/0cf22a56a18790ef34c71bef14f64695c0498619/packages/react/src/ReactNoopUpdateQueue.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -7,7 +7,7 @@
  ]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local didWarnStateUpdateForUnmountedComponent = {}
@@ -23,7 +23,7 @@ local function warnNoop(publicInstance: any, callerName: string)
 		if didWarnStateUpdateForUnmountedComponent[warningKey] then
 			return
 		end
-		-- ROBLOX deviation: message adjusted for accuracy with Lua class components
+		-- deviation: message adjusted for accuracy with Lua class components
 		console.error(
 			"Can't call %s on a component that is not yet mounted. "
 				.. "This is a no-op, but it might indicate a bug in your application. "

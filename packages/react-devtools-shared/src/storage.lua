@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/storage.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/storage.js
 -- /*
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -16,7 +16,7 @@ if _G.__SESSIONSTORAGE__ == nil then
 	_G.__SESSIONSTORAGE__ = {}
 end
 
--- ROBLOX FIXME: what's a high-performance storage that for temporal (current DM lifetime) and permanent (beyond current DM lifetime)
+-- FIXME: what's a high-performance storage that for temporal (current DM lifetime) and permanent (beyond current DM lifetime)
 local localStorage = _G.__LOCALSTORAGE__
 local sessionStorage = _G.__SESSIONSTORAGE__
 

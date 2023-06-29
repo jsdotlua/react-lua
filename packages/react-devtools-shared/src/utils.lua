@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/utils.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/utils.js
 -- /*
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -22,9 +22,9 @@ local JSON = game:GetService("HttpService")
 
 local exports = {}
 
--- ROBLOX TODO: pull in smarter cache when there's a performance reason to do so
+-- TODO: pull in smarter cache when there's a performance reason to do so
 -- local LRU = require()
--- ROBLOX deviation: pull in getComponentName for Lua-specific logic to extract component names
+-- deviation: pull in getComponentName for Lua-specific logic to extract component names
 local Shared = require(Packages.Shared)
 local getComponentName = Shared.getComponentName
 
@@ -71,19 +71,19 @@ local cachedDisplayNames: WeakMap<Function, string> = WeakMap.new()
 
 -- On large trees, encoding takes significant time.
 -- Try to reuse the already encoded strings.
--- ROBLOX TODO: implement this when there's a performance issue in Studio tools driving it
+-- TODO: implement this when there's a performance issue in Studio tools driving it
 -- local encodedStringCache = LRU({max = 1000})
 
 exports.alphaSortKeys = function(
-	a: string | number, -- ROBLOX deviation: | Symbol,
-	b: string | number -- ROBLOX deviation: | Symbol,
+	a: string | number, -- deviation: | Symbol,
+	b: string | number -- deviation: | Symbol,
 ): boolean
-	-- ROBLOX deviation: passed to table.sort(), which returns a bool
+	-- deviation: passed to table.sort(), which returns a bool
 	return tostring(a) > tostring(b)
 end
 
 exports.getAllEnumerableKeys = function(obj: Object): Array<string | number> -- | Symbol>
-	-- ROBLOX TODO: we probably need to enumerate inheritance chain metatables
+	-- TODO: we probably need to enumerate inheritance chain metatables
 	return Object.keys(obj)
 end
 
@@ -95,19 +95,19 @@ exports.getDisplayName = function(type_: any, fallbackName: string?): string
 		return nameFromCache :: string
 	end
 
-	-- ROBLOX FIXME: Luau type narrowing doesn't understand the or "anonymous" above
+	-- FIXME: Luau type narrowing doesn't understand the or "anonymous" above
 	local displayName: string = fallbackName :: string
 
 	-- The displayName property is not guaranteed to be a string.
 	-- It's only safe to use for our purposes if it's a string.
 	-- github.com/facebook/react-devtools/issues/803
-	-- ROBLOX deviation START: Luau datatypes don't have a displayName property, so we use .__componentName
+	-- deviation START: Luau datatypes don't have a displayName property, so we use .__componentName
 	if typeof(type_) == "table" and typeof(type_.__componentName) == "string" then
 		displayName = type_.__componentName
-		-- ROBLOX deviation END
+		-- deviation END
 	elseif typeof(type_) == "table" and typeof(type_.name) == "string" and type_.name ~= "" then
 		displayName = type_.name
-		-- ROBLOX deviation: use the Lua logic in getComponentName to extract names of function components
+		-- deviation: use the Lua logic in getComponentName to extract names of function components
 	elseif typeof(type_) == "function" then
 		displayName = getComponentName(type_) or displayName
 	end
@@ -124,13 +124,13 @@ exports.getUID = function(): number
 	return uidCounter
 end
 
--- ROBLOX deviation: string encoding not required
+-- deviation: string encoding not required
 -- exports.utfDecodeString = function(str): string
 -- end
 -- exports.utfEncodeString = function(str): string
 -- end
 
--- ROBLOX deviation: don't binary encode strings, so operations Array can include strings
+-- deviation: don't binary encode strings, so operations Array can include strings
 exports.printOperationsArray = function(operations: Array<number | string>)
 	-- The first two values are always rendererID and rootID
 	local rendererID = operations[1] :: number
@@ -139,10 +139,10 @@ exports.printOperationsArray = function(operations: Array<number | string>)
 		string.format("operations for renderer:%s and root:%s", tostring(rendererID), tostring(rootID)),
 	}
 
-	-- ROBLOX deviation: 1-indexing so start at 3
+	-- deviation: 1-indexing so start at 3
 	local i = 3
 
-	-- ROBLOX deviation: use POSTFIX_INCREMENT instead of return i++
+	-- deviation: use POSTFIX_INCREMENT instead of return i++
 	local function POSTFIX_INCREMENT()
 		local tmp = i
 		i += 1
@@ -151,15 +151,15 @@ exports.printOperationsArray = function(operations: Array<number | string>)
 
 	-- Reassemble the string table.
 	local stringTable: Array<string> = {
-		-- ROBLOX deviation: Use the empty string
+		-- deviation: Use the empty string
 		"", -- ID = 0 corresponds to the empty string.
 	}
 	local stringTableSize = operations[POSTFIX_INCREMENT()] :: number
 	local stringTableEnd = i + stringTableSize
 
-	-- ROBLOX deviation: adjust bounds due to 1-based indexing
+	-- deviation: adjust bounds due to 1-based indexing
 	while i < stringTableEnd do
-		-- ROBLOX deviation: don't binary encode strings, so store string directly rather than length
+		-- deviation: don't binary encode strings, so store string directly rather than length
 		-- local nextLength = operations[POSTFIX_INCREMENT()]
 		-- local nextString = exports.utfDecodeString(Array.slice(operations, i, i + nextLength)
 		local nextString = operations[POSTFIX_INCREMENT()] :: string
@@ -304,14 +304,14 @@ exports.separateDisplayNameAndHOCs = function(
 		or type_ == ElementTypeFunction
 		or type_ == ElementTypeMemo
 	then
-		-- ROBLOX deviation START: use find instead of indexOf and gmatch instead of /[^()]+/g
+		-- deviation START: use find instead of indexOf and gmatch instead of /[^()]+/g
 		if string.find(displayName :: string, "(", 1, true) then
 			local hocTable: Array<string> = {}
 			for match in string.gmatch(displayName :: string, "[^()]+") do
 				table.insert(hocTable, match)
 			end
 
-			-- ROBLOX note: Pull the last one out as the displayName
+			-- NOTE: Pull the last one out as the displayName
 			local count = #hocTable
 			local lastMatch = hocTable[count]
 			hocTable[count] = nil
@@ -319,7 +319,7 @@ exports.separateDisplayNameAndHOCs = function(
 			displayName = lastMatch
 			hocDisplayNames = hocTable
 		end
-		-- ROBLOX Deviation END
+		-- deviation END
 	end
 
 	if type_ == ElementTypeMemo then
@@ -355,7 +355,7 @@ exports.getInObject = function(object: Object, path: Array<string | number>): an
 			if reduced[attr] ~= nil then
 				return reduced[attr]
 			end
-			-- ROBLOX deviation: no iterators in Symbol polyfill
+			-- deviation: no iterators in Symbol polyfill
 			-- if typeof(reduced[Symbol.iterator]) == "function" then
 			-- 	return Array.from(reduced)[attr]
 			-- end
@@ -413,7 +413,7 @@ exports.setInObject = function(object: Object?, path: Array<string | number>, va
 	end
 end
 
--- ROBLOX deviation: Luau can't express enumeration of literals
+-- deviation: Luau can't express enumeration of literals
 -- export type DataType =
 --   | 'array'
 --   | 'array_buffer'
@@ -446,7 +446,7 @@ export type DataType = string
 exports.getDataType = function(data: Object?): DataType
 	if data == nil then
 		return "null"
-		-- ROBLOX deviation: no undefined in Lua
+		-- deviation: no undefined in Lua
 		-- elseif data == nil then
 		--     return'undefined'
 	end
@@ -455,7 +455,7 @@ exports.getDataType = function(data: Object?): DataType
 		return "react_element"
 	end
 
-	-- ROBLOX deviation: only applies to web
+	-- deviation: only applies to web
 	-- if (typeof HTMLElement !== 'undefined' && data instanceof HTMLElement) {
 	--     return 'html_element';
 	--   }
@@ -479,7 +479,7 @@ exports.getDataType = function(data: Object?): DataType
 		if Array.isArray(data) then
 			return "array"
 
-			-- ROBLOX deviation: only applies to web
+			-- deviation: only applies to web
 			-- elseif ArrayBuffer.isView(data) then
 			-- return Object.hasOwnProperty(data.constructor, 'BYTES_PER_ELEMENT')
 			-- and 'typed_array'
@@ -509,11 +509,11 @@ exports.getDataType = function(data: Object?): DataType
 		end
 	elseif type_ == "string" then
 		return "string"
-		-- ROBLOX TODO? detect our Symbol polyfill here?
+		-- TODO? detect our Symbol polyfill here?
 		-- elseif type_ == 'symbol' then
 		--   return 'symbol'
 	elseif type_ == "nil" then
-		-- ROBLOX deviation: skip web-specific stuff
+		-- deviation: skip web-specific stuff
 		--   if (
 		-- Object.prototype.toString.call(data) == '[object HTMLAllCollection]'
 		--   then
@@ -624,7 +624,7 @@ function exports.formatDataForPreview(data: Object, showFormattedValue: boolean)
 		))
 	elseif type_ == "string" then
 		return string.format('"%s"', tostring(data))
-		-- ROBLOX TODO? should we support our RegExp and Symbol polyfills here?
+		-- TODO? should we support our RegExp and Symbol polyfills here?
 		-- elseif type_ == 'bigint' then
 		-- elseif type_ == 'regexp' then
 		-- elseif type_ == 'symbol' then
@@ -656,11 +656,11 @@ function exports.formatDataForPreview(data: Object, showFormattedValue: boolean)
 			end)()
 			return string.format("Array(%s)", length)
 		end
-		-- ROBLOX deviation: don't implement web-specifics
+		-- deviation: don't implement web-specifics
 		-- elseif type_ == 'typed_array' then
 		-- elseif type_ == 'iterator' then
 		-- elseif type_ == 'opaque_iterator' then
-		-- ROBLOX TODO? should we support Luau's datetime object?
+		-- TODO? should we support Luau's datetime object?
 		-- elseif type_ == 'date' then
 	elseif type_ == "object" then
 		if showFormattedValue then

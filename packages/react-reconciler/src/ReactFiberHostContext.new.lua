@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/17f582e0453b808860be59ed3437c6a426ae52de/packages/react-reconciler/src/ReactFiberHostContext.new.js
+-- upstream: https://github.com/facebook/react/blob/17f582e0453b808860be59ed3437c6a426ae52de/packages/react-reconciler/src/ReactFiberHostContext.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -39,7 +39,7 @@ local contextFiberStackCursor: StackCursor<Fiber | NoContextT> = createCursor(NO
 local rootInstanceStackCursor: StackCursor<Container | NoContextT> = createCursor(NO_CONTEXT)
 
 function requiredContext<Value>(c: Value | NoContextT): Value
-	-- ROBLOX performance: eliminate expensive optional cmp in hot path
+	-- performance: eliminate expensive optional cmp in hot path
 	-- invariant(
 	--   c ~= NO_CONTEXT,
 	--   "Expected host context to exist. This error is likely caused by a bug " ..
@@ -49,7 +49,7 @@ function requiredContext<Value>(c: Value | NoContextT): Value
 end
 
 function getRootHostContainer(): Container
-	-- ROBLOX performance: inline requiredContext impl for hot path
+	-- performance: inline requiredContext impl for hot path
 	-- local rootInstance = requiredContext(rootInstanceStackCursor.current)
 	-- return rootInstance
 	return rootInstanceStackCursor.current
@@ -82,7 +82,7 @@ function popHostContainer(fiber: Fiber)
 end
 
 function getHostContext(): HostContext
-	-- ROBLOX performance: inline requiredContext impl for hot path
+	-- performance: inline requiredContext impl for hot path
 	-- local context = requiredContext(contextStackCursor.current)
 	-- return context
 	return contextStackCursor.current

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/5474a83e258b497584bed9df95de1d554bc53f89/packages/scheduler/src/forks/SchedulerHostConfig.mock.js
+-- upstream: https://github.com/facebook/react/blob/5474a83e258b497584bed9df95de1d554bc53f89/packages/scheduler/src/forks/SchedulerHostConfig.mock.js
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
 *
@@ -125,7 +125,7 @@ exports.unstable_flushUntilNextPaint = function()
 		shouldYieldForPaint = true
 		needsPaint = false
 		isFlushing = true
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(function()
 			local hasMoreWork = true
 			repeat
@@ -137,7 +137,7 @@ exports.unstable_flushUntilNextPaint = function()
 			end
 		end)
 
-		-- ROBLOX finally
+		-- finally
 		shouldYieldForPaint = false
 		didStop = false
 		isFlushing = false

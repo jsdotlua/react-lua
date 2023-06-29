@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/142d4f1c00c66f3d728177082dbc027fd6335115/packages/react-reconciler/src/ReactProfilerTimer.new.js
+-- upstream: https://github.com/facebook/react/blob/142d4f1c00c66f3d728177082dbc027fd6335115/packages/react-reconciler/src/ReactProfilerTimer.new.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -58,7 +58,7 @@ function startProfilerTimer(fiber: Fiber): ()
 
 	profilerStartTime = now()
 
-	-- ROBLOX deviation: JS can compare null/undefined to 0, but Lua can't
+	-- deviation: JS can compare null/undefined to 0, but Lua can't
 	if fiber.actualStartTime ~= nil and (fiber.actualStartTime :: number) < 0 then
 		fiber.actualStartTime = now()
 	end

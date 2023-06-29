@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/d17086c7c813402a550d15a2f56dc43f1dbd1735/packages/react-reconciler/src/SchedulerWithReactIntegration.new.js
+-- upstream: https://github.com/facebook/react/blob/d17086c7c813402a550d15a2f56dc43f1dbd1735/packages/react-reconciler/src/SchedulerWithReactIntegration.new.js
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
 *
@@ -76,10 +76,10 @@ local flushSyncCallbackQueueImpl
 
 export type SchedulerCallback = (isSync: boolean) -> SchedulerCallback | nil
 
--- ROBLOX deviation START: don't allow extension unless we need to
+-- deviation START: don't allow extension unless we need to
 -- type SchedulerCallbackOptions = { timeout: number?, ... };
 type SchedulerCallbackOptions = { timeout: number? }
--- ROBLOX deviation END
+-- deviation END
 local fakeCallbackNode = {}
 
 local shouldYield = Scheduler_shouldYield
@@ -103,7 +103,7 @@ local initialTimeMs: number = Scheduler_now()
 -- -- the behavior of performance.now and keep our times small enough to fit
 -- -- within 32 bits.
 -- -- TODO: Consider lifting this into Scheduler.
--- ROBLOX FIXME: properly account for ms vs s from tick
+-- FIXME: properly account for ms vs s from tick
 -- local now = initialTimeMs < 10000
 --   and Scheduler_now
 --   or function()
@@ -153,7 +153,7 @@ function reactPriorityToSchedulerPriority(reactPriorityLevel)
 	end
 end
 
--- ROBLOX FIXME Luau: should be T... but hits CLI-50289: failure to unify
+-- FIXME Luau: should be T... but hits CLI-50289: failure to unify
 local function runWithPriority<T...>(reactPriorityLevel: ReactPriorityLevel, fn: () -> T...): ...any
 	local priorityLevel = reactPriorityToSchedulerPriority(reactPriorityLevel)
 	return Scheduler_runWithPriority(priorityLevel, fn)
@@ -206,11 +206,11 @@ flushSyncCallbackQueueImpl = function()
 		local i = 1
 		if decoupleUpdatePriorityFromScheduler then
 			local previousLanePriority = getCurrentUpdateLanePriority()
-			-- ROBLOX deviation: YOLO flag for disabling pcall
+			-- deviation: YOLO flag for disabling pcall
 			local ok = true
 			local result
 			if not _G.__YOLO__ then
-				-- ROBLOX performance: hoist non-throwables out of try{} to eliminate anon function
+				-- performance: hoist non-throwables out of try{} to eliminate anon function
 				local isSync = true
 				local queue = syncQueue
 
@@ -219,12 +219,12 @@ flushSyncCallbackQueueImpl = function()
 					runWithPriority,
 					describeError,
 					ImmediatePriority,
-					-- ROBLOX FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
+					-- FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
 					function(): ...any
 						for index, callback in queue do
 							i = index
 							repeat
-								-- ROBLOX FIXME Luau: Luau doesn't understand loop until nil construct
+								-- FIXME Luau: Luau doesn't understand loop until nil construct
 								callback = callback(isSync) :: any
 							until callback == nil
 						end
@@ -237,12 +237,12 @@ flushSyncCallbackQueueImpl = function()
 				local queue = syncQueue
 
 				setCurrentUpdateLanePriority(SyncLanePriority)
-				-- ROBLOX FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
+				-- FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
 				runWithPriority(ImmediatePriority, function(): ...any
 					for index, callback in queue do
 						i = index
 						repeat
-							-- ROBLOX FIXME Luau: Luau doesn't understand loop until nil construct
+							-- FIXME Luau: Luau doesn't understand loop until nil construct
 							callback = callback(isSync) :: any
 						until callback == nil
 						i += 1
@@ -265,10 +265,10 @@ flushSyncCallbackQueueImpl = function()
 				error(result)
 			end
 		else
-			-- ROBLOX deviation: YOLO flag for disabling pcall
+			-- deviation: YOLO flag for disabling pcall
 			local ok, result
 			if not _G.__YOLO__ then
-				-- ROBLOX performance: hoist non-throwables out of try{} to eliminate anon function
+				-- performance: hoist non-throwables out of try{} to eliminate anon function
 				local isSync = true
 				local queue = syncQueue
 
@@ -276,12 +276,12 @@ flushSyncCallbackQueueImpl = function()
 					runWithPriority,
 					describeError,
 					ImmediatePriority,
-					-- ROBLOX FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
+					-- FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
 					function(): ...any
 						for index, callback in queue do
 							i = index
 							repeat
-								-- ROBLOX FIXME Luau: Luau doesn't understand loop until nil construct
+								-- FIXME Luau: Luau doesn't understand loop until nil construct
 								callback = callback(isSync) :: any
 							until callback == nil
 						end
@@ -292,12 +292,12 @@ flushSyncCallbackQueueImpl = function()
 				ok = true
 				local isSync = true
 				local queue = syncQueue
-				-- ROBLOX FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
+				-- FIXME Luau: Luau sees this as returning void, but then sees an explicit return in runWithPriority and errors
 				runWithPriority(ImmediatePriority, function(): ...any
 					for index, callback in queue do
 						i = index
 						repeat
-							-- ROBLOX FIXME Luau: Luau doesn't understand loop until nil construct
+							-- FIXME Luau: Luau doesn't understand loop until nil construct
 							callback = callback(isSync) :: any
 						until callback == nil
 					end

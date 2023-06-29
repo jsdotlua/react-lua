@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/41694201988c5e651f0c3bc69921d5c9717be88b/packages/react/src/ReactMemo.js
+-- upstream: https://github.com/facebook/react/blob/41694201988c5e651f0c3bc69921d5c9717be88b/packages/react/src/ReactMemo.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -8,7 +8,7 @@
  ]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local Shared = require(Packages.Shared)
 local console = Shared.console
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -30,10 +30,10 @@ local getComponentName = Shared.getComponentName
 local exports = {}
 
 exports.memo = function<Props, T>(
-	-- ROBLOX deviation START: expanded type pulled from definitelytyped, not sure why upstream doesn't accept function component types
-	-- ROBLOX TODO Luau: React_Component<Props, any> gave me  Type 'React_Component<any, any>' could not be converted into '((any, any) -> (Array<(Array<<CYCLE>> | React_Element<any> | boolean | number | string)?> | React_Element<any> | boolean | number | string)?) | string'; none of the union options are compatible
+	-- deviation START: expanded type pulled from definitelytyped, not sure why upstream doesn't accept function component types
+	-- TODO Luau: React_Component<Props, any> gave me  Type 'React_Component<any, any>' could not be converted into '((any, any) -> (Array<(Array<<CYCLE>> | React_Element<any> | boolean | number | string)?> | React_Element<any> | boolean | number | string)?) | string'; none of the union options are compatible
 	type_: React_StatelessFunctionalComponent<Props> | React_AbstractComponent<Props, T> | string,
-	-- ROBLOX deviation END
+	-- deviation END
 	compare: ((oldProps: Props, newProps: Props) -> boolean)?
 ): React_AbstractComponent<Props, any>
 	if _G.__DEV__ then
@@ -61,7 +61,7 @@ exports.memo = function<Props, T>(
 			else
 				typeString = typeof(type_)
 				if type_ ~= nil then
-					-- ROBLOX deviation: print the table/string in readable form to give a clue, if no other info was gathered
+					-- deviation: print the table/string in readable form to give a clue, if no other info was gathered
 					info = "\n" .. inspect(type_)
 				end
 			end
@@ -77,7 +77,7 @@ exports.memo = function<Props, T>(
 
 	if _G.__DEV__ then
 		local name
-		-- ROBLOX deviation: use metatables to approximate Object.defineProperty logic
+		-- deviation: use metatables to approximate Object.defineProperty logic
 		setmetatable(elementType, {
 			__index = function(self, key)
 				if key == "displayName" then
@@ -88,7 +88,7 @@ exports.memo = function<Props, T>(
 			__newindex = function(self, key, value)
 				if key == "displayName" then
 					name = value
-					-- ROBLOX deviation: render is a function and cannot have properties
+					-- deviation: render is a function and cannot have properties
 					if typeof(type_) == "table" and (type_ :: React_AbstractComponent<Props, T>).displayName == nil then
 						(type_ :: React_AbstractComponent<Props, T>).displayName = name
 					end

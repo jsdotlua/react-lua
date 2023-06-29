@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/renderer.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/renderer.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -26,14 +26,14 @@ type Map<K, V> = LuauPolyfill.Map<K, V>
 type Set<T> = LuauPolyfill.Set<T>
 type Object = LuauPolyfill.Object
 
--- ROBLOX deviation: Use _G as a catch all for global for now
--- ROBLOX TODO: Work out a better capability-based solution
+-- deviation: Use _G as a catch all for global for now
+-- TODO: Work out a better capability-based solution
 local window = _G
 local exports = {}
 
 local invariant = require(Packages.Shared).invariant
 
--- ROBLOX deviation: we don't currently need semver, as we only support one version of React
+-- deviation: we don't currently need semver, as we only support one version of React
 -- local semver = require(semver)
 -- local gte = semver.gte
 local types = require(script.Parent.Parent.types)
@@ -60,7 +60,7 @@ local getInObject = utils.getInObject
 local getUID = utils.getUID
 local renamePathInObject = utils.renamePathInObject
 local setInObject = utils.setInObject
--- ROBLOX deviation: Don't encode strings
+-- deviation: Don't encode strings
 -- local utfEncodeString = utils.utfEncodeString
 local storage = require(script.Parent.Parent.storage)
 local sessionStorageGetItem = storage.sessionStorageGetItem
@@ -102,13 +102,13 @@ local FORWARD_REF_SYMBOL_STRING = ReactSymbols.FORWARD_REF_SYMBOL_STRING
 local MEMO_NUMBER = ReactSymbols.MEMO_NUMBER
 local MEMO_SYMBOL_STRING = ReactSymbols.MEMO_SYMBOL_STRING
 local is = Shared.objectIs
--- ROBLOX FIXME: pass in a real host config, or make this able to use basic enums without initializing
+-- FIXME: pass in a real host config, or make this able to use basic enums without initializing
 local ReactReconciler = require(Packages.ReactReconciler)({})
 
--- ROBLOX deviation: Require shared functionality rather than copying and pasting it inline
+-- deviation: Require shared functionality rather than copying and pasting it inline
 local getNearestMountedFiber = ReactReconciler.getNearestMountedFiber
 
--- ROBLOX deviation: ReactInternalTypes is re-exported from top-level reconciler to respect the module encapsulation boundary
+-- deviation: ReactInternalTypes is re-exported from top-level reconciler to respect the module encapsulation boundary
 local ReactInternalTypes = require(Packages.ReactReconciler)
 type Fiber = ReactInternalTypes.Fiber
 local BackendTypes = require(script.Parent.types)
@@ -165,7 +165,7 @@ local function getFiberFlags(fiber: Fiber): number
 end
 
 local getCurrentTime = function()
-	-- ROBLOX deviation: use os.clock not performance
+	-- deviation: use os.clock not performance
 	return os.clock()
 end
 
@@ -198,7 +198,7 @@ exports.getInternalReactConstants = function(version: string): {
 		NoPriority = 90,
 	}
 
-	-- ROBLOX deviation: we don't need to support older versions
+	-- deviation: we don't need to support older versions
 	-- if gte(version, '17.0.0-alpha') then
 	local ReactTypeOfWork: WorkTagMap = {
 		Block = 22,
@@ -320,7 +320,7 @@ exports.getInternalReactConstants = function(version: string): {
 	local function getTypeSymbol(type_: any): Symbol | number
 		local symbolOrNumber = if typeof(type_) == "table" then type_["$$typeof"] else type_
 
-		-- ROBLOX deviation: symbol is not a native Luau type
+		-- deviation: symbol is not a native Luau type
 		return if typeof(symbolOrNumber) == "table" then tostring(symbolOrNumber) else symbolOrNumber
 	end
 
@@ -433,7 +433,7 @@ exports.attach = function(
 	renderer: ReactRenderer,
 	global: Object
 ): RendererInterface
-	-- ROBLOX deviation: these definitions have been hoisted to top of function for earlier use
+	-- deviation: these definitions have been hoisted to top of function for earlier use
 	local fiberToIDMap: Map<Fiber, number> = Map.new() :: Map<Fiber, number>
 	local idToFiberMap: Map<number, Fiber> = Map.new() :: Map<number, Fiber>
 	local primaryFibers: Set<Fiber> = Set.new() :: Set<Fiber>
@@ -494,7 +494,7 @@ exports.attach = function(
 		ReactPriorityLevels.LowPriority,
 		ReactPriorityLevels.IdlePriority
 
-	-- ROBLOX deviation: these need binding to self
+	-- deviation: these need binding to self
 	local overrideHookState = function(...)
 		return renderer.overrideHookState(...)
 	end
@@ -527,7 +527,7 @@ exports.attach = function(
 	-- * Disable logging during re-renders to inspect hooks (see inspectHooksOfFiber)
 	--
 	-- Don't patch in test environments because we don't want to interfere with Jest's own console overrides.
-	-- ROBLOX deviation: instead of checking if `process.env.NODE_ENV ~= "production"`
+	-- deviation: instead of checking if `process.env.NODE_ENV ~= "production"`
 	-- we use the __DEV__ global
 	if _G.__DEV__ then
 		registerRendererWithConsole(renderer)
@@ -548,7 +548,7 @@ exports.attach = function(
 
 	local debug_ = function(name: string, fiber: Fiber, parentFiber: Fiber?): ()
 		if __DEBUG__ then
-			-- ROBLOX deviation: Use string nil rather than null as it is Roblox convenion
+			-- deviation: Use string nil rather than null as it is Roblox convenion
 			local displayName = getDisplayNameForFiber(fiber) or "nil"
 			local id = getFiberID(fiber)
 			local parentDisplayName = if parentFiber ~= nil then getDisplayNameForFiber(parentFiber :: Fiber) else "nil"
@@ -556,7 +556,7 @@ exports.attach = function(
 			-- NOTE: calling getFiberID or getPrimaryFiber is unsafe here
 			-- because it will put them in the map. For now, we'll omit them.
 			-- TODO: better debugging story for this.
-			-- ROBLOX deviation: avoid incompatible log formatting
+			-- deviation: avoid incompatible log formatting
 			console.log(
 				string.format(
 					"[renderer] %s %s (%d) %s",
@@ -572,12 +572,12 @@ exports.attach = function(
 	end
 
 	-- Configurable Components tree filters.
-	-- ROBLOX deviation: adjusted to use Lua patterns, but we may actually want original RegExp
+	-- deviation: adjusted to use Lua patterns, but we may actually want original RegExp
 	local hideElementsWithDisplayNames: Set<string> = Set.new()
 	local hideElementsWithPaths: Set<string> = Set.new()
 	local hideElementsWithTypes: Set<ElementType> = Set.new()
 
-	-- ROBLOX deviation: local variables need to be defined above their use in closures
+	-- deviation: local variables need to be defined above their use in closures
 	-- Roots don't have a real persistent identity.
 	-- A root's "pseudo key" is "childDisplayName:indexWithThatName".
 	-- For example, "App:0" or, in case of similar roots, "Story:0", "Story:1", etc.
@@ -585,7 +585,7 @@ exports.attach = function(
 	local rootPseudoKeys: Map<number, string> = Map.new()
 	local rootDisplayNameCounter: Map<string, number> = Map.new()
 
-	-- ROBLOX deviation: definitions hoisted earlier in function
+	-- deviation: definitions hoisted earlier in function
 	local currentCommitProfilingMetadata: CommitProfilingData | nil = nil
 	local displayNamesByRootID: DisplayNamesByRootID | nil = nil
 	local idToContextsMap: Map<number, any> | nil = nil
@@ -606,7 +606,7 @@ exports.attach = function(
 	local traceUpdatesEnabled: boolean = false
 	local traceUpdatesForNodes: Set<NativeType> = Set.new()
 
-	-- ROBLOX deviation: hoise local variables
+	-- deviation: hoise local variables
 	-- Remember if we're trying to restore the selection after reload.
 	-- In that case, we'll do some extra checks for matching mounts.
 	local trackedPath: Array<PathFrame> | nil = nil
@@ -614,7 +614,7 @@ exports.attach = function(
 	local trackedPathMatchDepth = -1
 	local mightBeOnTrackedPath = false
 
-	-- ROBLOX deviation: hoist function variables
+	-- deviation: hoist function variables
 	local getChangedKeys: (prev: any, next_: any) -> nil | Array<string>
 	local mountFiberRecursively: (
 		fiber: Fiber,
@@ -630,13 +630,13 @@ exports.attach = function(
 		hideElementsWithTypes:clear()
 		hideElementsWithDisplayNames:clear()
 		hideElementsWithPaths:clear()
-		-- ROBLOX TODO: translate to Array.forEach
+		-- TODO: translate to Array.forEach
 		for _, componentFilter in componentFilters do
 			if not componentFilter.isEnabled then
 				continue
 			end
 			if componentFilter.type == ComponentFilterDisplayName then
-				-- ROBLOX deviation: use value directly as pattern rather than creating a RegExp
+				-- deviation: use value directly as pattern rather than creating a RegExp
 				hideElementsWithDisplayNames:add((componentFilter :: RegExpComponentFilter).value)
 			elseif componentFilter.type == ComponentFilterElementType then
 				hideElementsWithTypes:add((componentFilter :: ElementTypeComponentFilter).value)
@@ -645,7 +645,7 @@ exports.attach = function(
 					(componentFilter :: RegExpComponentFilter).isValid
 					and (componentFilter :: RegExpComponentFilter).value ~= ""
 				then
-					-- ROBLOX deviation: use value directly as pattern rather than creating a RegExp
+					-- deviation: use value directly as pattern rather than creating a RegExp
 					hideElementsWithPaths:add((componentFilter :: RegExpComponentFilter).value)
 				end
 			elseif componentFilter.type == ComponentFilterHOC then
@@ -745,7 +745,7 @@ exports.attach = function(
 			if displayName ~= nil then
 				-- eslint-disable-next-line no-for-of-loops/no-for-of-loops
 				for _, displayNameRegExp in hideElementsWithDisplayNames do
-					-- ROBLOX deviation: these are patterns not RegExps
+					-- deviation: these are patterns not RegExps
 					if string.match(displayName :: string, displayNameRegExp) then
 						return true
 					end
@@ -757,7 +757,7 @@ exports.attach = function(
 
 			-- eslint-disable-next-line no-for-of-loops/no-for-of-loops
 			for _, pathRegExp in hideElementsWithPaths do
-				-- ROBLOX deviation: these are patterns not RegExps
+				-- deviation: these are patterns not RegExps
 				if string.match(fileName, pathRegExp) then
 					return true
 				end
@@ -838,7 +838,7 @@ exports.attach = function(
 			or fiberType == ElementTypeFunction
 			or fiberType == ElementTypeMemo
 			or fiberType == ElementTypeForwardRef
-			-- ROBLOX deviation: Include host components in the report
+			-- deviation: Include host components in the report
 			or fiberType == ElementTypeHostComponent
 		then
 			if prevFiber == nil then
@@ -878,7 +878,7 @@ exports.attach = function(
 	-- Differentiates between a null context value and no context.
 	local NO_CONTEXT = {}
 
-	-- ROBLOX deviation: Luau can't express return type: [Object, any]
+	-- deviation: Luau can't express return type: [Object, any]
 	getContextsForFiber = function(fiber: Fiber): Array<any> | nil
 		if getElementTypeForFiber(fiber) == ElementTypeClass then
 			local instance = fiber.stateNode
@@ -915,7 +915,7 @@ exports.attach = function(
 		if getElementTypeForFiber(fiber) == ElementTypeClass then
 			if idToContextsMap ~= nil then
 				local id = getFiberID(getPrimaryFiber(fiber))
-				-- ROBLOX TODO? optimize this pattern into just the get
+				-- TODO? optimize this pattern into just the get
 				local prevContexts = if idToContextsMap:has(id) then idToContextsMap:get(id) else nil
 				local nextContexts = getContextsForFiber(fiber)
 
@@ -990,12 +990,12 @@ exports.attach = function(
 			return false
 		end
 		-- We can't report anything meaningful for hooks changes.
-		-- ROBLOX deviation: hasOwnProperty doesn't exist
+		-- deviation: hasOwnProperty doesn't exist
 		if next_["baseState"] and next_["memoizedState"] and next_["next"] and next_["queue"] then
 			while next_ ~= nil do
-				-- ROBLOX deviation START: use didHookChange instead of equality check
+				-- deviation START: use didHookChange instead of equality check
 				if didHookChange(prev, next_) then
-					-- ROBLOX deviation END
+					-- deviation END
 					return true
 				else
 					next_ = next_.next
@@ -1011,7 +1011,7 @@ exports.attach = function(
 			return nil
 		end
 		-- We can't report anything meaningful for hooks changes.
-		-- ROBLOX deviation: hasOwnProperty doesn't exist
+		-- deviation: hasOwnProperty doesn't exist
 		if
 			next_["baseState"] ~= nil
 			and next_["memoizedState"] ~= nil
@@ -1048,7 +1048,7 @@ exports.attach = function(
 			-- eslint-disable-next-line no-bitwise
 			return bit32.band(getFiberFlags(nextFiber), PerformedWork) == PerformedWork
 		else
-			-- Note: ContextConsumer only gets PerformedWork effect in 16.3.3+
+			-- NOTE: ContextConsumer only gets PerformedWork effect in 16.3.3+
 			-- so it won't get highlighted with React 16.3.0 to 16.3.2.
 			-- For host components and other types, we compare inputs
 			-- to determine whether something is an update.
@@ -1067,7 +1067,7 @@ exports.attach = function(
 	local pendingUnmountedRootID: number | nil = nil
 
 	local function pushOperation(op: number): ()
-		-- ROBLOX deviation: Use global
+		-- deviation: Use global
 		if global.__DEV__ then
 			if not Number.isInteger(op) then
 				console.error("pushOperation() was called but the value is not an integer.", op)
@@ -1099,7 +1099,7 @@ exports.attach = function(
 			+ #pendingSimulatedUnmountedIDs
 			+ (if pendingUnmountedRootID == nil then 0 else 1)
 		local operations: Array<string | number> = {}
-		-- ROBLOX deviation: don't create an array of specified length
+		-- deviation: don't create an array of specified length
 		-- Identify which renderer this update is coming from.
 		-- 2 -- [rendererID, rootFiberID]
 		-- 				-- How big is the string table?
@@ -1120,7 +1120,7 @@ exports.attach = function(
 		-- Which in turn enables fiber props, states, and hooks to be inspected.
 		local i = 1
 
-		-- ROBLOX deviation: instead of i++
+		-- deviation: instead of i++
 		local function POSTFIX_INCREMENT()
 			local prevI = i
 			i += 1
@@ -1132,14 +1132,14 @@ exports.attach = function(
 
 		-- Now fill in the string table.
 		-- [stringTableLength, str1Length, ...str1, str2Length, ...str2, ...]
-		-- ROBLOX deviation: [stringCount, str1, str2, ...]
+		-- deviation: [stringCount, str1, str2, ...]
 		operations[POSTFIX_INCREMENT()] = pendingStringTableLength
 
-		-- ROBLOX deviation: insert operations in pendingStringTable value-order
+		-- deviation: insert operations in pendingStringTable value-order
 		local stringTableStartIndex = #operations
 
 		pendingStringTable:forEach(function(value, key)
-			-- ROBLOX deviation: Don't encode strings
+			-- deviation: Don't encode strings
 			-- operations[POSTFIX_INCREMENT()] = #key
 			-- local encodedKey = utfEncodeString(key)
 			-- for j = 1, #encodedKey do
@@ -1148,7 +1148,7 @@ exports.attach = function(
 			-- i = i + #key
 			operations[stringTableStartIndex + value] = key
 
-			-- ROBLOX deviation: ensure increment is still called
+			-- deviation: ensure increment is still called
 			POSTFIX_INCREMENT()
 		end)
 
@@ -1185,7 +1185,7 @@ exports.attach = function(
 
 		-- Fill in the rest of the operations.
 		for j = 1, #pendingOperations do
-			-- ROBLOX deviation: 1-indexing math
+			-- deviation: 1-indexing math
 			operations[i + j - 1] = pendingOperations[j] :: number
 		end
 
@@ -1204,7 +1204,7 @@ exports.attach = function(
 			hook.emit("operations", operations)
 		end
 
-		-- ROBLOX deviation: replace table instead of truncating it
+		-- deviation: replace table instead of truncating it
 		pendingOperations = {}
 		pendingRealUnmountedIDs = {}
 		pendingSimulatedUnmountedIDs = {}
@@ -1218,7 +1218,7 @@ exports.attach = function(
 			return 0
 		end
 
-		-- ROBLOX FIXME Luau: needs type states to not need manual cast
+		-- FIXME Luau: needs type states to not need manual cast
 		local existingID = pendingStringTable:get(str :: string)
 
 		if existingID ~= nil then
@@ -1227,19 +1227,19 @@ exports.attach = function(
 
 		local stringID = pendingStringTable.size + 1
 
-		-- ROBLOX FIXME Luau: needs type states to not need cast
+		-- FIXME Luau: needs type states to not need cast
 		pendingStringTable:set(str :: string, stringID)
 		-- The string table total length needs to account
 		-- both for the string length, and for the array item
 		-- that contains the length itself. Hence + 1.
-		-- ROBLOX deviation: Don't encode strings, so just count one for the single string entry
+		-- deviation: Don't encode strings, so just count one for the single string entry
 		-- pendingStringTableLength = pendingStringTableLength + (#str + 1)
 		pendingStringTableLength += 1
 		return stringID
 	end
 
 	local function recordMount(fiber: Fiber, parentFiber: Fiber | nil)
-		-- ROBLOX deviation: use global
+		-- deviation: use global
 		if global.__DEBUG__ then
 			debug_("recordMount()", fiber, parentFiber)
 		end
@@ -1292,7 +1292,7 @@ exports.attach = function(
 		end
 	end
 	recordUnmount = function(fiber: Fiber, isSimulated: boolean)
-		-- ROBLOX deviation: use global
+		-- deviation: use global
 		if global.__DEBUG__ then
 			debug_("recordUnmount()", fiber)
 		end
@@ -1340,7 +1340,7 @@ exports.attach = function(
 		idToFiberMap:delete(id)
 		primaryFibers:delete(primaryFiber)
 
-		-- ROBLOX deviation: hasOwnProperty doesn't exist
+		-- deviation: hasOwnProperty doesn't exist
 		local isProfilingSupported = fiber["treeBaseDuration"] ~= nil
 
 		if isProfilingSupported then
@@ -1443,7 +1443,7 @@ exports.attach = function(
 	-- We use this to simulate unmounting for Suspense trees
 	-- when we switch from primary to fallback.
 	unmountFiberChildrenRecursively = function(fiber: Fiber)
-		-- ROBLOX deviation: use global
+		-- deviation: use global
 		if global.__DEBUG__ then
 			debug_("unmountFiberChildrenRecursively()", fiber)
 		end
@@ -1584,7 +1584,7 @@ exports.attach = function(
 		parentFiber: Fiber | nil,
 		traceNearestHostComponentUpdate: boolean
 	): boolean
-		-- ROBLOX deviation: use global
+		-- deviation: use global
 		if global.__DEBUG__ then
 			debug_("updateFiberRecursively()", nextFiber, parentFiber)
 		end
@@ -1640,7 +1640,7 @@ exports.attach = function(
 			-- 1. Reconcile fallback set.
 			local nextFiberChild = nextFiber.child
 			local nextFallbackChildSet = if nextFiberChild then nextFiberChild.sibling else nil
-			-- Note: We can't use nextFiber.child.sibling.alternate
+			-- NOTE: We can't use nextFiber.child.sibling.alternate
 			-- because the set is special and alternate may not exist.
 			local prevFiberChild = prevFiber.child
 			local prevFallbackChildSet = if prevFiberChild then prevFiberChild.sibling else nil
@@ -1660,7 +1660,7 @@ exports.attach = function(
 		elseif prevDidTimeout and not nextDidTimeOut then
 			-- Fallback -> Primary:
 			-- 1. Unmount fallback set
-			-- Note: don't emulate fallback unmount because React actually did it.
+			-- NOTE: don't emulate fallback unmount because React actually did it.
 			-- 2. Mount primary set
 			local nextPrimaryChildSet = nextFiber.child
 
@@ -1766,7 +1766,7 @@ exports.attach = function(
 			end
 		end
 		if shouldIncludeInTree then
-			-- ROBLOX deviation: hasOwnProperty doesn't exist
+			-- deviation: hasOwnProperty doesn't exist
 			local isProfilingSupported = nextFiber["treeBaseDuration"] ~= nil
 
 			if isProfilingSupported then
@@ -1834,11 +1834,11 @@ exports.attach = function(
 					local _tmp = Array.from(root.memoizedInteractions)
 
 					currentCommitProfilingMetadata = {
-						-- ROBLOX deviation: use bare table instead of Map type
+						-- deviation: use bare table instead of Map type
 						changeDescriptions = if recordChangeDescriptions then Map.new() else nil,
 						durations = {},
 						commitTime = getCurrentTime() - profilingStartTime,
-						-- ROBLOX TODO: Work out how to deviate this assignment, it's messy
+						-- TODO: Work out how to deviate this assignment, it's messy
 						interactions = Array.map(
 							Array.from(root.memoizedInteractions),
 							function(interaction: Interaction)
@@ -1881,7 +1881,7 @@ exports.attach = function(
 			return "Low"
 		elseif priorityLevel == IdlePriority then
 			return "Idle"
-			-- ROBLOX deviation: no need to check for NoPriority
+			-- deviation: no need to check for NoPriority
 		else
 			return "Unknown"
 		end
@@ -1911,13 +1911,13 @@ exports.attach = function(
 			-- If profiling is active, store commit time and duration, and the current interactions.
 			-- The frontend may request this information after profiling has stopped.
 			currentCommitProfilingMetadata = {
-				-- ROBLOX deviation: use bare table instead of Map type
+				-- deviation: use bare table instead of Map type
 				changeDescriptions = if recordChangeDescriptions then Map.new() else nil,
 				durations = {},
 				commitTime = getCurrentTime() - profilingStartTime,
 				interactions = Array.map(
 					Array.from(root.memoizedInteractions),
-					-- ROBLOX FIXME Luau: shouldn't need this manual annotation
+					-- FIXME Luau: shouldn't need this manual annotation
 					function(interaction: Interaction)
 						local _tmp2 = Object.assign({}, interaction, {
 							timestamp = interaction.timestamp - profilingStartTime,
@@ -1984,14 +1984,14 @@ exports.attach = function(
 		end
 
 		-- Next we'll drill down this component to find all HostComponent/Text.
-		-- ROBLOX FIXME Luau: shouldn't need cast on the RHS here
+		-- FIXME Luau: shouldn't need cast on the RHS here
 		local node: Fiber = fiber :: Fiber
 
 		while true do
 			if node.tag == HostComponent or node.tag == HostText then
 				table.insert(fibers, node)
 			elseif node.child then
-				-- ROBLOX TODO: What do we use instead of "return"?
+				-- TODO: What do we use instead of "return"?
 				(node.child :: Fiber).return_ = node
 				node = node.child :: Fiber
 			end
@@ -2016,7 +2016,7 @@ exports.attach = function(
 		return fibers
 	end
 	local function findNativeNodesForFiberID(id: number)
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(function()
 			local fiber: Fiber? = findCurrentFiberUsingSlowPathById(id)
 			if fiber == nil then
@@ -2034,13 +2034,13 @@ exports.attach = function(
 				end
 			end
 			local hostFibers = findAllCurrentHostFibers(id)
-			-- ROBLOX deviation: filter for Boolean doesn't make sense
+			-- deviation: filter for Boolean doesn't make sense
 			return Array.map(hostFibers, function(hostFiber: Fiber)
 				return hostFiber.stateNode
-				-- ROBLOX FIXME Luau: remove this any once deferred constraint resolution replaces greedy algorithms
+				-- FIXME Luau: remove this any once deferred constraint resolution replaces greedy algorithms
 			end) :: any
 		end)
-		-- ROBLOX catch
+		-- catch
 		if not ok then
 			-- The fiber might have unmounted by now.
 			return nil
@@ -2069,14 +2069,14 @@ exports.attach = function(
 		return nil
 	end
 
-	-- ROBLOX deviation: The copied code is indeed copied, but from ReactFiberTreeReflection.lua
+	-- deviation: The copied code is indeed copied, but from ReactFiberTreeReflection.lua
 
 	-- This function is copied from React and should be kept in sync:
 	-- https://github.com/facebook/react/blob/master/packages/react-reconciler/src/ReactFiberTreeReflection.js
 	-- It would be nice if we updated React to inject this function directly (vs just indirectly via findDOMNode).
 	-- BEGIN copied code
 
-	-- ROBLOX NOTE: Copied these supporting functions from ReactFiberTreeReflection
+	-- NOTE: Copied these supporting functions from ReactFiberTreeReflection
 	local function assertIsMounted(fiber)
 		invariant(getNearestMountedFiber(fiber) == fiber, "Unable to find node on an unmounted component.")
 	end
@@ -2089,7 +2089,7 @@ exports.attach = function(
 			return nil
 		end
 
-		-- ROBLOX NOTE: Copied from ReactFiberTreeReflection.lua
+		-- NOTE: Copied from ReactFiberTreeReflection.lua
 		local alternate = (fiber :: Fiber).alternate
 		if not alternate then
 			-- If there is no alternate, then we only need to check if it is mounted.
@@ -2423,7 +2423,7 @@ exports.attach = function(
 			local originalConsoleMethods = {}
 
 			-- Temporarily disable all console logging before re-running the hook.
-			-- ROBLOX TODO: Is iterating over console methods be sensible here?
+			-- TODO: Is iterating over console methods be sensible here?
 			for method, _ in console do
 				pcall(function()
 					originalConsoleMethods[method] = console[method]
@@ -2478,7 +2478,7 @@ exports.attach = function(
 
 			-- Does the component have legacy contexted to it.
 			hasLegacyContext = hasLegacyContext,
-			-- ROBLOX TODO: upstream has a buggy ternary for this
+			-- TODO: upstream has a buggy ternary for this
 			key = key,
 			displayName = getDisplayNameForFiber(fiber :: Fiber),
 			type_ = elementType,
@@ -2486,7 +2486,7 @@ exports.attach = function(
 			-- Inspectable properties.
 			-- TODO Review sanitization approach for the below inspectable values.
 			context = context,
-			-- ROBLOX deviation: Luau won't coerce HooksTree to Object
+			-- deviation: Luau won't coerce HooksTree to Object
 			hooks = hooks :: any,
 			props = memoizedProps,
 			state = if usesHooks then nil else memoizedState,
@@ -2524,7 +2524,7 @@ exports.attach = function(
 
 	local function createIsPathAllowed(
 		key: string | nil,
-		secondaryCategory: string | nil -- ROBLOX TODO: Luau can't express literal type: 'hooks'
+		secondaryCategory: string | nil -- TODO: Luau can't express literal type: 'hooks'
 	)
 		-- This function helps prevent previously-inspected paths from being dehydrated in updates.
 		-- This is important to avoid a bad user experience where expanded toggles collapse on update.
@@ -2705,7 +2705,7 @@ exports.attach = function(
 			return
 		end
 
-		-- ROBLOX TODO: Do we want to support this? Seems out of scope
+		-- TODO: Do we want to support this? Seems out of scope
 		-- local supportsGroup = typeof(console.groupCollapsed) == 'function'
 
 		-- if supportsGroup then
@@ -2730,7 +2730,7 @@ exports.attach = function(
 			console.log("Location:", (result :: InspectedElement).source)
 		end
 
-		-- ROBLOX deviation: not needed
+		-- deviation: not needed
 		-- if (window.chrome || /firefox/i.test(navigator.userAgent)) {
 		-- 	console.log(
 		-- 	  'Right-click any value to save it as a global variable for further inspection.',
@@ -2743,7 +2743,7 @@ exports.attach = function(
 	end
 
 	local function deletePath(
-		type_: string, -- ROBLOX TODO: Luau can't express literal types: 'context' | 'hooks' | 'props' | 'state',
+		type_: string, -- TODO: Luau can't express literal types: 'context' | 'hooks' | 'props' | 'state',
 		id: number,
 		hookID: number?,
 		path: Array<string | number>
@@ -2791,7 +2791,7 @@ exports.attach = function(
 	end
 
 	local function renamePath(
-		type_: string, -- ROBLOX deviation: Luau can't express: 'context' | 'hooks' | 'props' | 'state',
+		type_: string, -- deviation: Luau can't express: 'context' | 'hooks' | 'props' | 'state',
 		id: number,
 		hookID: number?,
 		oldPath: Array<string | number>,
@@ -2841,7 +2841,7 @@ exports.attach = function(
 	end
 
 	local function overrideValueAtPath(
-		type_: string, -- ROBLOX deviation: Luau can't express: 'context' | 'hooks' | 'props' | 'state',
+		type_: string, -- deviation: Luau can't express: 'context' | 'hooks' | 'props' | 'state',
 		id: number,
 		hookID: number?,
 		path: Array<string | number>,
@@ -2909,7 +2909,7 @@ exports.attach = function(
 			error("getProfilingData() called before any profiling data was recorded")
 		end
 
-		-- ROBLOX FIXME Luau: need type states to not need this manual cast
+		-- FIXME Luau: need type states to not need this manual cast
 		(rootToCommitProfilingMetadataMap :: CommitProfilingMetadataMap):forEach(
 			function(commitProfilingMetadata, rootID)
 				local commitData: Array<CommitDataBackend> = {}
@@ -2970,7 +2970,7 @@ exports.attach = function(
 
 					table.insert(commitData, {
 						changeDescriptions = if changeDescriptions ~= nil
-							-- ROBLOX FIXME: types don't flow from entries through Array.from() return value
+							-- FIXME: types don't flow from entries through Array.from() return value
 							then Array.from(changeDescriptions:entries()) :: Array<Array<any>>
 							else nil,
 						duration = maxActualDuration,
@@ -3054,7 +3054,7 @@ exports.attach = function(
 		local id = getFiberID(getPrimaryFiber(fiber))
 		return forceFallbackForSuspenseIDs:has(id)
 	end
-	-- ROBLOX FIXME Luau: infers this as <a>(number, a) -> (), but it doesn't later normalize to (number, boolean) -> ()
+	-- FIXME Luau: infers this as <a>(number, a) -> (), but it doesn't later normalize to (number, boolean) -> ()
 	local function overrideSuspense(id: number, forceFallback: boolean): ()
 		if typeof(setSuspenseHandler) ~= "function" or typeof(scheduleUpdate) ~= "function" then
 			error("Expected overrideSuspense() to not get called for earlier React versions.")
@@ -3153,7 +3153,7 @@ exports.attach = function(
 		mightBeOnTrackedPath = mightSiblingsBeOnTrackedPath
 	end
 
-	-- ROBLOX deviation: rootPseudoKeys and rootDisplayNameCounter defined earlier in the file
+	-- deviation: rootPseudoKeys and rootDisplayNameCounter defined earlier in the file
 	setRootPseudoKey = function(id: number, fiber: Fiber)
 		local name = getDisplayNameForRoot(fiber)
 		local counter = rootDisplayNameCounter:get(name) or 0
@@ -3172,7 +3172,7 @@ exports.attach = function(
 		local name = string.sub(pseudoKey :: string, 1, String.lastIndexOf(pseudoKey :: string, ":") - 1)
 		local counter = rootDisplayNameCounter:get(name)
 
-		-- ROBLOX FIXME Luau: needs type states to know past this branch count is non-nil
+		-- FIXME Luau: needs type states to know past this branch count is non-nil
 		if counter == nil then
 			error("Expected counter to be known.")
 		end
@@ -3323,7 +3323,7 @@ exports.attach = function(
 		stopProfiling = stopProfiling,
 		storeAsGlobal = storeAsGlobal,
 		updateComponentFilters = updateComponentFilters,
-		-- ROBLOX deviation: expose extra function for Roblox Studio use
+		-- deviation: expose extra function for Roblox Studio use
 		getDisplayNameForRoot = getDisplayNameForRoot,
 	}
 end

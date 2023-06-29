@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/7516bdfce3f0f8c675494b5c5d0e7ae441bef1d9/packages/react/src/ReactContext.js
+-- upstream: https://github.com/facebook/react/blob/7516bdfce3f0f8c675494b5c5d0e7ae441bef1d9/packages/react/src/ReactContext.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -9,7 +9,7 @@
  *
 ]]
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local Shared = require(Packages.Shared)
 local console = Shared.console
 
@@ -38,10 +38,10 @@ exports.createContext = function<T>(defaultValue: T, calculateChangedBits: ((a: 
 		-- These are circular
 		Provider = (nil :: any) :: ReactProviderType<T>,
 		Consumer = (nil :: any) :: ReactContext<T>,
-		-- ROBLOX deviation: tables declared this way are considered sealed, so define we
+		-- deviation: tables declared this way are considered sealed, so define we
 		-- displayName as nil for it to be populated later
 		displayName = nil,
-		-- ROBLOX deviation: have to inline these optional fields to make Luau happy
+		-- deviation: have to inline these optional fields to make Luau happy
 		_currentRenderer = nil,
 		_currentRenderer2 = nil,
 	}

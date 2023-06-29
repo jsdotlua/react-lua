@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/6f62abb58ae46d9c88525635f1790487285666e6/packages/react-reconciler/src/ReactFiberLane.js
+-- upstream: https://github.com/facebook/react/blob/6f62abb58ae46d9c88525635f1790487285666e6/packages/react-reconciler/src/ReactFiberLane.js
 --!strict
 --[[
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -68,7 +68,7 @@ local OffscreenLanePriority: LanePriority = 1
 local NoLanePriority: LanePriority = 0
 exports.NoLanePriority = NoLanePriority
 
--- ROBLOX performance: only use was for loop that was manually unrolled
+-- performance: only use was for loop that was manually unrolled
 -- local TotalLanes = 31
 
 local NoLanes: Lanes = --[[                             ]]
@@ -110,7 +110,7 @@ local TransitionLanes: Lanes = --[[                     ]]
 
 local RetryLanes: Lanes = --[[                          ]]
 	0b0000011110000000000000000000000
--- ROBLOX deviation: we expose this symbol from the module for ReactUpdateQueue.roblox tests, we don't re-export outside the package
+-- deviation: we expose this symbol from the module for ReactUpdateQueue.roblox tests, we don't re-export outside the package
 exports.RetryLanes = RetryLanes
 local SomeRetryLane: Lanes = --[[                       ]]
 	0b0000010000000000000000000000000
@@ -338,7 +338,7 @@ local function getNextLanes(root: FiberRoot, wipLanes: Lanes): Lanes
 
 	-- // If there are higher priority lanes, we'll include them even if they
 	-- // are suspended.
-	-- ROBLOX performance: inline getEqualOrHigherPriorityLanes to avoid function call overhead in hot path
+	-- performance: inline getEqualOrHigherPriorityLanes to avoid function call overhead in hot path
 	-- nextLanes = bit32.band(pendingLanes, getEqualOrHigherPriorityLanes(nextLanes))
 	nextLanes = bit32.band(pendingLanes, bit32.lshift(getLowestPriorityLane(nextLanes), 1) - 1)
 
@@ -647,7 +647,7 @@ function pickArbitraryLaneIndex(lanes: Lanes)
 	return 31 - bit32.countlz(lanes)
 end
 
--- ROBLOX performance: all uses have been inlined
+-- performance: all uses have been inlined
 -- local function laneToIndex(lane: Lane)
 -- 	return pickArbitraryLaneIndex(lane)
 -- end
@@ -709,7 +709,7 @@ exports.higherLanePriority = higherLanePriority
 local function createLaneMap(initial): LaneMap<any>
 	-- // Intentionally pushing one by one.
 	-- // https://v8.dev/blog/elements-kinds#avoid-creating-holes
-	-- ROBLOX performance: manually unroll this loop so the table creation is a one-shot
+	-- performance: manually unroll this loop so the table creation is a one-shot
 	--for i = 0, TotalLanes do
 	local laneMap = {
 		[0] = initial,
@@ -744,7 +744,7 @@ local function createLaneMap(initial): LaneMap<any>
 		[29] = initial,
 		[30] = initial,
 		[31] = initial,
-		-- ROBLOX TODO: must be updated when TotalLanes is updated!
+		-- TODO: must be updated when TotalLanes is updated!
 	}
 	return laneMap
 end
@@ -770,7 +770,7 @@ local function markRootUpdated(root: FiberRoot, updateLane: Lane, eventTime: num
 	root.pingedLanes = bit32.band(root.pingedLanes, higherPriorityLanes)
 
 	local eventTimes = root.eventTimes
-	-- ROBLOX performance: inline laneToIndex in hot path
+	-- performance: inline laneToIndex in hot path
 	-- local index = laneToIndex(updateLane)
 	local index = 31 - bit32.countlz(updateLane)
 	-- // We can always overwrite an existing timestamp because we prefer the most

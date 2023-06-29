@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/ba82eea3837e4aaeb5a30b7827b664a8c2128d2e/packages/shared/ReactFeatureFlags.js
+-- upstream: https://github.com/facebook/react/blob/ba82eea3837e4aaeb5a30b7827b664a8c2128d2e/packages/shared/ReactFeatureFlags.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -26,7 +26,7 @@ exports.enableSchedulingProfiler = _G.__PROFILE__ and _G.__EXPERIMENTAL__
 
 -- Helps identify side effects in render-phase lifecycle hooks and setState
 -- reducers by double invoking them in Strict Mode.
--- ROBLOX TODO: we'll want to enable this for DEV app bundles
+-- TODO: we'll want to enable this for DEV app bundles
 exports.debugRenderPhaseSideEffectsForStrictMode = _G.__DEV__
 
 -- To preserve the "Pause on caught exceptions" behavior of the debugger, we

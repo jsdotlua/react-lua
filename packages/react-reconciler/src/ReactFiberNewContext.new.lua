@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/1eaafc9ade46ba708b2361b324dd907d019e3939/packages/react-reconciler/src/ReactFiberNewContext.new.js
+-- upstream: https://github.com/facebook/react/blob/1eaafc9ade46ba708b2361b324dd907d019e3939/packages/react-reconciler/src/ReactFiberNewContext.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -14,7 +14,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Number = LuauPolyfill.Number
 local Error = LuauPolyfill.Error
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactTypes = require(Packages.Shared)
@@ -149,7 +149,7 @@ exports.calculateChangedBits = function<T>(context: ReactContext<T>, newValue: T
 			changedBits = context._calculateChangedBits(oldValue, newValue)
 		end
 
-		-- ROBLOX performance: eliminate nice-to-have compare in hot path that's removed in React 18
+		-- performance: eliminate nice-to-have compare in hot path that's removed in React 18
 		-- if _G.__DEV__ then
 		--   if bit32.band(changedBits, MAX_SIGNED_31_BIT_INT) ~= changedBits then
 		--     console.error(
@@ -210,7 +210,7 @@ exports.propagateContextChange = function<T>(
 				-- Check if the context matches.
 				if
 					dependency.context == context
-					-- ROBLOX performance: unstable observedBits is removed in React 18
+					-- performance: unstable observedBits is removed in React 18
 					and bit32.band(dependency.observedBits, changedBits) ~= 0
 				then
 					-- Match! Schedule an update on this fiber.
@@ -242,17 +242,17 @@ exports.propagateContextChange = function<T>(
 						end
 					end
 
-					-- ROBLOX performance: inline mergeLanes(fiber.lanes, renderLanes)
+					-- performance: inline mergeLanes(fiber.lanes, renderLanes)
 					fiber.lanes = bit32.bor(fiber.lanes, renderLanes)
 					local alternate = fiber.alternate
 					if alternate ~= nil then
-						-- ROBLOX performance: inline mergeLanes(alternate.lanes, renderLanes)
+						-- performance: inline mergeLanes(alternate.lanes, renderLanes)
 						alternate.lanes = bit32.bor(alternate.lanes, renderLanes)
 					end
 					exports.scheduleWorkOnParentPath(fiber.return_, renderLanes)
 
 					-- Mark the updated lanes on the list, too.
-					-- ROBLOX performance: inline mergeLanes(list.lanes, renderLanes)
+					-- performance: inline mergeLanes(list.lanes, renderLanes)
 					list.lanes = bit32.bor(list.lanes, renderLanes)
 
 					-- Since we already found a match, we can stop traversing the
@@ -268,7 +268,7 @@ exports.propagateContextChange = function<T>(
 			else
 				nextFiber = fiber.child
 			end
-			-- ROBLOX performance: eliminate always-false compare in tab switching hot path
+			-- performance: eliminate always-false compare in tab switching hot path
 			-- elseif
 			--   enableSuspenseServerRenderer and
 			--   fiber.tag == DehydratedFragment

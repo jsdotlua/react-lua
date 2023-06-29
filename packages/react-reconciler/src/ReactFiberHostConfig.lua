@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/9ac42dd074c42b66ecc0334b75200b1d2989f892/packages/react-reconciler/src/ReactFiberHostConfig.js
+-- upstream: https://github.com/facebook/react/blob/9ac42dd074c42b66ecc0334b75200b1d2989f892/packages/react-reconciler/src/ReactFiberHostConfig.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -11,7 +11,7 @@
 
 --[[ eslint-disable react-internal/invariant-args ]]
 
--- ROBLOX FIXME: Cannot carry types over via the module overriding that's in use
+-- FIXME: Cannot carry types over via the module overriding that's in use
 -- here; this is a particularly tricky case of cross-dependency type definitions
 -- Use a common set of typedefs across ReactTestHostConfig and ReactRobloxHostTypes
 type Object = { [string]: any }

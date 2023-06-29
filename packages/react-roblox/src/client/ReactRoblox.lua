@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOM.js
+-- upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOM.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -31,7 +31,7 @@ local createLegacyRoot = ReactRobloxRoot.createLegacyRoot
 local isValidContainer = ReactRobloxRoot.isValidContainer
 -- local createEventHandle = require(script.Parent.ReactDOMEventHandle).createEventHandle
 
--- ROBLOX deviation: Use the config-injecting entry point for the reconciler
+-- deviation: Use the config-injecting entry point for the reconciler
 local ReactReconciler = require(script.Parent.Parent["ReactReconciler.roblox"])
 -- local batchedEventUpdates = ReactReconciler.batchedEventUpdates
 local batchedUpdates = ReactReconciler.batchedUpdates
@@ -125,12 +125,12 @@ local function createPortal(children: ReactNodeList, container: Container, key: 
 	-- ): React$Portal
 	invariant(
 		isValidContainer(container),
-		-- ROBLOX deviation: Use roblox engine terminology
+		-- deviation: Use roblox engine terminology
 		"Target container is not a Roblox Instance."
 	)
 	-- TODO: pass ReactDOM portal implementation as third argument
 	-- $FlowFixMe The Flow type is opaque but there's no way to actually create it.
-	-- ROBLOX FIXME: luau doesn't realize that this function errors, and it's
+	-- FIXME: luau doesn't realize that this function errors, and it's
 	-- expecting us to return something. Can be removed when implementation is
 	-- done.
 	return createPortalImpl(children, container, nil, key)
@@ -238,9 +238,9 @@ local exports = {
 	-- This should only be used by React internals.
 	-- unstable_runWithPriority = runWithPriority,
 
-	-- ROBLOX deviation: Export logic attached from Roact
+	-- deviation: Export logic attached from Roact
 
-	-- ROBLOX FIXME: Is there a better way to provide this? Exposing these here
+	-- FIXME: Is there a better way to provide this? Exposing these here
 	-- means that a large number of react components that wouldn't otherwise need
 	-- to import `ReactRoblox` will need to do so in order to set events/change
 	Event = Event,
@@ -248,7 +248,7 @@ local exports = {
 	Tag = Tag,
 	unstable_isNewReconciler = enableNewReconciler,
 
-	-- ROBLOX deviation: Export `act` function for testing purposes; in
+	-- deviation: Export `act` function for testing purposes; in
 	-- production (a.k.a. scheduler isn't mocked), give an instructive error
 	act = function(_: () -> ()): ()
 		error(
@@ -260,13 +260,13 @@ local exports = {
 }
 
 if _G.__ROACT_17_MOCK_SCHEDULER__ then
-	-- ROBLOX deviation: When the __ROACT_17_MOCK_SCHEDULER__ is enabled, we
+	-- deviation: When the __ROACT_17_MOCK_SCHEDULER__ is enabled, we
 	-- re-export the `act` function from ReactReconciler. The global will
 	-- additionally force the scheduler to use the mock interface
 	exports.act = ReactReconciler.act
 end
 
--- ROBLOX deviation: we don't currently implement the logic below that uses this
+-- deviation: we don't currently implement the logic below that uses this
 -- value
 local _foundDevTools = injectIntoDevTools({
 	findFiberByHostInstance = getClosestInstanceFromNode,

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/a724a3b578dce77d427bef313102a4d0e978d9b4/packages/react-reconciler/src/ReactFiberContext.new.js
+-- upstream: https://github.com/facebook/react/blob/a724a3b578dce77d427bef313102a4d0e978d9b4/packages/react-reconciler/src/ReactFiberContext.new.js
 --!strict
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -16,7 +16,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 local Error = LuauPolyfill.Error
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
@@ -64,7 +64,7 @@ local isContextProvider
 
 -- deviation: FIXME: `Component: Function` - lock down component type def
 local function getUnmaskedContext(workInProgress: Fiber, Component: any, didPushOwnContextIfProvider: boolean): Object
-	-- ROBLOX performance: skip always-false compare in hot path
+	-- performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return emptyContextObject
 	-- else
@@ -80,7 +80,7 @@ local function getUnmaskedContext(workInProgress: Fiber, Component: any, didPush
 end
 
 local function cacheContext(workInProgress: Fiber, unmaskedContext: Object, maskedContext: Object): ()
-	-- ROBLOX performance: skip always-false compare in hot path
+	-- performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return
 	-- else
@@ -91,7 +91,7 @@ local function cacheContext(workInProgress: Fiber, unmaskedContext: Object, mask
 end
 
 local function getMaskedContext(workInProgress: Fiber, unmaskedContext: Object): Object
-	-- ROBLOX performance: skip always-false compare in hot path
+	-- performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return emptyContextObject
 	-- else
@@ -122,7 +122,7 @@ local function getMaskedContext(workInProgress: Fiber, unmaskedContext: Object):
 
 	if __DEV__ or __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ then
 		local name = getComponentName(type_) or "Unknown"
-		-- ROBLOX deviation: nil as second argument for validateProps compatibility
+		-- deviation: nil as second argument for validateProps compatibility
 		checkPropTypes(contextTypes, nil, context, "context", name)
 	end
 
@@ -146,12 +146,12 @@ end
 
 -- deviation: `type: Function` - lock down component type def
 function isContextProvider(type_): boolean
-	-- ROBLOX performance: skip always-false compare in hot path
+	-- performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return false
 	-- else
-	-- ROBLOX deviation: context types only valid for class components
-	-- ROBLOX performance: type is already guarded as being a ClassComponent and/or typeof == 'table' in all call sites
+	-- deviation: context types only valid for class components
+	-- performance: type is already guarded as being a ClassComponent and/or typeof == 'table' in all call sites
 	if type(type_) == "function" then
 		return false
 	end
@@ -161,7 +161,7 @@ function isContextProvider(type_): boolean
 end
 
 local function popContext(fiber: Fiber): ()
-	-- ROBLOX performance: skip always-false compare in hot path
+	-- performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return
 	-- else
@@ -171,7 +171,7 @@ local function popContext(fiber: Fiber): ()
 end
 
 local function popTopLevelContextObject(fiber: Fiber): ()
-	-- ROBLOX performance: skip always-false compare in hot path
+	-- performance: skip always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return
 	-- else
@@ -181,7 +181,7 @@ local function popTopLevelContextObject(fiber: Fiber): ()
 end
 
 local function pushTopLevelContextObject(fiber: Fiber, context: Object, didChange: boolean): ()
-	-- ROBLOX performance: disable always-false cmp in hot path
+	-- performance: disable always-false cmp in hot path
 	-- if disableLegacyContext then
 	-- 	return
 	-- else
@@ -200,7 +200,7 @@ local function pushTopLevelContextObject(fiber: Fiber, context: Object, didChang
 end
 
 local function processChildContext(fiber: Fiber, type_: any, parentContext: Object): Object
-	-- ROBLOX performance: eliminate always-false compare in hot path
+	-- performance: eliminate always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return parentContext
 	-- else
@@ -244,7 +244,7 @@ local function processChildContext(fiber: Fiber, type_: any, parentContext: Obje
 	end
 	if __DEV__ or __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ then
 		local name = getComponentName(type_) or "Unknown"
-		-- ROBLOX deviation: nil as second argument for validateProps compatibility
+		-- deviation: nil as second argument for validateProps compatibility
 		checkPropTypes(childContextTypes, nil, childContext, "child context", name)
 	end
 
@@ -253,7 +253,7 @@ local function processChildContext(fiber: Fiber, type_: any, parentContext: Obje
 end
 
 local function pushContextProvider(workInProgress: Fiber): boolean
-	-- ROBLOX performance: eliminate always-false compare in hot path
+	-- performance: eliminate always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return false
 	-- else
@@ -275,7 +275,7 @@ local function pushContextProvider(workInProgress: Fiber): boolean
 end
 
 local function invalidateContextProvider(workInProgress: Fiber, type_: any, didChange: boolean): ()
-	-- ROBLOX performance: eliminate always-false compare in hot path
+	-- performance: eliminate always-false compare in hot path
 	-- if disableLegacyContext then
 	-- 	return
 	-- else
@@ -312,7 +312,7 @@ local function invalidateContextProvider(workInProgress: Fiber, type_: any, didC
 end
 
 local function findCurrentUnmaskedContext(fiber: Fiber): Object
-	-- ROBLOX performance: eliminate always-false in hot path
+	-- performance: eliminate always-false in hot path
 	-- if disableLegacyContext then
 	-- 	return emptyContextObject
 	-- else
@@ -327,14 +327,14 @@ local function findCurrentUnmaskedContext(fiber: Fiber): Object
 		)
 	end
 
-	-- ROBLOX TODO: Luau analyze can't accommodate the 'repeat until (not) nil' pattern
+	-- TODO: Luau analyze can't accommodate the 'repeat until (not) nil' pattern
 	local node: any = fiber
 	repeat
 		if node.tag == HostRoot then
 			return node.stateNode.context
 		elseif node.tag == ClassComponent then
 			local Component = node.type
-			-- ROBLOX deviation: inline specialized check for isContextProvider since we know it's a class
+			-- deviation: inline specialized check for isContextProvider since we know it's a class
 			if Component.childContextTypes ~= nil then
 				return node.stateNode.__reactInternalMemoizedMergedChildContext
 			end

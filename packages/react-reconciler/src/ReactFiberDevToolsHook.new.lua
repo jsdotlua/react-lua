@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberDevToolsHook.new.js
+-- upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberDevToolsHook.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -9,22 +9,22 @@
  ]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 local LuauPolyfill = require(Packages.LuauPolyfill)
 type Object = LuauPolyfill.Object
 local exports = {}
 
--- ROBLOX deviation: subset copied here from devtools-shared/backend/types, to have stronger enforcement than 'Object' without circular dep
+-- deviation: subset copied here from devtools-shared/backend/types, to have stronger enforcement than 'Object' without circular dep
 type DevToolsHook = {
-	-- ROBLOX TODO: ideally, ReactRenderer type would be importable from this file so we could use it here
+	-- TODO: ideally, ReactRenderer type would be importable from this file so we could use it here
 	inject: (Object) -> number | nil,
 	supportsFiber: boolean,
 	isDisabled: boolean,
 	--   ...
 }
 
--- ROBLOX deviation: we use callable tables instead of functions sometimes, so typeof() == "function" isn't enough
+-- deviation: we use callable tables instead of functions sometimes, so typeof() == "function" isn't enough
 local function isCallable(value)
 	if typeof(value) == "function" then
 		return true
@@ -52,14 +52,14 @@ type ReactNodeList = ReactTypes.ReactNodeList
 
 local DidCapture = require(script.Parent.ReactFiberFlags).DidCapture
 
--- ROBLOX deviation: we'll inject this a different way
+-- deviation: we'll inject this a different way
 -- declare var __REACT_DEVTOOLS_GLOBAL_HOOK__: Object | void
 
 local rendererID = nil
 local injectedHook = nil
 local hasLoggedError = false
 
--- ROBLOX deviation: We use a function to handle the hook being changed at runtime
+-- deviation: We use a function to handle the hook being changed at runtime
 exports.isDevToolsPresent = function()
 	return _G.__REACT_DEVTOOLS_GLOBAL_HOOK__ ~= nil
 end
@@ -107,7 +107,7 @@ exports.onScheduleRoot = function(root: FiberRoot, children: ReactNodeList)
 	if _G.__DEV__ then
 		if
 			injectedHook
-			-- ROBLOX deviation: our mocked functions are tables with __call, since they have fields
+			-- deviation: our mocked functions are tables with __call, since they have fields
 			and isCallable(injectedHook.onScheduleFiberRoot)
 		then
 			local ok, err = pcall(injectedHook.onScheduleFiberRoot, rendererID, root, children)
@@ -125,7 +125,7 @@ end
 exports.onCommitRoot = function(root: FiberRoot, priorityLevel: ReactPriorityLevel)
 	if
 		injectedHook
-		-- ROBLOX deviation: our mocked functions are tables with __call, since they have fields
+		-- deviation: our mocked functions are tables with __call, since they have fields
 		and isCallable(injectedHook.onCommitFiberRoot)
 	then
 		local ok, err = pcall(function()
@@ -150,7 +150,7 @@ end
 exports.onCommitUnmount = function(fiber: Fiber)
 	if
 		injectedHook
-		-- ROBLOX deviation: our mocked functions are tables with __call, since they have fields
+		-- deviation: our mocked functions are tables with __call, since they have fields
 		and isCallable(injectedHook.onCommitFiberUnmount)
 	then
 		local ok, err = pcall(injectedHook.onCommitFiberUnmount, rendererID, fiber)

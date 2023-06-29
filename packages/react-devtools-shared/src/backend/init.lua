@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/index.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/index.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -56,7 +56,7 @@ local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): ()
 	}
 
 	local attachRenderer = function(id: number, renderer: ReactRenderer)
-		-- ROBLOX deviation: require attach lazily to avoid the require of renderer causing Roact to initialize prematurely.
+		-- deviation: require attach lazily to avoid the require of renderer causing Roact to initialize prematurely.
 		local attach = require(script.renderer).attach
 
 		local rendererInterface = hook.rendererInterfaces:get(id)
@@ -68,7 +68,7 @@ local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): ()
 				rendererInterface = attach(hook, id, renderer, global)
 			elseif renderer.ComponentTree then
 				-- react-dom v15
-				-- ROBLOX deviation: Not needed
+				-- deviation: Not needed
 				-- rendererInterface = attachLegacy(hook, id, renderer, global)
 			else
 				-- Older react-dom or other unsupported renderer version

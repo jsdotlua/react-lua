@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/7516bdfce3f0f8c675494b5c5d0e7ae441bef1d9/packages/react/src/ReactChildren.js
+-- upstream: https://github.com/facebook/react/blob/7516bdfce3f0f8c675494b5c5d0e7ae441bef1d9/packages/react/src/ReactChildren.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -41,7 +41,7 @@ local SUBSEPARATOR = ":"
 --  * @param {string} key to be escaped.
 --  * @return {string} the escaped key.
 --  ]]
---ROBLOX DEVIATION: use gsub instead of RegEx
+-- deviation: use gsub instead of RegEx
 local function escape(key: string): string
 	local escapedString = string.gsub(key, "=", "=0")
 	escapedString = string.gsub(escapedString, ":", "=2")
@@ -53,12 +53,12 @@ end
 --  * pattern.
 --  ]]
 
--- ROBLOX DEVIATION: There is currently no good way to warn about maps
+-- deviation: There is currently no good way to warn about maps
 -- local didWarnAboutMaps = false
 
 -- local userProvidedKeyEscapeRegex = '/\\/+/g'
 local function escapeUserProvidedKey(text: string): string
-	-- ROBLOX DEVIATION: just return the original string
+	-- deviation: just return the original string
 	-- return text.replace(userProvidedKeyEscapeRegex, '$&/')
 	return text
 end
@@ -78,7 +78,7 @@ local function getElementKey(element: any, index: number): string
 		return escape(tostring(element.key))
 	end
 	-- Implicit key determined by the index in the set
-	-- ROBLOX DEVIATION: unsupported radix arg in tostring(number)
+	-- deviation: unsupported radix arg in tostring(number)
 	-- return index.toString(36)
 	return tostring(index)
 end
@@ -160,7 +160,7 @@ local function mapIntoArray(
 	local nextNamePrefix = if nameSoFar == "" then SEPARATOR else nameSoFar .. SUBSEPARATOR
 
 	if Array.isArray(children) then
-		-- ROBLOX FIXME: Luau doesn't recognize this as non-nil without the `or {}`
+		-- FIXME: Luau doesn't recognize this as non-nil without the `or {}`
 		for i = 1, #(children :: Array<React_Node>) do
 			child = (children :: Array<React_Node>)[i]
 			nextName = nextNamePrefix .. getElementKey(child, i)
@@ -173,7 +173,7 @@ local function mapIntoArray(
 				entries: any,
 			} = children :: any
 
-			-- ROBLOX DEVIATION: No equivalent for checking if iterableChildren is a Map
+			-- deviation: No equivalent for checking if iterableChildren is a Map
 			-- if _G.__DEV__ then
 			-- 	-- Warn about using Maps as children
 			-- 	if iteratorFn == iterableChildren.entries then
@@ -198,7 +198,7 @@ local function mapIntoArray(
 				subtreeCount += mapIntoArray(child, array, escapedPrefix, nextName, callback)
 				step = iterator.next()
 			end
-			--[[ ROBLOX DEVIATION: this condition will never be met with Roact iterator logic.
+			--[[ DEVIATION: this condition will never be met with Roact iterator logic.
 				getIteratorFn will always return a function when "children" is a table
 			]]
 			-- elseif type == 'table' then
@@ -240,7 +240,7 @@ local function mapChildren(children: ReactNodeList?, func: MapFunc, context: any
 	local result = {}
 	local count = 1
 	mapIntoArray(children, result, "", "", function(child)
-		-- ROBLOX DEVIATION: don't use context argument
+		-- deviation: don't use context argument
 		local mapFuncResult = func(child, count)
 		count += 1
 		return mapFuncResult
@@ -283,7 +283,7 @@ type ForEachFunc = (child: React_Node?, index: number) -> ()
 --  ]]
 local function forEachChildren(children: ReactNodeList?, forEachFunc: ForEachFunc, forEachContext: any)
 	mapChildren(children, function(...)
-		-- ROBLOX DEVIATION: Don't use javascript apply
+		-- deviation: Don't use javascript apply
 		forEachFunc(...)
 		-- Don't return anything.
 		return
@@ -316,9 +316,9 @@ end
  * @return {ReactElement} The first and only `ReactElement` contained in the
  * structure.
 ]]
--- ROBLOX deviation START: we skip generics here, because we can't explicitly constrain them. no annotation works as passthrough.
+-- deviation START: we skip generics here, because we can't explicitly constrain them. no annotation works as passthrough.
 local function onlyChild(children)
-	-- ROBLOX deviation END
+	-- deviation END
 	invariant(isValidElement(children), "React.Children.only expected to receive a single React element child.")
 	return children
 end

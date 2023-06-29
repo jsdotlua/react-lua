@@ -1,6 +1,6 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMHostConfig.js
--- ROBLOX upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/react-native-renderer/src/ReactNativeHostConfig.js
+-- upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMHostConfig.js
+-- upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/react-native-renderer/src/ReactNativeHostConfig.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -107,7 +107,7 @@ local enableCreateEventHandleAPI = ReactFeatureFlags.enableCreateEventHandleAPI
 type Array<T> = { [number]: T }
 type Object = { [any]: any }
 
--- ROBLOX deviation: Moved to ReactRobloxHostTypes
+-- deviation: Moved to ReactRobloxHostTypes
 -- export type Type = string;
 -- export type Props = {
 --   autoFocus: boolean?,
@@ -141,11 +141,11 @@ type Object = { [any]: any }
 --   ...
 -- end
 
--- ROBLOX deviation: Moved to ReactRobloxHostTypes
+-- deviation: Moved to ReactRobloxHostTypes
 -- export type SuspenseInstance = Comment & {_reactRetry?: () => void, ...}
 -- export type HydratableInstance = Instance | TextInstance | SuspenseInstance
 
--- ROBLOX deviation: Moved to ReactRobloxHostTypes
+-- deviation: Moved to ReactRobloxHostTypes
 -- export type PublicInstance = Element | Text
 -- type HostContextDev = {
 --   namespace: string,
@@ -157,7 +157,7 @@ type Object = { [any]: any }
 -- export type HostContext = HostContextDev | HostContextProd
 
 -- export type UpdatePayload = Array<mixed>
--- ROBLOX FIXME: cannot create type equal to void
+-- FIXME: cannot create type equal to void
 -- export type ChildSet = void; -- Unused
 -- export type TimeoutHandle = TimeoutID
 -- export type NoTimeout = -1
@@ -201,7 +201,7 @@ type Object = { [any]: any }
 --   return false
 -- end
 
--- ROBLOX deviation: Use GetDescendants rather than recursion
+-- deviation: Use GetDescendants rather than recursion
 local function recursivelyUncacheFiberNode(node: HostInstance)
 	-- ROBLOX https://jira.rbx.com/browse/LUAFDN-713: Tables are somehow ending up
 	-- in this function that expects Instances. In that case, we won't be able to
@@ -221,7 +221,7 @@ local exports: { [any]: any } = {}
 Object.assign(exports, require(Packages.Shared).ReactFiberHostConfig.WithNoPersistence)
 
 exports.getRootHostContext = function(rootContainerInstance: Container): HostContext
-	-- ROBLOX deviation: This is a lot of HTML-DOM specific logic; I'm not clear on
+	-- deviation: This is a lot of HTML-DOM specific logic; I'm not clear on
 	-- whether there'll be an equivalent of `namespaceURI` for our use cases, but
 	-- we may want to provide other kinds of context for host objects.
 
@@ -263,7 +263,7 @@ exports.getChildHostContext = function(
 	type: string,
 	rootContainerInstance: Container
 ): HostContext
-	-- ROBLOX deviation: unclear on the purpose here just yet, might be fine to
+	-- deviation: unclear on the purpose here just yet, might be fine to
 	-- just return parent's hostContext for now
 	return parentHostContext
 	-- if _G.__DEV__ then
@@ -334,7 +334,7 @@ exports.createInstance = function(
 	-- local hostKey = virtualNode.hostKey
 
 	local domElement = Instance.new(type_)
-	-- ROBLOX deviation: compatibility with old Roact where instances have their name
+	-- deviation: compatibility with old Roact where instances have their name
 	-- set to the key value
 	if internalInstanceHandle.key then
 		domElement.Name = internalInstanceHandle.key
@@ -392,7 +392,7 @@ exports.createInstance = function(
 end
 
 exports.appendInitialChild = function(parentInstance: Instance, child: Instance)
-	-- ROBLOX deviation: Establish hierarchy with Parent property
+	-- deviation: Establish hierarchy with Parent property
 	child.Parent = parentInstance
 end
 
@@ -436,7 +436,7 @@ end
 exports.prepareUpdate = prepareUpdate
 
 exports.shouldSetTextContent = function(_type: string, _props: Props): boolean
-	-- ROBLOX deviation: Ignore TextInstance logic, which isn't applicable to Roblox
+	-- deviation: Ignore TextInstance logic, which isn't applicable to Roblox
 	return false
 	--   return (
 	--     type == 'textarea' or
@@ -450,7 +450,7 @@ exports.shouldSetTextContent = function(_type: string, _props: Props): boolean
 	--   )
 end
 
--- ROBLOX deviation: Text nodes aren't supported in Roblox renderer, so error so that tests fail immediately
+-- deviation: Text nodes aren't supported in Roblox renderer, so error so that tests fail immediately
 exports.createTextInstance = function(
 	text: string,
 	rootContainerInstance: Container,
@@ -466,7 +466,7 @@ exports.warnsIfNotActing = true
 -- This initialization code may run even on server environments
 -- if a component just imports ReactDOM (e.g. for findDOMNode).
 -- Some environments might not have setTimeout or clearTimeout.
--- ROBLOX deviation: We're only dealing with client right now, so these always populate
+-- deviation: We're only dealing with client right now, so these always populate
 exports.scheduleTimeout = setTimeout
 exports.cancelTimeout = clearTimeout
 exports.noTimeout = -1
@@ -509,12 +509,12 @@ exports.commitUpdate = function(
 	updateProperties(domElement, updatePayload, oldProps)
 end
 
--- ROBLOX deviation: Ignore TextInstance logic, which isn't applicable to Roblox
+-- deviation: Ignore TextInstance logic, which isn't applicable to Roblox
 -- exports.resetTextContent(domElement: Instance): void {
 --   setTextContent(domElement, '')
 -- end
 
--- ROBLOX deviation: Ignore TextInstance logic, which isn't applicable to Roblox
+-- deviation: Ignore TextInstance logic, which isn't applicable to Roblox
 -- exports.commitTextUpdate(
 --   textInstance: TextInstance,
 --   oldText: string,
@@ -543,7 +543,7 @@ local function checkTags(instance: Instance)
 end
 
 exports.appendChild = function(parentInstance: Instance, child: Instance)
-	-- ROBLOX deviation: Roblox's DOM is based on child->parent references
+	-- deviation: Roblox's DOM is based on child->parent references
 	child.Parent = parentInstance
 	-- parentInstance.appendChild(child)
 	if _G.__DEV__ then
@@ -552,7 +552,7 @@ exports.appendChild = function(parentInstance: Instance, child: Instance)
 end
 
 exports.appendChildToContainer = function(container: Container, child: Instance)
-	-- ROBLOX TODO: Some of this logic may come back; for now, keep it simple
+	-- TODO: Some of this logic may come back; for now, keep it simple
 	local parentNode = container
 	exports.appendChild(parentNode, child)
 
@@ -581,7 +581,7 @@ exports.appendChildToContainer = function(container: Container, child: Instance)
 end
 
 exports.insertBefore = function(parentInstance: Instance, child: Instance, _beforeChild: Instance)
-	-- ROBLOX deviation: Roblox's DOM is based on child->parent references
+	-- deviation: Roblox's DOM is based on child->parent references
 	child.Parent = parentInstance
 	-- parentInstance.insertBefore(child, beforeChild)
 	if _G.__DEV__ then
@@ -590,7 +590,7 @@ exports.insertBefore = function(parentInstance: Instance, child: Instance, _befo
 end
 
 exports.insertInContainerBefore = function(container: Container, child: Instance, beforeChild: Instance)
-	-- ROBLOX deviation: use our container definition
+	-- deviation: use our container definition
 	local parentNode = container
 	exports.insertBefore(parentNode, child, beforeChild)
 	-- if container.nodeType == COMMENT_NODE)
@@ -629,18 +629,18 @@ end
 
 exports.removeChild = function(_parentInstance: Instance, child: Instance)
 	recursivelyUncacheFiberNode(child)
-	-- ROBLOX deviation: The roblox renderer tracks bindings and event managers
+	-- deviation: The roblox renderer tracks bindings and event managers
 	-- for instances, so make sure we clean those up when we remove the instance
 	cleanupHostComponent(child)
-	-- ROBLOX deviation: Roblox's DOM is based on child->parent references
+	-- deviation: Roblox's DOM is based on child->parent references
 	child.Parent = nil
 	-- parentInstance.removeChild(child)
-	-- ROBLOX deviation: Guard against misuse by locking parent and forcing external cleanup via Destroy
+	-- deviation: Guard against misuse by locking parent and forcing external cleanup via Destroy
 	child:Destroy()
 end
 
 exports.removeChildFromContainer = function(_container: Container, child: Instance)
-	-- ROBLOX deviation: Containers don't have special behavior and comment nodes
+	-- deviation: Containers don't have special behavior and comment nodes
 	-- have no datamodel equivalent, so just forward to the removeChild logic
 	exports.removeChild(_container, child)
 	-- if container.nodeType == COMMENT_NODE)
@@ -651,7 +651,7 @@ exports.removeChildFromContainer = function(_container: Container, child: Instan
 end
 
 exports.clearSuspenseBoundary = function(parentInstance: Instance, suspenseInstance: SuspenseInstance)
-	-- ROBLOX FIXME: this is a major thing we need to fix for Suspense to work as a feature
+	-- FIXME: this is a major thing we need to fix for Suspense to work as a feature
 	unimplemented("clearSuspenseBoundary")
 	--   local node = suspenseInstance
 	--   -- Delete all nodes within this suspense boundary.
@@ -688,7 +688,7 @@ exports.clearSuspenseBoundary = function(parentInstance: Instance, suspenseInsta
 end
 
 exports.clearSuspenseBoundaryFromContainer = function(container: Container, suspenseInstance: SuspenseInstance)
-	-- ROBLOX FIXME: this is a major thing we need to fix for Suspense to work as a feature
+	-- FIXME: this is a major thing we need to fix for Suspense to work as a feature
 	unimplemented("clearSuspenseBoundaryFromContainer")
 	--   if container.nodeType == COMMENT_NODE)
 	--     clearSuspenseBoundary((container.parentNode: any), suspenseInstance)
@@ -714,7 +714,7 @@ exports.hideInstance = function(instance: Instance)
 	-- end
 end
 
--- ROBLOX deviation: error on TextInstance logic, which isn't applicable to Roblox
+-- deviation: error on TextInstance logic, which isn't applicable to Roblox
 exports.hideTextInstance = function(textInstance: TextInstance): ()
 	unimplemented("hideTextInstance")
 	--   textInstance.nodeValue = ''
@@ -733,14 +733,14 @@ exports.unhideInstance = function(instance: Instance, props: Props)
 	-- instance.style.display = dangerousStyleValue('display', display)
 end
 
--- ROBLOX deviation: error on TextInstance logic, which isn't applicable to Roblox
+-- deviation: error on TextInstance logic, which isn't applicable to Roblox
 exports.unhideTextInstance = function(textInstance: TextInstance, text: string): ()
 	unimplemented("unhideTextInstance")
 	--   textInstance.nodeValue = text
 end
 
 exports.clearContainer = function(container: Container)
-	-- ROBLOX deviation: with Roblox, we can simply enumerate and remove the children
+	-- deviation: with Roblox, we can simply enumerate and remove the children
 	local parentInstance = container
 	for _, child in parentInstance:GetChildren() do
 		exports.removeChild(parentInstance, child)
@@ -1183,7 +1183,7 @@ end
 -- end
 
 exports.preparePortalMount = function(portalInstance: Instance): ()
-	-- ROBLOX TODO: Revisit this logic and see if any of it applies
+	-- TODO: Revisit this logic and see if any of it applies
 	-- if enableEagerRootListeners then
 	--   listenToAllSupportedEvents(portalInstance)
 	-- else

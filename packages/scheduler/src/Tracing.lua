@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/Tracing.js
+-- upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/Tracing.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -97,9 +97,9 @@ exports.unstable_clear = function(callback: Function)
 	local prevInteractions = interactionsRef.current
 	interactionsRef.current = Set.new()
 
-	-- ROBLOX try
+	-- try
 	local ok, result = pcall(callback)
-	-- ROBLOX finally
+	-- finally
 	interactionsRef.current = prevInteractions
 
 	if not ok then
@@ -123,7 +123,7 @@ exports.unstable_getThreadID = function(): number
 end
 
 exports.unstable_trace = function(name: string, timestamp: number, callback: Function, threadID_: number?): any
-	-- ROBLOX: default argument value
+	-- NOTE: default argument value
 	local threadID = if threadID_ ~= nil then threadID_ else DEFAULT_THREAD_ID
 
 	if not enableSchedulerTracing then
@@ -150,34 +150,34 @@ exports.unstable_trace = function(name: string, timestamp: number, callback: Fun
 	local subscriber = subscriberRef.current
 	local returnValue
 
-	-- ROBLOX try
+	-- try
 	local ok, result = pcall(function()
 		if subscriber ~= nil then
 			subscriber.onInteractionTraced(interaction)
 		end
 	end)
-	-- ROBLOX finally
-	-- ROBLOX try 2
+	-- finally
+	-- try 2
 	local ok2, result2 = pcall(function()
 		if subscriber ~= nil then
 			subscriber.onWorkStarted(interactions, threadID)
 		end
 	end)
 
-	-- ROBLOX finally 2
-	-- ROBLOX try 3
+	-- finally 2
+	-- try 3
 	local ok3, result3 = pcall(function()
 		returnValue = callback()
 	end)
-	-- ROBLOX finally 3
+	-- finally 3
 	interactionsRef.current = prevInteractions
-	-- ROBLOX try 4
+	-- try 4
 	local ok4, result4 = pcall(function()
 		if subscriber ~= nil then
 			subscriber.onWorkStopped(interactions, threadID)
 		end
 	end)
-	-- ROBLOX finally 4
+	-- finally 4
 	interaction.__count -= 1
 
 	-- If no async work was scheduled for this interaction,
@@ -209,7 +209,7 @@ exports.unstable_wrap = function(
 	callback: Function,
 	threadID: number
 ): any -- ROLBOX deviation: any, since __call doesn't map to Function
-	-- ROBLOX: default argument value
+	-- NOTE: default argument value
 	if threadID == nil then
 		threadID = DEFAULT_THREAD_ID
 	end
@@ -239,22 +239,22 @@ exports.unstable_wrap = function(
 
 		subscriber = subscriberRef.current
 
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(function(...)
 			local returnValue
 
-			-- ROBLOX try 2
+			-- try 2
 			local ok2, result2 = pcall(function()
 				if subscriber ~= nil then
 					subscriber.onWorkStarted(wrappedInteractions, threadID)
 				end
 			end)
-			-- ROBLOX finally 2
-			-- ROBLOX try 3
+			-- finally 2
+			-- try 3
 			local ok3, result3 = pcall(function(...)
 				returnValue = callback(...)
 			end, ...)
-			-- ROBLOX finally 3
+			-- finally 3
 			interactionsRef.current = prevInteractions
 
 			if subscriber ~= nil then
@@ -272,7 +272,7 @@ exports.unstable_wrap = function(
 			return returnValue
 		end, ...)
 
-		-- ROBLOX finally {
+		-- finally {
 		if not hasRun then
 			-- We only expect a wrapped function to be executed once,
 			-- But in the event that it's executed more than once–
@@ -306,7 +306,7 @@ exports.unstable_wrap = function(
 				subscriber.onWorkCanceled(wrappedInteractions, threadID)
 			end
 		end)
-		--ROBLOX finally {
+		-- finally
 		-- Update pending async counts for all wrapped interactions.
 		-- If this was the last scheduled async work for any of them,
 		-- Mark them as completed.

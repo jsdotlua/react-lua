@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream https://github.com/facebook/react/blob/8af27aeedbc6b00bc2ef49729fc84f116c70a27c/packages/scheduler/src/SchedulerProfiling.js
+-- upstream https://github.com/facebook/react/blob/8af27aeedbc6b00bc2ef49729fc84f116c70a27c/packages/scheduler/src/SchedulerProfiling.js
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
 *
@@ -7,9 +7,9 @@
 * LICENSE file in the root directory of this source tree.
 *
 ]]
--- ROBLOX NOTE: this file is synced against a post-17.0.1 version that doesn't use SharedArrayBuffer
+-- NOTE: this file is synced against a post-17.0.1 version that doesn't use SharedArrayBuffer
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 local exports = {}
 
@@ -42,7 +42,7 @@ local SchedulerResumeEvent = 8
 
 local function logEvent(entries)
 	if eventLog ~= nil then
-		-- ROBLOX deviation: upstream uses a packed array for performance. we do something simpler for now
+		-- deviation: upstream uses a packed array for performance. we do something simpler for now
 		eventLogIndex += #entries
 		if eventLogIndex + 1 > eventLogSize then
 			eventLogSize *= 2
@@ -74,7 +74,7 @@ end
 exports.stopLoggingProfilingEvents = function()
 	local buffer = eventLogBuffer
 	eventLogSize = 0
-	-- ROBLOX FIXME Luau: needs local inference? Type 'nil' could not be converted into '{|  |}'
+	-- FIXME Luau: needs local inference? Type 'nil' could not be converted into '{|  |}'
 	eventLogBuffer = nil :: any
 	eventLog = nil :: any
 	eventLogIndex = 1

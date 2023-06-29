@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/TracingSubscriptions.js
+-- upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/TracingSubscriptions.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -59,9 +59,9 @@ function onInteractionTraced(interaction: Interaction): ()
 	local caughtError = nil
 
 	for subscriber, _ in subscribers do
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(subscriber.onInteractionTraced, interaction)
-		-- ROBLOX catch
+		-- catch
 		if not ok then
 			local error_ = result
 			if not didCatchError then
@@ -81,9 +81,9 @@ function onInteractionScheduledWorkCompleted(interaction: Interaction): ()
 	local caughtError = nil
 
 	for subscriber, _ in subscribers do
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(subscriber.onInteractionScheduledWorkCompleted, interaction)
-		-- ROBLOX catch
+		-- catch
 		if not ok then
 			local error_ = result
 			if not didCatchError then
@@ -103,9 +103,9 @@ function onWorkScheduled(interactions: Set<Interaction>, threadID: number): ()
 	local caughtError = nil
 
 	for subscriber, _ in subscribers do
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(subscriber.onWorkScheduled, interactions, threadID)
-		-- ROBLOX catch
+		-- catch
 		if not ok then
 			local error_ = result
 			if not didCatchError then
@@ -125,9 +125,9 @@ function onWorkStarted(interactions: Set<Interaction>, threadID: number): ()
 	local caughtError = nil
 
 	for subscriber, _ in subscribers do
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(subscriber.onWorkStarted, interactions, threadID)
-		-- ROBLOX catch
+		-- catch
 		if not ok then
 			local error_ = result
 			if not didCatchError then
@@ -147,9 +147,9 @@ function onWorkStopped(interactions: Set<Interaction>, threadID: number): ()
 	local caughtError = nil
 
 	for subscriber, _ in subscribers do
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(subscriber.onWorkStopped, interactions, threadID)
-		-- ROBLOX catch
+		-- catch
 		if not ok then
 			local error_ = result
 			if not didCatchError then
@@ -169,9 +169,9 @@ function onWorkCanceled(interactions: Set<Interaction>, threadID: number): ()
 	local caughtError = nil
 
 	for subscriber, _ in subscribers do
-		-- ROBLOX try
+		-- try
 		local ok, result = pcall(subscriber.onWorkCanceled, interactions, threadID)
-		-- ROBLOX catch
+		-- catch
 		if not ok then
 			local error_ = result
 			if not didCatchError then

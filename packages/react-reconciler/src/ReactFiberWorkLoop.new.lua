@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiberWorkLoop.new.js
+-- upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiberWorkLoop.new.js
 --!nonstrict
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -12,7 +12,7 @@ local __DEV__ = _G.__DEV__
 local __YOLO__ = _G.__YOLO__
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Set = LuauPolyfill.Set
@@ -34,7 +34,7 @@ type Lanes = ReactFiberLane.Lanes
 type Lane = ReactFiberLane.Lane
 -- The scheduler is imported here *only* to detect whether it's been mocked
 local Scheduler = require(Packages.Scheduler)
--- ROBLOX deviation: we import from top-level Scheduler exports to avoid direct file access
+-- deviation: we import from top-level Scheduler exports to avoid direct file access
 
 type Interaction = Scheduler.Interaction
 
@@ -55,7 +55,7 @@ local enableSchedulingProfiler = ReactFeatureFlags.enableSchedulingProfiler
 local skipUnmountedBoundaries = ReactFeatureFlags.skipUnmountedBoundaries
 local enableDoubleInvokingEffects = ReactFeatureFlags.enableDoubleInvokingEffects
 local ReactShared = require(Packages.Shared)
--- ROBLOX deviation: we pull in Dispatcher type because we need it for our lazy loading deviations to typecheck
+-- deviation: we pull in Dispatcher type because we need it for our lazy loading deviations to typecheck
 type Dispatcher = ReactShared.Dispatcher
 local describeError = require(Packages.Shared).describeError
 local ReactSharedInternals = ReactShared.ReactSharedInternals
@@ -138,7 +138,7 @@ local ReactWorkTags = require(script.Parent.ReactWorkTags)
 local LegacyRoot = require(script.Parent.ReactRootTags).LegacyRoot
 local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
 type Flags = ReactFiberFlags.Flags
--- ROBLOX deviation: Use properties directly instead of localizing to avoid 200 limit
+-- deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local NoFlags = ReactFiberFlags.NoFlags
 -- local Placement = ReactFiberFlags.Placement
 -- local Incomplete = ReactFiberFlags.Incomplete
@@ -215,7 +215,7 @@ local enqueueUpdate = require(script.Parent["ReactUpdateQueue.new"]).enqueueUpda
 
 local resetContextDependencies = require(script.Parent["ReactFiberNewContext.new"]).resetContextDependencies
 
--- ROBLOX deviation: Pre-declare function
+-- deviation: Pre-declare function
 local ensureRootIsScheduled
 
 -- deviation: lazy init for functions from ReactFiberHooks, put in table b/c local var limit
@@ -227,7 +227,7 @@ local lazyInitRefs = {
 	completeWorkRef = (nil :: any) :: (...any) -> ...any,
 }
 
--- ROBLOX deviation: lazy initialize beginwork to break cyclic dependencies
+-- deviation: lazy initialize beginwork to break cyclic dependencies
 local originalBeginWork = function(current: Fiber | nil, workInProgress: Fiber, renderLanes: Lanes): Fiber | nil
 	if not lazyInitRefs.originalBeginWorkRef then
 		lazyInitRefs.originalBeginWorkRef = require(script.Parent["ReactFiberBeginWork.new"]).beginWork
@@ -243,7 +243,7 @@ local completeWork = function(current: Fiber | nil, workInProgress: Fiber, rende
 end
 
 local ReactFiberHooks
--- ROBLOX deviation: lazy init for functions from ReactFiberHooks
+-- deviation: lazy init for functions from ReactFiberHooks
 local function initReactFiberHooks()
 	ReactFiberHooks = require(script.Parent["ReactFiberHooks.new"])
 	lazyInitRefs.resetHooksAfterThrowRef = ReactFiberHooks.resetHooksAfterThrow
@@ -252,7 +252,7 @@ local function initReactFiberHooks()
 		ReactFiberHooks.getIsUpdatingOpaqueValueInRenderPhaseInDEV
 end
 
--- ROBLOX deviation: lazy init for resetHooksAfterThrow from ReactFiberHooks
+-- deviation: lazy init for resetHooksAfterThrow from ReactFiberHooks
 local resetHooksAfterThrow = function(): ()
 	if not lazyInitRefs.resetHooksAfterThrowRef then
 		initReactFiberHooks()
@@ -260,7 +260,7 @@ local resetHooksAfterThrow = function(): ()
 	return lazyInitRefs.resetHooksAfterThrowRef()
 end
 
--- ROBLOX deviation: lazy init for ContextOnlyDispatcher from ReactFiberHooks
+-- deviation: lazy init for ContextOnlyDispatcher from ReactFiberHooks
 local ContextOnlyDispatcher = function(): Dispatcher
 	if not lazyInitRefs.ContextOnlyDispatcherRef then
 		initReactFiberHooks()
@@ -268,7 +268,7 @@ local ContextOnlyDispatcher = function(): Dispatcher
 	return lazyInitRefs.ContextOnlyDispatcherRef
 end
 
--- ROBLOX deviation: lazy init for getIsUpdatingOpaqueValueInRenderPhaseInDEV from ReactFiberHooks
+-- deviation: lazy init for getIsUpdatingOpaqueValueInRenderPhaseInDEV from ReactFiberHooks
 local getIsUpdatingOpaqueValueInRenderPhaseInDEV = function(): boolean?
 	if not lazyInitRefs.getIsUpdatingOpaqueValueInRenderPhaseInDEVRef then
 		initReactFiberHooks()
@@ -310,7 +310,7 @@ local captureCommitPhaseErrorOnRoot, flushPassiveMountEffects
 
 -- local ceil = math.ceil
 
--- ROBLOX deviation: Pre-declare functions
+-- deviation: Pre-declare functions
 local mod: { [string]: any } = {}
 
 type ExecutionContext = number
@@ -335,10 +335,10 @@ local RetryAfterError = --[[              ]]
 exports.NoContext = NoContext
 exports.RetryAfterError = RetryAfterError
 
--- ROBLOX deviation: Luau doesn't yet support literal types
+-- deviation: Luau doesn't yet support literal types
 -- type RootExitStatus = 0 | 1 | 2 | 3 | 4 | 5
 type RootExitStatus = number
--- ROBLOX deviation: Define constants in a table instead of locals to avoid 200 limit
+-- deviation: Define constants in a table instead of locals to avoid 200 limit
 local RootExitStatus: { [string]: RootExitStatus } = {
 	Incomplete = 0,
 	FatalErrored = 1,
@@ -810,7 +810,7 @@ end
 
 -- This is the entry point for every concurrent task, i.e. anything that
 -- goes through Scheduler.
--- ROBLOX Luau FIXME: Luau needs explicit annotation with nil-able returns
+-- FIXME Luau: Luau needs explicit annotation with nil-able returns
 mod.performConcurrentWorkOnRoot = function(root): (() -> ...any) | nil
 	-- Since we know we're in a React event, we can clear the current
 	-- event time. The next update will compute a new event time.
@@ -904,7 +904,7 @@ mod.performConcurrentWorkOnRoot = function(root): (() -> ...any) | nil
 			return mod.performConcurrentWorkOnRoot(root)
 		end
 	end
-	-- ROBLOX Luau FIXME: Luau shouldn't error on nil-able returns
+	-- FIXME Luau: Luau shouldn't error on nil-able returns
 	return nil :: any
 end
 
@@ -1139,10 +1139,10 @@ end
 exports.deferredUpdates = function<A>(fn: () -> A): A
 	if ReactFeatureFlags.decoupleUpdatePriorityFromScheduler then
 		local previousLanePriority = getCurrentUpdateLanePriority()
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, result
 		if not __YOLO__ then
-			-- ROBLOX performance: hoist non-throwable out of try{} to eliminate anon function
+			-- performance: hoist non-throwable out of try{} to eliminate anon function
 			setCurrentUpdateLanePriority(ReactFiberLane.DefaultLanePriority)
 			ok, result = xpcall(runWithPriority, describeError, NormalSchedulerPriority, fn)
 		else
@@ -1183,7 +1183,7 @@ exports.batchedUpdates = function<A, R>(fn: (A) -> R, a: A): R
 	local prevExecutionContext = executionContext
 	executionContext = bit32.bor(executionContext, BatchedContext)
 
-	-- ROBLOX deviation: YOLO flag for disabling pcall
+	-- deviation: YOLO flag for disabling pcall
 	local ok, result
 	if not __YOLO__ then
 		ok, result = xpcall(fn, describeError, a)
@@ -1211,7 +1211,7 @@ exports.batchedEventUpdates = function<A, R>(fn: (A) -> R, a: A): R
 	local prevExecutionContext = executionContext
 	executionContext = bit32.bor(executionContext, EventContext)
 
-	-- ROBLOX deviation: YOLO flag for disabling pcall
+	-- deviation: YOLO flag for disabling pcall
 	local ok, result
 	if not __YOLO__ then
 		ok, result = xpcall(fn, describeError, a)
@@ -1241,7 +1241,7 @@ exports.discreteUpdates = function<A, B, C, D, R>(fn: (A, B, C, D) -> R, a: A, b
 
 	if ReactFeatureFlags.decoupleUpdatePriorityFromScheduler then
 		local previousLanePriority = getCurrentUpdateLanePriority()
-		-- ROBLOX performance: extract non-throwable fn call out of try{} so we can remove an anon function
+		-- performance: extract non-throwable fn call out of try{} so we can remove an anon function
 		setCurrentUpdateLanePriority(ReactFiberLane.InputDiscreteLanePriority)
 		local ok, result = xpcall(runWithPriority, describeError, UserBlockingSchedulerPriority, function()
 			return fn(a, b, c, d)
@@ -1286,7 +1286,7 @@ exports.unbatchedUpdates = function<A, R>(fn: (A) -> R, a: A): R
 	local prevExecutionContext = executionContext
 	executionContext = bit32.band(executionContext, bit32.bnot(BatchedContext))
 	executionContext = bit32.bor(executionContext, LegacyUnbatchedContext)
-	-- ROBLOX deviation: YOLO flag for disabling pcall
+	-- deviation: YOLO flag for disabling pcall
 	local ok, result
 	if not __YOLO__ then
 		ok, result = xpcall(fn, describeError, a)
@@ -1327,9 +1327,9 @@ exports.flushSync = function<A, R>(fn: (A) -> R, a: A): R
 	if ReactFeatureFlags.decoupleUpdatePriorityFromScheduler then
 		local previousLanePriority = getCurrentUpdateLanePriority()
 
-		-- ROBLOX performance: extract non-throwable call out of try{} to eliminate an anon function
+		-- performance: extract non-throwable call out of try{} to eliminate an anon function
 		setCurrentUpdateLanePriority(ReactFiberLane.SyncLanePriority)
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, result
 		if not __YOLO__ then
 			if fn then
@@ -1338,7 +1338,7 @@ exports.flushSync = function<A, R>(fn: (A) -> R, a: A): R
 				end)
 			else
 				ok = true
-				-- ROBLOX note: return (undefined: $FlowFixMe)
+				-- NOTE: return (undefined: $FlowFixMe)
 				result = nil :: any
 			end
 		else
@@ -1349,12 +1349,12 @@ exports.flushSync = function<A, R>(fn: (A) -> R, a: A): R
 					return fn(a)
 				end)
 			else
-				-- ROBLOX note: return (undefined: $FlowFixMe)
+				-- NOTE: return (undefined: $FlowFixMe)
 				result = nil :: any
 			end
 		end
 
-		-- ROBLOX finally
+		-- finally
 		setCurrentUpdateLanePriority(previousLanePriority)
 		executionContext = prevExecutionContext
 		-- Flush the immediate callbacks that were scheduled during this batch.
@@ -1367,7 +1367,7 @@ exports.flushSync = function<A, R>(fn: (A) -> R, a: A): R
 		end
 		return result
 	else
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, result
 		if not __YOLO__ then
 			if fn then
@@ -1376,7 +1376,7 @@ exports.flushSync = function<A, R>(fn: (A) -> R, a: A): R
 				end)
 			else
 				ok = true
-				-- ROBLOX note: return (undefined: $FlowFixMe)
+				-- NOTE: return (undefined: $FlowFixMe)
 				result = nil :: any
 			end
 		else
@@ -1386,11 +1386,11 @@ exports.flushSync = function<A, R>(fn: (A) -> R, a: A): R
 					return fn(a)
 				end)
 			else
-				-- ROBLOX note: return (undefined: $FlowFixMe)
+				-- NOTE: return (undefined: $FlowFixMe)
 				result = nil :: any
 			end
 		end
-		-- ROBLOX: finally
+		-- NOTE: finally
 		executionContext = prevExecutionContext
 		-- Flush the immediate callbacks that were scheduled during this batch.
 		-- Note that this will happen even if batchedUpdates is higher up
@@ -1408,7 +1408,7 @@ exports.flushControlled = function(fn: () -> any)
 	executionContext = bit32.bor(executionContext, BatchedContext)
 	if ReactFeatureFlags.decoupleUpdatePriorityFromScheduler then
 		local previousLanePriority = getCurrentUpdateLanePriority()
-		-- ROBLOX performance: extract non-throwable call out of try{} to eliminate an anon function
+		-- performance: extract non-throwable call out of try{} to eliminate an anon function
 		setCurrentUpdateLanePriority(ReactFiberLane.SyncLanePriority)
 		local ok, result = xpcall(runWithPriority, describeError, ImmediateSchedulerPriority, fn)
 
@@ -1495,7 +1495,7 @@ end
 mod.handleError = function(root, thrownValue): ()
 	while true do
 		local erroredWork = workInProgress
-		-- ROBLOX FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
+		-- FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
 		local ok, yetAnotherThrownValue = pcall(function()
 			-- Reset module-level state that was set during the render phase.
 			resetContextDependencies()
@@ -1519,11 +1519,11 @@ mod.handleError = function(root, thrownValue): ()
 				-- intentionally not calling those, we need set it here.
 				-- TODO: Consider calling `unwindWork` to pop the contexts.
 				workInProgress = nil
-				-- ROBLOX FIXME: THIS IS A BUG, WE SHOULD BAIL ON THE OUTER FUNCTION -- NOT THE PCALL!
+				-- FIXME: THIS IS A BUG, WE SHOULD BAIL ON THE OUTER FUNCTION -- NOT THE PCALL!
 				return
 			end
 
-			-- ROBLOX Luau FIXME: Luau doesn't narrow based on the erroredWork == nil then return above
+			-- FIXME Luau: Luau doesn't narrow based on the erroredWork == nil then return above
 			if
 				ReactFeatureFlags.enableProfilerTimer
 				and bit32.band((erroredWork :: Fiber).mode, ReactTypeOfMode.ProfileMode) ~= 0
@@ -1534,7 +1534,7 @@ mod.handleError = function(root, thrownValue): ()
 				ReactProfilerTimer.stopProfilerTimerIfRunningAndRecordDelta(erroredWork :: Fiber, true)
 			end
 
-			-- ROBLOX deviation, we pass in onUncaughtError and renderDidError here since throwException can't call them due to a require cycle
+			-- deviation, we pass in onUncaughtError and renderDidError here since throwException can't call them due to a require cycle
 			throwException(
 				root,
 				(erroredWork :: Fiber).return_,
@@ -1567,14 +1567,14 @@ end
 mod.pushDispatcher = function()
 	local prevDispatcher = ReactCurrentDispatcher.current
 
-	-- ROBLOX deviation: lazy init of ContextOnlyDispatcher wrapped in a function
+	-- deviation: lazy init of ContextOnlyDispatcher wrapped in a function
 	ReactCurrentDispatcher.current = ContextOnlyDispatcher()
 	if prevDispatcher == nil then
 		-- The React isomorphic package does not include a default dispatcher.
 		-- Instead the first renderer will lazily attach one, in order to give
 		-- nicer error messages.
 
-		-- ROBLOX deviation: lazy init of ContextOnlyDispatcher wrapped in a function
+		-- deviation: lazy init of ContextOnlyDispatcher wrapped in a function
 		return ContextOnlyDispatcher()
 	else
 		return prevDispatcher
@@ -1681,7 +1681,7 @@ mod.renderRootSync = function(root: FiberRoot, lanes: Lanes)
 	end
 
 	while true do
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, thrownValue
 		if not __YOLO__ then
 			ok, thrownValue = xpcall(mod.workLoopSync, describeError)
@@ -1765,10 +1765,10 @@ mod.renderRootConcurrent = function(root: FiberRoot, lanes: Lanes)
 	end
 
 	while true do
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, thrownValue
 		if not __YOLO__ then
-			-- ROBLOX deviation: when converting `try` to `pcall`, we can't use break inside it
+			-- deviation: when converting `try` to `pcall`, we can't use break inside it
 			ok, thrownValue = xpcall(mod.workLoopConcurrent, describeError)
 			if ok then
 				thrownValue = "break"
@@ -1920,7 +1920,7 @@ mod.completeUnitOfWork = function(unitOfWork: Fiber)
 				ReactProfilerTimer.stopProfilerTimerIfRunningAndRecordDelta(completedWork, false)
 
 				-- Include the time spent working on failed children before continuing.
-				-- ROBLOX TODO: actualDuration is nil-able and only populated with enableProfilerTimer. contribute default value upstream.
+				-- TODO: actualDuration is nil-able and only populated with enableProfilerTimer. contribute default value upstream.
 				local actualDuration = completedWork.actualDuration or 0
 				local child = completedWork.child
 				while child ~= nil do
@@ -1945,7 +1945,7 @@ mod.completeUnitOfWork = function(unitOfWork: Fiber)
 			return
 		end
 		-- Otherwise, return to the parent
-		-- ROBLOX Luau FIXME: Luau doesn't understand that completedWork is only nil-able at this point in the control flow
+		-- FIXME Luau: Luau doesn't understand that completedWork is only nil-able at this point in the control flow
 		completedWork = returnFiber :: any
 		-- Update the next thing we're working on in case something throws.
 		workInProgress = completedWork
@@ -1965,7 +1965,7 @@ mod.commitRoot = function(root)
 	return nil
 end
 
--- ROBLOX Luau FIXME: Luau doesn't infer root as FiberRoot via the callgraph from ensureRootIsScheduled(root: FiberRoot)
+-- FIXME Luau: Luau doesn't infer root as FiberRoot via the callgraph from ensureRootIsScheduled(root: FiberRoot)
 mod.commitRootImpl = function(root: FiberRoot, renderPriorityLevel)
 	repeat
 		-- `flushPassiveEffects` will call `flushSyncUpdateQueue` at the end, which
@@ -1983,7 +1983,7 @@ mod.commitRootImpl = function(root: FiberRoot, renderPriorityLevel)
 		"Should not already be working."
 	)
 
-	-- ROBLOX Luau FIXME: Luau doesn't narrow finishedWork based on the nil guard below
+	-- FIXME Luau: Luau doesn't narrow finishedWork based on the nil guard below
 	local finishedWork = root.finishedWork :: Fiber
 	local lanes = root.finishedLanes
 
@@ -2141,7 +2141,7 @@ mod.commitRootImpl = function(root: FiberRoot, renderPriorityLevel)
 				nil,
 				finishedWork,
 				root,
-				-- ROBLOX deviation: pass in this function to avoid dependency cycle
+				-- deviation: pass in this function to avoid dependency cycle
 				exports.captureCommitPhaseError,
 				exports.schedulePassiveEffectCallback
 			)
@@ -2151,10 +2151,10 @@ mod.commitRootImpl = function(root: FiberRoot, renderPriorityLevel)
 			end
 			resetCurrentDebugFiberInDEV()
 		else
-			-- ROBLOX deviation: YOLO flag for disabling pcall
+			-- deviation: YOLO flag for disabling pcall
 			local ok, result
 			if not __YOLO__ then
-				-- ROBLOX deviation: pass in captureCommitPhaseError and schedulePassiveEffectCallback to avoid dependency cycle
+				-- deviation: pass in captureCommitPhaseError and schedulePassiveEffectCallback to avoid dependency cycle
 				ok, result = xpcall(
 					recursivelyCommitLayoutEffects,
 					describeError,
@@ -2300,7 +2300,7 @@ mod.commitRootImpl = function(root: FiberRoot, renderPriorityLevel)
 		hasUncaughtError = false
 		local error_ = firstUncaughtError
 		firstUncaughtError = nil
-		-- ROBLOX FIXME: we lose the original stack trace when we re-throw this way
+		-- FIXME: we lose the original stack trace when we re-throw this way
 		error(error_)
 	end
 
@@ -2361,7 +2361,7 @@ mod.commitBeforeMutationEffects = function(firstChild: Fiber)
 			end
 			resetCurrentDebugFiberInDEV()
 		else
-			-- ROBLOX deviation: YOLO flag for disabling pcall
+			-- deviation: YOLO flag for disabling pcall
 			local ok, error_
 			if not __YOLO__ then
 				ok, error_ = xpcall(mod.commitBeforeMutationEffectsImpl, describeError, fiber)
@@ -2374,7 +2374,7 @@ mod.commitBeforeMutationEffects = function(firstChild: Fiber)
 				exports.captureCommitPhaseError(fiber, fiber.return_, error_)
 			end
 		end
-		-- ROBLOX Luau FIXME: Luau doesn't narrow correctly for the while ~= nil pattern
+		-- FIXME Luau: Luau doesn't narrow correctly for the while ~= nil pattern
 		fiber = fiber.sibling :: Fiber
 	end
 end
@@ -2435,9 +2435,9 @@ mod.commitMutationEffects = function(firstChild: Fiber, root: FiberRoot, renderP
 	while fiber ~= nil do
 		local deletions = fiber.deletions
 		if deletions ~= nil then
-			-- ROBLOX performance: React 18 inlines commitMutationEffectsDeletions, pulling that in based on tab switching hot path
+			-- performance: React 18 inlines commitMutationEffectsDeletions, pulling that in based on tab switching hot path
 			for _, childToDelete in deletions do
-				-- ROBLOX FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
+				-- FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
 				local ok, error_ =
 					xpcall(commitDeletion, describeError, root, childToDelete, fiber, renderPriorityLevel)
 				if not ok then
@@ -2462,7 +2462,7 @@ mod.commitMutationEffects = function(firstChild: Fiber, root: FiberRoot, renderP
 			end
 			resetCurrentDebugFiberInDEV()
 		else
-			-- ROBLOX deviation: YOLO flag for disabling pcall
+			-- deviation: YOLO flag for disabling pcall
 			local ok, result
 			if not __YOLO__ then
 				ok, result = xpcall(mod.commitMutationEffectsImpl, describeError, fiber, root, renderPriorityLevel)
@@ -2474,14 +2474,14 @@ mod.commitMutationEffects = function(firstChild: Fiber, root: FiberRoot, renderP
 				exports.captureCommitPhaseError(fiber, fiber.return_, result)
 			end
 		end
-		-- ROBLOX Luau FIXME: Luau doesn't understand the while ~= nil construct
+		-- FIXME Luau: Luau doesn't understand the while ~= nil construct
 		fiber = fiber.sibling :: Fiber
 	end
 end
 
 mod.commitMutationEffectsImpl = function(fiber: Fiber, root: FiberRoot, renderPriorityLevel)
 	local flags = fiber.flags
-	-- ROBLOX performance: avoid always-false compare for Roblox renderer in hot path
+	-- performance: avoid always-false compare for Roblox renderer in hot path
 	-- if bit32.band(flags, ReactFiberFlags.ContentReset) ~= 0 then
 	--   unimplemented("commitResetTextContent")
 	-- commitResetTextContent(fiber)
@@ -2492,7 +2492,7 @@ mod.commitMutationEffectsImpl = function(fiber: Fiber, root: FiberRoot, renderPr
 		if current ~= nil then
 			commitDetachRef(current)
 		end
-		-- ROBLOX performance: avoid always-false compare for Roblox renderer in hot path
+		-- performance: avoid always-false compare for Roblox renderer in hot path
 		-- if ReactFeatureFlags.enableScopeAPI then
 		--   -- TODO: This is a temporary solution that allowed us to transition away from React Flare on www.
 		--   if fiber.tag == ReactWorkTags.ScopeComponent then
@@ -2524,7 +2524,7 @@ mod.commitMutationEffectsImpl = function(fiber: Fiber, root: FiberRoot, renderPr
 		-- Update
 		local current = fiber.alternate
 		commitWork(current, fiber)
-		-- ROBLOX performance: avoid always-false compare for Roblox renderer in hot path
+		-- performance: avoid always-false compare for Roblox renderer in hot path
 		-- elseif primaryFlags == ReactFiberFlags.Hydrating then
 		--   fiber.flags = bit32.band(fiber.flags, bit32.bnot(ReactFiberFlags.Hydrating))
 		-- elseif primaryFlags == ReactFiberFlags.HydratingAndUpdate then
@@ -2544,9 +2544,9 @@ mod.commitMutationEffectsDeletions = function(
 	root: FiberRoot,
 	renderPriorityLevel
 )
-	-- ROBLOX performance: align to React 18, which ditches the __DEV__ branch and use of invokeGuardedCallback
+	-- performance: align to React 18, which ditches the __DEV__ branch and use of invokeGuardedCallback
 	for _, childToDelete in deletions do
-		-- ROBLOX FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
+		-- FIXME Luau: CLI-49835, "Function only returns 1 value, 2 are required"
 		local ok, error_ = xpcall(commitDeletion, describeError, root, childToDelete, fiber, renderPriorityLevel)
 		if not ok then
 			exports.captureCommitPhaseError(childToDelete, fiber, error_)
@@ -2576,9 +2576,9 @@ exports.flushPassiveEffects = function(): boolean
 		if ReactFeatureFlags.decoupleUpdatePriorityFromScheduler then
 			local previousLanePriority = getCurrentUpdateLanePriority()
 
-			-- ROBLOX performance: extract non-throwable function from try{} to remove need for anon function
+			-- performance: extract non-throwable function from try{} to remove need for anon function
 			setCurrentUpdateLanePriority(schedulerPriorityToLanePriority(priorityLevel))
-			-- ROBLOX deviation: YOLO flag for disabling pcall
+			-- deviation: YOLO flag for disabling pcall
 			local ok, result
 			if not __YOLO__ then
 				ok, result = xpcall(runWithPriority, describeError, priorityLevel, flushPassiveEffectsImpl)
@@ -2629,7 +2629,7 @@ flushPassiveMountEffects = function(root, firstChild: Fiber): ()
 				end
 				resetCurrentDebugFiberInDEV()
 			else
-				-- ROBLOX deviation: YOLO flag for disabling pcall
+				-- deviation: YOLO flag for disabling pcall
 				local ok, error_
 				if not __YOLO__ then
 					ok, error_ = xpcall(commitPassiveMountOnFiber, describeError, root, fiber)
@@ -2656,7 +2656,7 @@ flushPassiveMountEffects = function(root, firstChild: Fiber): ()
 			end
 		end
 
-		-- ROBLOX Luau FIXME: Luau doesn't understand the loop ~= nil construct
+		-- FIXME Luau: Luau doesn't understand the loop ~= nil construct
 		fiber = fiber.sibling :: Fiber
 	end
 end
@@ -2694,7 +2694,7 @@ local function flushPassiveUnmountEffects(firstChild: Fiber): ()
 			resetCurrentDebugFiberInDEV()
 		end
 
-		-- ROBLOX FIXME Luau: Luau doesn't understand the loop ~= nil construct
+		-- FIXME Luau: Luau doesn't understand the loop ~= nil construct
 		fiber = fiber.sibling :: Fiber
 	end
 end
@@ -2724,7 +2724,7 @@ flushPassiveEffectsImpl = function()
 		return false
 	end
 
-	-- ROBLOX Luau FIXME: Luau doesn't narrow to non-nil with the guard above
+	-- FIXME Luau: Luau doesn't narrow to non-nil with the guard above
 	local root = rootWithPendingPassiveEffects :: FiberRoot
 	local lanes = pendingPassiveEffectsLanes
 	rootWithPendingPassiveEffects = nil
@@ -2804,7 +2804,7 @@ exports.markLegacyErrorBoundaryAsFailed = function(instance)
 	end
 end
 
--- ROBLOX TODO: this function and the related fields should be extracted/relocated to break a cycle
+-- TODO: this function and the related fields should be extracted/relocated to break a cycle
 local function prepareToThrowUncaughtError(error_)
 	if not hasUncaughtError then
 		hasUncaughtError = true
@@ -2815,7 +2815,7 @@ exports.onUncaughtError = prepareToThrowUncaughtError
 
 captureCommitPhaseErrorOnRoot = function(rootFiber: Fiber, sourceFiber: Fiber, error_)
 	local errorInfo = createCapturedValue(error_, sourceFiber)
-	-- ROBLOX deviation: parameterize method onUncaughtError to avoid circular dependency
+	-- deviation: parameterize method onUncaughtError to avoid circular dependency
 	local update = createRootErrorUpdate(rootFiber, errorInfo, SyncLane, exports.onUncaughtError)
 	enqueueUpdate(rootFiber, update)
 	local eventTime = exports.requestEventTime()
@@ -2950,13 +2950,13 @@ end
 exports.resolveRetryWakeable = function(boundaryFiber: Fiber, wakeable: Wakeable)
 	local retryLane = ReactFiberLane.NoLane -- Default
 	local retryCache -- : WeakSet<Wakeable> | Set<Wakeable> | nil
-	-- ROBLOX performance: avoid always-false comapare
+	-- performance: avoid always-false comapare
 	-- if ReactFeatureFlags.enableSuspenseServerRenderer then
 	--   if boundaryFiber.tag == ReactWorkTags.SuspenseComponent then
 	--       retryCache = boundaryFiber.stateNode
 	--       local suspenseState: nil | SuspenseState = boundaryFiber.memoizedState
 	--       if suspenseState ~= nil then
-	--         -- ROBLOX TODO: Remove Luau narrowing workaround
+	--         -- TODO: Remove Luau narrowing workaround
 	--         retryLane = (suspenseState :: SuspenseState).retryLane
 	--       end
 	--     elseif boundaryFiber.tag == ReactWorkTags.SuspenseListComponent then
@@ -2990,7 +2990,7 @@ end
 -- the longer we can wait additionally. At some point we have to give up though.
 -- We pick a train model where the next boundary commits at a consistent schedule.
 -- These particular numbers are vague estimates. We expect to adjust them based on research.
--- ROBLOX Luau FIXME: Luau needs an explicit number annotation here, but should infer: CLI-49832
+-- FIXME Luau: Luau needs an explicit number annotation here, but should infer: CLI-49832
 function jnd(timeElapsed: number): number
 	if timeElapsed < 120 then
 		return 120
@@ -3075,7 +3075,7 @@ function invokeEffectsInDev(firstChild: Fiber, fiberFlags: Flags, invokeEffectFn
 			if bit32.band(fiber.flags, fiberFlags) ~= ReactFiberFlags.NoFlags then
 				invokeEffectFn(fiber)
 			end
-			-- ROBLOX FIXME Luau: Luau doesn't understand the loop ~= nil construct
+			-- FIXME Luau: Luau doesn't understand the loop ~= nil construct
 			fiber = fiber.sibling :: Fiber
 		end
 	end
@@ -3118,7 +3118,7 @@ mod.warnAboutUpdateOnNotYetMountedFiberInDEV = function(fiber)
 			end
 			didWarnStateUpdateForNotYetMountedComponent[componentName] = true
 		else
-			-- ROBLOX FIXME? not sure this translation is correct
+			-- FIXME? not sure this translation is correct
 			didWarnStateUpdateForNotYetMountedComponent = { [componentName] = true }
 		end
 
@@ -3237,7 +3237,7 @@ mod.warnAboutRenderPhaseUpdatesInDEV = function(fiber: Fiber): ()
 				end)()
 				-- Dedupe by the rendering component because it's the one that needs to be fixed.
 				local dedupeKey = renderingComponentName
-				-- ROBLOX deviation:
+				-- deviation:
 				-- if !didWarnAboutUpdateInRenderForAnotherComponent.has(dedupeKey))
 				if didWarnAboutUpdateInRenderForAnotherComponent[dedupeKey] == nil then
 					didWarnAboutUpdateInRenderForAnotherComponent[dedupeKey] = true
@@ -3319,7 +3319,7 @@ exports.warnIfNotCurrentlyActingEffectsInDEV = function(fiber: Fiber): ()
 			and IsSomeRendererActing.current == false
 			and exports.IsThisRendererActing.current == false
 		then
-			-- ROBLOX deviation: Use Lua syntax for example fix
+			-- deviation: Use Lua syntax for example fix
 			console.error(
 				"An update to %s ran an effect, but was not wrapped in act(...).\n\n"
 					.. "When testing, code that causes React state updates should be "
@@ -3348,7 +3348,7 @@ exports.warnIfNotCurrentlyActingUpdatesInDEV = function(fiber: Fiber): ()
 			local previousFiber = ReactCurrentFiberCurrent
 			local ok, result = pcall(function()
 				setCurrentDebugFiberInDEV(fiber)
-				-- ROBLOX deviation: Use Lua syntax for example fix
+				-- deviation: Use Lua syntax for example fix
 				console.error(
 					"An update to %s inside a test was not wrapped in act(...).\n\n"
 						.. "When testing, code that causes React state updates should be "
@@ -3376,7 +3376,7 @@ exports.warnIfNotCurrentlyActingUpdatesInDEV = function(fiber: Fiber): ()
 			end
 		end
 	end
-	-- ROBLOX deviation: explicit return to silence analyze
+	-- deviation: explicit return to silence analyze
 	return
 end
 
@@ -3443,7 +3443,7 @@ exports.markSpawnedWork = function(lane: Lane | Lanes)
 	if spawnedWorkDuringRender == nil then
 		spawnedWorkDuringRender = { lane }
 	else
-		-- ROBLOX FIXME Luau: depends on Luau type states
+		-- FIXME Luau: depends on Luau type states
 		table.insert(spawnedWorkDuringRender :: Array<number>, lane)
 	end
 end
@@ -3516,7 +3516,7 @@ mod.startWorkOnPendingInteractions = function(root: FiberRoot, lanes: Lanes)
 	-- without having to recalculate it. We will also use it in commitWork() to
 	-- pass to any Profiler onRender() hooks. This also provides DevTools with a
 	-- way to access it when the onCommitRoot() hook is called.
-	-- ROBLOX FIXME: manual type check to workaround Luau analyze bug "Type 'Set<Interaction>' could not be converted into 'Set<Interaction>'"
+	-- FIXME: manual type check to workaround Luau analyze bug "Type 'Set<Interaction>' could not be converted into 'Set<Interaction>'"
 	root.memoizedInteractions = interactions :: any
 
 	if interactions.size > 0 then
@@ -3543,19 +3543,19 @@ mod.finishPendingInteractions = function(root: FiberRoot, committedLanes)
 
 	local subscriber
 
-	-- ROBLOX try
+	-- try
 	local ok = true
 	local error_
 	if subscriber ~= nil and root.memoizedInteractions.size > 0 then
 		-- FIXME: More than one lane can finish in a single commit.
-		-- ROBLOX peformance: hoist non-throwable things out of the pcall() so we can remove an anon function
+		-- performance: hoist non-throwable things out of the pcall() so we can remove an anon function
 		local threadID = computeThreadID(root, committedLanes)
 		subscriber = __subscriberRef.current
-		-- ROBLOX deviation: helper for raw table set/map size > 0
+		-- deviation: helper for raw table set/map size > 0
 		ok, error_ = xpcall(subscriber.onWorkStopped, describeError, root.memoizedInteractions, threadID)
 	end
 
-	-- ROBLOX finally
+	-- finally
 	-- Clear completed interactions from the pending Map.
 	-- Unless the render was suspended or cascading work was scheduled,
 	-- In which case– leave pending interactions until the subsequent render.
@@ -3583,7 +3583,7 @@ mod.finishPendingInteractions = function(root: FiberRoot, committedLanes)
 		end
 	end)
 
-	-- ROBLOX catch
+	-- catch
 	if not ok then
 		-- If the subscriber throws, rethrow it in a separate task
 		scheduleCallback(ImmediateSchedulerPriority, function()
@@ -3624,7 +3624,7 @@ local function flushActWork(): boolean
 		-- passive effects, which we control. So we can flush that.
 		local prevIsFlushing = isFlushingAct
 		isFlushingAct = true
-		-- ROBLOX performance? rewrite this loop to eliminate anon function?
+		-- performance? rewrite this loop to eliminate anon function?
 		local ok, result = xpcall(function()
 			local didFlushWork = false
 			while exports.flushPassiveEffects() do
@@ -3645,7 +3645,7 @@ local function flushActWork(): boolean
 end
 
 local function flushWorkAndMicroTasks(onDone: (any?) -> ())
-	-- ROBLOX performance: split into two pcall to eliminate anonymous func allocation per call
+	-- performance: split into two pcall to eliminate anonymous func allocation per call
 	local ok, result = xpcall(flushActWork, describeError)
 	if ok then
 		ok, result = xpcall(enqueueTask, describeError, function()
@@ -3732,7 +3732,7 @@ exports.act = function(callback: () -> Thenable<any>): Thenable<any>
 		-- effects and microtasks in a loop until flushPassiveEffects() == false,
 		-- and cleans up
 		return {
-			-- ROBLOX FIXME Luau: have to explicitly annotate the unused generic arg: CLI-49996
+			-- FIXME Luau: have to explicitly annotate the unused generic arg: CLI-49996
 			andThen = function<U>(self, resolve, reject)
 				called = true
 				return result:andThen(function()
@@ -3763,7 +3763,7 @@ exports.act = function(callback: () -> Thenable<any>): Thenable<any>
 	else
 		if __DEV__ then
 			if result ~= nil then
-				-- ROBLOX deviation: use Lua syntax
+				-- deviation: use Lua syntax
 				console.error(
 					"The callback passed to act(...) function " .. "must return nil, or a Promise. You returned %s",
 					tostring(result)
@@ -3791,7 +3791,7 @@ exports.act = function(callback: () -> Thenable<any>): Thenable<any>
 
 		-- in the sync case, the returned thenable only warns *if* await-ed
 		return {
-			-- ROBLOX FIXME Luau: have to explicitly annotate the unused generic arg: CLI-49996
+			-- FIXME Luau: have to explicitly annotate the unused generic arg: CLI-49996
 			andThen = function<U>(self, resolve, reject_)
 				if __DEV__ then
 					console.error("Do not await the result of calling act(...) with sync logic, it is not a Promise.")

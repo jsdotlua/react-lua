@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/hydration.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/hydration.js
 -- /*
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -13,7 +13,7 @@ local Symbol = LuauPolyfill.Symbol
 type Array<T> = { [number]: T }
 type Object = { [string]: any }
 
--- ROBLOX FIXME: !!! THIS FILE IS A STUB WITH BAREBONES FOR UTILS TEST
+-- FIXME: !!! THIS FILE IS A STUB WITH BAREBONES FOR UTILS TEST
 local function unimplemented(functionName: string)
 	print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 	print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -22,7 +22,7 @@ end
 
 local exports = {}
 
---ROBLOX TODO: circular dependency, inline for now and submit PR to fix upstream
+-- TODO: circular dependency, inline for now and submit PR to fix upstream
 --local ComponentsTypes = require(script.Parent.devtools.views.Components.types)
 export type DehydratedData = {
 	cleaned: Array<Array<string | number>>,
@@ -126,7 +126,7 @@ exports.dehydrate = function(
 		level = 0
 	end
 
-	-- ROBLOX TODO: port this properly, for now just do the default case
+	-- TODO: port this properly, for now just do the default case
 	-- let isPathAllowedCheck;
 
 	-- switch (type) {
@@ -336,7 +336,7 @@ exports.hydrate = function(
 	cleaned: Array<Array<string | number>>,
 	unserializable: Array<Array<string | number>>
 ): Object
-	-- ROBLOX TODO: port this properly later, for now return the default
+	-- TODO: port this properly later, for now return the default
 	-- 	const length = path.length;
 	--     const last = path[length - 1];
 	--     const parent = getInObject(object, path.slice(0, length - 1));

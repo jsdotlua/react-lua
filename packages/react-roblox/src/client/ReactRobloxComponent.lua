@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMComponent.js
+-- upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMComponent.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -40,7 +40,7 @@ local function diffProperties(
 	--   validatePropertiesInDevelopment(tag, nextRawProps)
 	-- end
 
-	-- ROBLOX FIXME: Type refinement
+	-- FIXME: Type refinement
 	-- local updatePayload: nil | Array<any> = nil
 	local updatePayload = nil
 
@@ -120,7 +120,7 @@ local function diffProperties(
 		-- } else {
 		-- For all other deleted properties we add it to the queue. We use
 		-- the allowed property list in the commit phase instead.
-		-- ROBLOX performance: prealloc table size 2 for these 2 items at least
+		-- performance: prealloc table size 2 for these 2 items at least
 		updatePayload = updatePayload or table.create(2)
 		table.insert(updatePayload, propKey)
 		table.insert(updatePayload, Object.None)
@@ -224,8 +224,8 @@ local function diffProperties(
 		-- } else {
 		-- For any other property we always add it to the queue and then we
 		-- filter it out using the allowed property list during the commit.
-		-- ROBLOX performance: prealloc table size 2 for these 2 items at least
-		-- ROBLOX performance TODO: don't create a table here, return multiple values!
+		-- performance: prealloc table size 2 for these 2 items at least
+		-- performance TODO: don't create a table here, return multiple values!
 		updatePayload = updatePayload or table.create(2)
 		table.insert(updatePayload, propKey)
 		table.insert(updatePayload, nextProp)

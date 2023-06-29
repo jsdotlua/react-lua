@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberUnwindWork.new.js
+-- upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberUnwindWork.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -39,7 +39,7 @@ local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local popLegacyContext = ReactFiberContext.popContext
 local popTopLevelLegacyContextObject = ReactFiberContext.popTopLevelContextObject
 local popProvider = require(script.Parent["ReactFiberNewContext.new"]).popProvider
--- ROBLOX FIXME: this causes a circular require
+-- FIXME: this causes a circular require
 local popRenderLanesRef
 local popRenderLanes = function(...)
 	if not popRenderLanesRef then
@@ -137,7 +137,7 @@ end
 
 function unwindInterruptedWork(interruptedWork: Fiber)
 	if interruptedWork.tag == ReactWorkTags.ClassComponent then
-		-- ROBLOX deviation: Lua doesn't support properties on functions
+		-- deviation: Lua doesn't support properties on functions
 		local childContextTypes
 		if typeof(interruptedWork.type) == "table" then
 			childContextTypes = interruptedWork.type.childContextTypes

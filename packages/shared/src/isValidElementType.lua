@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/b61174fb7b09580c1ec2a8f55e73204b706d2935/packages/shared/isValidElementType.js
+-- upstream: https://github.com/facebook/react/blob/b61174fb7b09580c1ec2a8f55e73204b706d2935/packages/shared/isValidElementType.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -34,7 +34,7 @@ return function(type)
 		return true
 	end
 
-	-- Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
+	-- NOTE: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
 	if
 		type == REACT_FRAGMENT_TYPE
 		or type == REACT_PROFILER_TYPE
@@ -42,7 +42,7 @@ return function(type)
 		or type == REACT_STRICT_MODE_TYPE
 		or type == REACT_SUSPENSE_TYPE
 		or type == REACT_LEGACY_HIDDEN_TYPE
-		-- ROBLOX performance: eliminate compares that will only be true in React 18
+		-- performance: eliminate compares that will only be true in React 18
 		-- or type == REACT_SUSPENSE_LIST_TYPE
 		-- or (enableScopeAPI and type == REACT_SCOPE_TYPE)
 	then
@@ -50,7 +50,7 @@ return function(type)
 	end
 
 	if typeofType == "table" then
-		-- ROBLOX deviation: In React, component classes are of type 'function'; for
+		-- deviation: In React, component classes are of type 'function'; for
 		-- us, they're tables with a special value on their metatable
 		if type.isReactComponent then
 			return true

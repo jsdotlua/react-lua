@@ -51,13 +51,13 @@ local function getChartData(ref: {
 	end
 	local maxSelfDuration = 0
 	local chartNodes: Array<ChartNode> = {}
-	-- ROBLOX deviation? this is a simple Map, but could .forEach() always be generalized into genealized for-in if the loop is 'simple'?
+	-- deviation? this is a simple Map, but could .forEach() always be generalized into genealized for-in if the loop is 'simple'?
 	for id, actualDuration in fiberActualDurations do
 		local node = nodes:get(id)
 		if node == nil then
 			error(string.format('Could not find node with id "%s" in commit tree', tostring(id)))
 		end
-		-- ROBLOX FIXME Luau: need to understand that error() means `node` has nil-ability stripped
+		-- FIXME Luau: need to understand that error() means `node` has nil-ability stripped
 		local displayName, key, parentID, type_ =
 			(node :: CommitTreeNode).displayName,
 			(node :: CommitTreeNode).key,

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/utils.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/utils.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -19,7 +19,7 @@ local dehydrate = hydration.dehydrate
 local ComponentsTypes = require(script.Parent.Parent.devtools.views.Components.types)
 type DehydratedData = ComponentsTypes.DehydratedData
 
--- ROBLOX deviation: Use HttpService for JSON
+-- deviation: Use HttpService for JSON
 local JSON = game:GetService("HttpService")
 
 local exports: any = {}
@@ -45,7 +45,7 @@ exports.cleanForBridge = function(
 	end
 end
 exports.copyToClipboard = function(value: any): ()
-	-- ROBLOX TODO: we will need a different implementation for this
+	-- TODO: we will need a different implementation for this
 	-- local safeToCopy = serializeToString(value)
 	-- local text = (function()
 	--     if safeToCopy == nil then
@@ -64,19 +64,19 @@ exports.copyToClipboard = function(value: any): ()
 end
 
 exports.copyWithDelete = function(
-	-- ROBLOX FIXME Luau: workaround for Expected type table, got 'Array<any> | Object' instead
+	-- FIXME Luau: workaround for Expected type table, got 'Array<any> | Object' instead
 	obj: { [any]: any }, --Object | Array<any>,
 	path: Array<string | number>,
 	index: number
 ): Object | Array<any>
-	-- ROBLOX deviation: 1-indexed
+	-- deviation: 1-indexed
 	index = index or 1
 	local key = path[index]
-	-- ROBLOX deviation START: combine [].slice() and spread into single op, because we can
+	-- deviation START: combine [].slice() and spread into single op, because we can
 	local updated = table.clone(obj)
-	-- ROBLOX deviation END
+	-- deviation END
 
-	-- ROBLOX deviation: 1-indexed, check for last element
+	-- deviation: 1-indexed, check for last element
 	if index == #path then
 		if Array.isArray(updated) then
 			Array.splice(updated, key :: number, 1)
@@ -93,20 +93,20 @@ end
 -- This function expects paths to be the same except for the final value.
 -- e.g. ['path', 'to', 'foo'] and ['path', 'to', 'bar']
 exports.copyWithRename = function(
-	-- ROBLOX FIXME Luau: workaround for Expected type table, got 'Array<any> | Object' instead
+	-- FIXME Luau: workaround for Expected type table, got 'Array<any> | Object' instead
 	obj: { [any]: any }, --Object | Array<any>,
 	oldPath: Array<string | number>,
 	newPath: Array<string | number>,
 	index: number
 ): Object | Array<any>
-	-- ROBLOX deviation: 1-indexed
+	-- deviation: 1-indexed
 	index = index or 1
 	local oldKey = oldPath[index]
-	-- ROBLOX deviation START: combine [].slice() and spread into single op, because we can
+	-- deviation START: combine [].slice() and spread into single op, because we can
 	local updated = table.clone(obj)
-	-- ROBLOX deviation END
+	-- deviation END
 
-	-- ROBLOX deviation: 1-indexed, check for last element
+	-- deviation: 1-indexed, check for last element
 	if index == #oldPath then
 		local newKey = newPath[index]
 
@@ -125,24 +125,24 @@ exports.copyWithRename = function(
 end
 
 exports.copyWithSet = function(
-	-- ROBLOX FIXME Luau: workaround for Expected type table, got 'Array<any> | Object' instead
+	-- FIXME Luau: workaround for Expected type table, got 'Array<any> | Object' instead
 	obj: { [any]: any }, --Object | Array<any>,
 	path: Array<string | number>,
 	value: any,
 	index: number
 ): Object | Array<any>
-	-- ROBLOX deviation: 1-indexed
+	-- deviation: 1-indexed
 	index = index or 1
 
-	-- ROBLOX deviation: 1-indexed, check for out of bounds
+	-- deviation: 1-indexed, check for out of bounds
 	if index > #path then
 		return value
 	end
 
 	local key = path[index]
-	-- ROBLOX deviation START: combine [].slice() and spread into single op, because we can
+	-- deviation START: combine [].slice() and spread into single op, because we can
 	local updated = table.clone(obj)
-	-- ROBLOX deviation END
+	-- deviation END
 
 	updated[key] = exports.copyWithSet(obj[key], path, value, index + 1)
 
@@ -153,7 +153,7 @@ exports.serializeToString = function(data: any): string
 	local cache = Set.new()
 
 	return JSON.JSONEncode(data, function(key, value)
-		-- ROBLOX deviation: use 'table' not object
+		-- deviation: use 'table' not object
 		if typeof(value) == "table" and value ~= nil then
 			if cache:has(value) then
 				return
@@ -161,7 +161,7 @@ exports.serializeToString = function(data: any): string
 
 			cache:add(value)
 		end
-		-- ROBLOX deviation: not Luau
+		-- deviation: not Luau
 		-- if typeof(value) == 'bigint' then
 		-- 	return tostring(value) + 'n'
 		-- end

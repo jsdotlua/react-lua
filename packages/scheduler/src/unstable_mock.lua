@@ -7,7 +7,7 @@
 *]]
 local Tracing = require(script.Parent.Tracing)
 local TracingSubscriptions = require(script.Parent.TracingSubscriptions)
--- ROBLOX deviation: export Tracing type from the package exports to avoid direct file access
+-- deviation: export Tracing type from the package exports to avoid direct file access
 export type Interaction = Tracing.Interaction
 
 local initializeScheduler = require(script.Parent.Scheduler)
@@ -17,7 +17,7 @@ local Scheduler = initializeScheduler(HostConfig)
 
 local exports = {}
 exports.tracing = {}
--- ROBLOX FIXME Luau: need to fix CLI-56768 to remove any casts
+-- FIXME Luau: need to fix CLI-56768 to remove any casts
 for key, value in Scheduler :: any do
 	exports[key] = value
 end

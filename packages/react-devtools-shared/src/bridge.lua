@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/bridge.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/bridge.js
 -- /*
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -30,7 +30,7 @@ type Message = { event: string, payload: any }
 
 type ElementAndRendererID = { id: number, rendererID: RendererID }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type HighlightElementInDOM = ElementAndRendererID & {
 	displayName: string?,
 	hideAfterTimeout: boolean,
@@ -38,23 +38,23 @@ type HighlightElementInDOM = ElementAndRendererID & {
 	scrollIntoView: boolean,
 }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type OverrideValue = ElementAndRendererID & {
 	path: Array<string | number>,
 	wasForwarded: boolean?,
 	value: any,
 }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type OverrideHookState = OverrideValue & { hookID: number }
 
--- ROBLOX deviation: 'props' | 'hooks' | 'state' | 'context';
+-- deviation: 'props' | 'hooks' | 'state' | 'context';
 type PathType = string
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type DeletePath = ElementAndRendererID & { type: PathType, hookID: number?, path: Array<string | number> }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type RenamePath = ElementAndRendererID & {
 	type: PathType,
 	hookID: number?,
@@ -62,7 +62,7 @@ type RenamePath = ElementAndRendererID & {
 	newPath: Array<string | number>,
 }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type OverrideValueAtPath = ElementAndRendererID & {
 	type: PathType,
 	hookID: number?,
@@ -70,29 +70,29 @@ type OverrideValueAtPath = ElementAndRendererID & {
 	value: any,
 }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type OverrideSuspense = ElementAndRendererID & { forceFallback: boolean }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type CopyElementPathParams = ElementAndRendererID & { path: Array<string | number> }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type ViewAttributeSourceParams = ElementAndRendererID & { path: Array<string | number> }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type InspectElementParams = ElementAndRendererID & { path: Array<string | number>? }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type StoreAsGlobalParams = ElementAndRendererID & { count: number, path: Array<string | number> }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type NativeStyleEditor_RenameAttributeParams = ElementAndRendererID & {
 	oldName: string,
 	newName: string,
 	value: string,
 }
 
--- ROBLOX deviation: Luau can't use ...type, use intersection instead
+-- deviation: Luau can't use ...type, use intersection instead
 type NativeStyleEditor_SetValueParams = ElementAndRendererID & { name: string, value: string }
 
 type UpdateConsolePatchSettingsParams = {
@@ -100,14 +100,14 @@ type UpdateConsolePatchSettingsParams = {
 	breakOnConsoleErrors: boolean,
 }
 
--- ROBLOX deviation: Luau can't define object types in a function type
+-- deviation: Luau can't define object types in a function type
 type IsSupported = { isSupported: boolean, validAttributes: Array<string> }
 
 type BackendEvents = {
 	extensionBackendInitialized: () -> (),
 	inspectedElement: (InspectedElementPayload) -> (),
 	isBackendStorageAPISupported: (boolean) -> (),
-	-- ROBLOX deviation: don't binary encode strings
+	-- deviation: don't binary encode strings
 	operations: (Array<number | string>) -> (),
 	ownersList: (OwnersList) -> (),
 	overrideComponentFilters: (Array<ComponentFilter>) -> (),
@@ -123,7 +123,7 @@ type BackendEvents = {
 
 	-- React Native style editor plug-in.
 	isNativeStyleEditorSupported: (IsSupported) -> (),
-	-- ROBLOX deviation: StyleAndLayoutPayload type not transliterated
+	-- deviation: StyleAndLayoutPayload type not transliterated
 	NativeStyleEditor_styleAndLayout: () -> (),
 }
 
@@ -176,15 +176,15 @@ type FrontendEvents = {
 	overrideState: (OverrideValue) -> (),
 }
 
--- ROBLOX deviation: Luau can't spread keys of a type as string
+-- deviation: Luau can't spread keys of a type as string
 type EventName = string -- $Keys<OutgoingEvents>
--- ROBLOX deviation: Luau can't express
+-- deviation: Luau can't express
 -- type $ElementType<T, K extends keyof T> = T[K];
 type ElementType<T, U> = any
 
 export type Bridge<
 	OutgoingEvents,
-	IncomingEvents -- ROBLOX deviation: Luau can't express	-- > extends EventEmitter<{|	--   ...IncomingEvents,	--   ...OutgoingEvents,	-- |}> {
+	IncomingEvents -- deviation: Luau can't express	-- > extends EventEmitter<{|	--   ...IncomingEvents,	--   ...OutgoingEvents,	-- |}> {
 > = EventEmitter<any> & {
 	_isShutdown: boolean,
 	_messageQueue: Array<any>,
@@ -205,7 +205,7 @@ type Bridge_Statics = {
 	new: (wall: Wall) -> Bridge<any, any>,
 }
 
--- ROBLOX deviation: not sure where TimeoutID comes from in upstream
+-- deviation: not sure where TimeoutID comes from in upstream
 type TimeoutID = any
 local Bridge: Bridge<any, any> & Bridge_Statics = setmetatable({}, { __index = EventEmitter }) :: any
 local BridgeMetatable = { __index = Bridge }
@@ -213,7 +213,7 @@ local BridgeMetatable = { __index = Bridge }
 function Bridge.new(wall: Wall)
 	local self = setmetatable(EventEmitter.new() :: any, BridgeMetatable)
 
-	-- ROBLOX deviation: initializers from class declaration
+	-- deviation: initializers from class declaration
 	self._isShutdown = false
 	self._messageQueue = {} :: Array<Array<any>>
 	self._timeoutID = nil
@@ -230,7 +230,7 @@ function Bridge.new(wall: Wall)
 	-- but cannot control which version of the frontend users use.
 	self:addListener("overrideValueAtPath", self.overrideValueAtPath)
 
-	-- ROBLOX deviation: just expose wall as an instance field, instead of read-only property
+	-- deviation: just expose wall as an instance field, instead of read-only property
 	self.wall = wall
 
 	return self
@@ -315,7 +315,7 @@ function Bridge:_flush(): ()
 		self._timeoutID = nil
 	end
 	if #self._messageQueue > 0 then
-		-- ROBLOX deviation: Use a while loop instead of for loop to handle new insertions during the loop
+		-- deviation: Use a while loop instead of for loop to handle new insertions during the loop
 		local i = 1
 		while i < #self._messageQueue do
 			self._wall.send(self._messageQueue[i], table.unpack(self._messageQueue[i + 1]))

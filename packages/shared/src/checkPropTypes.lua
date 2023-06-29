@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/55cb0b7eeb0e539d89858b8ed69beabf7fe2fb46/packages/shared/checkPropTypes.js
+-- upstream: https://github.com/facebook/react/blob/55cb0b7eeb0e539d89858b8ed69beabf7fe2fb46/packages/shared/checkPropTypes.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -14,7 +14,7 @@ local Error = LuauPolyfill.Error
 type Object = LuauPolyfill.Object
 type Function = (...any) -> ...any
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(script.Parent.console)
 
 local loggedTypeFailures = {}
@@ -28,7 +28,7 @@ local describeError = require(script.Parent["ErrorHandling.roblox"]).describeErr
 
 local ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame
 
--- ROBLOX FIXME Luau: doesn't see `if element` as nilable table, so we get TypeError: Type 'any?' could not be converted into '{| _owner: {| type: nil |}, _source: Source?, type: any |}'
+-- FIXME Luau: doesn't see `if element` as nilable table, so we get TypeError: Type 'any?' could not be converted into '{| _owner: {| type: nil |}, _source: Source?, type: any |}'
 local function setCurrentlyValidatingElement(element: any?)
 	if _G.__DEV__ then
 		if element then
@@ -38,7 +38,7 @@ local function setCurrentlyValidatingElement(element: any?)
 				element._source,
 				if owner ~= nil then owner.type else nil
 			);
-			-- ROBLOX FIXME Luau: Cannot call non-function ((string?) -> ()) | ((string?) -> ())
+			-- FIXME Luau: Cannot call non-function ((string?) -> ()) | ((string?) -> ())
 			(ReactDebugCurrentFrame.setExtraStackFrame :: any)(stack)
 		else
 			(ReactDebugCurrentFrame.setExtraStackFrame :: any)(nil)
@@ -47,11 +47,11 @@ local function setCurrentlyValidatingElement(element: any?)
 end
 
 local function checkPropTypes<P>(
-	-- ROBLOX deviation START: also checks validateProps if present
+	-- deviation START: also checks validateProps if present
 	propTypes: Object?,
 	validateProps: (P) -> (boolean, string?)?,
 	props: P,
-	-- ROBLOX deviation END
+	-- deviation END
 	location: string,
 	componentName: string?,
 	element: any?
@@ -61,12 +61,12 @@ local function checkPropTypes<P>(
 		-- $FlowFixMe This is okay but Flow doesn't know it.
 		-- local has = Function.call.bind(Object.prototype.hasOwnProperty)
 
-		-- ROBLOX deviation: warns if both propType and validateProps defined.
+		-- deviation: warns if both propType and validateProps defined.
 		if propTypes and validateProps then
 			console.warn("You've defined both propTypes and validateProps on " .. (componentName or "a component"))
 		end
 
-		-- ROBLOX deviation: also checks validateProps if present
+		-- deviation: also checks validateProps if present
 		if validateProps then
 			if typeof(validateProps) ~= "function" then
 				console.error(
@@ -86,17 +86,17 @@ local function checkPropTypes<P>(
 						componentName or "<UNKNOWN Component>",
 						tostring(failureReason)
 					)
-					-- ROBLOX deviation: In legacy Roact, prop validation
+					-- deviation: In legacy Roact, prop validation
 					-- failures throw. We replicate that behavior, even though
 					-- it differs from propTypes (which only warns)
-					-- ROBLOX FIXME: align with upstream behavior during React 18 Lua transition
+					-- FIXME: align with upstream behavior during React 18 Lua transition
 					error(message)
 				end
 			end
 		end
 
 		if propTypes then
-			-- ROBLOX deviation: since we can't constrain the generic, we assert so Luau knows propTypes is a table
+			-- deviation: since we can't constrain the generic, we assert so Luau knows propTypes is a table
 			assert(typeof(propTypes) == "table", "propTypes needs to be a table")
 			for typeSpecName, _ in propTypes do
 				-- deviation: since our loop won't hit metatable members, we don't
@@ -136,14 +136,14 @@ local function checkPropTypes<P>(
 					)
 				end, describeError)
 
-				-- ROBLOX deviation: FIXME: Can we expose something from JSPolyfill that
+				-- deviation: FIXME: Can we expose something from JSPolyfill that
 				-- will let us verify that this is specifically the Error object
 				-- defined there? if we check for result.message ~= nil, ReactNewContext.spec:1368 fails
 				local isErrorObject = typeof(result) == "table"
 				if result ~= nil and not isErrorObject then
 					setCurrentlyValidatingElement(element)
 					console.error(string.format(
-						-- ROBLOX deviation: s/null/nil
+						-- deviation: s/null/nil
 						"%s: type specification of %s"
 							.. " `%s` is invalid; the type checker "
 							.. "function must return `nil` or an `Error` but returned a %s. "
@@ -158,7 +158,7 @@ local function checkPropTypes<P>(
 					setCurrentlyValidatingElement(nil)
 				end
 
-				-- ROBLOX FIXME: Luau analyze doesn't understand isErrorObject's effect as a predicate meaning result ~= nil
+				-- FIXME: Luau analyze doesn't understand isErrorObject's effect as a predicate meaning result ~= nil
 				if isErrorObject and loggedTypeFailures[(result :: any).message] == nil then
 					-- Only monitor this failure once because there tends to be a lot of the
 					-- same error.

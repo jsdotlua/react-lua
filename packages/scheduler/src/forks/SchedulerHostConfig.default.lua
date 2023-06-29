@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/5474a83e258b497584bed9df95de1d554bc53f89/packages/scheduler/src/forks/SchedulerHostConfig.default.js
+-- upstream: https://github.com/facebook/react/blob/5474a83e258b497584bed9df95de1d554bc53f89/packages/scheduler/src/forks/SchedulerHostConfig.default.js
 --!strict
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
@@ -16,13 +16,13 @@ local console = Shared.console
 local errorToString = Shared.errorToString
 local describeError = Shared.describeError
 
--- ROBLOX deviation: getCurrentTime will always map to `tick` in Luau
+-- deviation: getCurrentTime will always map to `tick` in Luau
 local getCurrentTime = function()
 	-- Return a result in milliseconds
 	return os.clock() * 1000
 end
 
--- ROBLOX deviation: This module in React exports a different implementation if
+-- deviation: This module in React exports a different implementation if
 -- it detects certain APIs from the DOM interface. We instead attempt to
 -- approximate that behavior so that we can access features like dividing work
 -- according to frame time
@@ -42,7 +42,7 @@ local taskTimeoutID = Object.None
 local yieldInterval = 15
 local deadline = 0
 
--- ROBLOX deviation: Removed some logic around browser functionality that's not
+-- deviation: Removed some logic around browser functionality that's not
 -- present in the roblox engine
 local function shouldYieldToHost()
 	return getCurrentTime() >= deadline
@@ -86,12 +86,12 @@ local function performWorkUntilDeadline()
 				-- If there's more work, schedule the next message event at the end
 				-- of the preceding one.
 
-				-- ROBLOX deviation: Use task api instead of message channel;
+				-- deviation: Use task api instead of message channel;
 				-- depending on whether or not we still have time to perform
 				-- more work, either yield and defer till later this frame, or
 				-- delay work till next frame
 
-				-- ROBLOX FIXME: What's the proper combination of task.defer and
+				-- FIXME: What's the proper combination of task.defer and
 				-- task.delay that makes this optimal?
 				task.delay(0, performWorkUntilDeadline)
 			end
@@ -109,7 +109,7 @@ local function performWorkUntilDeadline()
 			-- error can be observed.
 			task.delay(0, performWorkUntilDeadline)
 
-			-- ROBLOX FIXME: the top-level Luau VM handler doesn't deal with
+			-- FIXME: the top-level Luau VM handler doesn't deal with
 			-- non-string errors, so massage it until VM support lands
 			error(errorToString(result :: any))
 		end
