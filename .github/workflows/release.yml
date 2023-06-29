@@ -18,6 +18,9 @@ jobs:
       - name: Install Aftman
         uses: ok-nick/setup-aftman@v0
 
+      - name: Install Just
+        uses: extractions/setup-just@v1
+
       - name: Authenticate Wally
         run: |
           cd packages/react
@@ -33,6 +36,9 @@ jobs:
 
       - name: Publish changed packages
         run: bash ./scripts/publish.sh ${{ steps.latest-release.outputs.tag_name }}
+
+      - name: Install dependencies for build
+        run: just install-packages
 
       - name: Build project
         run: rojo build --output ReactLua.rbxm

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed React build not including correct dependencies (#8)
+
 ## [17.0.1-rc.19] - 2023-04-07
 
 ### Added
