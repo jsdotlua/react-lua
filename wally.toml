@@ -1,0 +1,12 @@
+# This config exists so we can import the dependencies of all packages for analysis and release.
+# THIS PACKAGE IS NOT DIRECTLY PUBLISHED!
+
+[package]
+name = "jsdotlua/no-op"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+LuauPolyfill = "jsdotlua/luau-polyfill@1.2.3"
+Promise = "evaera/promise@4.0.0"
