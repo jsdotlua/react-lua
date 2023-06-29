@@ -11,8 +11,8 @@ install-packages:
 
     wally install
 
-    rojo sourcemap packages.project.json --output sourcemap.json
-    wally-package-types --sourcemap sourcemap.json Packages/
-
     mv Packages deps/
     mv temp/ packages/
+
+    rojo sourcemap default.project.json --output sourcemap.json
+    wally-package-types --sourcemap sourcemap.json deps/
