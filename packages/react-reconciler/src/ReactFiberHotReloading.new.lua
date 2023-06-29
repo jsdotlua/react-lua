@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/6edaf6f764f23043f0cd1c2da355b42f641afd8b/packages/react-reconciler/src/ReactFiberHotReloading.new.js
+-- upstream: https://github.com/facebook/react/blob/6edaf6f764f23043f0cd1c2da355b42f641afd8b/packages/react-reconciler/src/ReactFiberHotReloading.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -12,7 +12,7 @@
 local Packages = script.Parent.Parent
 
 local ReactElementType = require(Packages.Shared)
--- ROBLOX deviation: ReactElement is defined at the top level of Shared along
+-- deviation: ReactElement is defined at the top level of Shared along
 -- with the rest of the ReactTypes
 type ReactElement = ReactElementType.ReactElement<any, any>
 
@@ -70,7 +70,7 @@ type RefreshHandler = (any) -> Family?
 -- refinement in Luau works better
 local resolveFamily = nil
 -- $FlowFixMe Flow gets confused by a WeakSet feature check below.
--- ROBLOX deviation: Using table instead of WeakSet
+-- deviation: Using table instead of WeakSet
 local failedBoundaries: { [number]: Fiber } | nil = nil
 
 local exports = {}
@@ -123,7 +123,7 @@ local function resolveForwardRefForHotReloading(type: any): any
 					local syntheticType = {
 						["$$typeof"] = REACT_FORWARD_REF_TYPE,
 						render = currentRender,
-						-- ROBLOX deviation: Luau needs table initializers to be complete
+						-- deviation: Luau needs table initializers to be complete
 						displayName = nil,
 					}
 					if type.displayName ~= nil then
@@ -206,7 +206,7 @@ exports.isCompatibleFamilyForHotReloading = function(fiber: Fiber, element: Reac
 
 	-- 	-- Check if both types have a family and it's the same one.
 	-- 	if needsCompareFamilies)
-	-- 		-- Note: memo() and forwardRef() we'll compare outer rather than inner type.
+	-- 		-- NOTE: memo() and forwardRef() we'll compare outer rather than inner type.
 	-- 		-- This means both of them need to be registered to preserve state.
 	-- 		-- If we unwrapped and compared the inner types for wrappers instead,
 	-- 		-- then we would risk falsely saying two separate memo(Foo)
@@ -231,11 +231,11 @@ exports.markFailedErrorBoundaryForHotReloading = function(fiber: Fiber)
 		-- if typeof(WeakSet) ~= 'function' then
 		-- 	return
 		-- end
-		-- ROBLOX deviation: {} in place of WeakSet
+		-- deviation: {} in place of WeakSet
 		if failedBoundaries == nil then
 			failedBoundaries = {}
 		end
-		-- ROBLOX FIXME: remove :: once Luau understands nil check
+		-- FIXME: remove :: once Luau understands nil check
 		table.insert(failedBoundaries :: { [number]: Fiber }, fiber)
 	end
 end

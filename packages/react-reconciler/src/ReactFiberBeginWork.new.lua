@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/1faf9e3dd5d6492f3607d5c721055819e4106bc6/packages/react-reconciler/src/ReactFiberBeginWork.new.js
+-- upstream: https://github.com/facebook/react/blob/1faf9e3dd5d6492f3607d5c721055819e4106bc6/packages/react-reconciler/src/ReactFiberBeginWork.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -8,7 +8,7 @@
  *
  * @flow
 ]]
--- ROBLOX TODO remove this when CLI-38793 lands
+-- TODO remove this when CLI-38793 lands
 --!nolint LocalShadow
 -- FIXME (roblox): remove this when our unimplemented
 local function unimplemented(message: string)
@@ -23,7 +23,7 @@ local __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ = _G.__DISABLE_ALL_WARNING
 local __COMPAT_WARNINGS__ = _G.__COMPAT_WARNINGS__ :: boolean
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from Shared
+-- NOTE: use patched console from Shared
 local Shared = require(Packages.Shared)
 local console = Shared.console
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -167,7 +167,7 @@ local calculateChangedBits = ReactFiberNewContext.calculateChangedBits
 local prepareToReadContext = ReactFiberNewContext.prepareToReadContext
 local pushProvider = ReactFiberNewContext.pushProvider
 
--- ROBLOX deviation: Lazy init all methods from ReactFiberHooks
+-- deviation: Lazy init all methods from ReactFiberHooks
 local lazyRefs = {
 	renderWithHooksRef = nil :: any,
 	bailoutHooksRef = nil :: any,
@@ -181,14 +181,14 @@ local function shouldSuspend(fiber: Fiber): boolean
 	return lazyRefs.shouldSuspendRef(fiber)
 end
 
--- ROBLOX deviation: collective lazy init methods from ReactFiberHooks
+-- deviation: collective lazy init methods from ReactFiberHooks
 local function initReactFiberHooks()
 	local ReactFiberHooks = require(script.Parent["ReactFiberHooks.new"])
 	lazyRefs.renderWithHooksRef = ReactFiberHooks.renderWithHooks
 	lazyRefs.bailoutHooksRef = ReactFiberHooks.bailoutHooks
 end
 
--- ROBLOX deviation: Lazy init renderWithHooks from ReactFiberHooks
+-- deviation: Lazy init renderWithHooks from ReactFiberHooks
 local function renderWithHooks(...)
 	if not lazyRefs.renderWithHooksRef then
 		initReactFiberHooks()
@@ -196,7 +196,7 @@ local function renderWithHooks(...)
 	return lazyRefs.renderWithHooksRef(...)
 end
 
--- ROBLOX deviation: Lazy init bailoutHooks from ReactFiberHooks
+-- deviation: Lazy init bailoutHooks from ReactFiberHooks
 local function bailoutHooks(...)
 	if not lazyRefs.bailoutHooksRef then
 		initReactFiberHooks()
@@ -260,12 +260,12 @@ local ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner
 
 local exports: { [string]: any } = {}
 
--- ROBLOX deviation: Pre-declare functions
+-- deviation: Pre-declare functions
 local bailoutOnAlreadyFinishedWork, updateFunctionComponent
 
 local didReceiveUpdate: boolean = false
 
--- ROBLOX deviation: put didWarns in table to reduce number of local variables
+-- deviation: put didWarns in table to reduce number of local variables
 local DidWarn = {
 	didWarnAboutBadClass = {} :: { [string]: boolean },
 	didWarnAboutModulePatternComponent = {} :: { [string]: boolean },
@@ -346,7 +346,7 @@ local function updateForwardRef(
 		if workInProgress.type ~= workInProgress.elementType then
 			-- Lazy component props can't be validated in createElement
 			-- because they're only guaranteed to be resolved here.
-			-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+			-- deviation: adds support for legacy Roact's validateProps()
 			local innerPropTypes = Component.propTypes
 			local validateProps = Component.validateProps
 			if innerPropTypes or validateProps then
@@ -432,10 +432,10 @@ local function updateMemoComponent(
 			return updateSimpleMemoComponent(current, workInProgress, resolvedType, nextProps, updateLanes, renderLanes)
 		end
 		if __DEV__ or __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ then
-			-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+			-- deviation: adds support for legacy Roact's validateProps()
 			local innerPropTypes
 			local validateProps
-			-- ROBLOX deviation: avoid accessing propTypes on a function, Lua doesn't support fields on functions
+			-- deviation: avoid accessing propTypes on a function, Lua doesn't support fields on functions
 			if type(type_) == "table" then
 				innerPropTypes = type_.propTypes
 				validateProps = type_.validateProps
@@ -466,15 +466,15 @@ local function updateMemoComponent(
 		workInProgress.child = child
 		return child
 	end
-	-- ROBLOX TODO Deviation: remove redefinition + typecast when this lands: CLI-38793
-	-- ROBLOX the if clause above returns early if current is nil
+	-- TODO Deviation: remove redefinition + typecast when this lands: CLI-38793
+	-- NOTE: the if clause above returns early if current is nil
 	local current = current :: Fiber
 	if __DEV__ or __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ then
 		local type_ = Component.type
-		-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+		-- deviation: adds support for legacy Roact's validateProps()
 		local innerPropTypes
 		local validateProps
-		-- ROBLOX deviation: only check for propTypes on class components, Lua doesn't support fields on functions
+		-- deviation: only check for propTypes on class components, Lua doesn't support fields on functions
 		if type(type_) == "table" then
 			innerPropTypes = type_.propTypes
 			validateProps = type_.validateProps
@@ -546,13 +546,13 @@ function updateSimpleMemoComponent(
 					outerMemoType = nil
 				end
 				-- Inner propTypes will be validated in the function component path.
-				-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+				-- deviation: adds support for legacy Roact's validateProps()
 				local outerPropTypes
 				local validateProps
-				-- ROBLOX deviation: avoid accessing propTypes on a function, Lua doesn't support fields on functions
+				-- deviation: avoid accessing propTypes on a function, Lua doesn't support fields on functions
 				if outerMemoType ~= nil and type(outerMemoType) == "table" then
 					outerPropTypes = (outerMemoType :: any).propTypes
-					-- ROBLOX deviation: support legacy Roact's equivalent of propTypes
+					-- deviation: support legacy Roact's equivalent of propTypes
 					validateProps = (outerMemoType :: any).validateProps
 				end
 
@@ -569,11 +569,11 @@ function updateSimpleMemoComponent(
 		end
 	end
 	if current ~= nil then
-		-- ROBLOX TODO Deviation: remove redefinition + typecast when this lands: CLI-38793
+		-- TODO Deviation: remove redefinition + typecast when this lands: CLI-38793
 		-- This unfortunately breaks if current gets reassigned somewhere in this if clause
 		local current = current :: Fiber
 		local prevProps = current.memoizedProps
-		-- ROBLOX Deviation: replacing ternary operator
+		-- deviation: replacing ternary operator
 		local preventBailout = true
 		if __DEV__ then
 			preventBailout = workInProgress.type == current.type
@@ -617,7 +617,7 @@ local function updateOffscreenComponent(current: Fiber?, workInProgress: Fiber, 
 
 	local prevState: OffscreenState?
 	if current ~= nil then
-		-- ROBLOX FIXME: remove :: recast once Luau understands if-statement nil checks
+		-- FIXME: remove :: recast once Luau understands if-statement nil checks
 		prevState = (current :: Fiber).memoizedState
 	end
 
@@ -630,11 +630,11 @@ local function updateOffscreenComponent(current: Fiber?, workInProgress: Fiber, 
 			}
 			workInProgress.memoizedState = nextState
 			pushRenderLanes(workInProgress, renderLanes)
-		-- ROBLOX TODO: recast ReactFiberLane.OffscreenLane to type Lane
+		-- TODO: recast ReactFiberLane.OffscreenLane to type Lane
 		elseif not ReactFiberLane.includesSomeLane(renderLanes, ReactFiberLane.OffscreenLane) then
 			local nextBaseLanes
 			if prevState ~= nil then
-				-- ROBLOX FIXME: remove :: recast once Luau understands if-statement nil check
+				-- FIXME: remove :: recast once Luau understands if-statement nil check
 				local prevBaseLanes = (prevState :: OffscreenState).baseLanes
 				nextBaseLanes = ReactFiberLane.mergeLanes(prevBaseLanes, renderLanes)
 			else
@@ -669,7 +669,7 @@ local function updateOffscreenComponent(current: Fiber?, workInProgress: Fiber, 
 
 			-- deviation: ternary converted to if statement
 			if prevState ~= nil then
-				-- ROBLOX FIXME: remove :: recast once Luau understands if-statement nil check
+				-- FIXME: remove :: recast once Luau understands if-statement nil check
 				subtreeRenderLanes = (prevState :: OffscreenState).baseLanes
 			end
 
@@ -678,7 +678,7 @@ local function updateOffscreenComponent(current: Fiber?, workInProgress: Fiber, 
 	else
 		local subtreeRenderLanes
 		if prevState ~= nil then
-			-- ROBLOX FIXME: remove :: recast once Luau understands if-statement nil check
+			-- FIXME: remove :: recast once Luau understands if-statement nil check
 			subtreeRenderLanes = ReactFiberLane.mergeLanes((prevState :: OffscreenState).baseLanes, renderLanes)
 			-- Since we're not hidden anymore, reset the state
 			workInProgress.memoizedState = nil
@@ -695,7 +695,7 @@ local function updateOffscreenComponent(current: Fiber?, workInProgress: Fiber, 
 	return workInProgress.child
 end
 
--- Note: These happen to have identical begin phases, for now. We shouldn't hold
+-- NOTE: These happen to have identical begin phases, for now. We shouldn't hold
 -- ourselves to this constraint, though. If the behavior diverges, we should
 -- fork the function.
 local updateLegacyHiddenComponent = updateOffscreenComponent
@@ -736,14 +736,14 @@ end
 
 function updateFunctionComponent(current, workInProgress, Component, nextProps: any, renderLanes)
 	if __DEV__ or __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ then
-		-- ROBLOX deviation: function components can't have props in Lua
+		-- deviation: function components can't have props in Lua
 		if type(Component) ~= "function" and (workInProgress.type ~= workInProgress.elementType) then
 			-- Lazy component props can't be validated in createElement
 			-- because they're only guaranteed to be resolved here.
-			-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+			-- deviation: adds support for legacy Roact's validateProps()
 			local innerPropTypes
 			local validateProps
-			-- ROBLOX deviation: Roact won't support propTypes on functional components
+			-- deviation: Roact won't support propTypes on functional components
 			if type(Component) == "table" then
 				innerPropTypes = (Component :: any).propTypes
 				validateProps = (Component :: any).validateProps
@@ -878,7 +878,7 @@ end
 --   return workInProgress.child
 -- end
 
--- ROBLOX FIXME: type refinement
+-- FIXME: type refinement
 -- local function updateClassComponent(
 --   current: Fiber | nil,
 --   ...
@@ -894,7 +894,7 @@ local function updateClassComponent(
 		if workInProgress.type ~= workInProgress.elementType then
 			-- Lazy component props can't be validated in createElement
 			-- because they're only guaranteed to be resolved here.
-			-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+			-- deviation: adds support for legacy Roact's validateProps()
 			local innerPropTypes = Component.propTypes
 			local validateProps = Component.validateProps
 			if innerPropTypes or validateProps then
@@ -919,7 +919,7 @@ local function updateClassComponent(
 	else
 		hasContext = false
 	end
-	-- ROBLOX deviation: pass in function to break cyclic require dependency
+	-- deviation: pass in function to break cyclic require dependency
 	prepareToReadContext(workInProgress, renderLanes, exports.markWorkInProgressReceivedUpdate)
 
 	local instance = workInProgress.stateNode
@@ -1232,7 +1232,7 @@ local function mountLazyComponent(_current, workInProgress, elementType, updateL
 	elseif resolvedTag == MemoComponent then
 		if __DEV__ or __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ then
 			if workInProgress.type ~= workInProgress.elementType then
-				-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+				-- deviation: adds support for legacy Roact's validateProps()
 				local outerPropTypes = Component.propTypes
 				local validateProps = Component.validateProps
 				if outerPropTypes or validateProps then
@@ -1268,7 +1268,7 @@ local function mountLazyComponent(_current, workInProgress, elementType, updateL
 		--     )
 		--     return child
 		--   end
-		--   -- ROBLOX deviation: break
+		--   -- deviation: break
 	end
 	local hint = ""
 	if __DEV__ then
@@ -1288,7 +1288,7 @@ local function mountLazyComponent(_current, workInProgress, elementType, updateL
 		tostring(Component),
 		hint
 	)
-	-- ROBLOX deviation: add nil to satisfy Luau, which doesn't doesn't bubble up the unconditional error() inside invariant
+	-- deviation: add nil to satisfy Luau, which doesn't doesn't bubble up the unconditional error() inside invariant
 	return nil
 end
 
@@ -1381,9 +1381,9 @@ local function mountIndeterminateComponent(current, workInProgress, Component, r
 	end
 	-- React DevTools reads this flag.
 	workInProgress.flags = bit32.bor(workInProgress.flags, PerformedWork)
-	-- ROBLOX deviation START: cache type(value)
+	-- deviation START: cache type(value)
 	local typeofValue = type(value)
-	-- ROBLOX deviation END
+	-- deviation END
 
 	if __DEV__ then
 		-- Support for module components is deprecated and is removed behind a flag.
@@ -1399,7 +1399,7 @@ local function mountIndeterminateComponent(current, workInProgress, Component, r
 				console.error(
 					"The <%s /> component appears to be a function component that returns a class instance. "
 						.. "Change %s to a class that extends React.Component instead. ",
-					-- ROBLOX deviation: Don't print JS-specific remediation advice
+					-- deviation: Don't print JS-specific remediation advice
 					-- "If you can't use a class try assigning the prototype on the function as a workaround. " ..
 					-- "`%s.prototype = React.Component.prototype`. Don't use an arrow function since it " ..
 					-- "cannot be called with `new` by React.",
@@ -1427,7 +1427,7 @@ local function mountIndeterminateComponent(current, workInProgress, Component, r
 				console.error(
 					"The <%s /> component appears to be a function component that returns a class instance. "
 						.. "Change %s to a class that extends React.Component instead. "
-						-- ROBLOX deviation: Don't print JS-specific remediation advice
+						-- deviation: Don't print JS-specific remediation advice
 						-- "If you can't use a class try assigning the prototype on the function as a workaround. " ..
 						-- "`%s.prototype = React.Component.prototype`. Don't use an arrow function since it " ..
 						-- "cannot be called with `new` by React.",
@@ -1462,7 +1462,7 @@ local function mountIndeterminateComponent(current, workInProgress, Component, r
 
 		initializeUpdateQueue(workInProgress)
 
-		-- ROBLOX deviation: don't access field on function
+		-- deviation: don't access field on function
 		local getDerivedStateFromProps
 		if type(Component) ~= "function" then
 			getDerivedStateFromProps = (Component :: React_Component<any, any>).getDerivedStateFromProps
@@ -1509,7 +1509,7 @@ end
 
 function validateFunctionComponentInDev(workInProgress: Fiber, Component: any)
 	if __DEV__ then
-		-- ROBLOX deviation: Lua doesn't allow fields on functions, so this never happens
+		-- deviation: Lua doesn't allow fields on functions, so this never happens
 		-- if Component then
 		--   if Component.childContextTypes then
 		--     console.error(
@@ -1543,7 +1543,7 @@ function validateFunctionComponentInDev(workInProgress: Fiber, Component: any)
 
 		if
 			warnAboutDefaultPropsOnFunctionComponents
-			-- ROBLOX deviation: functions can't have fields in Lua
+			-- deviation: functions can't have fields in Lua
 			and type(Component) ~= "function"
 			and Component.defaultProps ~= nil
 		then
@@ -1552,7 +1552,7 @@ function validateFunctionComponentInDev(workInProgress: Fiber, Component: any)
 			if not DidWarn.didWarnAboutDefaultPropsOnFunctionComponent[componentName] then
 				console.error(
 					"%s: Support for defaultProps will be removed from function components "
-						-- ROBLOX deviation: Don't print JS-specific remediation advice
+						-- deviation: Don't print JS-specific remediation advice
 						.. "in a future major release.", -- Use JavaScript default parameters instead.',
 					componentName
 				)
@@ -1560,7 +1560,7 @@ function validateFunctionComponentInDev(workInProgress: Fiber, Component: any)
 			end
 		end
 
-		-- ROBLOX deviation: Lua functions can't have fields
+		-- deviation: Lua functions can't have fields
 		if
 			type(Component) ~= "function"
 			and Component.getDerivedStateFromProps ~= nil
@@ -1574,7 +1574,7 @@ function validateFunctionComponentInDev(workInProgress: Fiber, Component: any)
 			end
 		end
 
-		-- ROBLOX deviation: Lua functions can't have fields
+		-- deviation: Lua functions can't have fields
 		if
 			type(Component) ~= "function"
 			and Component.contextType ~= nil
@@ -1622,7 +1622,7 @@ local function shouldRemainOnFallback(
 		if suspenseState == nil then
 			-- Currently showing content. Don't hide it, even if ForceSuspenseFallack
 			-- is true. More precise name might be "ForceRemainSuspenseFallback".
-			-- Note: This is a factoring smell. Can't remain on a fallback if there's
+			-- NOTE: This is a factoring smell. Can't remain on a fallback if there's
 			-- no fallback to remain on.
 			return false
 		end
@@ -1637,7 +1637,7 @@ local function getRemainingWorkInPrimaryTree(current: Fiber, renderLanes)
 	return ReactFiberLane.removeLanes(current.childLanes, renderLanes)
 end
 
--- ROBLOX deviation: predeclare these methods to resolve method declaration ordering
+-- deviation: predeclare these methods to resolve method declaration ordering
 local updateSuspensePrimaryChildren
 local mountDehydratedSuspenseComponent
 local mountSuspensePrimaryChildren
@@ -1768,7 +1768,7 @@ local function updateSuspenseComponent(current, workInProgress, renderLanes)
 
 			-- Special path for hydration
 			if enableSuspenseServerRenderer then
-				-- ROBLOX FIXME: remove :: when Luau understands ~= nil
+				-- FIXME: remove :: when Luau understands ~= nil
 				local dehydrated = (prevState :: SuspenseState).dehydrated
 
 				if dehydrated ~= nil then
@@ -1821,11 +1821,11 @@ local function updateSuspenseComponent(current, workInProgress, renderLanes)
 				local primaryChildFragment: Fiber = workInProgress.child :: any
 				local prevOffscreenState: OffscreenState | nil = (current.child :: any).memoizedState
 
-				-- ROBLOX deviation: if/else in place of ternary
+				-- deviation: if/else in place of ternary
 				if prevOffscreenState == nil then
 					primaryChildFragment.memoizedState = mountSuspenseOffscreenState(renderLanes)
 				else
-					-- ROBLOX FIXME: remove :: when Luau understands ~= nil
+					-- FIXME: remove :: when Luau understands ~= nil
 					primaryChildFragment.memoizedState =
 						updateSuspenseOffscreenState(prevOffscreenState :: OffscreenState, renderLanes)
 				end
@@ -1856,11 +1856,11 @@ local function updateSuspenseComponent(current, workInProgress, renderLanes)
 				local primaryChildFragment: Fiber = workInProgress.child :: any
 				local prevOffscreenState: OffscreenState | nil = (current.child :: any).memoizedState
 
-				-- ROBLOX deviation: if/else in place of ternary
+				-- deviation: if/else in place of ternary
 				if prevOffscreenState == nil then
 					primaryChildFragment.memoizedState = mountSuspenseOffscreenState(renderLanes)
 				else
-					-- ROBLOX FIXME: remove :: once Luau understands nil check
+					-- FIXME: remove :: once Luau understands nil check
 					primaryChildFragment.memoizedState =
 						updateSuspenseOffscreenState(prevOffscreenState :: OffscreenState, renderLanes)
 				end
@@ -2208,7 +2208,7 @@ function updateDehydratedSuspenseComponent(
 		workInProgress.child = current.child
 
 		-- Register a callback to retry this boundary once the server has sent the result.
-		-- ROBLOX deviation: wrapper function in place of bind
+		-- deviation: wrapper function in place of bind
 		local retry = function()
 			return retryDehydratedSuspenseBoundary(current)
 		end
@@ -2654,7 +2654,7 @@ local function updateContextProvider(current: Fiber | nil, workInProgress: Fiber
 				)
 			end
 		end
-		-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+		-- deviation: adds support for legacy Roact's validateProps()
 		local providerPropTypes = workInProgress.type.propTypes
 		local validateProps = workInProgress.type.validateProps
 
@@ -2685,7 +2685,7 @@ local function updateContextProvider(current: Fiber | nil, workInProgress: Fiber
 	return workInProgress.child
 end
 
--- ROBLOX deviation: combine two warning flags to dodge the registers limit
+-- deviation: combine two warning flags to dodge the registers limit
 local hasWarnedAbout = {
 	usingContextAsConsumer = false,
 	usingLegacyConsumer = false,
@@ -2720,7 +2720,7 @@ function updateContextConsumer(current: Fiber | nil, workInProgress: Fiber, rend
 	end
 	local newProps = workInProgress.pendingProps
 
-	-- ROBLOX deviation: compatibility for old Roact's context consumer API
+	-- deviation: compatibility for old Roact's context consumer API
 	local render
 	if newProps.render then
 		if __DEV__ and __COMPAT_WARNINGS__ then
@@ -2771,7 +2771,7 @@ function updateContextConsumer(current: Fiber | nil, workInProgress: Fiber, rend
 	return workInProgress.child
 end
 
--- ROBLOX TODO: fundamental component is removed in React 18, clean up all traces when we upgrade
+-- TODO: fundamental component is removed in React 18, clean up all traces when we upgrade
 -- function updateFundamentalComponent(current, workInProgress, renderLanes)
 --   local fundamentalImpl = workInProgress.type.impl
 --   if fundamentalImpl.reconcileChildren == false then
@@ -2784,7 +2784,7 @@ end
 --   return workInProgress.child
 -- end
 
--- ROBLOX TODO: scope component is disabled in our FeatureFlags, uncomment when we enable it
+-- TODO: scope component is disabled in our FeatureFlags, uncomment when we enable it
 -- function updateScopeComponent(current, workInProgress, renderLanes)
 --   local nextProps = workInProgress.pendingProps
 --   local nextChildren = nextProps.children
@@ -2830,7 +2830,7 @@ function remountFiber(current: Fiber, oldWorkInProgress: Fiber, newWorkInProgres
 		if returnFiber == nil then
 			error("Cannot swap the root fiber.")
 		end
-		-- ROBLOX FIXME Luau: remove this assert when Luau type states understands the above guard
+		-- FIXME Luau: remove this assert when Luau type states understands the above guard
 		assert(returnFiber ~= nil, "returnFiber was nil in remountFiber")
 
 		-- Disconnect from the old current.
@@ -2852,7 +2852,7 @@ function remountFiber(current: Fiber, oldWorkInProgress: Fiber, newWorkInProgres
 			if prevSibling == nil then
 				error("Expected parent to have a child.")
 			end
-			-- ROBLOX FIXME Luau: remove this assert when Luau type states understands the above guard
+			-- FIXME Luau: remove this assert when Luau type states understands the above guard
 			assert(prevSibling ~= nil, "prevSibling was nil in remountFiber")
 
 			while prevSibling.sibling ~= oldWorkInProgress do
@@ -2897,7 +2897,7 @@ local function beginWork(current: any, workInProgress: Fiber, renderLanes: Lanes
 				workInProgress,
 				createFiberFromTypeAndProps(
 					workInProgress.type,
-					-- ROBLOX FIXME: we widen this to be number|string for Roact compatibility
+					-- FIXME: we widen this to be number|string for Roact compatibility
 					workInProgress.key :: string?,
 					workInProgress.pendingProps,
 					workInProgress._debugOwner or nil,
@@ -3138,10 +3138,10 @@ local function beginWork(current: any, workInProgress: Fiber, renderLanes: Lanes
 		local resolvedProps = resolveDefaultProps(type_, unresolvedProps)
 		if __DEV__ or __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ then
 			if workInProgress.type ~= workInProgress.elementType then
-				-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+				-- deviation: adds support for legacy Roact's validateProps()
 				local outerPropTypes
 				local validateProps
-				-- ROBLOX deviation: only get propTypes from class components, Lua doesn't support fields on functions
+				-- deviation: only get propTypes from class components, Lua doesn't support fields on functions
 				if type(type_) == "table" then
 					outerPropTypes = type_.propTypes
 					validateProps = type_.validateProps

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/constants.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/constants.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -48,7 +48,7 @@ exports.UNSUPPORTED_VERSION_URL =
 local COMFORTABLE_LINE_HEIGHT
 local COMPACT_LINE_HEIGHT
 
--- ROBLOX deviation: we won't use the CSS, and don't have a bundler, so always use the 'fallback'
+-- deviation: we won't use the CSS, and don't have a bundler, so always use the 'fallback'
 -- We can't use the Webpack loader syntax in the context of Jest,
 -- so tests need some reasonably meaningful fallback value.
 COMFORTABLE_LINE_HEIGHT = 15

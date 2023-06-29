@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/607148673b3156d051d1fed17cd49e83698dce54/packages/react/src/ReactSharedInternals.js
+-- upstream: https://github.com/facebook/react/blob/607148673b3156d051d1fed17cd49e83698dce54/packages/react/src/ReactSharedInternals.js
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
 *
@@ -43,8 +43,8 @@ local ReactSharedInternals = {
 	ReactCurrentBatchConfig = ReactCurrentBatchConfig,
 	ReactCurrentOwner = ReactCurrentOwner,
 	IsSomeRendererActing = IsSomeRendererActing,
-	-- ROBLOX deviation: Luau type checking requires us to have a consistent export shape regardless of __DEV__
-	-- ROBLOX TODO: use if-expressions when all clients are on 503+
+	-- deviation: Luau type checking requires us to have a consistent export shape regardless of __DEV__
+	-- TODO: use if-expressions when all clients are on 503+
 	ReactDebugCurrentFrame = if _G.__DEV__
 		then ReactDebugCurrentFrame
 		else {

@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-is/src/ReactIs.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-is/src/ReactIs.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -9,19 +9,19 @@
  * @flow
  ]]
 local Packages = script.Parent
--- ROBLOX deviation START: not used
+-- deviation START: not used
 -- local LuauPolyfill = require(Packages.LuauPolyfill)
 -- local Boolean = LuauPolyfill.Boolean
--- ROBLOX deviation END
--- ROBLOX deviation START: use patched console from shared
+-- deviation END
+-- deviation START: use patched console from shared
 -- local console = LuauPolyfill.console
 local console = require(Packages.Shared).console
--- ROBLOX deviation END
+-- deviation END
 local exports = {}
--- ROBLOX deviation START: fix import
+-- deviation START: fix import
 -- local sharedReactSymbolsModule = require(Packages.shared.ReactSymbols)
 local sharedReactSymbolsModule = require(Packages.Shared).ReactSymbols
--- ROBLOX deviation END
+-- deviation END
 local REACT_CONTEXT_TYPE = sharedReactSymbolsModule.REACT_CONTEXT_TYPE
 local REACT_ELEMENT_TYPE = sharedReactSymbolsModule.REACT_ELEMENT_TYPE
 local REACT_FORWARD_REF_TYPE = sharedReactSymbolsModule.REACT_FORWARD_REF_TYPE
@@ -34,21 +34,21 @@ local REACT_PROVIDER_TYPE = sharedReactSymbolsModule.REACT_PROVIDER_TYPE
 local REACT_STRICT_MODE_TYPE = sharedReactSymbolsModule.REACT_STRICT_MODE_TYPE
 local REACT_SUSPENSE_TYPE = sharedReactSymbolsModule.REACT_SUSPENSE_TYPE
 local REACT_SUSPENSE_LIST_TYPE = sharedReactSymbolsModule.REACT_SUSPENSE_LIST_TYPE
--- ROBLOX deviation START: fix import
+-- deviation START: fix import
 -- local isValidElementType = require(Packages.shared.isValidElementType).default
 local isValidElementType = require(Packages.Shared).isValidElementType
--- ROBLOX deviation END
--- ROBLOX deviation START: additional imports
+-- deviation END
+-- deviation START: additional imports
 local REACT_BINDING_TYPE = sharedReactSymbolsModule.REACT_BINDING_TYPE
--- ROBLOX deviation END
+-- deviation END
 local function typeOf(object: any)
 	if typeof(object) == "table" and object ~= nil then
-		local __typeof --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]] =
+		local __typeof --[[ CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]] =
 			object["$$typeof"]
-		-- ROBLOX deviation START: simplified switch statement conversion, adds Binding type check
-		-- repeat --[[ ROBLOX comment: switch statement conversion ]]
+		-- deviation START: simplified switch statement conversion, adds Binding type check
+		-- repeat --[[ COMMENT: switch statement conversion ]]
 		-- 	local entered_, break_ = false, false
-		-- 	local condition_ = __typeof --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]
+		-- 	local condition_ = __typeof --[[ CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]
 		-- 	for _, v in ipairs({ REACT_ELEMENT_TYPE, REACT_PORTAL_TYPE }) do
 		-- 		if condition_ == v then
 		-- 			if v == REACT_ELEMENT_TYPE then
@@ -64,12 +64,12 @@ local function typeOf(object: any)
 		-- 				then
 		-- 					return type_
 		-- 				else
-		-- 					local __typeofType --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeofType ]] = if Boolean.toJSBoolean(
+		-- 					local __typeofType --[[ CHECK: replaced unhandled characters in identifier. Original identifier: $$typeofType ]] = if Boolean.toJSBoolean(
 		-- 							type_
 		-- 						)
 		-- 						then type_["$$typeof"]
 		-- 						else type_
-		-- 					local condition_ = __typeofType --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeofType ]]
+		-- 					local condition_ = __typeofType --[[ CHECK: replaced unhandled characters in identifier. Original identifier: $$typeofType ]]
 		-- 					if
 		-- 						condition_ == REACT_CONTEXT_TYPE
 		-- 						or condition_ == REACT_FORWARD_REF_TYPE
@@ -77,15 +77,15 @@ local function typeOf(object: any)
 		-- 						or condition_ == REACT_MEMO_TYPE
 		-- 						or condition_ == REACT_PROVIDER_TYPE
 		-- 					then
-		-- 						return __typeofType --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeofType ]]
+		-- 						return __typeofType --[[ CHECK: replaced unhandled characters in identifier. Original identifier: $$typeofType ]]
 		-- 					else
-		-- 						return __typeof --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]
+		-- 						return __typeof --[[ CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]
 		-- 					end
 		-- 				end
 		-- 			end
 		-- 			if v == REACT_PORTAL_TYPE or entered_ then
 		-- 				entered_ = true
-		-- 				return __typeof --[[ ROBLOX CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]
+		-- 				return __typeof --[[ CHECK: replaced unhandled characters in identifier. Original identifier: $$typeof ]]
 		-- 			end
 		-- 		end
 		-- 	end
@@ -102,7 +102,7 @@ local function typeOf(object: any)
 			then
 				return __type
 			else
-				-- ROBLOX note: We need to check that __type is a table before we
+				-- NOTE: We need to check that __type is a table before we
 				-- index into it, or Luau will throw errors
 				local __typeofType = __type and typeof(__type) == "table" and __type["$$typeof"]
 
@@ -120,12 +120,12 @@ local function typeOf(object: any)
 			end
 		elseif
 			__typeof == REACT_PORTAL_TYPE
-			-- ROBLOX note: Bindings are a feature migrated from Roact
+			-- NOTE: Bindings are a feature migrated from Roact
 			or __typeof == REACT_BINDING_TYPE
 		then
 			return __typeof
 		end
-		-- ROBLOX deviation END
+		-- deviation END
 	end
 	return nil
 end
@@ -152,19 +152,19 @@ local StrictMode = REACT_STRICT_MODE_TYPE
 exports.StrictMode = StrictMode
 local Suspense = REACT_SUSPENSE_TYPE
 exports.Suspense = Suspense
--- ROBLOX deviation START: export Roblox Only type
+-- deviation START: export Roblox Only type
 exports.Binding = sharedReactSymbolsModule.REACT_BINDING_TYPE
--- ROBLOX deviation END
+-- deviation END
 exports.isValidElementType = isValidElementType
 local hasWarnedAboutDeprecatedIsAsyncMode = false
 local hasWarnedAboutDeprecatedIsConcurrentMode = false -- AsyncMode should be deprecated
 local function isAsyncMode(object: any)
-	-- ROBLOX deviation START: remove toJSBoolean, use _G.__DEV__
+	-- deviation START: remove toJSBoolean, use _G.__DEV__
 	-- if Boolean.toJSBoolean(__DEV__) then
 	-- 	if not Boolean.toJSBoolean(hasWarnedAboutDeprecatedIsAsyncMode) then
 	if _G.__DEV__ then
 		if not hasWarnedAboutDeprecatedIsAsyncMode then
-			-- ROBLOX deviation END
+			-- deviation END
 			hasWarnedAboutDeprecatedIsAsyncMode = true -- Using console['warn'] to evade Babel and ESLint
 			console["warn"](
 				"The ReactIs.isAsyncMode() alias has been deprecated, " .. "and will be removed in React 18+."
@@ -175,12 +175,12 @@ local function isAsyncMode(object: any)
 end
 exports.isAsyncMode = isAsyncMode
 local function isConcurrentMode(object: any)
-	-- ROBLOX deviation START: remove toJSBoolean, use _G.__DEV__
+	-- deviation START: remove toJSBoolean, use _G.__DEV__
 	-- if Boolean.toJSBoolean(__DEV__) then
 	-- 	if not Boolean.toJSBoolean(hasWarnedAboutDeprecatedIsConcurrentMode) then
 	if _G.__DEV__ then
 		if not hasWarnedAboutDeprecatedIsConcurrentMode then
-			-- ROBLOX deviation END
+			-- deviation END
 			hasWarnedAboutDeprecatedIsConcurrentMode = true -- Using console['warn'] to evade Babel and ESLint
 			console["warn"](
 				"The ReactIs.isConcurrentMode() alias has been deprecated, " .. "and will be removed in React 18+."
@@ -234,9 +234,9 @@ local function isSuspense(object: any)
 	return typeOf(object) == REACT_SUSPENSE_TYPE
 end
 exports.isSuspense = isSuspense
--- ROBLOX deviation START: Bindings are a feature migrated from Roact
+-- deviation START: Bindings are a feature migrated from Roact
 exports.isBinding = function(object: any)
 	return typeOf(object) == REACT_BINDING_TYPE
 end
--- ROBLOX deviation END
+-- deviation END
 return exports

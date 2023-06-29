@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/c63741fb3daef6c1e8746cbe7d7b07ecb281a9fd/packages/react-reconciler/src/ReactFiberClassComponent.new.js
+-- upstream: https://github.com/facebook/react/blob/c63741fb3daef6c1e8746cbe7d7b07ecb281a9fd/packages/react-reconciler/src/ReactFiberClassComponent.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -14,7 +14,7 @@ local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
 type Fiber = ReactInternalTypes.Fiber
@@ -98,13 +98,13 @@ local markForceUpdateScheduled = SchedulingProfiler.markForceUpdateScheduled
 local markStateUpdateScheduled = SchedulingProfiler.markStateUpdateScheduled
 
 local fakeInternalInstance = {}
--- ROBLOX TODO: If this is being localized, it might be for a hot path; that's
+-- TODO: If this is being localized, it might be for a hot path; that's
 -- concerning, since our version of `isArray` is much more complex
 -- local isArray = Array.isArray
 
 -- React.Component uses a shared frozen object by default.
 -- We'll use it to determine whether we need to initialize legacy refs.
--- ROBLOX deviation: Uses __refs instead of refs to avoid conflicts
+-- deviation: Uses __refs instead of refs to avoid conflicts
 -- local emptyRefsObject = React.Component:extend("").refs
 local emptyRefsObject = React.Component:extend("").__refs
 
@@ -147,7 +147,7 @@ if __DEV__ then
 	end
 
 	function warnOnUndefinedDerivedState(type_, partialState)
-		-- ROBLOX deviation: `nil` is a valid return for getDerivedStateFromProps, but
+		-- deviation: `nil` is a valid return for getDerivedStateFromProps, but
 		-- `undefined` is not possible for us to return; we could try to detect
 		-- returning zero values, but that's likely not possible without tracking it
 		-- differently at the original callsite (e.g. the value we save to
@@ -166,7 +166,7 @@ if __DEV__ then
 		-- end
 	end
 
-	--   -- ROBLOX FIXME: I'm not sure this applies, need to revisit it
+	--   -- FIXME: I'm not sure this applies, need to revisit it
 	--   -- -- This is so gross but it's at least non-critical and can be removed if
 	--   -- -- it causes problems. This is meant to give a nicer error message for
 	--   -- -- ReactDOM15.unstable_renderSubtreeIntoContainer(reactDOM16Component,
@@ -375,7 +375,7 @@ function checkShouldComponentUpdate(workInProgress, ctor, oldProps, newProps, ol
 		return shouldUpdate
 	end
 
-	-- ROBLOX deviation: for us, the isPureReactComponent flag will be visible as a
+	-- deviation: for us, the isPureReactComponent flag will be visible as a
 	-- direct member of the 'ctor', which in reality is the component definition
 	if type(ctor) == "table" and ctor.isPureReactComponent then
 		return (not shallowEqual(oldProps, newProps) or not shallowEqual(oldState, newState))
@@ -391,7 +391,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 		local renderPresent = instance.render
 
 		if not renderPresent then
-			-- ROBLOX deviation: for us, the render function will be visible as a direct
+			-- deviation: for us, the render function will be visible as a direct
 			-- member of the 'ctor', which in reality is the component definition
 			if type(ctor.render) == "function" then
 				console.error(
@@ -424,7 +424,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 				name
 			)
 		end
-		-- ROBLOX TODO? the original check causes false positives, this adjustment should live up to the intention
+		-- TODO? the original check causes false positives, this adjustment should live up to the intention
 		if instance.propTypes and not ctor.propTypes then
 			console.error(
 				"propTypes was defined as an instance property on %s. Use a static "
@@ -432,7 +432,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 				name
 			)
 		end
-		-- ROBLOX TODO? the original check causes false positives, this adjustment should live up to the intention
+		-- TODO? the original check causes false positives, this adjustment should live up to the intention
 		if instance.contextType and not ctor.contextType then
 			console.error(
 				"contextType was defined as an instance property on %s. Use a static "
@@ -457,7 +457,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 				)
 			end
 		else
-			-- ROBLOX TODO? the original check causes false positives, this adjustment should live up to the intention
+			-- TODO? the original check causes false positives, this adjustment should live up to the intention
 			if instance.contextTypes and not ctor.contextTypes then
 				console.error(
 					"contextTypes was defined as an instance property on %s. Use a static "
@@ -466,7 +466,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 				)
 			end
 
-			-- ROBLOX deviation: don't access fields on a function
+			-- deviation: don't access fields on a function
 			if
 				type(ctor) == "table"
 				and ctor.contextType
@@ -491,7 +491,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 				name
 			)
 		end
-		-- ROBLOX deviation: don't access fields on a function
+		-- deviation: don't access fields on a function
 		if type(ctor) == "table" and ctor.isPureReactComponent and instance.shouldComponentUpdate ~= nil then
 			console.error(
 				"%s has a method called shouldComponentUpdate(). "
@@ -562,7 +562,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 			)
 		end
 
-		-- ROBLOX TODO: get function arity to see if it takes >0 arguments. if it takes 1, assume it's self, and warn
+		-- TODO: get function arity to see if it takes >0 arguments. if it takes 1, assume it's self, and warn
 		-- if type(instance.getDerivedStateFromProps) == "function" then
 		--   console.error(
 		--     "%s: getDerivedStateFromProps() is defined as an instance method " ..
@@ -591,7 +591,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 		if state ~= nil and type(state) ~= "table" then
 			console.error("%s.state: must be set to an object or nil", name)
 		end
-		-- ROBLOX deviation: don't access fields on a function
+		-- deviation: don't access fields on a function
 		if
 			type(ctor) == "table"
 			and type(instance.getChildContext) == "function"
@@ -606,7 +606,7 @@ local function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 end
 
 local function adoptClassInstance(workInProgress: Fiber, instance: any)
-	-- ROBLOX performance? it looks like this lazy init is a perf problem in tab switching hot path
+	-- performance? it looks like this lazy init is a perf problem in tab switching hot path
 	instance.__updater = getClassComponentUpdater()
 	workInProgress.stateNode = instance
 	-- The instance needs access to the fiber so that it can schedule updates
@@ -625,7 +625,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 	if __DEV__ then
 		-- deviation: `ctor` is actually a table, in our case; use normal indexing
 		if ctor["contextType"] ~= nil then
-			-- ROBLOX TODO: Double-check this boolean for accuracy
+			-- TODO: Double-check this boolean for accuracy
 			local isValid =
 				-- Allow nil for conditional declaration
 				contextType == nil or (contextType["$$typeof"] == REACT_CONTEXT_TYPE and contextType._context == nil) -- Not a <Context.Consumer>
@@ -636,7 +636,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 				local addendum = ""
 				if contextType == nil then
 					addendum =
-						-- ROBLOX deviation: s/undefined/nil
+						-- deviation: s/undefined/nil
 						" However, it is set to nil. " .. "This can be caused by a typo or by mixing up named and default imports. " .. "This can also happen due to a circular dependency, so " .. "try moving the createContext() call to a separate file."
 				elseif type(contextType) ~= "table" then
 					addendum = " However, it is set to a " .. type(contextType) .. "."
@@ -662,7 +662,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 		end
 	end
 
-	-- ROBLOX performance: check for nil first to avoid typeof when possible
+	-- performance: check for nil first to avoid typeof when possible
 	if contextType ~= nil and type(contextType) == "table" then
 		context = readContext(contextType)
 	elseif not disableLegacyContext then
@@ -701,13 +701,13 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 	adoptClassInstance(workInProgress, instance)
 
 	if __DEV__ then
-		-- ROBLOX deviation: Instead of checking if state is nil, we check if it is our
+		-- deviation: Instead of checking if state is nil, we check if it is our
 		-- UninitializedState singleton.
 		if type(ctor.getDerivedStateFromProps) == "function" and state == UninitializedState then
 			local componentName = getComponentName(ctor) or "Component"
 			if not didWarnAboutUninitializedState[componentName] then
 				didWarnAboutUninitializedState[componentName] = true
-				-- ROBLOX deviation: message adjusted for accuracy with Lua "class" components
+				-- deviation: message adjusted for accuracy with Lua "class" components
 				console.error(
 					"`%s` uses `getDerivedStateFromProps` but its initial state has not been initialized. "
 						.. "This is not recommended. Instead, define the initial state by "
@@ -732,7 +732,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 			local foundWillReceivePropsName = nil
 			local foundWillUpdateName = nil
 			if
-				-- ROBLOX FIXME: This won't work! Lua functions can't have properties
+				-- FIXME: This won't work! Lua functions can't have properties
 				type(instance.componentWillMount) == "function" -- and
 				-- instance.componentWillMount.__suppressDeprecationWarning ~= true
 			then
@@ -741,7 +741,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 				foundWillMountName = "UNSAFE_componentWillMount"
 			end
 			if
-				-- ROBLOX FIXME: This won't work! Lua functions can't have properties
+				-- FIXME: This won't work! Lua functions can't have properties
 				type(instance.componentWillReceiveProps) == "function" -- and
 				-- instance.componentWillReceiveProps.__suppressDeprecationWarning ~= true
 			then
@@ -750,7 +750,7 @@ local function constructClassInstance(workInProgress: Fiber, ctor: any, props: a
 				foundWillReceivePropsName = "UNSAFE_componentWillReceiveProps"
 			end
 			if
-				-- ROBLOX FIXME: This won't work! Lua functions can't have properties
+				-- FIXME: This won't work! Lua functions can't have properties
 				type(instance.componentWillUpdate) == "function" -- and
 				-- instance.componentWillUpdate.__suppressDeprecationWarning ~= true
 			then
@@ -822,7 +822,7 @@ local function callComponentWillMount(workInProgress, instance)
 		-- deviation: Call with ":" so that the method receives self
 		instance:componentWillMount()
 	end
-	-- ROBLOX TODO: Should we really run both of these?
+	-- TODO: Should we really run both of these?
 	if instance.UNSAFE_componentWillMount ~= nil and type(instance.UNSAFE_componentWillMount) == "function" then
 		-- deviation: Call with ":" so that the method receives self
 		instance:UNSAFE_componentWillMount()
@@ -881,18 +881,18 @@ local function mountClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 	local instance = workInProgress.stateNode
 	instance.props = newProps
 	instance.state = workInProgress.memoizedState
-	-- ROBLOX deviation: Uses __refs instead of refs to avoid conflicts
+	-- deviation: Uses __refs instead of refs to avoid conflicts
 	-- instance.refs = emptyRefsObject
 	instance.__refs = emptyRefsObject
 
 	initializeUpdateQueue(workInProgress)
 
-	-- ROBLOX deviation: don't access field on a function
+	-- deviation: don't access field on a function
 	local contextType
 	if type(ctor) == "table" then
 		contextType = ctor.contextType
 	end
-	-- ROBLOX deviation: nil check first so we don't call typeof() unnecessarily
+	-- deviation: nil check first so we don't call typeof() unnecessarily
 	if contextType ~= nil and type(contextType) == "table" then
 		instance.context = readContext(contextType)
 	elseif disableLegacyContext then
@@ -928,7 +928,7 @@ local function mountClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 	processUpdateQueue(workInProgress, newProps, instance, renderLanes)
 	instance.state = workInProgress.memoizedState
 
-	-- ROBLOX deviation START: don't access field on a function, cache typeofCtor
+	-- deviation START: don't access field on a function, cache typeofCtor
 	local typeofCtor = type(ctor)
 	local getDerivedStateFromProps
 	if type(ctor) == "table" then
@@ -941,7 +941,7 @@ local function mountClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 
 	-- In order to support react-lifecycles-compat polyfilled components,
 	-- Unsafe lifecycles should not be invoked for components using the new APIs.
-	-- ROBLOX deviation: don't access fields on a function
+	-- deviation: don't access fields on a function
 	if
 		typeofCtor == "table"
 		and type(ctor.getDerivedStateFromProps) ~= "function"
@@ -974,7 +974,7 @@ function resumeMountClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 	local contextType = ctor.contextType
 	local nextContext = emptyContextObject
 
-	-- ROBLOX performance: check for nil first to avoid typeof when possible
+	-- performance: check for nil first to avoid typeof when possible
 	if contextType ~= nil and type(contextType) == "table" then
 		nextContext = readContext(contextType)
 	elseif not disableLegacyContext then
@@ -986,7 +986,7 @@ function resumeMountClassInstance(workInProgress: Fiber, ctor: any, newProps: an
 	local hasNewLifecycles = type(getDerivedStateFromProps) == "function"
 		or type(instance.getSnapshotBeforeUpdate) == "function"
 
-	-- Note: During these life-cycles, instance.props/instance.state are what
+	-- NOTE: During these life-cycles, instance.props/instance.state are what
 	-- ever the previously attempted to render - not the "current". However,
 	-- during componentDidUpdate we pass the "current" props.
 
@@ -1109,7 +1109,7 @@ local function updateClassInstance(
 	local oldContext = instance.context
 	local contextType
 	local getDerivedStateFromProps
-	-- ROBLOX deviation: don't access fields on a function
+	-- deviation: don't access fields on a function
 	if type(ctor) == "table" then
 		contextType = ctor.contextType
 		getDerivedStateFromProps = ctor.getDerivedStateFromProps
@@ -1125,7 +1125,7 @@ local function updateClassInstance(
 	local hasNewLifecycles = (getDerivedStateFromProps ~= nil and type(getDerivedStateFromProps) == "function")
 		or (instance.getSnapshotBeforeUpdate ~= nil and type(instance.getSnapshotBeforeUpdate) == "function")
 
-	-- Note: During these life-cycles, instance.props/instance.state are what
+	-- NOTE: During these life-cycles, instance.props/instance.state are what
 	-- ever the previously attempted to render - not the "current". However,
 	-- during componentDidUpdate we pass the "current" props.
 

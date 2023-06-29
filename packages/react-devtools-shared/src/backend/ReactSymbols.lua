@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/ReactSymbols.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/ReactSymbols.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *

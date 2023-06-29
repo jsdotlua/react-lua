@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/55cb0b7eeb0e539d89858b8ed69beabf7fe2fb46/packages/shared/ExecutionEnvironment.js
+-- upstream: https://github.com/facebook/react/blob/55cb0b7eeb0e539d89858b8ed69beabf7fe2fb46/packages/shared/ExecutionEnvironment.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -11,9 +11,9 @@
 local exports = {}
 
 exports.canUseDOM = function()
-	-- ROBLOX deviation START
+	-- deviation START
 	return false
-	-- ROBLOX deviation END
+	-- deviation END
 end
 
 return exports

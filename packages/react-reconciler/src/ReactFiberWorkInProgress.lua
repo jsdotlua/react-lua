@@ -1,8 +1,8 @@
 --!strict
--- ROBLOX deviation: this is an extraction of a single state field
+-- deviation: this is an extraction of a single state field
 -- (and associated mutation/getters) from ReactFiberWorkLooop.new
 -- which allows us to break dependency cycles involving that module
--- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiberWorkLoop.new.js
+-- upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiberWorkLoop.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -20,13 +20,13 @@ type Lane = ReactFiberLane.Lane
 
 local exports = {}
 
--- ROBLOX TODO: turn this into newindex property accessor
+-- TODO: turn this into newindex property accessor
 exports.workInProgressRootSkippedLanes = function(value: Lanes?): Lanes
 	if value == nil then
 		return _workInProgressRootSkippedLanes
 	end
 
-	-- ROBLOX FIXME Luau: Luau should narrow based on guard above
+	-- FIXME Luau: Luau should narrow based on guard above
 	_workInProgressRootSkippedLanes = value :: Lanes
 	return _workInProgressRootSkippedLanes
 end

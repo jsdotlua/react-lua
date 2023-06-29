@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/0cf22a56a18790ef34c71bef14f64695c0498619/packages/react/src/ReactBaseClasses.js
+-- upstream: https://github.com/facebook/react/blob/0cf22a56a18790ef34c71bef14f64695c0498619/packages/react/src/ReactBaseClasses.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -12,13 +12,13 @@ local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local SharedModule = require(Packages.Shared)
--- ROBLOX deviation START: we do boolean checks and error() like React 18 does to save functional call in hot path
+-- deviation START: we do boolean checks and error() like React 18 does to save functional call in hot path
 -- local invariant = SharedModule.invariant
--- ROBLOX deviation END
+-- deviation END
 type React_Component<Props, State = nil> = SharedModule.React_Component<Props, State>
 local ReactNoopUpdateQueue = require(script.Parent.ReactNoopUpdateQueue)
 local emptyObject = {}
@@ -27,7 +27,7 @@ if __DEV__ then
 	Object.freeze(emptyObject)
 end
 
--- ROBLOX DEVIATION: Initialize state to a singleton that warns on access and
+-- deviation: Initialize state to a singleton that warns on access and
 -- errors on assignment
 local UninitializedState = require(Packages.Shared).UninitializedState
 
@@ -41,13 +41,13 @@ local componentClassPrototype = {
 	isReactComponent = true,
 }
 
--- ROBLOX deviation: logic to support old Roact lifecycle method names
--- ROBLOX FIXME: remove below table and function once we've formally stopped
+-- deviation: logic to support old Roact lifecycle method names
+-- FIXME: remove below table and function once we've formally stopped
 -- supporting old Roact lifecycle method names.
 
--- ROBLOX FIXME Luau: have to annotate this function manually to suppress ReactBaseClasses.lua:55:3-13: (E001) TypeError: Expected to return 2 values, but 1 is returned here
+-- FIXME Luau: have to annotate this function manually to suppress ReactBaseClasses.lua:55:3-13: (E001) TypeError: Expected to return 2 values, but 1 is returned here
 local function trimPath(path: string): string
-	-- ROBLOX TODO: The path splits files by . but file names can
+	-- TODO: The path splits files by . but file names can
 	-- have . in them, so we use best guess heuristics to determine
 	-- the file name breaks.
 	-- Works for our codebase, but is pretty brittle.
@@ -119,7 +119,7 @@ local componentClassMetatable = {
 	end,
 }
 
--- ROBLOX deviation: Extend needs to be a table field for our top-level interface
+-- deviation: Extend needs to be a table field for our top-level interface
 type React_BaseComponent = React_Component<any, any> & {
 	extend: (self: React_BaseComponent, name: string) -> React_Component<any, any>,
 }
@@ -128,14 +128,14 @@ local Component = (
 	setmetatable({ __componentName = "Component" }, componentClassMetatable) :: any
 ) :: React_BaseComponent
 
--- ROBLOX deviation: Lua doesn't expose inheritance in a class-syntax way
+-- deviation: Lua doesn't expose inheritance in a class-syntax way
 --[[
   A method called by consumers of Roact to create a new component class.
   Components can not be extended beyond this point, with the exception of
   PureComponent.
 ]]
 
--- ROBLOX performance: pool size tuned for benchmarks
+-- performance: pool size tuned for benchmarks
 local InstancePoolSize = if not _G.__TESTEZ_RUNNING_TEST__ then 900 else 0
 local InstancePoolIndex = 1
 local InstancePool = table.create(InstancePoolSize)
@@ -178,14 +178,14 @@ local function setStateInInit(componentInstance: React_Component<any, any>, stat
 		-- Partial state object
 		partialState = statePayload
 	end
-	-- ROBLOX TODO: can't use table.clone optimization here: invalid argument #1 to 'clone' (table has a protected metatable)
+	-- TODO: can't use table.clone optimization here: invalid argument #1 to 'clone' (table has a protected metatable)
 	-- local newState = if prevState then table.clone(prevState) else {}
 	componentInstance.state = Object.assign({}, prevState, partialState)
 end
 
 function Component:extend(name): React_Component<any, any>
-	-- ROBLOX note: legacy Roact will accept nil here and default to empty string
-	-- ROBLOX TODO: if name in "" in ReactComponentStack frame, we should try and get the variable name it was assigned to
+	-- NOTE: legacy Roact will accept nil here and default to empty string
+	-- TODO: if name in "" in ReactComponentStack frame, we should try and get the variable name it was assigned to
 	if name == nil then
 		if __COMPAT_WARNINGS__ then
 			console.warn(
@@ -198,12 +198,12 @@ function Component:extend(name): React_Component<any, any>
 		error("Component class name must be a string")
 	end
 
-	-- ROBLOX performance? do table literal in one shot instead a field at a time in a pairs() loop
+	-- performance? do table literal in one shot instead a field at a time in a pairs() loop
 	local class = {
 		__componentName = name,
 		setState = self.setState,
 		forceUpdate = self.forceUpdate,
-		init = nil, -- ROBLOX note: required to make Luau analyze happy, should be removed by bytecode compiler
+		init = nil, -- NOTE: required to make Luau analyze happy, should be removed by bytecode compiler
 	}
 	-- for key, value in self do
 	--   -- Roact opts to make consumers use composition over inheritance, which
@@ -219,21 +219,21 @@ function Component:extend(name): React_Component<any, any>
 
 	function class.__ctor<P>(props: P, context, updater): React_Component<P, any>
 		local instance
-		-- ROBLOX performance: use a pooled object
+		-- performance: use a pooled object
 		if InstancePoolIndex <= InstancePoolSize then
 			instance = InstancePool[InstancePoolIndex]
 			-- fill in the dynamic fields
-			-- ROBLOX FIXME Luau: TypeError: Type 'P' could not be converted into 'nil'
+			-- FIXME Luau: TypeError: Type 'P' could not be converted into 'nil'
 			instance.props = props :: any
 			instance.context = context
 			-- release the premade object from the pool -- we aren't recycling objects right now
 			InstancePool[InstancePoolIndex] = nil
 			InstancePoolIndex += 1
 		else
-			-- ROBLOX note: uncomment to tune pool size for lua-apps
+			-- NOTE: uncomment to tune pool size for lua-apps
 			-- print("!!!!! hit ReactBaseClass instance pool limit")
 			instance = {
-				-- ROBLOX FIXME Luau: TypeError: Type 'P' could not be converted into 'nil'
+				-- FIXME Luau: TypeError: Type 'P' could not be converted into 'nil'
 				props = props :: any,
 				context = context,
 				state = UninitializedState,
@@ -243,12 +243,12 @@ function Component:extend(name): React_Component<any, any>
 
 			-- instance.props = props
 			-- instance.context = context
-			-- ROBLOX DEVIATION: Initialize state to a singleton that warns on attempts
+			-- deviation: Initialize state to a singleton that warns on attempts
 			-- to access this pseudo-uninitialized state and errors on attempts to directly mutate
 			-- state.
 			-- instance.state = UninitializedState
 			-- If a component has string refs, we will assign a different object later.
-			-- ROBLOX deviation: Uses __refs instead of refs to avoid conflicts
+			-- deviation: Uses __refs instead of refs to avoid conflicts
 			-- instance.refs = emptyObject
 			-- instance.__refs = emptyObject
 			-- We initialize the default updater but the real one gets injected by the
@@ -256,23 +256,23 @@ function Component:extend(name): React_Component<any, any>
 			-- instance.__updater = updater or ReactNoopUpdateQueue
 		end
 
-		-- ROBLOX TODO: We should consider using a more idiomatic Lua approach for
+		-- TODO: We should consider using a more idiomatic Lua approach for
 		-- warning/blocking lifecycle calls during initialization. For now,
 		-- ReactNoopUpdateQueue accomplishes this, but we might be able to be more
 		-- thorough if we use a dummy metamethod that warns precisely on all sorts
 		-- of misbehavior
 		instance = setmetatable(instance, class)
 
-		-- ROBLOX performance: only do typeof if it's non-nil to begin with
+		-- performance: only do typeof if it's non-nil to begin with
 		if class.init and type(class.init) == "function" then
-			-- ROBLOX deviation: Override setState to allow it to be used in init.
+			-- deviation: Override setState to allow it to be used in init.
 			-- This maintains legacy Roact behavior and allows more consistent
 			-- adherance to the "never assign directly to state" rule
 			instance.setState = setStateInInit
 
 			class.init(instance, props, context)
 
-			-- ROBLOX devition: Unbind specialized version of setState used in init
+			-- deviation: Unbind specialized version of setState used in init
 			instance.setState = nil :: any
 		end
 
@@ -344,7 +344,7 @@ end
  ]]
 
 if __DEV__ then
-	-- ROBLOX FIXME Luau: need CLI-53569 to remove the any cast
+	-- FIXME Luau: need CLI-53569 to remove the any cast
 	local deprecatedAPIs = {
 		isMounted = {
 			"isMounted",
@@ -374,29 +374,29 @@ end
 --[[*
  * Convenience component with default shallow equality check for sCU.
  ]]
--- ROBLOX deviation START: work within the `extend` framework defined above to emulate JS's
+-- deviation START: work within the `extend` framework defined above to emulate JS's
 -- class inheritance
 
--- ROBLOX FIXME Luau: this is so we get *some* type checking despite the FIXME Luau above
+-- FIXME Luau: this is so we get *some* type checking despite the FIXME Luau above
 local PureComponent = Component:extend("PureComponent") :: React_BaseComponent;
 
 -- When extend()ing a component, you don't get an extend method.
 -- This is to promote composition over inheritance.
 -- PureComponent is an exception to this rule.
--- ROBLOX FIXME Luau: this is so we get *some* type checking despite the FIXME Luau above
+-- FIXME Luau: this is so we get *some* type checking despite the FIXME Luau above
 (PureComponent :: any).extend = Component.extend
 
--- ROBLOX note: We copy members directly from the Component prototype above; we
+-- NOTE: We copy members directly from the Component prototype above; we
 -- don't need to redefine the constructor or do dummy function trickery to apply
 -- it without jumping around
--- ROBLOX performance? inline (duplicate) explicit assignments to avoid loop overhead in hot path
+-- performance? inline (duplicate) explicit assignments to avoid loop overhead in hot path
 -- Object.assign(pureComponentClassPrototype, componentClassPrototype)
 local pureComponentClassPrototype = {
 	isReactComponent = true,
 	isPureReactComponent = true,
 }
 
--- ROBLOX: FIXME: we should clean this up and align the implementations of
+-- NOTE: FIXME: we should clean this up and align the implementations of
 -- Component and PureComponent more clearly and explicitly
 setmetatable(PureComponent, {
 	__newindex = handleNewLifecycle,
@@ -405,7 +405,7 @@ setmetatable(PureComponent, {
 		return self.__componentName
 	end,
 })
--- ROBLOX deviation END
+-- deviation END
 
 return {
 	Component = Component,

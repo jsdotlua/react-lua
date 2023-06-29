@@ -75,7 +75,7 @@ local function getChartData(ref: {
 		if node == nil then
 			error(string.format('Could not find node with id "%s" in commit tree', tostring(id)))
 		end
-		-- ROBLOX FIXME Luau: Luau doesn't understand error() narrows, needs type states
+		-- FIXME Luau: Luau doesn't understand error() narrows, needs type states
 		local children, displayName, hocDisplayNames, key, treeBaseDuration =
 			(node :: CommitTreeNode).children,
 			(node :: CommitTreeNode).displayName,
@@ -147,7 +147,7 @@ local function getChartData(ref: {
 		-- Don't assume a single root.
 		-- Component filters or Fragments might lead to multiple "roots" in a flame graph.
 		do
-			-- ROBLOX FIXME Luau: Luau doesn't understand error() narrows, needs type states
+			-- FIXME Luau: Luau doesn't understand error() narrows, needs type states
 			local i = #(root :: CommitTreeNode).children
 			while i >= 1 do
 				local id = (root :: CommitTreeNode).children[i]
@@ -155,11 +155,11 @@ local function getChartData(ref: {
 				if node == nil then
 					error(string.format('Could not find node with id "%s" in commit tree', tostring(id)))
 				end
-				-- ROBLOX FIXME Luau: Luau doesn't understand error() narrows, needs type states
+				-- FIXME Luau: Luau doesn't understand error() narrows, needs type states
 				baseDuration += (node :: CommitTreeNode).treeBaseDuration
-				-- ROBLOX deviation START: walkTree does table.insert(tbl, currentDepth - 1), so the parameter here needs to be a valid index with after substracting 1 at the start
+				-- deviation START: walkTree does table.insert(tbl, currentDepth - 1), so the parameter here needs to be a valid index with after substracting 1 at the start
 				walkTree(id, baseDuration, 2)
-				-- ROBLOX deviation END
+				-- deviation END
 				i -= 1
 			end
 		end

@@ -15,7 +15,7 @@
 --!strict
 local console = require(script.Parent.console)
 
--- ROBLOX DEVIATION: Initialize state to a singleton that warns on access and errors on assignment
+-- deviation: Initialize state to a singleton that warns on access and errors on assignment
 -- initial state singleton
 local UninitializedState = {}
 

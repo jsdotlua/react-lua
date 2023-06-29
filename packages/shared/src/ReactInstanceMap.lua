@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/2ba43edc2675380a0f2222f351475bf9d750c6a9/packages/shared/ReactInstanceMap.js
+-- upstream: https://github.com/facebook/react/blob/2ba43edc2675380a0f2222f351475bf9d750c6a9/packages/shared/ReactInstanceMap.js
 --!strict
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -43,8 +43,8 @@ end
 exports.get = function(key)
 	local value = key._reactInternals
 
-	-- ROBLOX deviation: we have a crash in production this will help catch
-	-- ROBLOX TODO: wrap this in __DEV__
+	-- deviation: we have a crash in production this will help catch
+	-- TODO: wrap this in __DEV__
 	if not isValidFiber(value) then
 		error(
 			Error.new(
@@ -75,8 +75,8 @@ exports.has = function(key)
 end
 
 exports.set = function(key, value)
-	-- ROBLOX deviation: we have a crash in production this will help catch
-	-- ROBLOX TODO: wrap this in __DEV__
+	-- deviation: we have a crash in production this will help catch
+	-- TODO: wrap this in __DEV__
 	local parent = value
 	local message
 	while parent ~= nil do

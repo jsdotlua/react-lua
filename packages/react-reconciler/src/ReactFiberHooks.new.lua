@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/43363e2795393a00fd77312a16d6b80e626c29de/packages/react-reconciler/src/ReactFiberHooks.new.js
+-- upstream: https://github.com/facebook/react/blob/43363e2795393a00fd77312a16d6b80e626c29de/packages/react-reconciler/src/ReactFiberHooks.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -22,11 +22,11 @@ local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 
--- ROBLOX: use Bindings to implement useRef
+-- NOTE: use Bindings to implement useRef
 local createRef = require(Packages.React).createRef
 local createBinding = require(Packages.React).createBinding
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactTypes = require(Packages.Shared)
@@ -48,7 +48,7 @@ type Lane = ReactFiberLane.Lane
 local ReactHookEffectTags = require(script.Parent.ReactHookEffectTags)
 type HookFlags = ReactHookEffectTags.HookFlags
 type FiberRoot = ReactInternalTypes.FiberRoot
--- ROBLOX TODO: figure out how to expose types through dynamic exports
+-- TODO: figure out how to expose types through dynamic exports
 -- local type {OpaqueIDType} = require(script.Parent.ReactFiberHostConfig)
 type OpaqueIDType = any
 
@@ -174,7 +174,7 @@ export type Hook = {
 
 export type Effect = {
 	tag: HookFlags,
-	-- ROBLOX TODO: this needs Luau type pack support to express accurately
+	-- TODO: this needs Luau type pack support to express accurately
 	create: (() -> (() -> ())) | () -> (),
 	destroy: (() -> ())?,
 	deps: Array<any> | nil,
@@ -233,7 +233,7 @@ local hookTypesUpdateIndexDev: number = 0
 -- In DEV, this tracks whether currently rendering component needs to ignore
 -- the dependencies for Hooks that need them (e.g. useEffect or useMemo).
 -- When true, such Hooks will always be "remounted". Only used during hot reload.
--- ROBLOX performance: eliminate unuseful cmp in hot path, we don't currently support hot reloading
+-- performance: eliminate unuseful cmp in hot path, we don't currently support hot reloading
 local ignorePreviousDependencies: boolean = false
 
 -- Deviation: move to top so below function can reference
@@ -245,7 +245,7 @@ local InvalidNestedHooksDispatcherOnMountInDEV: Dispatcher | nil = nil
 local InvalidNestedHooksDispatcherOnUpdateInDEV: Dispatcher | nil = nil
 local InvalidNestedHooksDispatcherOnRerenderInDEV: Dispatcher | nil = nil
 
--- ROBLOX deviation: Used to better compare dependency arrays with gaps
+-- deviation: Used to better compare dependency arrays with gaps
 local function getHighestIndex(array: Array<any>)
 	local highestIndex = 0
 	for k, v in array do
@@ -254,7 +254,7 @@ local function getHighestIndex(array: Array<any>)
 	return highestIndex
 end
 
--- ROBLOX deviation: Used to better detect dependency arrays with gaps, to be
+-- deviation: Used to better detect dependency arrays with gaps, to be
 -- used in place of Array.isArray
 local function isArrayOrSparseArray(deps: any)
 	if type(deps) ~= "table" then
@@ -273,7 +273,7 @@ local function mountHookTypesDev()
 		local hookName = (currentHookNameInDev :: any) :: HookType
 
 		if hookTypesDev == nil then
-			-- ROBLOX FIXME Luau: needs normalization (I think)
+			-- FIXME Luau: needs normalization (I think)
 			hookTypesDev = ({ hookName } :: any) :: Array<HookType>
 		else
 			table.insert(hookTypesDev, hookName)
@@ -283,7 +283,7 @@ end
 
 function updateHookTypesDev()
 	if __DEV__ then
-		-- ROBLOX FIXME Luau: needs normalization (I think) to avoid duplicate type declaration
+		-- FIXME Luau: needs normalization (I think) to avoid duplicate type declaration
 		local hookName: HookType = (currentHookNameInDev :: any) :: HookType
 
 		if hookTypesDev ~= nil then
@@ -312,7 +312,7 @@ end
 
 function warnOnHookMismatchInDev(currentHookName: HookType)
 	if __DEV__ then
-		-- ROBLOX deviation: getComponentName will return nil in most Hook cases, use same fallback as elsewhere
+		-- deviation: getComponentName will return nil in most Hook cases, use same fallback as elsewhere
 		local componentName = getComponentName(currentlyRenderingFiber.type) or "Component"
 		if not didWarnAboutMismatchedHooksForComponent[componentName] then
 			didWarnAboutMismatchedHooksForComponent[componentName] = true
@@ -331,7 +331,7 @@ function warnOnHookMismatchInDev(currentHookName: HookType)
 						newHookName = oldHookName
 					end
 
-					-- ROBLOX note: upstream lets this be void and string concat coerces it to 'undefined'
+					-- NOTE: upstream lets this be void and string concat coerces it to 'undefined'
 					local row = tostring(i) .. ". " .. (oldHookName or "undefined")
 
 					-- Extra space so second column lines up
@@ -386,7 +386,7 @@ local function areHookInputsEqual(nextDeps: Array<any>, prevDeps: Array<any>)
 
 	if prevDeps == nil then
 		if __DEV__ then
-			-- ROBLOX TODO: no unit tests in upstream for this, we should add some
+			-- TODO: no unit tests in upstream for this, we should add some
 			console.error(
 				"%s received a final argument during this render, but not during "
 					.. "the previous render. Even though the final argument is optional, "
@@ -397,18 +397,18 @@ local function areHookInputsEqual(nextDeps: Array<any>, prevDeps: Array<any>)
 		return false
 	end
 
-	-- ROBLOX deviation START: calculate lengths with iteration instead of # to
+	-- deviation START: calculate lengths with iteration instead of # to
 	-- accommodate nil values and disable warning for differing lengths
 	local nextDepsLength = getHighestIndex(nextDeps)
 	local prevDepsLength = getHighestIndex(prevDeps)
 
-	-- ROBLOX note: In upstream, lengths aren't even compared unless dev mode is
+	-- NOTE: In upstream, lengths aren't even compared unless dev mode is
 	-- enabled because they _always_ indicate a misuse of dependency arrays. In
 	-- luau, since trailing `nil`s effectively change the length of the array,
 	-- it's possible to trigger this scenario with a valid use of the dependencies
 	-- array (e.g. `{1, 2, 3}` -> `{1, 2, nil}`)
 	if nextDepsLength ~= prevDepsLength then
-		-- ROBLOX TODO: linting like upstream does would make this warning less
+		-- TODO: linting like upstream does would make this warning less
 		-- necessary, and would help justify our exclusion of the warning.
 
 		-- https://jira.rbx.com/browse/LUAFDN-1175
@@ -428,7 +428,7 @@ local function areHookInputsEqual(nextDeps: Array<any>, prevDeps: Array<any>)
 		-- values, even if it's due to trailing nil values
 		return false
 	end
-	-- ROBLOX deviation END
+	-- deviation END
 
 	local minDependencyCount = math.min(prevDepsLength, nextDepsLength)
 	for i = 1, minDependencyCount do
@@ -441,7 +441,7 @@ local function areHookInputsEqual(nextDeps: Array<any>, prevDeps: Array<any>)
 end
 
 exports.bailoutHooks = function(current: Fiber, workInProgress: Fiber, lanes: Lanes)
-	-- ROBLOX performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
+	-- performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
 	workInProgress.updateQueue = current.updateQueue
 	if __DEV__ and enableDoubleInvokingEffects then
 		workInProgress.flags = bit32.band(
@@ -561,7 +561,7 @@ local function updateWorkInProgressHook(): Hook
 	else
 		-- Clone from the current hook.
 
-		-- ROBLOX performance: use React 18 check to avoid function call overhead
+		-- performance: use React 18 check to avoid function call overhead
 		if nextCurrentHook == nil then
 			error(Error.new("Rendered more hooks than during the previous render."))
 		end
@@ -591,7 +591,7 @@ local function updateWorkInProgressHook(): Hook
 	return workInProgressHook
 end
 
--- ROBLOX performance: inlined in hot path
+-- performance: inlined in hot path
 -- local function createFunctionComponentUpdateQueue(): FunctionComponentUpdateQueue
 --   return {
 --     lastEffect = nil,
@@ -629,21 +629,21 @@ function mountReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -
 	-- deviation: set currentlyRenderingFiber to a local varible so it doesn't change
 	-- by call time
 	local cRF = currentlyRenderingFiber
-	-- ROBLOX FIXME? we pass in action here, but is that what really happens upstream?
+	-- FIXME? we pass in action here, but is that what really happens upstream?
 	local dispatch: Dispatch<A> = function(action, ...)
-		-- ROBLOX Luau FIXME: relies on normalization
+		-- FIXME Luau: relies on normalization
 		dispatchAction(cRF, queue :: UpdateQueue<any, any>, action, ...)
 	end :: any
 	queue.dispatch = dispatch :: any
-	-- ROBLOX deviation START: Lua version of useState and useReducer return two items, not list like upstream
+	-- deviation START: Lua version of useState and useReducer return two items, not list like upstream
 	return hook.memoizedState, dispatch
-	-- ROBLOX deviation END: Lua version of useState and useReducer return two items, not list like upstream
+	-- deviation END: Lua version of useState and useReducer return two items, not list like upstream
 end
 
 function updateReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 	local hook = updateWorkInProgressHook()
 	local queue = hook.queue
-	-- ROBLOX deviation: change from invariant to avoid funtion call in hot path
+	-- deviation: change from invariant to avoid funtion call in hot path
 	assert(queue ~= nil, "Should have a queue. This is likely a bug in React. Please file an issue.")
 
 	queue.lastRenderedReducer = reducer
@@ -665,7 +665,7 @@ function updateReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) 
 			baseQueue.next = pendingFirst
 			pendingQueue.next = baseFirst
 		end
-		-- ROBLOX performance: elimiante cmp in hot path
+		-- performance: elimiante cmp in hot path
 		-- if __DEV__ then
 		--   if current.baseQueue ~= baseQueue then
 		--     -- Internal invariant that should never happen, but feasibly could in
@@ -692,7 +692,7 @@ function updateReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) 
 		local update = first
 		repeat
 			local updateLane = update.lane
-			-- ROBLOX performance: inline isSubsetOfLanes for hot path
+			-- performance: inline isSubsetOfLanes for hot path
 			-- if not isSubsetOfLanes(renderLanes, updateLane) then
 			if bit32.band(renderLanes, updateLane) ~= updateLane then
 				-- Priority is insufficient. Skip this update. If this is the first
@@ -776,7 +776,7 @@ end
 function rerenderReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 	local hook = updateWorkInProgressHook()
 	local queue = hook.queue
-	-- ROBLOX performance: changed from invariant to avoid function call in hot path
+	-- performance: changed from invariant to avoid function call in hot path
 	assert(queue ~= nil, "Should have a queue. This is likely a bug in React. Please file an issue.")
 
 	queue.lastRenderedReducer = reducer
@@ -818,7 +818,7 @@ function rerenderReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I
 
 		queue.lastRenderedState = newState
 	end
-	-- ROBLOX deviation: Lua version returns two values instead of an array
+	-- deviation: Lua version returns two values instead of an array
 	return newState, dispatch
 end
 
@@ -882,7 +882,7 @@ function readFromUnsubcribedMutableSource<Source, Snapshot>(
 	if isSafeToReadFromSource then
 		local snapshot = getSnapshot(source._source)
 		if __DEV__ then
-			-- ROBLOX deviation: the Snapshot generic isn't constrained upstream, but it as to be for this typeof() to work
+			-- deviation: the Snapshot generic isn't constrained upstream, but it as to be for this typeof() to work
 			if type(snapshot :: any) == "function" then
 				console.error(
 					"Mutable source should not return a function as the snapshot value. "
@@ -924,7 +924,7 @@ function useMutableSource<Source, Snapshot>(
 	local version_ = getVersion(source._source)
 
 	local dispatcher = ReactCurrentDispatcher.current
-	-- ROBLOX deviation: upstream doesn't assert non-nil, but we have to for type soundness
+	-- deviation: upstream doesn't assert non-nil, but we have to for type soundness
 	assert(dispatcher ~= nil, "dispatcher was nil, this is a bug in React")
 	-- eslint-disable-next-line prefer-const
 	local currentSnapshot, setSnapshot = dispatcher.useState(function()
@@ -935,7 +935,7 @@ function useMutableSource<Source, Snapshot>(
 	-- Grab a handle to the state hook as well.
 	-- We use it to clear the pending update queue if we have a new source.
 
-	-- ROBLOX TODO: recast local stateHook = ((workInProgressHook: any): Hook)
+	-- TODO: recast local stateHook = ((workInProgressHook: any): Hook)
 	local stateHook = workInProgressHook
 
 	local memoizedState: MutableSourceMemoizedState<any, any> = hook.memoizedState
@@ -970,7 +970,7 @@ function useMutableSource<Source, Snapshot>(
 		if not is(version_, maybeNewVersion) then
 			local maybeNewSnapshot = getSnapshot(source._source)
 			if __DEV__ then
-				-- ROBLOX deviation: the Snapshot generic isn't constrained upstream, but it as to be for this typeof() to work
+				-- deviation: the Snapshot generic isn't constrained upstream, but it as to be for this typeof() to work
 				if type(maybeNewSnapshot :: any) == "function" then
 					console.error(
 						"Mutable source should not return a function as the snapshot value. "
@@ -990,7 +990,7 @@ function useMutableSource<Source, Snapshot>(
 			-- Entangle the updates so that they render in the same batch.
 			markRootEntangled(root, root.mutableReadLanes)
 		end
-		-- ROBLOX Luau FIXME: Luau doesn't support mixed arrays
+		-- FIXME Luau: Luau doesn't support mixed arrays
 	end, { getSnapshot, source, subscribe } :: Array<any>)
 
 	-- If we got a new source or subscribe function, re-subscribe in a passive effect.
@@ -999,7 +999,7 @@ function useMutableSource<Source, Snapshot>(
 			local latestGetSnapshot = refs.getSnapshot
 			local latestSetSnapshot = refs.setSnapshot
 
-			-- ROBLOX performance? only latestGet..() is throwable. hoist the rest out to eliminate anon func overhead?
+			-- performance? only latestGet..() is throwable. hoist the rest out to eliminate anon func overhead?
 			local ok, result = pcall(function()
 				latestSetSnapshot(latestGetSnapshot(source._source))
 
@@ -1028,7 +1028,7 @@ function useMutableSource<Source, Snapshot>(
 		end
 
 		return unsubscribe
-		-- ROBLOX Luau FIXME: Luau doesn't support mixed arrays
+		-- FIXME Luau: Luau doesn't support mixed arrays
 	end, { source, subscribe } :: Array<any>)
 
 	-- If any of the inputs to useMutableSource change, reading is potentially unsafe.
@@ -1054,7 +1054,7 @@ function useMutableSource<Source, Snapshot>(
 			lastRenderedState = snapshot,
 		}
 
-		-- ROBLOX deviation: keep local pointer so if global changes we maintain correct reference.
+		-- deviation: keep local pointer so if global changes we maintain correct reference.
 		local cRF = currentlyRenderingFiber
 
 		setSnapshot = function(...)
@@ -1113,14 +1113,14 @@ function mountState<S>(initialState: (() -> S) | S): (S, Dispatch<BasicStateActi
 		lastRenderedReducer = nil, --basicStateReducer,
 		lastRenderedState = initialState :: any,
 	}
-	-- ROBLOX Luau FIXME: work around a toposorting issue in Luau: CLI-48752
+	-- FIXME Luau: work around a toposorting issue in Luau: CLI-48752
 	queue.lastRenderedReducer = basicStateReducer
 	hook.queue = queue
 
-	-- ROBLOX deviation: set currentlyRenderingFiber to a local varible so it doesn't change by call time
+	-- deviation: set currentlyRenderingFiber to a local varible so it doesn't change by call time
 	local cRF = currentlyRenderingFiber
 	local dispatch: Dispatch<BasicStateAction<S>> = function(action, ...)
-		-- ROBLOX FIXME? we pass in action here, but is that what really happens upstream?
+		-- FIXME? we pass in action here, but is that what really happens upstream?
 		dispatchAction(cRF, queue :: UpdateQueue<any, any>, action, ...)
 	end :: any
 	queue.dispatch = dispatch
@@ -1147,7 +1147,7 @@ local function pushEffect(tag, create, destroy, deps)
 	}
 	local componentUpdateQueue: FunctionComponentUpdateQueue = currentlyRenderingFiber.updateQueue :: any
 	if componentUpdateQueue == nil then
-		-- ROBLOX performance: inline simple function in hot path
+		-- performance: inline simple function in hot path
 		-- componentUpdateQueue = createFunctionComponentUpdateQueue()
 		componentUpdateQueue = {
 			lastEffect = nil,
@@ -1170,26 +1170,26 @@ local function pushEffect(tag, create, destroy, deps)
 	return effect
 end
 
--- ROBLOX deviation: Bindings are a feature unique to Roact
+-- deviation: Bindings are a feature unique to Roact
 function mountBinding<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 	local hook = mountWorkInProgressHook()
 	local value, updateValue = createBinding(initialValue)
 
-	-- ROBLOX Luau FIXME: Luau doesn't allow mixed arrays, forcing us to use any here
+	-- FIXME Luau: Luau doesn't allow mixed arrays, forcing us to use any here
 	hook.memoizedState = { value :: any, updateValue :: any }
 	return value, updateValue
 end
 
--- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 function updateBinding<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 	local hook = updateWorkInProgressHook()
 	return unpack(hook.memoizedState)
 end
 
--- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 function mountRef<T>(initialValue: T): { current: T | nil }
 	local hook = mountWorkInProgressHook()
-	-- ROBLOX DEVIATION: Implement useRef with bindings
+	-- deviation: Implement useRef with bindings
 	local ref: any = createRef()
 	ref.current = initialValue
 	-- if (__DEV__) then
@@ -1199,7 +1199,7 @@ function mountRef<T>(initialValue: T): { current: T | nil }
 	return ref :: { current: T | nil }
 end
 
--- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 function updateRef<T>(initialValue: T): { current: T | nil }
 	local hook = updateWorkInProgressHook()
 	return hook.memoizedState
@@ -1215,11 +1215,11 @@ local function mountEffectImpl(fiberFlags, hookFlags, create, deps): ()
 	hook.memoizedState = pushEffect(bit32.bor(HookHasEffect, hookFlags), create, nil, nextDeps)
 end
 
--- ROBLOX deviation START: must explicitly mark deps argument as optional/nil-able
+-- deviation START: must explicitly mark deps argument as optional/nil-able
 function updateEffectImpl(fiberFlags, hookFlags, create, deps: Array<any>?): ()
-	-- ROBLOX deviation END
+	-- deviation END
 	local hook = updateWorkInProgressHook()
-	-- ROBLOX deviation: no need to account for undefined
+	-- deviation: no need to account for undefined
 	-- local nextDeps = deps == undefined ? nil : deps
 	local nextDeps = deps
 	local destroy
@@ -1242,7 +1242,7 @@ function updateEffectImpl(fiberFlags, hookFlags, create, deps: Array<any>?): ()
 end
 
 local function mountEffect(
-	-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+	-- TODO: Luau needs union type packs for this type to translate idiomatically
 	create: (() -> ()) | (() -> (() -> ())),
 	deps: Array<any>?
 ): ()
@@ -1262,7 +1262,7 @@ local function mountEffect(
 end
 
 local function updateEffect(
-	-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+	-- TODO: Luau needs union type packs for this type to translate idiomatically
 	create: (() -> ()) | (() -> (() -> ())),
 	deps: Array<any>?
 ): ()
@@ -1277,7 +1277,7 @@ local function updateEffect(
 end
 
 local function mountLayoutEffect(
-	-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+	-- TODO: Luau needs union type packs for this type to translate idiomatically
 	create: (() -> ()) | (() -> (() -> ())),
 	deps: Array<any>?
 ): ()
@@ -1289,7 +1289,7 @@ local function mountLayoutEffect(
 end
 
 local function updateLayoutEffect(
-	-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+	-- TODO: Luau needs union type packs for this type to translate idiomatically
 	create: (() -> ()) | (() -> (() -> ())),
 	deps: Array<any>?
 ): ()
@@ -1299,7 +1299,7 @@ end
 function imperativeHandleEffect<T>(
 	create: () -> T,
 	ref: { current: T | nil } | ((inst: T | nil) -> ...any) | nil
-	-- ROBLOX deviation: explicit type annotation needed due to mixed return
+	-- deviation: explicit type annotation needed due to mixed return
 ): nil | () -> ...any
 	if ref ~= nil and type(ref) == "function" then
 		local refCallback = ref
@@ -1310,9 +1310,9 @@ function imperativeHandleEffect<T>(
 		end
 	elseif ref ~= nil then
 		local refObject = ref :: any
-		-- ROBLOX deviation: can't check for key presence because nil is a legitimate value.
+		-- deviation: can't check for key presence because nil is a legitimate value.
 		if __DEV__ then
-			-- ROBLOX FIXME: This is a clumsy approximation, since we don't have any
+			-- FIXME: This is a clumsy approximation, since we don't have any
 			-- explicit way to know that something is a ref object; instead, we check
 			-- that it's an empty object with a metatable, which is what Roact refs
 			-- look like since they indirect to bindings via their metatable
@@ -1346,9 +1346,9 @@ function mountImperativeHandle<T>(
 			console.error(
 				"Expected useImperativeHandle() second argument to be a function "
 					.. "that creates a handle. Instead received: %s.",
-				-- ROBLOX deviation START: nil instead of null
+				-- deviation START: nil instead of null
 				if create ~= nil then type(create) else "nil"
-				-- ROBLOX deviation END
+				-- deviation END
 			)
 		end
 	end
@@ -1386,7 +1386,7 @@ function updateImperativeHandle<T>(
 	end
 
 	-- TODO: If deps are provided, should we skip comparing the ref itself?
-	-- ROBLOX deviation: ternary turned to explicit if/else
+	-- deviation: ternary turned to explicit if/else
 	local effectDeps
 	if deps ~= nil then
 		effectDeps = table.clone(deps)
@@ -1409,7 +1409,7 @@ local updateDebugValue = mountDebugValue
 function mountCallback<T>(callback: T, deps: Array<any> | nil): T
 	local hook = mountWorkInProgressHook()
 	local nextDeps = deps
-	-- ROBLOX Luau FIXME: Luau doesn't allow mixed arrays, forcing us to use any here
+	-- FIXME Luau: Luau doesn't allow mixed arrays, forcing us to use any here
 	hook.memoizedState = { callback :: any, nextDeps :: any }
 	return callback
 end
@@ -1420,31 +1420,31 @@ function updateCallback<T>(callback: T, deps: Array<any> | nil): T
 	local prevState = hook.memoizedState
 	if prevState ~= nil then
 		if nextDeps ~= nil then
-			-- ROBLOX TODO: Luau false positive when this is `Array<any>?` (E001) Type 'Array<any>?' could not be converted into 'Array<any>'
+			-- TODO: Luau false positive when this is `Array<any>?` (E001) Type 'Array<any>?' could not be converted into 'Array<any>'
 			local prevDeps: Array<any> = prevState[2]
 			if areHookInputsEqual(nextDeps, prevDeps) then
 				return prevState[1]
 			end
 		end
 	end
-	-- ROBLOX Luau FIXME: Luau doesn't allow mixed arrays, forcing us to use any here
+	-- FIXME Luau: Luau doesn't allow mixed arrays, forcing us to use any here
 	hook.memoizedState = { callback :: any, nextDeps :: any }
 	return callback
 end
 
--- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 function mountMemo<T...>(nextCreate: () -> T..., deps: Array<any> | nil): ...any
 	local hook = mountWorkInProgressHook()
 
 	-- deviation: equivilant to upstream ternary logic
 	local nextDeps = deps
-	-- ROBLOX DEVIATION: Wrap memoized values in a table and unpack to allow for multiple return values
+	-- deviation: Wrap memoized values in a table and unpack to allow for multiple return values
 	local nextValue = { nextCreate() }
 	hook.memoizedState = { nextValue :: any, nextDeps }
 	return unpack(nextValue)
 end
 
--- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 function updateMemo<T...>(nextCreate: () -> T..., deps: Array<any> | nil): ...any
 	local hook = updateWorkInProgressHook()
 	-- deviation: equivilant to upstream ternary logic
@@ -1459,7 +1459,7 @@ function updateMemo<T...>(nextCreate: () -> T..., deps: Array<any> | nil): ...an
 			end
 		end
 	end
-	-- ROBLOX DEVIATION: Wrap memoized values in a table and unpack to allow for multiple return values
+	-- deviation: Wrap memoized values in a table and unpack to allow for multiple return values
 	local nextValue = { nextCreate() }
 	hook.memoizedState = { nextValue :: any, nextDeps }
 	return unpack(nextValue)
@@ -1751,9 +1751,9 @@ function dispatchAction<S, A>(fiber: Fiber, queue: UpdateQueue<S, A>, action: A,
 					prevDispatcher = ReactCurrentDispatcher.current
 					ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV
 				end
-				-- ROBLOX try
+				-- try
 				local currentState: S = queue.lastRenderedState :: any
-				-- ROBLOX performance: only wrap the thing that can throw in a pcall to elimiante anon function creation overhead
+				-- performance: only wrap the thing that can throw in a pcall to elimiante anon function creation overhead
 				local ok, eagerState = pcall(lastRenderedReducer, currentState, action)
 				-- Stash the eagerly computed state, and the reducer used to compute
 				-- it, on the update object. If the reducer hasn't changed by the
@@ -1764,7 +1764,7 @@ function dispatchAction<S, A>(fiber: Fiber, queue: UpdateQueue<S, A>, action: A,
 					update.eagerState = eagerState
 				end
 
-				-- ROBLOX finally
+				-- finally
 				if __DEV__ then
 					ReactCurrentDispatcher.current = prevDispatcher
 				end
@@ -1776,7 +1776,7 @@ function dispatchAction<S, A>(fiber: Fiber, queue: UpdateQueue<S, A>, action: A,
 					-- time the reducer has changed.
 					return
 				end
-				-- ROBLOX catch
+				-- catch
 				if not ok then
 					-- Suppress the error. It will throw again in the render phase.
 				end
@@ -1841,7 +1841,7 @@ local HooksDispatcherOnMount: Dispatcher = {
 	useEffect = mountEffect,
 	useImperativeHandle = mountImperativeHandle,
 	useLayoutEffect = mountLayoutEffect,
-	-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+	-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 	useMemo = mountMemo :: any,
 	useReducer = mountReducer,
 	useRef = mountRef,
@@ -1864,7 +1864,7 @@ local HooksDispatcherOnUpdate: Dispatcher = {
 	useEffect = updateEffect,
 	useImperativeHandle = updateImperativeHandle,
 	useLayoutEffect = updateLayoutEffect,
-	-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+	-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 	useMemo = updateMemo :: any,
 	useReducer = updateReducer,
 	useRef = updateRef,
@@ -1887,7 +1887,7 @@ local HooksDispatcherOnRerender: Dispatcher = {
 	useEffect = updateEffect,
 	useImperativeHandle = updateImperativeHandle,
 	useLayoutEffect = updateLayoutEffect,
-	-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+	-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 	useMemo = updateMemo :: any,
 	useReducer = rerenderReducer,
 	useRef = updateRef,
@@ -1937,7 +1937,7 @@ if __DEV__ then
 			return readContext(context, observedBits)
 		end,
 		useEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -1957,7 +1957,7 @@ if __DEV__ then
 			return mountImperativeHandle(ref, create, deps)
 		end,
 		useLayoutEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -1966,7 +1966,7 @@ if __DEV__ then
 			checkDepsAreArrayDev(deps)
 			return mountLayoutEffect(create, deps)
 		end,
-		-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error
+		-- FIXME Luau: work around 'Failed to unify type packs' error
 		useMemo = function<T...>(create: () -> T..., deps: Array<any> | nil): ...any
 			currentHookNameInDev = "useMemo"
 			mountHookTypesDev()
@@ -1982,7 +1982,7 @@ if __DEV__ then
 			if not results[1] then
 				error(results[2])
 			end
-			-- ROBLOX FIXME Luau: TypeError: Type 'boolean' could not be converted into 'T'
+			-- FIXME Luau: TypeError: Type 'boolean' could not be converted into 'T'
 			return unpack(results, 2)
 		end :: any,
 		useReducer = function<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
@@ -1991,7 +1991,7 @@ if __DEV__ then
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnMountInDEV
 			local ok, result, setResult = pcall(mountReducer, reducer, initialArg, init)
-			-- ROBLOX finally
+			-- finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
 				error(result)
@@ -1999,13 +1999,13 @@ if __DEV__ then
 			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
-		-- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+		-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 		useRef = function<T>(initialValue: T): { current: T | nil }
 			currentHookNameInDev = "useRef"
 			mountHookTypesDev()
 			return mountRef(initialValue)
 		end,
-		-- ROBLOX deviation: Bindings are a feature unique to Roact
+		-- deviation: Bindings are a feature unique to Roact
 		useBinding = function<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 			currentHookNameInDev = "useBinding"
 			mountHookTypesDev()
@@ -2022,7 +2022,7 @@ if __DEV__ then
 			if not ok then
 				error(result)
 			end
-			-- ROBLOX deviation: Lua version of useState and useReducer return two items, not list like upstream
+			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
 		useDebugValue = function<T>(value: T, formatterFn: ((value: T) -> any)?): ()
@@ -2074,7 +2074,7 @@ if __DEV__ then
 			return readContext(context, observedBits)
 		end,
 		useEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -2092,7 +2092,7 @@ if __DEV__ then
 			return mountImperativeHandle(ref, create, deps)
 		end,
 		useLayoutEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -2100,7 +2100,7 @@ if __DEV__ then
 			updateHookTypesDev()
 			return mountLayoutEffect(create, deps)
 		end,
-		-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+		-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 		useMemo = function<T...>(create: () -> T..., deps: Array<any> | nil): ...any
 			currentHookNameInDev = "useMemo"
 			updateHookTypesDev()
@@ -2123,7 +2123,7 @@ if __DEV__ then
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnMountInDEV
 			local ok, result, setResult = pcall(mountReducer, reducer, initialArg, init)
-			-- ROBLOX finally
+			-- finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
 				error(result)
@@ -2131,13 +2131,13 @@ if __DEV__ then
 			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
-		-- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+		-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 		useRef = function<T>(initialValue: T): { current: T | nil }
 			currentHookNameInDev = "useRef"
 			updateHookTypesDev()
 			return mountRef(initialValue)
 		end,
-		-- ROBLOX deviation: Bindings are a feature unique to Roact
+		-- deviation: Bindings are a feature unique to Roact
 		useBinding = function<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 			currentHookNameInDev = "useBinding"
 			updateHookTypesDev()
@@ -2205,7 +2205,7 @@ if __DEV__ then
 			return readContext(context, observedBits)
 		end,
 		useEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -2223,7 +2223,7 @@ if __DEV__ then
 			return updateImperativeHandle(ref, create, deps)
 		end,
 		useLayoutEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -2231,7 +2231,7 @@ if __DEV__ then
 			updateHookTypesDev()
 			return updateLayoutEffect(create, deps)
 		end,
-		-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+		-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 		useMemo = function<T...>(create: () -> T..., deps: Array<any> | nil): ...any
 			currentHookNameInDev = "useMemo"
 			updateHookTypesDev()
@@ -2254,7 +2254,7 @@ if __DEV__ then
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV
 			local ok, result, setResult = pcall(updateReducer, reducer, initialArg, init)
-			-- ROBLOX finally
+			-- finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
 				error(result)
@@ -2262,13 +2262,13 @@ if __DEV__ then
 			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
-		-- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+		-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 		useRef = function<T>(initialValue: T): { current: T | nil }
 			currentHookNameInDev = "useRef"
 			updateHookTypesDev()
 			return updateRef(initialValue)
 		end,
-		-- ROBLOX deviation: Bindings are a feature unique to Roact
+		-- deviation: Bindings are a feature unique to Roact
 		useBinding = function<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 			currentHookNameInDev = "useBinding"
 			updateHookTypesDev()
@@ -2336,7 +2336,7 @@ if __DEV__ then
 			return readContext(context, observedBits)
 		end,
 		useEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any> | nil
 		): ()
@@ -2354,7 +2354,7 @@ if __DEV__ then
 			return updateImperativeHandle(ref, create, deps)
 		end,
 		useLayoutEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -2362,7 +2362,7 @@ if __DEV__ then
 			updateHookTypesDev()
 			return updateLayoutEffect(create, deps)
 		end,
-		-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+		-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 		useMemo = function<T...>(create: () -> T..., deps: Array<any> | nil): ...any
 			currentHookNameInDev = "useMemo"
 			updateHookTypesDev()
@@ -2385,21 +2385,21 @@ if __DEV__ then
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnRerenderInDEV
 			local ok, result, setResult = pcall(rerenderReducer, reducer, initialArg, init)
-			-- ROBLOX finally
+			-- finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
 				error(result)
 			end
-			-- ROBLOX deviation: Lua version of useState and useReducer return two items, not list like upstream
+			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
-		-- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+		-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 		useRef = function<T>(initialValue: T): { current: T | nil }
 			currentHookNameInDev = "useRef"
 			updateHookTypesDev()
 			return updateRef(initialValue)
 		end,
-		-- ROBLOX deviation: Bindings are a feature unique to Roact
+		-- deviation: Bindings are a feature unique to Roact
 		useBinding = function<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 			currentHookNameInDev = "useBinding"
 			updateHookTypesDev()
@@ -2470,7 +2470,7 @@ if __DEV__ then
 			return readContext(context, observedBits)
 		end,
 		useEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any> | nil
 		): ()
@@ -2490,7 +2490,7 @@ if __DEV__ then
 			return mountImperativeHandle(ref, create, deps)
 		end,
 		useLayoutEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any> | nil
 		): ()
@@ -2499,7 +2499,7 @@ if __DEV__ then
 			mountHookTypesDev()
 			return mountLayoutEffect(create, deps)
 		end,
-		-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+		-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 		useMemo = function<T...>(create: () -> T..., deps: Array<any> | nil): ...any
 			currentHookNameInDev = "useMemo"
 			warnInvalidHookAccess()
@@ -2524,7 +2524,7 @@ if __DEV__ then
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnMountInDEV
 			local ok, result, setResult = pcall(mountReducer, reducer, initialArg, init)
-			-- ROBLOX finally
+			-- finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
 				error(result)
@@ -2532,14 +2532,14 @@ if __DEV__ then
 			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
-		-- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+		-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 		useRef = function<T>(initialValue: T): { current: T | nil }
 			currentHookNameInDev = "useRef"
 			warnInvalidHookAccess()
 			mountHookTypesDev()
 			return mountRef(initialValue)
 		end,
-		-- ROBLOX deviation: Bindings are a feature unique to Roact
+		-- deviation: Bindings are a feature unique to Roact
 		useBinding = function<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 			currentHookNameInDev = "useBinding"
 			warnInvalidHookAccess()
@@ -2617,7 +2617,7 @@ if __DEV__ then
 			return readContext(context, observedBits)
 		end,
 		useEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any> | nil
 		): ()
@@ -2637,7 +2637,7 @@ if __DEV__ then
 			return updateImperativeHandle(ref, create, deps)
 		end,
 		useLayoutEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -2646,7 +2646,7 @@ if __DEV__ then
 			updateHookTypesDev()
 			return updateLayoutEffect(create, deps)
 		end,
-		-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+		-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 		useMemo = function<T...>(create: () -> T..., deps: Array<any> | nil): ...any
 			currentHookNameInDev = "useMemo"
 			warnInvalidHookAccess()
@@ -2671,7 +2671,7 @@ if __DEV__ then
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV
 			local ok, result, setResult = pcall(updateReducer, reducer, initialArg, init)
-			-- ROBLOX finally
+			-- finally
 			ReactCurrentDispatcher.current = prevDispatcher
 
 			if not ok then
@@ -2680,14 +2680,14 @@ if __DEV__ then
 			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
-		-- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+		-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 		useRef = function<T>(initialValue: T): { current: T | nil }
 			currentHookNameInDev = "useRef"
 			warnInvalidHookAccess()
 			updateHookTypesDev()
 			return updateRef(initialValue)
 		end,
-		-- ROBLOX deviation: Bindings are a feature unique to Roact
+		-- deviation: Bindings are a feature unique to Roact
 		useBinding = function<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 			currentHookNameInDev = "useBinding"
 			warnInvalidHookAccess()
@@ -2765,7 +2765,7 @@ if __DEV__ then
 			return readContext(context, observedBits)
 		end,
 		useEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any> | nil
 		): ()
@@ -2785,7 +2785,7 @@ if __DEV__ then
 			return updateImperativeHandle(ref, create, deps)
 		end,
 		useLayoutEffect = function(
-			-- ROBLOX TODO: Luau needs union type packs for this type to translate idiomatically
+			-- TODO: Luau needs union type packs for this type to translate idiomatically
 			create: (() -> ()) | (() -> (() -> ())),
 			deps: Array<any>?
 		): ()
@@ -2794,7 +2794,7 @@ if __DEV__ then
 			updateHookTypesDev()
 			return updateLayoutEffect(create, deps)
 		end,
-		-- ROBLOX FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
+		-- FIXME Luau: work around 'Failed to unify type packs' error: CLI-51338
 		useMemo = function<T...>(create: () -> T..., deps: Array<any> | nil): ...any
 			currentHookNameInDev = "useMemo"
 			warnInvalidHookAccess()
@@ -2819,7 +2819,7 @@ if __DEV__ then
 			local prevDispatcher = ReactCurrentDispatcher.current
 			ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV
 			local ok, result, setResult = pcall(rerenderReducer, reducer, initialArg, init)
-			-- ROBLOX finally
+			-- finally
 			ReactCurrentDispatcher.current = prevDispatcher
 			if not ok then
 				error(result)
@@ -2827,14 +2827,14 @@ if __DEV__ then
 			-- deviation: Lua version of useState and useReducer return two items, not list like upstream
 			return result, setResult
 		end,
-		-- ROBLOX deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
+		-- deviation: TS models this slightly differently, which is needed to have an initially empty ref and clear the ref, and still typecheck
 		useRef = function<T>(initialValue: T): { current: T | nil }
 			currentHookNameInDev = "useRef"
 			warnInvalidHookAccess()
 			updateHookTypesDev()
 			return updateRef(initialValue)
 		end,
-		-- ROBLOX deviation: Bindings are a feature unique to Roact
+		-- deviation: Bindings are a feature unique to Roact
 		useBinding = function<T>(initialValue: T): (ReactBinding<T>, ReactBindingUpdater<T>)
 			currentHookNameInDev = "useBinding"
 			warnInvalidHookAccess()
@@ -2908,17 +2908,17 @@ local function renderWithHooks<Props, SecondArg>(
 
 	if __DEV__ then
 		hookTypesDev = if current ~= nil then (current._debugHookTypes :: any) :: Array<HookType> else nil
-		-- ROBLOX deviation START: index variable offset by one for Lua
+		-- deviation START: index variable offset by one for Lua
 		hookTypesUpdateIndexDev = 0
-		-- ROBLOX deviation END
+		-- deviation END
 		-- Used for hot reloading:
-		-- ROBLOX performance: eliminate unuseful cmp in hot path, we don't currently support hot reloading
+		-- performance: eliminate unuseful cmp in hot path, we don't currently support hot reloading
 		-- ignorePreviousDependencies =
 		--   current ~= nil and current.type ~= workInProgress.type
 	end
 
 	workInProgress.memoizedState = nil
-	-- ROBLOX performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
+	-- performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
 	workInProgress.updateQueue = nil
 	workInProgress.lanes = NoLanes
 
@@ -2962,7 +2962,7 @@ local function renderWithHooks<Props, SecondArg>(
 		local numberOfReRenders: number = 0
 		repeat
 			didScheduleRenderPhaseUpdateDuringThisPass = false
-			-- ROBLOX performance: use React 18 approach to avoid invariant in hot path
+			-- performance: use React 18 approach to avoid invariant in hot path
 			if numberOfReRenders >= RE_RENDER_LIMIT then
 				error(
 					Error.new(
@@ -2972,7 +2972,7 @@ local function renderWithHooks<Props, SecondArg>(
 			end
 
 			numberOfReRenders += 1
-			-- ROBLOX performance: eliminate unuseful cmp in hot path, we don't currently support hot reloading
+			-- performance: eliminate unuseful cmp in hot path, we don't currently support hot reloading
 			-- if __DEV__ then
 			-- Even when hot reloading, allow dependencies to stabilize
 			-- after first render to prevent infinite render phase updates.
@@ -2983,7 +2983,7 @@ local function renderWithHooks<Props, SecondArg>(
 			currentHook = nil
 			workInProgressHook = nil
 
-			-- ROBLOX performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
+			-- performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
 			workInProgress.updateQueue = nil
 
 			if __DEV__ then
@@ -3023,7 +3023,7 @@ local function renderWithHooks<Props, SecondArg>(
 
 	didScheduleRenderPhaseUpdate = false
 
-	-- ROBLOX performance: use React 18 approach that avoid invariant in hot paths
+	-- performance: use React 18 approach that avoid invariant in hot paths
 	if didRenderTooFewHooks then
 		error(
 			Error.new(

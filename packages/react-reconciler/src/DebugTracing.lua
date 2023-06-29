@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/43363e2795393a00fd77312a16d6b80e626c29de/packages/react-reconciler/src/DebugTracing.js
+-- upstream: https://github.com/facebook/react/blob/43363e2795393a00fd77312a16d6b80e626c29de/packages/react-reconciler/src/DebugTracing.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -17,9 +17,9 @@ local Shared = require(Packages.Shared)
 local console = Shared.console
 local exports = {}
 
--- ROBLOX deviation: hoist log so it's visible
+-- deviation: hoist log so it's visible
 local log
--- ROBLOX deviation: the nucelus emoji `(%c\u{269B}\u{FE0F}%c)` has been replaced with `*`
+-- deviation: the nucelus emoji `(%c\u{269B}\u{FE0F}%c)` has been replaced with `*`
 
 local ReactFiberLaneModule = require(script.Parent.ReactFiberLane)
 type Lane = ReactFiberLaneModule.Lane
@@ -32,10 +32,10 @@ local nativeConsole: Object = console
 local nativeConsoleLog: nil | Function = nil
 
 local pendingGroupArgs: Array<any> = {}
--- ROBLOX deviation: adjust starting indea for Lua 1-based arrays
+-- deviation: adjust starting indea for Lua 1-based arrays
 local printedGroupIndex: number = 0
 
--- ROBLOX deviation: Luau has no built-in way to convert decimal number to binary string
+-- deviation: Luau has no built-in way to convert decimal number to binary string
 function decimalToBinaryString(decimal: number): string
 	local result = ""
 	repeat
@@ -51,7 +51,7 @@ end
 
 local function formatLanes(laneOrLanes: Lane | Lanes): string
 	return "0b"
-		-- ROBLOX deviation: Luau has no built-in way to convert decimal number to binary string
+		-- deviation: Luau has no built-in way to convert decimal number to binary string
 		.. decimalToBinaryString(laneOrLanes)
 end
 
@@ -92,7 +92,7 @@ function log(...): ()
 	end
 end
 
--- ROBLOX deviation: remove color styling
+-- deviation: remove color styling
 local REACT_LOGO_STYLE = ""
 
 local function logCommitStarted(lanes: Lanes): ()
@@ -102,7 +102,7 @@ local function logCommitStarted(lanes: Lanes): ()
 				string.format("* commit (%s)", formatLanes(lanes)),
 				REACT_LOGO_STYLE,
 				"",
-				-- ROBLOX deviation: remove style
+				-- deviation: remove style
 				""
 			)
 		end
@@ -119,11 +119,11 @@ local function logCommitStopped(): ()
 end
 exports.logCommitStopped = logCommitStopped
 
--- ROBLOX deviation: use raw Lua table
+-- deviation: use raw Lua table
 -- const PossiblyWeakMap = typeof WeakMap === 'function' ? WeakMap : Map;
 -- $FlowFixMe: Flow cannot handle polymorphic WeakMaps
 
--- ROBLOX TODO: restore the color message formatting from upstream
+-- TODO: restore the color message formatting from upstream
 -- local wakeableIDs: Map<Wakeable, number> = {}
 -- local wakeableID: number = 0
 -- local function getWakeableID(wakeable: Wakeable): number
@@ -142,12 +142,12 @@ local function logComponentSuspended(componentName: string, wakeable: Wakeable):
 	if _G.__DEV__ then
 		if enableDebugTracing then
 			-- local _id = getWakeableID(wakeable)
-			-- ROBLOX deviation: our Wakeable can be a function or a callable table
+			-- deviation: our Wakeable can be a function or a callable table
 			-- local _display = wakeable.displayName or wakeable
 			log(
 				string.format("* %s suspended", componentName)
 				-- REACT_LOGO_STYLE,
-				-- ROBLOX deviation: remove color styling
+				-- deviation: remove color styling
 				-- "",
 				-- id,
 				-- display
@@ -156,7 +156,7 @@ local function logComponentSuspended(componentName: string, wakeable: Wakeable):
 				log(
 					string.format("* %s resolved", componentName)
 					-- REACT_LOGO_STYLE,
-					-- ROBLOX deviation: remove color styling
+					-- deviation: remove color styling
 					-- "",
 					-- id,
 					-- display
@@ -165,7 +165,7 @@ local function logComponentSuspended(componentName: string, wakeable: Wakeable):
 				log(
 					string.format("* %s rejected", componentName)
 					-- REACT_LOGO_STYLE,
-					-- ROBLOX deviation: remove color styling
+					-- deviation: remove color styling
 					-- "",
 					-- id,
 					-- display
@@ -183,7 +183,7 @@ local function logLayoutEffectsStarted(lanes: Lanes): ()
 				string.format("* layout effects (%s)", formatLanes(lanes))
 				-- REACT_LOGO_STYLE,
 				-- "",
-				-- ROBLOX deviation: strip color styling
+				-- deviation: strip color styling
 				-- ""
 			)
 		end
@@ -207,7 +207,7 @@ local function logPassiveEffectsStarted(lanes: Lanes): ()
 				string.format("* passive effects (%s)", formatLanes(lanes))
 				-- REACT_LOGO_STYLE,
 				-- "",
-				-- ROBLOX deviation: strip color styling
+				-- deviation: strip color styling
 				-- ""
 			)
 		end
@@ -231,7 +231,7 @@ local function logRenderStarted(lanes: Lanes): ()
 				string.format("* render (%s)", formatLanes(lanes))
 				-- REACT_LOGO_STYLE,
 				-- "",
-				-- ROBLOX deviation: strip color styling
+				-- deviation: strip color styling
 				-- ""
 			)
 		end
@@ -254,7 +254,7 @@ local function logForceUpdateScheduled(componentName: string, lane: Lane): ()
 			log(
 				string.format("* %s forced update (%s)", componentName, formatLanes(lane))
 				-- REACT_LOGO_STYLE,
-				-- ROBLOX deviation: strip color styling
+				-- deviation: strip color styling
 				-- "",
 				-- ""
 			)
@@ -269,7 +269,7 @@ local function logStateUpdateScheduled(componentName: string, lane: Lane, payloa
 			log(
 				string.format("* %s updated state (%s)", componentName, formatLanes(lane))
 				-- REACT_LOGO_STYLE,
-				-- ROBLOX deviation: strip color styling
+				-- deviation: strip color styling
 				-- "",
 				-- "",
 				-- payloadOrAction

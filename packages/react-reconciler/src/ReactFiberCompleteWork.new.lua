@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/87c023b1c1b00d6776b7031f6e105913ead355da/packages/react-reconciler/src/ReactFiberCompleteWork.new.js
+-- upstream: https://github.com/facebook/react/blob/87c023b1c1b00d6776b7031f6e105913ead355da/packages/react-reconciler/src/ReactFiberCompleteWork.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -159,7 +159,7 @@ local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
 
 local popRenderLanes = ReactFiberWorkLoop.popRenderLanes
--- ROBLOX deviation: this is a live value in WorkLoop's module state, so it must be accessed directly and not 'cached'
+-- deviation: this is a live value in WorkLoop's module state, so it must be accessed directly and not 'cached'
 -- local subtreeRenderLanes = ReactFiberWorkLoop.subtreeRenderLanes
 local markSpawnedWork = ReactFiberWorkLoop.markSpawnedWork
 local renderDidSuspend = ReactFiberWorkLoop.renderDidSuspend
@@ -189,7 +189,7 @@ local function markRef(workInProgress: Fiber)
 	workInProgress.flags = bit32.bor(workInProgress.flags, Ref)
 end
 
--- ROBLOX FIXME: type refinement
+-- FIXME: type refinement
 -- local function hadNoMutationsEffects(current: nil | Fiber, completedWork: Fiber)
 local function hadNoMutationsEffects(current, completedWork: Fiber)
 	local didBailout = current ~= nil and current.child == completedWork.child
@@ -249,7 +249,7 @@ if supportsMutation then
 				end
 				node = node.return_
 			end
-			-- ROBLOX FIXME Luau: Luau doesn't understand loop predicates above results in node.sibling ~= nil
+			-- FIXME Luau: Luau doesn't understand loop predicates above results in node.sibling ~= nil
 			(node.sibling :: Fiber).return_ = node.return_
 			node = node.sibling
 		end
@@ -739,7 +739,7 @@ local function bubbleProperties(completedWork: Fiber)
 		else
 			local child = completedWork.child
 			while child ~= nil do
-				-- ROBLOX performance: inline mergeLanes
+				-- performance: inline mergeLanes
 				-- newChildLanes = mergeLanes(
 				--   newChildLanes,
 				--   mergeLanes(child.lanes, child.childLanes)
@@ -749,7 +749,7 @@ local function bubbleProperties(completedWork: Fiber)
 				subtreeFlags = bit32.bor(subtreeFlags, child.subtreeFlags)
 				subtreeFlags = bit32.bor(subtreeFlags, child.flags)
 
-				-- ROBLOX note: this was missed in the "new" version of the file in React 17, but is fixed in React 18
+				-- NOTE: this was missed in the "new" version of the file in React 17, but is fixed in React 18
 				-- Update the return pointer so the tree is consistent. This is a code
 				-- smell because it assumes the commit phase is never concurrent with
 				-- the render phase. Will address during refactor to alternate model.
@@ -786,7 +786,7 @@ local function bubbleProperties(completedWork: Fiber)
 		else
 			local child = completedWork.child
 			while child ~= nil do
-				-- ROBLOX performance: inline mergeLanes
+				-- performance: inline mergeLanes
 				-- newChildLanes = mergeLanes(
 				--   newChildLanes,
 				--   mergeLanes(child.lanes, child.childLanes)
@@ -800,7 +800,7 @@ local function bubbleProperties(completedWork: Fiber)
 				subtreeFlags = bit32.bor(subtreeFlags, bit32.band(child.subtreeFlags, StaticMask))
 				subtreeFlags = bit32.bor(subtreeFlags, bit32.band(child.flags, StaticMask))
 
-				-- ROBLOX note: this was missed in the "new" version of the file in React 17, but is fixed in React 18
+				-- NOTE: this was missed in the "new" version of the file in React 17, but is fixed in React 18
 				-- Update the return pointer so the tree is consistent. This is a code
 				-- smell because it assumes the commit phase is never concurrent with
 				-- the render phase. Will address during refactor to alternate model.
@@ -851,7 +851,7 @@ local function completeWork(current, workInProgress: Fiber, renderLanes: Lanes):
 		popHostContainer(workInProgress)
 		popTopLevelLegacyContextObject(workInProgress)
 		resetMutableSourceWorkInProgressVersions()
-		-- ROBLOX FIXME: type coercion
+		-- FIXME: type coercion
 		-- local fiberRoot = (workInProgress.stateNode: FiberRoot)
 		local fiberRoot = workInProgress.stateNode
 		if fiberRoot.pendingContext then
@@ -1015,7 +1015,7 @@ local function completeWork(current, workInProgress: Fiber, renderLanes: Lanes):
 		local nextState: nil | SuspenseState = workInProgress.memoizedState
 
 		if enableSuspenseServerRenderer then
-			-- ROBLOX FIXME: remove :: recast once Luau understands if statement nil check
+			-- FIXME: remove :: recast once Luau understands if statement nil check
 			if nextState ~= nil and (nextState :: SuspenseState).dehydrated ~= nil then
 				if current == nil then
 					local wasHydrated = popHydrationState(workInProgress)
@@ -1069,7 +1069,7 @@ local function completeWork(current, workInProgress: Fiber, renderLanes: Lanes):
 								local primaryChildFragment = workInProgress.child
 								if primaryChildFragment ~= nil then
 									-- $FlowFixMe Flow doens't support type casting in combiation with the -= operator
-									-- ROBLOX deviation: remove recast to silence analyze
+									-- deviation: remove recast to silence analyze
 									workInProgress.treeBaseDuration -= primaryChildFragment.treeBaseDuration
 								end
 							end
@@ -1172,7 +1172,7 @@ local function completeWork(current, workInProgress: Fiber, renderLanes: Lanes):
 					local primaryChildFragment = workInProgress.child
 					if primaryChildFragment ~= nil then
 						-- $FlowFixMe Flow doens't support type casting in combiation with the -= operator
-						-- ROBLOX deviation: remove recast to silence analyze
+						-- deviation: remove recast to silence analyze
 						workInProgress.treeBaseDuration -= primaryChildFragment.treeBaseDuration
 					end
 				end

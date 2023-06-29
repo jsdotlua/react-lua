@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/cache.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/cache.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -31,24 +31,24 @@ local createContext = React.createContext
 --    The size of this cache is bounded by how many renders were profiled,
 --    and it will be fully reset between profiling sessions.
 
--- ROBLOX deviation START: Suspender needs a generic param to be type compatible with Thenable
+-- deviation START: Suspender needs a generic param to be type compatible with Thenable
 export type Suspender<R = any> = {
 	andThen: <U>(self: Thenable<R>, onFulfill: (R) -> () | U, onReject: (error: any) -> () | U) -> (),
 }
--- ROBLOX deviation END
+-- deviation END
 
 type PendingResult = {
-	status: number, -- ROBLOX TODO: Luau doesn't support literal: 0
+	status: number, -- TODO: Luau doesn't support literal: 0
 	value: Suspender,
 }
 
 type ResolvedResult<Value> = {
-	status: number, -- ROBLOX TODO: Luau doesn't support literal: 1
+	status: number, -- TODO: Luau doesn't support literal: 1
 	value: Value,
 }
 
 type RejectedResult = {
-	status: number, -- ROBLOX TODO: Luau doesn't support literal: 2
+	status: number, -- TODO: Luau doesn't support literal: 2
 	value: any,
 }
 
@@ -87,24 +87,24 @@ local CacheContext = createContext(nil)
 
 type Config = { useWeakMap: boolean? }
 
--- ROBLOX deviation START: only use WeakMap
+-- deviation START: only use WeakMap
 local entries: Map<Resource<any, any, any>, WeakMap<any, any>> = Map.new()
 local resourceConfigs: Map<Resource<any, any, any>, Config> = Map.new()
 
 local function getEntriesForResource(resource: any): WeakMap<any, any>
 	local entriesForResource = entries:get(resource) :: WeakMap<any, any>
 	if entriesForResource == nil then
-		-- ROBLOX deviation START: skip the check and just use WeakMap
+		-- deviation START: skip the check and just use WeakMap
 		-- local config = resourceConfigs:get(resource)
 		entriesForResource = WeakMap.new()
-		-- ROBLOX deviation END
+		-- deviation END
 
 		entries:set(resource, entriesForResource :: WeakMap<any, any>)
 	end
 
 	return entriesForResource :: WeakMap<any, any>
 end
--- ROBLOX deviation END
+-- deviation END
 
 local function accessResult<Input, Key, Value>(resource: any, fetch: (Input) -> Thenable<Value>, input: Input, key: Key): Result<Value>
 	local entriesForResource = getEntriesForResource(resource)
@@ -122,10 +122,10 @@ local function accessResult<Input, Key, Value>(resource: any, fetch: (Input) -> 
 				resolvedResult.status = Resolved
 				resolvedResult.value = value
 			end
-			-- ROBLOX deviation START: explicit return type
+			-- deviation START: explicit return type
 			-- end, function(error_)
 		end, function(error_): ()
-			-- ROBLOX deviation END
+			-- deviation END
 			if newResult.status == Pending then
 				local rejectedResult: RejectedResult = newResult :: any
 
@@ -136,10 +136,10 @@ local function accessResult<Input, Key, Value>(resource: any, fetch: (Input) -> 
 
 		newResult = {
 			status = Pending,
-			-- ROBLOX deviation START: needs cast
+			-- deviation START: needs cast
 			-- value = thenable,
 			value = thenable :: any,
-			-- ROBLOX deviation END
+			-- deviation END
 		}
 		entriesForResource:set(key, newResult)
 		return newResult
@@ -156,7 +156,7 @@ exports.createResource = function<Input, Key, Value>(
 	_config: Config?
 ): Resource<Input, Key, Value>
 	local config = _config or {}
-	-- ROBLOX deviation: define before reference
+	-- deviation: define before reference
 	local resource
 	resource = {
 		clear = function(): ()

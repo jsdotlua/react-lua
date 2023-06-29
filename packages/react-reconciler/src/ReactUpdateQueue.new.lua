@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactUpdateQueue.new.js
+-- upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactUpdateQueue.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -93,7 +93,7 @@ local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
@@ -107,7 +107,7 @@ local NoLanes = ReactFiberLane.NoLanes
 local isSubsetOfLanes = ReactFiberLane.isSubsetOfLanes
 local mergeLanes = ReactFiberLane.mergeLanes
 
--- ROBLOX deviation: lazy instantiate to avoid circular require
+-- deviation: lazy instantiate to avoid circular require
 local ReactFiberNewContext --= require(script.Parent["ReactFiberNewContext.new"])
 -- local enterDisallowedContextReadInDEV = ReactFiberNewContext.enterDisallowedContextReadInDEV
 -- local exitDisallowedContextReadInDEV = ReactFiberNewContext.exitDisallowedContextReadInDEV
@@ -136,9 +136,9 @@ local StrictMode = ReactTypeOfMode.StrictMode
 -- local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
 local markSkippedUpdateLanes = require(script.Parent.ReactFiberWorkInProgress).markSkippedUpdateLanes
 
--- ROBLOX deviation START: use if-then-error, which avoid string format and function call overhead, as in React 18
+-- deviation START: use if-then-error, which avoid string format and function call overhead, as in React 18
 -- local invariant = require(Packages.Shared).invariant
--- ROBLOX deviation END
+-- deviation END
 local describeError = require(Packages.Shared).describeError
 
 local ConsolePatchingDev = require(Packages.Shared).ConsolePatchingDev
@@ -148,7 +148,7 @@ local reenableLogs = ConsolePatchingDev.reenableLogs
 -- deviation: Common types
 type Array<T> = { [number]: T }
 
--- ROBLOX deviation: transplants UpdateQueue<> and SharedState<> types to ReactInternalTypes for export to createReactNoop
+-- deviation: transplants UpdateQueue<> and SharedState<> types to ReactInternalTypes for export to createReactNoop
 type Update<T> = ReactInternalTypes.Update<T>
 type UpdateQueue<T> = ReactInternalTypes.UpdateQueue<T>
 export type SharedQueue<T> = ReactInternalTypes.SharedQueue<T>
@@ -180,7 +180,7 @@ if __DEV__ then
 	end
 end
 
--- ROBLOX performance: use a recycle pool for update tables
+-- performance: use a recycle pool for update tables
 local poolInitSize = 210 -- TODO: Tune to LuaApps
 -- local poolAdditionalSize = 0
 local updatePool = table.create(poolInitSize)
@@ -215,17 +215,17 @@ local function cloneUpdateQueue<State>(current: Fiber, workInProgress: Fiber): (
 	local queue: UpdateQueue<State> = workInProgress.updateQueue :: any
 	local currentQueue: UpdateQueue<State> = current.updateQueue :: any
 	if queue == currentQueue then
-		-- ROBLOX deviation START: use our queue method for hot path optimizations
+		-- deviation START: use our queue method for hot path optimizations
 		local clone: UpdateQueue<State> = table.clone(currentQueue)
-		-- ROBLOX deviation END
+		-- deviation END
 		workInProgress.updateQueue = clone
 	end
 end
 exports.cloneUpdateQueue = cloneUpdateQueue
 
--- ROBLOX deviation START: add extra parameters here so updates can be create in single table ctor
+-- deviation START: add extra parameters here so updates can be create in single table ctor
 local function createUpdate(eventTime: number, lane: Lane, payload: any?, callback: (() -> ...any)?): Update<any>
-	-- ROBLOX performance: Use pooled update object when available
+	-- performance: Use pooled update object when available
 	if updatePoolIndex > 0 then
 		local update = updatePool[updatePoolIndex]
 		updatePool[updatePoolIndex] = nil
@@ -239,9 +239,9 @@ local function createUpdate(eventTime: number, lane: Lane, payload: any?, callba
 
 		return update :: Update<any>
 	end
-	-- ROBLOX deviation END
+	-- deviation END
 
-	-- ROBLOX performance FIXME: This warning is very noisy in practice and not
+	-- performance FIXME: This warning is very noisy in practice and not
 	-- actionable by Roact developers in any way. We should re-establish the
 	-- warning once we've done some tuning and thought more about what messaging
 	-- we want to convey to Roact users
@@ -342,7 +342,7 @@ local function enqueueCapturedUpdate<State>(workInProgress: Fiber, capturedUpdat
 						newLast.next = clone
 						newLast = clone
 					end
-					-- ROBLOX FIXME Luau: Luau needs to support repeat until nil pattern
+					-- FIXME Luau: Luau needs to support repeat until nil pattern
 					update = update.next :: Update<State>
 				until update == nil
 
@@ -398,14 +398,14 @@ local function getStateFromUpdate<State>(
 			if __DEV__ then
 				enterDisallowedContextReadInDEV()
 			end
-			-- ROBLOX deviation: Upstream binds this callback to the instance;
+			-- deviation: Upstream binds this callback to the instance;
 			-- in order for us to get the same behavior, we'd need to change the
 			-- signature of the updater, which doesn't make sense for our case
 			local nextState = payload(prevState, nextProps)
 			if __DEV__ then
 				if debugRenderPhaseSideEffectsForStrictMode and bit32.band(workInProgress.mode, StrictMode) ~= 0 then
 					disableLogs()
-					-- ROBLOX deviation: YOLO flag for disabling pcall
+					-- deviation: YOLO flag for disabling pcall
 					local ok, result
 					if not __YOLO__ then
 						ok, result = xpcall(payload, describeError, prevState, nextProps)
@@ -438,14 +438,14 @@ local function getStateFromUpdate<State>(
 			if __DEV__ then
 				enterDisallowedContextReadInDEV()
 			end
-			-- ROBLOX deviation: Upstream binds this callback to the instance;
+			-- deviation: Upstream binds this callback to the instance;
 			-- in order for us to get the same behavior, we'd need to change the
 			-- signature of the updater, which doesn't make sense for our case
 			partialState = payload(prevState, nextProps)
 			if __DEV__ then
 				if debugRenderPhaseSideEffectsForStrictMode and bit32.band(workInProgress.mode, StrictMode) ~= 0 then
 					disableLogs()
-					-- ROBLOX deviation: YOLO flag for disabling pcall
+					-- deviation: YOLO flag for disabling pcall
 					local ok, result
 					if not __YOLO__ then
 						ok, result = xpcall(payload, describeError, prevState, nextProps)
@@ -471,7 +471,7 @@ local function getStateFromUpdate<State>(
 			return prevState
 		end
 		-- Merge the partial state and the previous state.
-		-- ROBLOX TODO: the below optimziation doesn't work because: invalid argument #1 to 'clone' (table has a protected metatable)
+		-- TODO: the below optimziation doesn't work because: invalid argument #1 to 'clone' (table has a protected metatable)
 		-- local newState = if prevState ~= nil then table.clone(prevState :: any) else {}
 		return Object.assign({}, prevState, partialState)
 	elseif updateTag == ForceUpdate then
@@ -613,7 +613,7 @@ local function processUpdateQueue<State>(workInProgress: Fiber, props: any, inst
 					end
 				end
 			end
-			-- ROBLOX FIXME Luau: Luau needs to support repeat until nil pattern
+			-- FIXME Luau: Luau needs to support repeat until nil pattern
 			update = update.next :: Update<State>
 			if update == nil then
 				pendingQueue = queue.shared.pending
@@ -661,7 +661,7 @@ end
 exports.processUpdateQueue = processUpdateQueue
 
 local function callCallback(callback, context)
-	-- ROBLOX deviation START: use if-then-error, which avoid string format and function call overhead, as in React 18
+	-- deviation START: use if-then-error, which avoid string format and function call overhead, as in React 18
 	if type(callback) ~= "function" then
 		error(
 			string.format(
@@ -669,7 +669,7 @@ local function callCallback(callback, context)
 				tostring(callback)
 			)
 		)
-		-- ROBLOX deviation END
+		-- deviation END
 	end
 	callback(context)
 end
@@ -693,7 +693,7 @@ local function commitUpdateQueue<State>(finishedWork: Fiber, finishedQueue: Upda
 				callCallback(callback, instance)
 			end
 
-			-- ROBLOX performance: return this object to the pool
+			-- performance: return this object to the pool
 			table.clear(effect)
 			table.insert(updatePool, effect :: any)
 			updatePoolIndex += 1

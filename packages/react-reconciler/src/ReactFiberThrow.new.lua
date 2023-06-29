@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberThrow.new.js
+-- upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberThrow.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -12,7 +12,7 @@
 local Packages = script.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 type Error = LuauPolyfill.Error
 type Map<K, V> = { [K]: V }
@@ -76,12 +76,12 @@ local hasSuspenseContext = ReactFiberSuspenseContext.hasSuspenseContext
 local InvisibleParentSuspenseContext = ReactFiberSuspenseContext.InvisibleParentSuspenseContext
 local suspenseStackCursor = ReactFiberSuspenseContext.suspenseStackCursor
 
--- ROBLOX FIXME: these will incur a dependency cycle
+-- FIXME: these will incur a dependency cycle
 -- onUncaughtError would be very easy to extract out, or to transplant into this file
 local ReactFiberWorkLoop
 local markLegacyErrorBoundaryAsFailedRef, isAlreadyFailedLegacyErrorBoundaryRef, pingSuspendedRootRef
 
--- ROBLOX deviation: lazy initialize ReactFiberWorkLoop to prevent cyclic module dependency
+-- deviation: lazy initialize ReactFiberWorkLoop to prevent cyclic module dependency
 local markLegacyErrorBoundaryAsFailed = function(...)
 	if not markLegacyErrorBoundaryAsFailedRef then
 		ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
@@ -127,7 +127,7 @@ function createRootErrorUpdate(
 	fiber: Fiber,
 	errorInfo: CapturedValue<Error>,
 	lane: Lane,
-	-- ROBLOX deviation: parameterize method to avoid circular dependency
+	-- deviation: parameterize method to avoid circular dependency
 	onUncaughtError
 ): Update<any>
 	local update = createUpdate(NoTimestamp, lane)
@@ -170,7 +170,7 @@ function createClassErrorUpdate(fiber: Fiber, errorInfo: CapturedValue<Error>, l
 				-- This gets reset before we yield back to the browser.
 				-- TODO: Warn in strict mode if getDerivedStateFromError is
 				-- not defined.
-				-- ROBLOX FIXME: used to be `this` upstream, needs verification by ReactIncremental unwinding test
+				-- FIXME: used to be `this` upstream, needs verification by ReactIncremental unwinding test
 				markLegacyErrorBoundaryAsFailed(inst)
 
 				-- Only log here if componentDidCatch is the only error boundary method defined
@@ -178,7 +178,7 @@ function createClassErrorUpdate(fiber: Fiber, errorInfo: CapturedValue<Error>, l
 			end
 			local error_ = errorInfo.value
 			local stack = errorInfo.stack
-			-- ROBLOX FIXME: used to be `this` upstream, needs verification by ReactIncremental unwinding test
+			-- FIXME: used to be `this` upstream, needs verification by ReactIncremental unwinding test
 			inst:componentDidCatch(error_, {
 				componentStack = stack or "",
 			})
@@ -212,8 +212,8 @@ local function attachPingListener(root: FiberRoot, wakeable: Wakeable, lanes: La
 	local pingCache: Map<Wakeable, (Set<any> | Map<Wakeable, Set<any>>)> | nil = root.pingCache
 	local threadIDs
 	if pingCache == nil then
-		-- ROBLOX deviation: use table in place of WeakMap
-		-- ROBLOX performance: slight re-ordering so we initialize the table in one shot
+		-- deviation: use table in place of WeakMap
+		-- performance: slight re-ordering so we initialize the table in one shot
 		threadIDs = {} :: Set<any>
 		root.pingCache = {
 			[wakeable] = threadIDs,
@@ -270,12 +270,12 @@ function throwException(
 			-- to render it.
 			local currentSource = sourceFiber.alternate
 			if currentSource then
-				-- ROBLOX performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
+				-- performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
 				sourceFiber.updateQueue = currentSource.updateQueue
 				sourceFiber.memoizedState = currentSource.memoizedState
 				sourceFiber.lanes = currentSource.lanes
 			else
-				-- ROBLOX performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
+				-- performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
 				sourceFiber.updateQueue = nil
 				sourceFiber.memoizedState = nil
 			end
@@ -300,7 +300,7 @@ function throwException(
 					local updateQueue = {
 						[wakeable] = true,
 					}
-					-- ROBLOX performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
+					-- performance TODO: return non-nil updateQueue object to the ReactUpdateQUeue pool
 					workInProgress.updateQueue = updateQueue
 				else
 					wakeables[wakeable] = true
@@ -311,7 +311,7 @@ function throwException(
 				-- nil and keep rendering. In the commit phase, we'll schedule a
 				-- subsequent synchronous update to re-render the Suspense.
 				--
-				-- Note: It doesn't matter whether the component that suspended was
+				-- NOTE: It doesn't matter whether the component that suspended was
 				-- inside a blocking mode tree. If the Suspense is outside of it, we
 				-- should *not* suspend the commit.
 				if bit32.band(workInProgress.mode, BlockingMode) == NoMode then
@@ -400,7 +400,7 @@ function throwException(
 			end
 			-- This boundary already captured during this render. Continue to the next
 			-- boundary.
-			workInProgress = workInProgress.return_ :: Fiber -- ROBLOX TODO: Luau narrowing doesn't understand this loop until nil pattern
+			workInProgress = workInProgress.return_ :: Fiber -- TODO: Luau narrowing doesn't understand this loop until nil pattern
 		until workInProgress == nil
 
 		-- No boundary was found. Fallthrough to error mode.
@@ -425,7 +425,7 @@ function throwException(
 			workInProgress.flags = bit32.bor(workInProgress.flags, ShouldCapture)
 			local lane = pickArbitraryLane(rootRenderLanes)
 			workInProgress.lanes = mergeLanes(workInProgress.lanes, lane)
-			-- ROBLOX deviation: parameterize method onUncaughtError to avoid circular dependency
+			-- deviation: parameterize method onUncaughtError to avoid circular dependency
 			local update = createRootErrorUpdate(workInProgress, errorInfo, lane, onUncaughtError)
 			enqueueCapturedUpdate(workInProgress, update)
 			return
@@ -454,7 +454,7 @@ function throwException(
 				return
 			end
 		end
-		workInProgress = workInProgress.return_ :: Fiber -- ROBLOX TODO: Luau narrowing doesn't understand this loop until nil pattern
+		workInProgress = workInProgress.return_ :: Fiber -- TODO: Luau narrowing doesn't understand this loop until nil pattern
 	until workInProgress == nil
 end
 

@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react-reconciler/src/ReactStrictModeWarnings.new.js
+-- upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react-reconciler/src/ReactStrictModeWarnings.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -10,7 +10,7 @@
  ]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
@@ -39,7 +39,7 @@ if _G.__DEV__ then
 	local findStrictRoot = function(fiber: Fiber): Fiber | nil
 		local maybeStrictRoot = nil
 
-		-- ROBLOX FIXME Luau: Luau needs to understand while not nil loops
+		-- FIXME Luau: Luau needs to understand while not nil loops
 		local node: Fiber? = fiber
 		while node ~= nil do
 			if bit32.band(node.mode, StrictMode) ~= 0 then
@@ -79,7 +79,7 @@ if _G.__DEV__ then
 		if
 			typeof(instance.componentWillMount) == "function"
 			-- Don't warn about react-lifecycles-compat polyfilled components.
-			-- ROBLOX deviation: Lua doesn't allow fields on function
+			-- deviation: Lua doesn't allow fields on function
 			-- instance.componentWillMount.__suppressDeprecationWarning ~= true
 		then
 			table.insert(pendingComponentWillMountWarnings, fiber)
@@ -91,7 +91,7 @@ if _G.__DEV__ then
 
 		if
 			typeof(instance.componentWillReceiveProps) == "function"
-			-- ROBLOX deviation: Lua doesn't allow fields on function
+			-- deviation: Lua doesn't allow fields on function
 			-- instance.componentWillReceiveProps.__suppressDeprecationWarning ~= true
 		then
 			table.insert(pendingComponentWillReceivePropsWarnings, fiber)
@@ -106,7 +106,7 @@ if _G.__DEV__ then
 
 		if
 			typeof(instance.componentWillUpdate) == "function"
-			-- ROBLOX deviation: Lua doesn't allow fields on function
+			-- deviation: Lua doesn't allow fields on function
 			-- instance.componentWillUpdate.__suppressDeprecationWarning ~= true
 		then
 			table.insert(pendingComponentWillUpdateWarnings, fiber)
@@ -224,7 +224,7 @@ if _G.__DEV__ then
 		if next(componentWillMountUniqueNames) ~= nil then
 			local sortedNames = setToSortedString(componentWillMountUniqueNames)
 
-			-- ROBLOX TODO: Make decisions about whether or not we'll support these
+			-- TODO: Make decisions about whether or not we'll support these
 			-- methods in the first place
 			-- deviation: Remove some non-applicable information
 			console.warn(
@@ -242,7 +242,7 @@ if _G.__DEV__ then
 		if next(componentWillReceivePropsUniqueNames) ~= nil then
 			local sortedNames = setToSortedString(componentWillReceivePropsUniqueNames)
 
-			-- ROBLOX TODO: Make decisions about whether or not we'll support these
+			-- TODO: Make decisions about whether or not we'll support these
 			-- methods in the first place
 			-- deviation: Remove some non-applicable information
 			console.warn(
@@ -263,7 +263,7 @@ if _G.__DEV__ then
 		if next(componentWillUpdateUniqueNames) ~= nil then
 			local sortedNames = setToSortedString(componentWillUpdateUniqueNames)
 
-			-- ROBLOX TODO: Make decisions about whether or not we'll support these
+			-- TODO: Make decisions about whether or not we'll support these
 			-- methods in the first place
 			-- deviation: Remove some non-applicable information
 			console.warn(
@@ -298,10 +298,10 @@ if _G.__DEV__ then
 			return
 		end
 
-		-- ROBLOX FIXME Luau: Luau should narrow based on the nil guard
+		-- FIXME Luau: Luau should narrow based on the nil guard
 		local warningsForRoot = pendingLegacyContextWarning[strictRoot :: Fiber]
 
-		-- ROBLOX deviation: Lua can't have fields on functions
+		-- deviation: Lua can't have fields on functions
 		if
 			typeof(fiber.type) ~= "function"
 			and (
@@ -312,7 +312,7 @@ if _G.__DEV__ then
 		then
 			if warningsForRoot == nil then
 				warningsForRoot = {}
-				-- ROBLOX FIXME Luau: Luau should narrow based on the nil guard
+				-- FIXME Luau: Luau should narrow based on the nil guard
 				pendingLegacyContextWarning[strictRoot :: Fiber] = warningsForRoot
 			end
 			table.insert(warningsForRoot, fiber)
@@ -356,7 +356,7 @@ if _G.__DEV__ then
 	end
 
 	ReactStrictModeWarnings.discardPendingWarnings = function()
-		-- ROBLOX performance? use table.clear instead of assigning new array
+		-- performance? use table.clear instead of assigning new array
 		table.clear(pendingComponentWillMountWarnings)
 		table.clear(pendingUNSAFE_ComponentWillMountWarnings)
 		table.clear(pendingComponentWillReceivePropsWarnings)

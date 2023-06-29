@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/e706721490e50d0bd6af2cd933dbf857fd8b61ed/packages/scheduler/src/SchedulerMinHeap.js
+-- upstream: https://github.com/facebook/react/blob/e706721490e50d0bd6af2cd933dbf857fd8b61ed/packages/scheduler/src/SchedulerMinHeap.js
 --!strict
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
@@ -16,7 +16,7 @@ type Node = {
 }
 
 local exports = {}
--- ROBLOX deviation: This file contains several workarounds for Luau analysis issues by using the `::` operator
+-- deviation: This file contains several workarounds for Luau analysis issues by using the `::` operator
 local compare, siftUp, siftDown
 
 exports.push = function(heap: Heap, node: Node): ()

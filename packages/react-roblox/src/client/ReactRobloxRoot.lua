@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMRoot.js
+-- upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-dom/src/client/ReactDOMRoot.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -39,7 +39,7 @@ local unmarkContainerAsRoot = ReactRobloxComponentTree.unmarkContainerAsRoot
 -- local DOCUMENT_FRAGMENT_NODE = HTMLNodeType.DOCUMENT_FRAGMENT_NODE
 -- local ensureListeningTo = require(Packages.ReactDOMComponent).ensureListeningTo
 
--- ROBLOX deviation: Use the config-injecting entry point for the reconciler
+-- deviation: Use the config-injecting entry point for the reconciler
 local ReactFiberReconciler = require(script.Parent.Parent["ReactReconciler.roblox"])
 local createContainer = ReactFiberReconciler.createContainer
 local updateContainer = ReactFiberReconciler.updateContainer
@@ -116,7 +116,7 @@ function ReactRobloxRoot:unmount()
 	end)
 end
 
--- ROBLOX TODO: add Options type
+-- TODO: add Options type
 -- createRootImpl = function(
 --   container: Container,
 --   tag: RootTag,
@@ -171,7 +171,7 @@ end
 local exports = {}
 
 local function isValidContainer(node: any): boolean
-	-- ROBLOX TODO: This behavior will deviate, for now just check that it's an
+	-- TODO: This behavior will deviate, for now just check that it's an
 	-- instance, which should be good enough
 	return typeof(node) == "Instance"
 	-- return not not (
@@ -190,7 +190,7 @@ exports.isValidContainer = isValidContainer
 exports.createRoot = function(container: Container, options: RootOptions?): RootType
 	invariant(
 		isValidContainer(container),
-		-- ROBLOX deviation: Use roblox engine terminology
+		-- deviation: Use roblox engine terminology
 		"createRoot(...): Target container is not a Roblox Instance."
 	)
 	warnIfReactDOMContainerInDEV(container)
@@ -200,7 +200,7 @@ end
 exports.createBlockingRoot = function(container: Container, options: RootOptions?): RootType
 	invariant(
 		isValidContainer(container),
-		-- ROBLOX deviation: Use roblox engine terminology
+		-- deviation: Use roblox engine terminology
 		"createRoot(...): Target container is not a Roblox Instance."
 	)
 	warnIfReactDOMContainerInDEV(container)
@@ -213,7 +213,7 @@ end
 
 function warnIfReactDOMContainerInDEV(container)
 	if _G.__DEV__ then
-		-- ROBLOX TODO: This behavior will deviate; should we validate that the
+		-- TODO: This behavior will deviate; should we validate that the
 		-- container is not a PlayerGui of any sort?
 
 		-- if

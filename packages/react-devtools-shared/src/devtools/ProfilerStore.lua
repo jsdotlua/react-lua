@@ -90,16 +90,16 @@ function ProfilerStore.new(bridge: FrontendBridge, store: Store, defaultIsProfil
 	function profilerStore:onBridgeOperations(operations: Array<number>)
 		-- The first two values are always rendererID and rootID
 		local rendererID = operations[
-			1 --[[ ROBLOX adaptation: added 1 to array index ]]
+			1 --[[ adapatation: added 1 to array index ]]
 		]
 		local rootID = operations[
-			2 --[[ ROBLOX adaptation: added 1 to array index ]]
+			2 --[[ adapatation: added 1 to array index ]]
 		]
 		if self._isProfiling then
 			local profilingOperations = self._inProgressOperationsByRootID:get(rootID)
 			if profilingOperations == nil then
 				profilingOperations = { operations }
-				-- ROBLOX FIXME Luau: nil-ability always remove due to assignment if nil
+				-- FIXME Luau: nil-ability always remove due to assignment if nil
 				self._inProgressOperationsByRootID:set(rootID, profilingOperations :: Array<Array<number>>)
 			else
 				table.insert(profilingOperations, operations)

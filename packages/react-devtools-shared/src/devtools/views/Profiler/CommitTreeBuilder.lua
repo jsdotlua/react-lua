@@ -56,12 +56,12 @@ local function __printTree(commitTree: CommitTree)
 		local nodes, rootID = commitTree.nodes, commitTree.rootID
 		console.group("__printTree()")
 		local queue = { rootID, 0 }
-		-- ROBLOX TODO Luau? if length check > 0, remove() nil-ability could be removed
+		-- TODO Luau? if length check > 0, remove() nil-ability could be removed
 		while #queue > 0 do
 			local id = table.remove(queue, 1) :: number
 			local depth = table.remove(queue, 1) :: number
 			local node = nodes:get(id)
-			-- ROBLOX FIXME Luau: need to understand error() narrows node nil-ability
+			-- FIXME Luau: need to understand error() narrows node nil-ability
 			if node == nil then
 				error(string.format('Could not find node with id "%s" in commit tree', tostring(id)))
 			end
@@ -105,7 +105,7 @@ local function updateTree(commitTree: CommitTree, operations: Array<number>): Co
 
 	local id: number = (nil :: any) :: number -- Reassemble the string table.
 	local stringTable: Array<any> = {
-		-- ROBLOX deviation: element 1 corresponds to empty string, this is why key is "" instead of nil in snapshots
+		-- deviation: element 1 corresponds to empty string, this is why key is "" instead of nil in snapshots
 		"", -- ID = 0 corresponds to the null string.
 	}
 
@@ -113,13 +113,13 @@ local function updateTree(commitTree: CommitTree, operations: Array<number>): Co
 	local stringTableEnd = i + stringTableSize
 
 	while i < stringTableEnd do
-		-- ROBLOX deviation: don't binary encode strings, so store string directly rather than length
+		-- deviation: don't binary encode strings, so store string directly rather than length
 		-- local nextLength = operations[POSTFIX_INCREMENT()]
 		-- local nextString = utfDecodeString(Array.slice(operations, i, i + nextLength))
 		local nextString = operations[POSTFIX_INCREMENT()]
 
 		table.insert(stringTable, nextString)
-		-- ROBLOX deviation: don't binary encode strings, so no need to move pointer
+		-- deviation: don't binary encode strings, so no need to move pointer
 		-- i = i + nextLength
 	end
 
@@ -212,7 +212,7 @@ local function updateTree(commitTree: CommitTree, operations: Array<number>): Co
 				debug_("Re-order", ("fiber %s children %s"):format(tostring(id), tostring(Array.join(children, ","))))
 			end
 			local node = getClonedNode(id)
-			-- ROBLOX FIXME Luau: this cast shouldn't be necessary
+			-- FIXME Luau: this cast shouldn't be necessary
 			node.children = Array.from(children) :: Array<number>
 		elseif operation == TREE_OPERATION_UPDATE_TREE_BASE_DURATION then
 			id = operations[POSTFIX_INCREMENT()]
@@ -270,12 +270,12 @@ local function getCommitTree(ref: {
 		return commitTrees[commitIndex]
 	end
 	local profilingData = profilerStore:profilingData()
-	-- ROBLOX FIXME Luau: need to understand error() means profilingData gets nil-ability stripped. needs type states.
+	-- FIXME Luau: need to understand error() means profilingData gets nil-ability stripped. needs type states.
 	if profilingData == nil then
 		error("No profiling data available")
 	end
 	local dataForRoot = (profilingData :: ProfilingDataFrontend).dataForRoots:get(rootID)
-	-- ROBLOX FIXME Luau: need to understand error() means profilingData gets nil-ability stripped. needs type states.
+	-- FIXME Luau: need to understand error() means profilingData gets nil-ability stripped. needs type states.
 	if dataForRoot == nil then
 		error(string.format('Could not find profiling data for root "%s"', tostring(rootID)))
 	end

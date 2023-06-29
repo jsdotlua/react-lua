@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/store.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/store.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -37,7 +37,7 @@ local getSavedComponentFilters = utils.getSavedComponentFilters
 local saveComponentFilters = utils.saveComponentFilters
 local separateDisplayNameAndHOCs = utils.separateDisplayNameAndHOCs
 local shallowDiffers = utils.shallowDiffers
--- ROBLOX deviation: don't use string encoding
+-- deviation: don't use string encoding
 -- local utfDecodeString = utils.utfDecodeString
 local storage = require(script.Parent.Parent.storage)
 local localStorageGetItem = storage.localStorageGetItem
@@ -81,7 +81,7 @@ type Config = {
 --  * ContextProviders can subscribe to the Store for specific things they want to provide.
 --  */
 
--- ROBLOX deviation: equivalent of sub-class
+-- deviation: equivalent of sub-class
 type Store_static = {
 	new: (bridge: FrontendBridge, config: Config?) -> Store,
 }
@@ -92,7 +92,7 @@ function Store.new(bridge: FrontendBridge, config: Config?): Store
 	local self = setmetatable(EventEmitter.new() :: any, StoreMetatable) :: any
 	config = config or {}
 
-	-- ROBLOX deviation: define fields in constructor
+	-- deviation: define fields in constructor
 	self._bridge = bridge
 
 	-- Should new nodes be collapsed by default when added to the tree?
@@ -182,7 +182,7 @@ function Store.new(bridge: FrontendBridge, config: Config?): Store
 
 	self._profilerStore = ProfilerStore.new(bridge, self, isProfiling)
 
-	-- ROBLOX deviation: bind methods which don't pass self to this instance
+	-- deviation: bind methods which don't pass self to this instance
 	self._onBridgeOperations = self.onBridgeOperations
 	self.onBridgeOperations = function(...)
 		self:_onBridgeOperations(...)
@@ -249,7 +249,7 @@ function Store:assertMapSizeMatchesRootCount(map: Map<any, any>, mapName: string
 	end
 end
 
--- ROBLOX deviation: get / setters not supported in luau
+-- deviation: get / setters not supported in luau
 function Store:getCollapseNodesByDefault(): boolean
 	return self._collapseNodesByDefault
 end
@@ -282,7 +282,7 @@ function Store:setComponentFilters(value: Array<ComponentFilter>): ()
 	local haveEnabledFiltersChanged = #prevEnabledComponentFilters ~= #nextEnabledComponentFilters
 
 	if not haveEnabledFiltersChanged then
-		-- ROBLOX deviation: 1-indexing use 1 not 0
+		-- deviation: 1-indexing use 1 not 0
 		for i = 1, #nextEnabledComponentFilters do
 			local prevFilter = prevEnabledComponentFilters[i]
 			local nextFilter = nextEnabledComponentFilters[i]
@@ -372,7 +372,7 @@ function Store:getElementAtIndex(index: number): Element?
 	local root
 	local rootWeight = 0
 
-	-- ROBLOX deviation: 1-indexing use 1 not 0
+	-- deviation: 1-indexing use 1 not 0
 	for i = 1, #self._roots do
 		rootID = self._roots[i]
 		root = (self._idToElement:get(rootID) :: any) :: Element
@@ -491,7 +491,7 @@ function Store:getOwnersListForElement(ownerID: number): Array<Element>
 
 		local unsortedIDs = self._ownersMap:get(ownerID)
 
-		-- ROBLOX FIXME Luau: without manual annotation: Types Set and nil cannot be compared with ~= because they do not have the same metatable
+		-- FIXME Luau: without manual annotation: Types Set and nil cannot be compared with ~= because they do not have the same metatable
 		if unsortedIDs ~= nil then
 			local depthMap: Map<number, number> = Map.new({ { ownerID, 0 } })
 
@@ -503,7 +503,7 @@ function Store:getOwnersListForElement(ownerID: number): Array<Element>
 			-- Seems better to defer the cost, since the set of ids is probably pretty small.
 			local sortedIDs = Array.sort(
 				Array.from(unsortedIDs),
-				-- ROBLOX FIXME Luau: shouldn't need this annotation?
+				-- FIXME Luau: shouldn't need this annotation?
 				function(idA: number, idB: number)
 					return (self:getIndexOfElementID(idA) or 0) - (self:getIndexOfElementID(idB) or 0)
 				end
@@ -532,7 +532,7 @@ function Store:getOwnersListForElement(ownerID: number): Array<Element>
 						if parent == nil then
 							break
 						end
-						-- ROBLOX FIXME Luau: need type states to understand parent isn't nil due to break
+						-- FIXME Luau: need type states to understand parent isn't nil due to break
 						parentID = (parent :: Element).parentID
 					end
 
@@ -609,7 +609,7 @@ function Store:toggleIsCollapsed(id: number, isCollapsed: boolean): ()
 				(element :: Element).isCollapsed = true
 
 				local weightDelta = 1 - (element :: Element).weight
-				-- ROBLOX FIXME Luau: shouldn't need this annoatation, should infer correctly
+				-- FIXME Luau: shouldn't need this annoatation, should infer correctly
 				local parentElement: Element? = (self._idToElement:get(element.parentID) :: any) :: Element
 				while parentElement ~= nil do
 					-- We don't need to break on a collapsed parent in the same way as the expand case below.
@@ -619,7 +619,7 @@ function Store:toggleIsCollapsed(id: number, isCollapsed: boolean): ()
 				end
 			end
 		else
-			-- ROBLOX FIXME Luau: shouldn't need this annoatation, should infer correctly
+			-- FIXME Luau: shouldn't need this annoatation, should infer correctly
 			local currentElement: Element? = element
 
 			while currentElement ~= nil do
@@ -633,7 +633,7 @@ function Store:toggleIsCollapsed(id: number, isCollapsed: boolean): ()
 						then 1
 						else (currentElement :: Element).weight
 					local weightDelta = newWeight - oldWeight
-					-- ROBLOX FIXME Luau: shouldn't need this annoatation, should infer correctly
+					-- FIXME Luau: shouldn't need this annoatation, should infer correctly
 					local parentElement: Element? = (self._idToElement:get(currentElement.parentID) :: any) :: Element
 
 					while parentElement ~= nil do
@@ -724,14 +724,14 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 	-- This is a mapping of removed ID -> parent ID:
 	local removedElementIDs = {}
 	-- We'll use the parent ID to adjust selection if it gets deleted.
-	-- ROBLOX deviation: 1-indexed means this is 3, not 2
+	-- deviation: 1-indexed means this is 3, not 2
 	local i = 3
 	local stringTable: Array<any> = {
-		-- ROBLOX deviation: element 1 corresponds to empty string
+		-- deviation: element 1 corresponds to empty string
 		"", -- ID = 0 corresponds to the null string.
 	}
 
-	-- ROBLOX deviation: use postfix as a function
+	-- deviation: use postfix as a function
 	local function POSTFIX_INCREMENT()
 		local prevI = i
 		i += 1
@@ -742,17 +742,17 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 	local stringTableEnd = i + stringTableSize
 
 	while i < stringTableEnd do
-		-- ROBLOX deviation: don't binary encode strings, so store string directly rather than length
+		-- deviation: don't binary encode strings, so store string directly rather than length
 		-- local nextLength = operations[POSTFIX_INCREMENT()]
 		-- local nextString = utfDecodeString(Array.slice(operations, i, i + nextLength))
 		local nextString = operations[POSTFIX_INCREMENT()]
 
 		table.insert(stringTable, nextString)
-		-- ROBLOX deviation: don't binary encode strings, so no need to move pointer
+		-- deviation: don't binary encode strings, so no need to move pointer
 		-- i = i + nextLength
 	end
 
-	-- ROBLOX deviation: 1-indexing, use <= not <
+	-- deviation: 1-indexing, use <= not <
 	while i <= #operations do
 		local operation = operations[i]
 		if operation == TREE_OPERATION_ADD then
@@ -812,13 +812,13 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 				i += 1
 
 				local displayNameStringID = operations[i]
-				-- ROBLOX deviation: 1-indexed
+				-- deviation: 1-indexed
 				local displayName = stringTable[displayNameStringID + 1]
 
 				i += 1
 
 				local keyStringID = operations[i]
-				-- ROBLOX deviation: 1-indexed
+				-- deviation: 1-indexed
 				local key = stringTable[keyStringID + 1]
 
 				i += 1
@@ -872,7 +872,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 				if ownerID > 0 then
 					local set = self._ownersMap:get(ownerID)
 
-					-- ROBLOX FIXME Luau: needs type states to eliminate the manual cast
+					-- FIXME Luau: needs type states to eliminate the manual cast
 					if set == nil then
 						set = Set.new()
 						self._ownersMap:set(ownerID, set :: Set<number>)
@@ -885,7 +885,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 			local removeLength = operations[i + 1]
 			i += 2
 
-			-- ROBLOX deviation: 1-indexing use 1 not 0
+			-- deviation: 1-indexing use 1 not 0
 			for removeIndex = 1, removeLength do
 				local id = (operations[i] :: any) :: number
 
@@ -951,7 +951,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 
 				if ownerID > 0 then
 					local set = self._ownersMap:get(ownerID)
-					-- ROBLOX FIXME Luau: without any cast below, we get: Types Set and nil cannot be compared with ~= because they do not have the same metatable
+					-- FIXME Luau: without any cast below, we get: Types Set and nil cannot be compared with ~= because they do not have the same metatable
 					if set :: any ~= nil then
 						(set :: Set<number>):delete(id)
 					end
@@ -980,7 +980,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 				error("Children cannot be added or removed during a reorder operation.")
 			end
 
-			-- ROBLOX deviation: 1-indexing use 1 not 0
+			-- deviation: 1-indexing use 1 not 0
 			for j = 1, numChildren do
 				local childID = operations[i + j - 1]
 
@@ -1035,7 +1035,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 		end
 	end
 	if __DEBUG__ then
-		-- ROBLOX deviation: inline require here to work around circular dependency
+		-- deviation: inline require here to work around circular dependency
 		local devtoolsUtils = require(script.Parent.utils) :: any
 		local printStore = devtoolsUtils.printStore
 		console.log(printStore(self, true))

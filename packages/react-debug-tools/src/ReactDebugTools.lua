@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-debug-tools/src/ReactDebugTools.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-debug-tools/src/ReactDebugTools.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -9,10 +9,10 @@
  ]]
 local exports = {}
 local reactDebugHooksModule = require(script.Parent.ReactDebugHooks)
--- ROBLOX deviation START: add re-exporting of types
+-- deviation START: add re-exporting of types
 export type HooksNode = reactDebugHooksModule.HooksNode
 export type HooksTree = reactDebugHooksModule.HooksTree
--- ROBLOX deviation END
+-- deviation END
 local inspectHooks = reactDebugHooksModule.inspectHooks
 local inspectHooksOfFiber = reactDebugHooksModule.inspectHooksOfFiber
 exports.inspectHooks = inspectHooks

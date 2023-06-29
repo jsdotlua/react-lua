@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/42c3c967d1e4ca4731b47866f2090bc34caa086c/packages/shared/invariant.js
+-- upstream: https://github.com/facebook/react/blob/42c3c967d1e4ca4731b47866f2090bc34caa086c/packages/shared/invariant.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -23,7 +23,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 
 local function invariant(condition, format, ...)
-	-- ROBLOX TODO: we should encapsulate all formatting compatibility here,
+	-- TODO: we should encapsulate all formatting compatibility here,
 	-- rather than spreading workarounds throughout the codebase, eg this
 	-- should print an array without the need for a table.concat on the consumer side
 	if not condition then

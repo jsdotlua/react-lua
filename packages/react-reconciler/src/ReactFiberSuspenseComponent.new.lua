@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/1faf9e3dd5d6492f3607d5c721055819e4106bc6/packages/react-reconciler/src/ReactFiberSuspenseComponent.new.js
+-- upstream: https://github.com/facebook/react/blob/1faf9e3dd5d6492f3607d5c721055819e4106bc6/packages/react-reconciler/src/ReactFiberSuspenseComponent.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -147,10 +147,10 @@ exports.findFirstSuspended = function(row: Fiber): Fiber?
 			if node.return_ == nil or node.return_ == row then
 				return nil
 			end
-			-- ROBLOX FIXME Luau: Luau narrowing doesn't understand this loop until nil pattern
+			-- FIXME Luau: Luau narrowing doesn't understand this loop until nil pattern
 			node = node.return_ :: Fiber
 		end
-		-- ROBLOX FIXME Luau: Luau narrowing doesn't understand this loop until nil pattern
+		-- FIXME Luau: Luau narrowing doesn't understand this loop until nil pattern
 		(node.sibling :: Fiber).return_ = node.return_
 		node = node.sibling :: Fiber
 	end

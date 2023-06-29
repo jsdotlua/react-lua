@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/Roblox/roact/blob/master/src/createSignal.lua
+-- upstream: https://github.com/Roblox/roact/blob/master/src/createSignal.lua
 --[[
 	* Copyright (c) Roblox Corporation. All rights reserved.
 	* Licensed under the Apache License, Version 2.0 (the "License");
@@ -75,7 +75,7 @@ local function createSignal(): ((Function) -> (() -> ()), (...any) -> ())
 
 		firing = false
 
-		-- ROBLOX performance: use table.clear
+		-- performance: use table.clear
 		table.clear(suspendedConnections)
 	end
 

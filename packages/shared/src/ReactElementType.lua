@@ -21,18 +21,18 @@ export type Source = {
 	lineNumber: number,
 }
 type Key = string | number
--- ROBLOX deviation: we're using the TypeScript definition here, which is more strict
+-- deviation: we're using the TypeScript definition here, which is more strict
 export type ReactElement<P = Object, T = any> = {
 	["$$typeof"]: number,
 
-	-- ROBLOX FIXME Luau: Luau has some trouble and inlining the type param from createElement doesn't help
+	-- FIXME Luau: Luau has some trouble and inlining the type param from createElement doesn't help
 	type: React_StatelessFunctionalComponent<P> | React_ComponentType<P> | string,
 	-- type: T,
 	key: Key | nil,
 	ref: any,
 	props: P,
 
-	-- ROBLOX deviation: upstream has this as interface, which is extensible, Luau types are closed by default
+	-- deviation: upstream has this as interface, which is extensible, Luau types are closed by default
 	-- ReactFiber
 	_owner: any,
 

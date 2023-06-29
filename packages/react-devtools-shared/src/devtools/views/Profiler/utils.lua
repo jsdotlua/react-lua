@@ -94,10 +94,10 @@ local function prepareProfilingDataFrontendFromBackendAndStore(
 				initialTreeBaseDurations = Map.new(initialTreeBaseDurations),
 				interactionCommits = Map.new(interactionCommits),
 				interactions = Map.new(interactions),
-				-- ROBLOX FIXME Luau: need type states to not need manual annotation
+				-- FIXME Luau: need type states to not need manual annotation
 				operations = operations :: Array<Array<number>>,
 				rootID = rootID,
-				-- ROBLOX FIXME Luau: need type states to not need manual annotation
+				-- FIXME Luau: need type states to not need manual annotation
 				snapshots = snapshots :: Map<number, SnapshotNode>,
 			})
 		end
@@ -182,7 +182,7 @@ local function prepareProfilingDataExport(profilingDataFrontend: ProfilingDataFr
 					ref.timestamp
 				return {
 					changeDescriptions = if changeDescriptions ~= nil
-						-- ROBLOX FIXME: types aren't flowing from entries through to return value of Array.from
+						-- FIXME: types aren't flowing from entries through to return value of Array.from
 						then Array.from(changeDescriptions:entries()) :: Array<Array<any>>
 						else nil,
 					duration = duration,
@@ -194,7 +194,7 @@ local function prepareProfilingDataExport(profilingDataFrontend: ProfilingDataFr
 				}
 			end),
 			displayName = displayName,
-			-- ROBLOX FIXME: types aren't flowing from entries through to return value of Array.from
+			-- FIXME: types aren't flowing from entries through to return value of Array.from
 			initialTreeBaseDurations = Array.from(initialTreeBaseDurations:entries()) :: Array<Array<number>>,
 			interactionCommits = Array.from(interactionCommits:entries()) :: Array<Array<Array<number> | number>>,
 			interactions = Array.from(interactions:entries()) :: Array<Array<any>>,

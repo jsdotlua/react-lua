@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberHydrationContext.new.js
+-- upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberHydrationContext.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -10,7 +10,7 @@
  ]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 -- FIXME (roblox): remove this when our unimplemented
@@ -269,7 +269,7 @@ function tryToClaimNextHydratableInstance(fiber: Fiber)
 		hydrationParentFiber = fiber
 		return
 	end
-	-- ROBLOX FIXME Luau: Luau doesn't narrow based on the guard above
+	-- FIXME Luau: Luau doesn't narrow based on the guard above
 	local firstAttemptedInstance = nextInstance :: HydratableInstance
 	if not tryHydrate(fiber, nextInstance) then
 		-- If we can't hydrate this instance let's try the next one.

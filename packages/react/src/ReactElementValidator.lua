@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/bc6b7b6b16f771bfc8048fe15e211ac777253b64/packages/react/src/ReactElementValidator.js
+-- upstream: https://github.com/facebook/react/blob/bc6b7b6b16f771bfc8048fe15e211ac777253b64/packages/react/src/ReactElementValidator.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -19,7 +19,7 @@ local console = require(Packages.Shared).console
 local inspect = LuauPolyfill.util.inspect
 type Function = (...any) -> ...any
 
--- ROBLOX deviation START: import extra types
+-- deviation START: import extra types
 local ReactTypes = require(Packages.Shared)
 type React_StatelessFunctionalComponent<P> = ReactTypes.React_StatelessFunctionalComponent<P>
 type React_ComponentType<P> = ReactTypes.React_ComponentType<P>
@@ -28,7 +28,7 @@ type React_ElementProps<ElementType> = ReactTypes.React_ElementProps<ElementType
 type ReactElement<P, T> = ReactTypes.ReactElement<P, T>
 type React_Node = ReactTypes.React_Node
 type Source = ReactTypes.Source
--- ROBLOX deviation END
+-- deviation END
 
 local isValidElementType = require(Packages.Shared).isValidElementType
 local getComponentName = require(Packages.Shared).getComponentName
@@ -55,7 +55,7 @@ local describeUnknownElementTypeFrameInDEV =
 
 local exports = {}
 
--- ROBLOX FIXME Luau: annotation shouldn't be necessary
+-- FIXME Luau: annotation shouldn't be necessary
 local function setCurrentlyValidatingElement(element: ReactElement<any, any> | nil)
 	if _G.__DEV__ then
 		if element then
@@ -65,10 +65,10 @@ local function setCurrentlyValidatingElement(element: ReactElement<any, any> | n
 				ownerArgument = owner.type
 			end
 			local stack = describeUnknownElementTypeFrameInDEV(element.type, element._source, ownerArgument);
-			-- ROBLOX FIXME Luau: needs normalization: Cannot call non-function (() -> ()) | ((string?) -> (...any))
+			-- FIXME Luau: needs normalization: Cannot call non-function (() -> ()) | ((string?) -> (...any))
 			(setExtraStackFrame :: (...any) -> ())(stack)
 		else
-			-- ROBLOX FIXME Luau: needs normalization: Cannot call non-function (() -> ()) | ((string?) -> (...any))
+			-- FIXME Luau: needs normalization: Cannot call non-function (() -> ()) | ((string?) -> (...any))
 			(setExtraStackFrame :: (...any) -> ())(nil)
 		end
 	end
@@ -94,7 +94,7 @@ local function getDeclarationErrorAddendum(): string
 	return ""
 end
 
--- ROBLOX FIXME Luau: annotation shouldn't be necessary
+-- FIXME Luau: annotation shouldn't be necessary
 local function getSourceInfoErrorAddendum(source: Source | nil): string
 	if source ~= nil then
 		local fileName = string.gsub(source.fileName, "^.*[\\/]", "")
@@ -104,7 +104,7 @@ local function getSourceInfoErrorAddendum(source: Source | nil): string
 	return ""
 end
 
--- ROBLOX FIXME Luau: needs explicit annotation, even though call site and nil check should be enough
+-- FIXME Luau: needs explicit annotation, even though call site and nil check should be enough
 local function getSourceInfoErrorAddendumForProps(elementProps: React_ElementProps<any>?): string
 	if elementProps ~= nil then
 		return getSourceInfoErrorAddendum(elementProps.__source)
@@ -119,7 +119,7 @@ end
 --  */
 local ownerHasKeyUseWarning = {}
 
--- ROBLOX FIXME Luau: shouldn't need this annotation on parentType
+-- FIXME Luau: shouldn't need this annotation on parentType
 local function getCurrentComponentErrorInfo(parentType: React_ComponentType<any> | string | Function): string
 	local info = getDeclarationErrorAddendum()
 
@@ -128,10 +128,10 @@ local function getCurrentComponentErrorInfo(parentType: React_ComponentType<any>
 			then parentType
 			else if typeof(parentType) == "table" then parentType.displayName or parentType.name else nil
 
-		-- ROBLOX deviation: Lua doesn't store fields on functions, so try and get the name via reflection
+		-- deviation: Lua doesn't store fields on functions, so try and get the name via reflection
 		if not parentName and typeof(parentType) == "function" then
 			local functionName = debug.info(parentType, "n")
-			-- ROBLOX note: unlike other places, upstream doesn't default the component name string in this message
+			-- NOTE: unlike other places, upstream doesn't default the component name string in this message
 			parentName = if functionName ~= "" then functionName else nil
 		end
 
@@ -154,19 +154,19 @@ end
 --  * @param {*} parentType element's parent's type.
 --  * @param {*} tableKey ROBLOX deviation: key provided by the children table
 --  */
--- ROBLOX deviation START: add explicit optional table key parameter, move key check to after we mark it validated, since we may not have an explicit key (and will use tableKey to validate)
+-- deviation START: add explicit optional table key parameter, move key check to after we mark it validated, since we may not have an explicit key (and will use tableKey to validate)
 local function validateExplicitKey<P>(element: ReactElement<P, any>, parentType, tableKey: any?)
 	if element._store == nil or element._store.validated then
 		return
 	end
-	-- ROBLOX FIXME Luau: doesn't narrow based on branch above
+	-- FIXME Luau: doesn't narrow based on branch above
 	(element._store :: any).validated = true
-	-- ROBLOX note: Consider this element valid if only _one_ key is
+	-- NOTE: Consider this element valid if only _one_ key is
 	-- present, otherwise proceed and check for error states
 	if (element.key ~= nil) ~= (tableKey ~= nil) then
 		return
 	end
-	-- ROBLOX deviation END
+	-- deviation END
 	local currentComponentErrorInfo = getCurrentComponentErrorInfo(parentType)
 	if ownerHasKeyUseWarning[currentComponentErrorInfo] then
 		return
@@ -184,10 +184,10 @@ local function validateExplicitKey<P>(element: ReactElement<P, any>, parentType,
 
 	if _G.__DEV__ then
 		setCurrentlyValidatingElement(element)
-		-- ROBLOX deviation START: Account for conflict between "key" prop and deviated table key behavior (in addition to missing key warnings)
+		-- deviation START: Account for conflict between "key" prop and deviated table key behavior (in addition to missing key warnings)
 		-- Both forms of key were provided
 		if element.key ~= nil and tableKey ~= nil then
-			-- ROBLOX TODO: Link to special Roact documentation that accounts
+			-- TODO: Link to special Roact documentation that accounts
 			-- for deviation instead of react docs
 			console.error(
 				'Child element received a "key" prop ("%s") in addition to a key in '
@@ -209,7 +209,7 @@ local function validateExplicitKey<P>(element: ReactElement<P, any>, parentType,
 				childOwner
 			)
 		end
-		-- ROBLOX deviation END
+		-- deviation END
 		setCurrentlyValidatingElement(nil)
 	end
 end
@@ -289,9 +289,9 @@ local function validatePropTypes<P>(element: ReactElement<P, any>)
 		if propTypes or validateProps then
 			-- Intentionally inside to avoid triggering lazy initializers:
 			local name = getComponentName(type)
-			-- ROBLOX deviation: adds support for legacy Roact's validateProps()
+			-- deviation: adds support for legacy Roact's validateProps()
 			checkPropTypes(propTypes, validateProps, element.props, "prop", name, element)
-			-- ROBLOX TODO: upstream this any, PropTypes is a bogus key check on purpose
+			-- TODO: upstream this any, PropTypes is a bogus key check on purpose
 		elseif (type :: any).PropTypes ~= nil and not propTypesMisspellWarningShown then
 			propTypesMisspellWarningShown = true
 			-- Intentionally inside to avoid triggering lazy initializers:
@@ -301,8 +301,8 @@ local function validatePropTypes<P>(element: ReactElement<P, any>)
 				name or "Unknown"
 			)
 		end
-		-- ROBLOX TODO: upstream this any, PropTypes is a bogus key check on purpose
-		-- ROBLOX deviation: we simplify this check since we never supported this in the first place
+		-- TODO: upstream this any, PropTypes is a bogus key check on purpose
+		-- deviation: we simplify this check since we never supported this in the first place
 		if (type :: any).getDefaultProps ~= nil then
 			console.error(
 				"getDefaultProps is only used on classic React.createClass "
@@ -341,7 +341,7 @@ local function validateFragmentProps<P>(fragment: ReactElement<P & Object, any>)
 	end
 end
 
--- ROBLOX deviation START: add strong types based on definitely-typed approach on createElement
+-- deviation START: add strong types based on definitely-typed approach on createElement
 local function jsxWithValidation<P, T>(
 	type: T,
 	props: P & React_ElementProps<T>,
@@ -350,7 +350,7 @@ local function jsxWithValidation<P, T>(
 	source: Source?,
 	self: any?
 )
-	-- ROBLOX deviation END
+	-- deviation END
 	local validType = isValidElementType(type)
 
 	-- // We warn in this case but don't throw. We expect the element creation to
@@ -412,7 +412,7 @@ local function jsxWithValidation<P, T>(
 			if isStaticChildren then
 				if Array.isArray(children) then
 					for i = 1, #children do
-						-- ROBLOX FIXME Luau: needs normalization
+						-- FIXME Luau: needs normalization
 						validateChildKeys(children[i], type :: any)
 					end
 
@@ -430,7 +430,7 @@ local function jsxWithValidation<P, T>(
 					end
 				end
 			else
-				-- ROBLOX FIXME Luau: needs normalization
+				-- FIXME Luau: needs normalization
 				validateChildKeys(children, type :: any)
 			end
 		end
@@ -450,7 +450,7 @@ local function jsxWithValidation<P, T>(
 	end
 
 	if type == REACT_FRAGMENT_TYPE then
-		-- ROBLOX FIXME Luau: luau doesn't understand narrowing of above branch
+		-- FIXME Luau: luau doesn't understand narrowing of above branch
 		validateFragmentProps((element :: any) :: ReactElement<any, any>)
 	else
 		validatePropTypes((element :: any) :: ReactElement<any, any>)
@@ -472,13 +472,13 @@ exports.jsxWithValidationDynamic = function(type, props, key)
 	return jsxWithValidation(type, props, key, false)
 end
 
--- ROBLOX deviation START: add strong types based on definitely-typed approach on createElement
+-- deviation START: add strong types based on definitely-typed approach on createElement
 local function createElementWithValidation<P, T>(
 	type_: React_StatelessFunctionalComponent<P> | React_ComponentType<P> | string,
 	props: (P & React_ElementProps<T>)?,
 	...: React_Node
 ): ReactElement<P, T>
-	-- ROBLOX deviation END
+	-- deviation END
 	local validType = isValidElementType(type_)
 
 	-- // We warn in this case but don't throw. We expect the element creation to
@@ -507,7 +507,7 @@ local function createElementWithValidation<P, T>(
 		else
 			typeString = typeof(type_)
 			if type_ ~= nil then
-				-- ROBLOX deviation: print the table/string in readable form to give a clue, if no other info was gathered
+				-- deviation: print the table/string in readable form to give a clue, if no other info was gathered
 				info ..= "\n" .. inspect(type_)
 			end
 		end
@@ -523,7 +523,7 @@ local function createElementWithValidation<P, T>(
 		end
 	end
 
-	-- ROBLOX FIXME Luau: hard cast to any, needs normalization to avoid 'React_ComponentType<P>' could not be converted into 'React_ComponentType<P>'
+	-- FIXME Luau: hard cast to any, needs normalization to avoid 'React_ComponentType<P>' could not be converted into 'React_ComponentType<P>'
 	local element = createElement(type_ :: any, props, ...)
 
 	-- // The result can be nullish if a mock or a custom function is used.
@@ -538,10 +538,10 @@ local function createElementWithValidation<P, T>(
 	-- // (Rendering will throw with a helpful message and as soon as the type is
 	-- // fixed, the key warnings will appear.)
 	if validType then
-		-- ROBLOX deviation: skips (1) type and (2) props - starts from 3 to the end varargs (iterate through children)
+		-- deviation: skips (1) type and (2) props - starts from 3 to the end varargs (iterate through children)
 		for i = 1, select("#", ...) do
-			-- ROBLOX deviation: selects the ith child from this function's arguments to validate
-			-- ROBLOX FIXME Luau: hard cast to any, needs normalization to avoid 'React_ComponentType<P>' could not be converted into 'React_ComponentType<P>'
+			-- deviation: selects the ith child from this function's arguments to validate
+			-- FIXME Luau: hard cast to any, needs normalization to avoid 'React_ComponentType<P>' could not be converted into 'React_ComponentType<P>'
 			validateChildKeys(select(i, ...), type_ :: any)
 		end
 	end
@@ -596,13 +596,13 @@ exports.createElementWithValidation = createElementWithValidation
 -- 	return validatedFactory
 -- end
 
--- ROBLOX deviation START: add strong types based on definitely-typed approach on createElement
+-- deviation START: add strong types based on definitely-typed approach on createElement
 exports.cloneElementWithValidation = function<P, T>(
 	element: ReactElement<P, T>,
 	props: (P & React_ElementProps<T>)?,
 	...: React_Node
 ): ReactElement<P, T>
-	-- ROBLOX deviation END
+	-- deviation END
 	local arguments = { element, props, ... } :: Array<any>
 	local newElement = cloneElement(element, props, ...)
 	for i = 3, #arguments do

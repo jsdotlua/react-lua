@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/41694201988c5e651f0c3bc69921d5c9717be88b/packages/react/src/ReactForwardRef.js
+-- upstream: https://github.com/facebook/react/blob/41694201988c5e651f0c3bc69921d5c9717be88b/packages/react/src/ReactForwardRef.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -8,7 +8,7 @@
 *]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactSymbols = require(Packages.Shared).ReactSymbols
@@ -20,14 +20,14 @@ local REACT_FORWARD_REF_TYPE = ReactSymbols.REACT_FORWARD_REF_TYPE
 local REACT_MEMO_TYPE = ReactSymbols.REACT_MEMO_TYPE
 
 local exports = {}
--- ROBLOX TODO? should return Component's ELementType be REACT_FORWARD_REF_TYPE? probably, right?
+-- TODO? should return Component's ELementType be REACT_FORWARD_REF_TYPE? probably, right?
 exports.forwardRef = function<Props, ElementType>(
 	render: (props: Props, ref: React_Ref<ElementType>) -> React_Node
 ): React_AbstractComponent<Props, ElementType>
 	if _G.__DEV__ then
-		-- ROBLOX deviation START: Lua functions can't have properties given a table (which we can index to see if it's the Memo type)
+		-- deviation START: Lua functions can't have properties given a table (which we can index to see if it's the Memo type)
 		if typeof(render :: any) == "table" and (render :: any)["$$typeof"] == REACT_MEMO_TYPE then
-			-- ROBLOX deviation END
+			-- deviation END
 			console.error(
 				"forwardRef requires a render function but received a `memo` "
 					.. "component. Instead of forwardRef(memo(...)), use "
@@ -70,7 +70,7 @@ exports.forwardRef = function<Props, ElementType>(
 	}
 	if _G.__DEV__ then
 		local ownName
-		-- ROBLOX deviation: use metatables to approximate Object.defineProperty logic
+		-- deviation: use metatables to approximate Object.defineProperty logic
 		setmetatable(elementType, {
 			__index = function(self, key)
 				if key == "displayName" then
@@ -81,7 +81,7 @@ exports.forwardRef = function<Props, ElementType>(
 			__newindex = function(self, key, value)
 				if key == "displayName" then
 					ownName = value
-					-- ROBLOX deviation: render is a function and cannot have properties
+					-- deviation: render is a function and cannot have properties
 					-- if (render.displayName == null) {
 					--   render.displayName = name;
 					-- }
@@ -91,7 +91,7 @@ exports.forwardRef = function<Props, ElementType>(
 			end,
 		})
 	end
-	-- ROBLOX FIXME Luau: making us explicitly add nilable (optional) fields: because the former is missing fields 'forceUpdate', 'getChildContext', 'props', 'setState', and 'state
+	-- FIXME Luau: making us explicitly add nilable (optional) fields: because the former is missing fields 'forceUpdate', 'getChildContext', 'props', 'setState', and 'state
 	return (elementType :: any) :: React_AbstractComponent<Props, ElementType>
 end
 

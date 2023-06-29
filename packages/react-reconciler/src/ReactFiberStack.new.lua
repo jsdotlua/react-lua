@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/17f582e0453b808860be59ed3437c6a426ae52de/packages/react-reconciler/src/ReactFiberStack.new.js
+-- upstream: https://github.com/facebook/react/blob/17f582e0453b808860be59ed3437c6a426ae52de/packages/react-reconciler/src/ReactFiberStack.new.js
 --!strict
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -9,7 +9,7 @@
  * @flow
 ]]
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
@@ -51,7 +51,7 @@ local function pop<T>(cursor: StackCursor<T>, fiber: Fiber): ()
 	end
 
 	if _G.__DEV__ then
-		-- ROBLOX TODO: workaround for Luau analysis bug
+		-- TODO: workaround for Luau analysis bug
 		if fiber ~= fiberStack[index] :: Fiber then
 			console.error("Unexpected Fiber popped.")
 		end
@@ -59,7 +59,7 @@ local function pop<T>(cursor: StackCursor<T>, fiber: Fiber): ()
 
 	local value = valueStack[index]
 	if value == NULL then
-		-- ROBLOX TODO: this is a sort of incorrect typing in upstream
+		-- TODO: this is a sort of incorrect typing in upstream
 		cursor.current = nil :: any
 	else
 		cursor.current = value
@@ -102,7 +102,7 @@ end
 local function resetStackAfterFatalErrorInDev()
 	if _G.__DEV__ then
 		index = 0
-		-- ROBLOX deviation: Original js simply sets `length`
+		-- deviation: Original js simply sets `length`
 		table.clear(valueStack)
 		table.clear(fiberStack)
 	end

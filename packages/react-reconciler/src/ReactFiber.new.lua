@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiber.new.js
+-- upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiber.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -16,11 +16,11 @@ local Object = LuauPolyfill.Object
 local Array = LuauPolyfill.Array
 local inspect = LuauPolyfill.util.inspect
 
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactTypes = require(Packages.Shared)
--- ROBLOX deviation: ReactElement is defined at the top level of Shared along
+-- deviation: ReactElement is defined at the top level of Shared along
 -- with the rest of the ReactTypes
 type ReactElement = ReactTypes.ReactElement<any, any>
 type ReactFragment = ReactTypes.ReactFragment
@@ -30,7 +30,7 @@ type ReactScope = ReactTypes.ReactScope
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
 export type Fiber = ReactInternalTypes.Fiber
 
--- ROBLOX deviation: Allow number keys for sparse arrays
+-- deviation: Allow number keys for sparse arrays
 type RoactStableKey = ReactInternalTypes.RoactStableKey
 local ReactRootTags = require(script.Parent.ReactRootTags)
 type RootTag = ReactRootTags.RootTag
@@ -135,7 +135,7 @@ local createFiberFromScope, createFiberFromProfiler, createFiberFromFragment, cr
 
 local debugCounter = 1
 
--- ROBLOX deviation START: inline this into its only caller to save hot path performance
+-- deviation START: inline this into its only caller to save hot path performance
 -- function FiberNode(
 -- 	tag: WorkTag,
 -- 	pendingProps: any,
@@ -144,7 +144,7 @@ local debugCounter = 1
 -- ): Fiber
 -- 	return {} :: any
 -- end
--- ROBLOX deviation END
+-- deviation END
 
 -- This is a constructor function, rather than a POJO constructor, still
 -- please ensure we do the following:
@@ -159,7 +159,7 @@ local debugCounter = 1
 --    is faster.
 -- 5) It should be easy to port this to a C struct and keep a C implementation
 --    compatible.
--- ROBLOX deviation START: add elementType, type, and lanes arguments so the table is created in a one-shot to avoid rehashing
+-- deviation START: add elementType, type, and lanes arguments so the table is created in a one-shot to avoid rehashing
 local function createFiber(
 	tag: WorkTag,
 	pendingProps: any,
@@ -171,7 +171,7 @@ local function createFiber(
 	lanes: Lanes?
 ): Fiber
 	-- $FlowFixMe: the shapes are exact here but Flow doesn't like constructors
-	-- ROBLOX deviation START: inline FiberNode(), do the table as a one-shot and avoid initializing nil fields for hot-path performance
+	-- deviation START: inline FiberNode(), do the table as a one-shot and avoid initializing nil fields for hot-path performance
 	local node: Fiber = {
 		-- Instance
 		tag = tag,
@@ -210,7 +210,7 @@ local function createFiber(
 	if enableProfilerTimer then
 		-- deviation: Unlikely that we have this same performance problem
 		--[[
-			-- Note: The following is done to avoid a v8 performance cliff.
+			-- NOTE: The following is done to avoid a v8 performance cliff.
 			--
 			-- Initializing the fields below to smis and later updating them with
 			-- double values will cause Fibers to end up having separate shapes.
@@ -256,23 +256,23 @@ local function createFiber(
 		-- end
 	end
 	return node
-	-- ROBLOX deviation END
+	-- deviation END
 end
 
--- ROBLOX deviation START: we inline all uses of this function for performance in hot path
+-- deviation START: we inline all uses of this function for performance in hot path
 function _shouldConstruct(Component)
 	-- deviation: With Lua metatables, members of the "prototype" can be
 	-- accessed directly. so we don't need to check for a prototype separately
 	return type(Component) ~= "function" and not not Component.isReactComponent
 end
--- ROBLOX deviation END
+-- deviation END
 
 local function isSimpleFunctionComponent(type_: any)
-	-- ROBLOX deviation START: inline shouldConstruct logic for hot path performance
+	-- deviation START: inline shouldConstruct logic for hot path performance
 	return type(type_) == "function"
 	-- deviation: function components don't support this anyway
 	-- type.defaultProps == undefined
-	-- ROBLOX deviation END: inline shouldConstruct logic for hot path performance
+	-- deviation END: inline shouldConstruct logic for hot path performance
 end
 
 local function resolveLazyComponentTag(Component: any): WorkTag
@@ -299,7 +299,7 @@ end
 
 -- This is used to create an alternate fiber to do work on.
 local function createWorkInProgress(current: Fiber, pendingProps: any): Fiber
-	-- ROBLOX FIXME Luau: Luau doesn't understand if nil then create pattern
+	-- FIXME Luau: Luau doesn't understand if nil then create pattern
 	local workInProgress = current.alternate :: Fiber
 	if workInProgress == nil then
 		-- We use a double buffering pooling technique because we know that we'll
@@ -434,7 +434,7 @@ local function resetWorkInProgress(workInProgress: Fiber, renderLanes: Lanes)
 		workInProgress.stateNode = nil
 
 		if enableProfilerTimer then
-			-- Note: We don't reset the actualTime counts. It's useful to accumulate
+			-- NOTE: We don't reset the actualTime counts. It's useful to accumulate
 			-- actual time across multiple render passes.
 			workInProgress.selfBaseDuration = 0
 			workInProgress.treeBaseDuration = 0
@@ -466,7 +466,7 @@ local function resetWorkInProgress(workInProgress: Fiber, renderLanes: Lanes)
 		end
 
 		if enableProfilerTimer then
-			-- Note: We don't reset the actualTime counts. It's useful to accumulate
+			-- NOTE: We don't reset the actualTime counts. It's useful to accumulate
 			-- actual time across multiple render passes.
 			workInProgress.selfBaseDuration = current.selfBaseDuration
 			workInProgress.treeBaseDuration = current.treeBaseDuration
@@ -486,7 +486,7 @@ local function createHostRootFiber(tag: RootTag): Fiber
 		mode = NoMode
 	end
 
-	-- ROBLOX deviation: We use a function for isDevtoolsPresent to handle the hook being changed at runtime
+	-- deviation: We use a function for isDevtoolsPresent to handle the hook being changed at runtime
 	if enableProfilerTimer and isDevToolsPresent() then
 		-- Always collect profile timings when DevTools are present.
 		-- This enables DevTools to start capturing timing at any point–
@@ -589,7 +589,7 @@ local function createFiberFromTypeAndProps(
 					if type_ == nil or (typeOfType_ == "table" and #Object.keys(type_) == 0) then
 						info ..= " You likely forgot to export your component from the file " .. "it's defined in, or you might have mixed up default and " .. "named imports."
 					elseif type_ ~= nil and typeOfType_ == "table" then
-						-- ROBLOX deviation: print the table/string in readable form to give a clue, if no other info was gathered
+						-- deviation: print the table/string in readable form to give a clue, if no other info was gathered
 						info ..= "\n" .. inspect(type_)
 					end
 					local ownerName
@@ -599,13 +599,13 @@ local function createFiberFromTypeAndProps(
 					if ownerName ~= nil and ownerName ~= "" then
 						info ..= "\n\nCheck the render method of `" .. ownerName .. "`."
 					elseif owner then
-						-- ROBLOX deviation: print the raw table in readable
+						-- deviation: print the raw table in readable
 						-- form to give a clue, if no other info was gathered
 						info ..= "\n" .. inspect(owner)
 					end
 				end
 
-				-- ROBLOX deviation: make output logic consistent across ReactFiber, ElementValidator, Memo, Context, and Lazy
+				-- deviation: make output logic consistent across ReactFiber, ElementValidator, Memo, Context, and Lazy
 				local typeString
 				if type_ == nil then
 					typeString = "nil"
@@ -630,13 +630,13 @@ local function createFiberFromTypeAndProps(
 		end
 	end
 
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(fiberTag, pendingProps, key, mode, type_, resolvedType, nil, lanes)
 
 	-- fiber.elementType = type_
 	-- fiber.type = resolvedType
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 
 	if __DEV__ then
 		fiber._debugOwner = owner
@@ -655,7 +655,7 @@ local function createFiberFromElement(element: ReactElement, mode: TypeOfMode, l
 	local pendingProps = element.props
 	local fiber = createFiberFromTypeAndProps(
 		type,
-		-- ROBLOX FIXME: according to upstream types, key can only be string?, but RoactStableKey deviation also says number
+		-- FIXME: according to upstream types, key can only be string?, but RoactStableKey deviation also says number
 		key :: string,
 		pendingProps,
 		owner,
@@ -670,10 +670,10 @@ local function createFiberFromElement(element: ReactElement, mode: TypeOfMode, l
 end
 
 function createFiberFromFragment(elements: ReactFragment, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(Fragment, elements, key, mode, nil, nil, nil, lanes)
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
@@ -684,7 +684,7 @@ function createFiberFromFundamental(
 	lanes: Lanes,
 	key: string?
 ): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		FundamentalComponent,
 		pendingProps,
@@ -698,17 +698,17 @@ function createFiberFromFundamental(
 	-- fiber.elementType = fundamentalComponent
 	-- fiber.type = fundamentalComponent
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 function createFiberFromScope(scope: ReactScope, pendingProps: any, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(ScopeComponent, pendingProps, key, mode, scope, scope, nil, lanes)
 	-- fiber.type = scope
 	-- fiber.elementType = scope
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
@@ -719,7 +719,7 @@ function createFiberFromProfiler(pendingProps: any, mode: TypeOfMode, lanes: Lan
 		end
 	end
 
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		Profiler,
 		pendingProps,
@@ -739,7 +739,7 @@ function createFiberFromProfiler(pendingProps: any, mode: TypeOfMode, lanes: Lan
 	-- fiber.elementType = REACT_PROFILER_TYPE
 	-- fiber.type = REACT_PROFILER_TYPE
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 
 	-- if enableProfilerTimer then
 	-- 	fiber.stateNode = {
@@ -752,7 +752,7 @@ function createFiberFromProfiler(pendingProps: any, mode: TypeOfMode, lanes: Lan
 end
 
 function createFiberFromSuspense(pendingProps: any, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber =
 		createFiber(SuspenseComponent, pendingProps, key, mode, REACT_SUSPENSE_TYPE, REACT_SUSPENSE_TYPE, nil, lanes)
 
@@ -763,12 +763,12 @@ function createFiberFromSuspense(pendingProps: any, mode: TypeOfMode, lanes: Lan
 	-- fiber.elementType = REACT_SUSPENSE_TYPE
 
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 function createFiberFromSuspenseList(pendingProps: any, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		SuspenseListComponent,
 		pendingProps,
@@ -787,12 +787,12 @@ function createFiberFromSuspenseList(pendingProps: any, mode: TypeOfMode, lanes:
 	-- end
 	-- fiber.elementType = REACT_SUSPENSE_LIST_TYPE
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 function createFiberFromOffscreen(pendingProps: OffscreenProps, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		OffscreenComponent,
 		pendingProps,
@@ -811,12 +811,12 @@ function createFiberFromOffscreen(pendingProps: OffscreenProps, mode: TypeOfMode
 	-- end
 	-- fiber.elementType = REACT_OFFSCREEN_TYPE
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 function createFiberFromLegacyHidden(pendingProps: OffscreenProps, mode: TypeOfMode, lanes: Lanes, key: string?): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(
 		LegacyHiddenComponent,
 		pendingProps,
@@ -835,39 +835,39 @@ function createFiberFromLegacyHidden(pendingProps: OffscreenProps, mode: TypeOfM
 	-- end
 	-- fiber.elementType = REACT_LEGACY_HIDDEN_TYPE
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 local function createFiberFromText(content: string, mode: TypeOfMode, lanes: Lanes): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(HostText, content, nil, mode, nil, nil, nil, lanes)
 	-- fiber.lanes = lanes
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 local function createFiberFromHostInstanceForDeletion(): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(HostComponent, nil, nil, NoMode, "DELETED", "DELETED")
 	-- TODO: These should not need a type.
 	-- fiber.elementType = "DELETED"
 	-- fiber.type = "DELETED"
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 local function createFiberFromDehydratedFragment(dehydratedNode: SuspenseInstance): Fiber
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(DehydratedFragment, nil, nil, NoMode, nil, nil, dehydratedNode)
 	-- fiber.stateNode = dehydratedNode
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 local function createFiberFromPortal(portal: ReactPortal, mode: TypeOfMode, lanes: Lanes): Fiber
 	local pendingProps = if portal.children ~= nil then portal.children else {}
-	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
+	-- deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(HostPortal, pendingProps, portal.key, mode, nil, nil, {
 		containerInfo = portal.containerInfo,
 		pendingChildren = nil, -- Used by persistent updates
@@ -879,12 +879,12 @@ local function createFiberFromPortal(portal: ReactPortal, mode: TypeOfMode, lane
 	-- 	pendingChildren = nil, -- Used by persistent updates
 	-- 	implementation = portal.implementation,
 	-- }
-	-- ROBLOX deviation END
+	-- deviation END
 	return fiber
 end
 
 -- Used for stashing WIP properties to replay failed work in DEV.
--- ROBLOX FIXME: `target: Fiber | nil` - Narrowing doesn't work even with nil check
+-- FIXME: `target: Fiber | nil` - Narrowing doesn't work even with nil check
 local function assignFiberPropertiesInDEV(target: Fiber, source: Fiber): Fiber
 	if target == nil then
 		-- This Fiber's initial properties will always be overwritten.

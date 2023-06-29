@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/types.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/types.js
 -- /*
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -39,7 +39,7 @@ exports.ElementTypeSuspenseList = 13
 -- Different types of elements displayed in the Elements tree.
 -- These types may be used to visually distinguish types,
 -- or to enable/disable certain functionality.
--- ROBLOX deviation: Luau doesn't support literals as types: 1 | 2 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
+-- deviation: Luau doesn't support literals as types: 1 | 2 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
 export type ElementType = number
 
 -- WARNING
@@ -51,14 +51,14 @@ exports.ComponentFilterDisplayName = 2
 exports.ComponentFilterLocation = 3
 exports.ComponentFilterHOC = 4
 
--- ROBLOX deviation: Luau doesn't support literals as types: 1 | 2 | 3 | 4
+-- deviation: Luau doesn't support literals as types: 1 | 2 | 3 | 4
 export type ComponentFilterType = number
 
 -- Hide all elements of types in this Set.
 -- We hide host components only by default.
 export type ElementTypeComponentFilter = {
 	isEnabled: boolean,
-	-- ROBLOX deviation: Luau doesn't support literals as types: 1
+	-- deviation: Luau doesn't support literals as types: 1
 	type: number,
 	value: ElementType,
 }
@@ -68,7 +68,7 @@ export type ElementTypeComponentFilter = {
 export type RegExpComponentFilter = {
 	isEnabled: boolean,
 	isValid: boolean,
-	-- ROBLOX deviation: Luau doesn't support literals as types: 2 | 3
+	-- deviation: Luau doesn't support literals as types: 2 | 3
 	type: number,
 	value: string,
 }
@@ -76,7 +76,7 @@ export type RegExpComponentFilter = {
 export type BooleanComponentFilter = {
 	isEnabled: boolean,
 	isValid: boolean,
-	-- ROBLOX deviation: Luau doesn't support literals as types: 4
+	-- deviation: Luau doesn't support literals as types: 4
 	type: number,
 }
 

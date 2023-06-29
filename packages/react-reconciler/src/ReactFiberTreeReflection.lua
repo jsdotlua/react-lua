@@ -1,5 +1,5 @@
 --!nonstrict
--- ROBLOX upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberTreeReflection.js
+-- upstream: https://github.com/facebook/react/blob/16654436039dd8f16a63928e71081c7745872e8f/packages/react-reconciler/src/ReactFiberTreeReflection.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -10,7 +10,7 @@
 ]]
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
@@ -46,7 +46,7 @@ local exports = {}
 
 local function getNearestMountedFiber(fiber: Fiber): Fiber?
 	local node = fiber
-	-- ROBLOX FIXME Luau: Luau should infer this annotation
+	-- FIXME Luau: Luau should infer this annotation
 	local nearestMounted: Fiber | nil = fiber
 	if not fiber.alternate then
 		-- If there is no alternate, this might be a new tree that isn't inserted
@@ -102,7 +102,7 @@ exports.isFiberMounted = function(fiber: Fiber): boolean
 	return getNearestMountedFiber(fiber) == fiber
 end
 
--- ROBLOX TODO: Missing React$ internal flow types
+-- TODO: Missing React$ internal flow types
 -- exports.isMounted = function(component: React$Component<any, any>): boolean
 exports.isMounted = function(component): boolean
 	if _G.__DEV__ then
@@ -128,7 +128,7 @@ exports.isMounted = function(component): boolean
 	if not fiber then
 		return false
 	else
-		-- ROBLOX FIXME: remove any cast once Luau understands if-statement nil check
+		-- FIXME: remove any cast once Luau understands if-statement nil check
 		local fiberNonNil: any = fiber
 		return getNearestMountedFiber(fiberNonNil) == fiber
 	end
@@ -280,7 +280,7 @@ exports.findCurrentHostFiber = function(parent: Fiber): Fiber?
 	end
 
 	-- Next we'll drill down this component to find the first HostComponent/Text.
-	-- ROBLOX FIXME Luau: Luau doesn't narrow based on above branch
+	-- FIXME Luau: Luau doesn't narrow based on above branch
 	local node: Fiber = currentParent :: Fiber
 	while true do
 		local child = node.child
@@ -300,10 +300,10 @@ exports.findCurrentHostFiber = function(parent: Fiber): Fiber?
 			if not return_ or return_ == currentParent then
 				return nil
 			end
-			-- ROBLOX FIXME Luau: Luau doesn't narrow based on above branch
+			-- FIXME Luau: Luau doesn't narrow based on above branch
 			node = return_ :: Fiber
 		end
-		-- ROBLOX FIXME Luau: Luau doesn't narrow based on above branch
+		-- FIXME Luau: Luau doesn't narrow based on above branch
 		(sibling :: Fiber).return_ = return_ :: Fiber
 		node = sibling :: Fiber
 	end
@@ -342,10 +342,10 @@ exports.findCurrentHostFiberWithNoPortals = function(parent: Fiber): Fiber?
 			if not return_ or return_ == currentParent then
 				return nil
 			end
-			-- ROBLOX FIXME Luau: Luau doesn't narrow based on above branch
+			-- FIXME Luau: Luau doesn't narrow based on above branch
 			node = return_ :: Fiber
 		end
-		-- ROBLOX FIXME Luau: Luau doesn't narrow based on above branch
+		-- FIXME Luau: Luau doesn't narrow based on above branch
 		(sibling :: Fiber).return_ = return_ :: Fiber
 		node = sibling :: Fiber
 	end
@@ -366,7 +366,7 @@ exports.doesFiberContain = function(parentFiber: Fiber, childFiber: Fiber): bool
 		if node == parentFiber or node == parentFiberAlternate then
 			return true
 		end
-		-- ROBLOX FIXME Luau: Luau doesn't understand loop until not nil pattern
+		-- FIXME Luau: Luau doesn't understand loop until not nil pattern
 		node = node.return_ :: Fiber
 	end
 	return false

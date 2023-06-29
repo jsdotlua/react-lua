@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/a774502e0ff2a82e3c0a3102534dbc3f1406e5ea/packages/shared/getComponentName.js
+-- upstream: https://github.com/facebook/react/blob/a774502e0ff2a82e3c0a3102534dbc3f1406e5ea/packages/shared/getComponentName.js
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
 *
@@ -11,7 +11,7 @@
 type Function = (...any) -> ...any
 local console = require(script.Parent.console)
 
--- ROBLOX deviation: inline this typedef to avoid upstream's circular dependency
+-- deviation: inline this typedef to avoid upstream's circular dependency
 type LazyComponent<T, P> = {
 	["$$typeof"]: number,
 	_payload: P,
@@ -68,10 +68,10 @@ local function getComponentName(type: any): string | nil
 	end
 
 	if typeofType == "function" then
-		-- ROBLOX deviation: we can't deref functions in Lua, so get the name of the function and move logic to table section
-		-- ROBLOX FIXME Luau: this line gets a bunch of bizarre errors in strict mode
+		-- deviation: we can't deref functions in Lua, so get the name of the function and move logic to table section
+		-- FIXME Luau: this line gets a bunch of bizarre errors in strict mode
 		local name = debug.info((type :: any) :: Function, "n")
-		-- ROBLOX deviaton:when name = (null) we want it to be treated as nil, not as an empty (truthy) string
+		-- deviation:when name = (null) we want it to be treated as nil, not as an empty (truthy) string
 		if name and string.len(name) > 0 then
 			return name
 		else
@@ -116,7 +116,7 @@ local function getComponentName(type: any): string | nil
 			local payload = lazyComponent._payload
 			local init = lazyComponent._init
 
-			-- ROBLOX performance: getComponentName won't throw, but init() might, extract it out to eliminate an anon function
+			-- performance: getComponentName won't throw, but init() might, extract it out to eliminate an anon function
 			local ok, result = xpcall(init, describeError, payload)
 			if ok then
 				return getComponentName(result)
@@ -124,7 +124,7 @@ local function getComponentName(type: any): string | nil
 				return nil
 			end
 		else
-			-- ROBLOX deviation: Normally, the `typeofType == "function"` check would
+			-- deviation: Normally, the `typeofType == "function"` check would
 			-- cover this case, but in Lua, class components are tables. We need
 			-- to check for that here and use the name the component was
 			-- assigned.
@@ -134,7 +134,7 @@ local function getComponentName(type: any): string | nil
 			if type.name then
 				return type.name
 			end
-			-- ROBLOX note: only use tostring() if its overridden to avoid "table: 0xabcd9012"
+			-- NOTE: only use tostring() if its overridden to avoid "table: 0xabcd9012"
 			local mt = getmetatable(type)
 			if mt and rawget(mt, "__tostring") then
 				return tostring(type)

@@ -33,7 +33,7 @@ local ReactRobloxHostTypes = require(script.Parent.Parent["ReactRobloxHostTypes.
 type HostInstance = ReactRobloxHostTypes.HostInstance
 local Tag = require(Packages.React).Tag
 
--- ROBLOX deviation: Essentially a placeholder for dom-specific logic, taking the place
+-- deviation: Essentially a placeholder for dom-specific logic, taking the place
 -- of ReactDOMComponent. Most of the logic will differ pretty dramatically
 
 type Array<T> = { [number]: T }
@@ -42,7 +42,7 @@ type Object = { [any]: any }
 -- deviation: Can't assign attributes to Roblox instances, so we use maps to
 -- store associated data for host instance features like binding and event
 -- management
--- ROBLOX FIXME: Stronger typing for EventManager
+-- FIXME: Stronger typing for EventManager
 
 local instanceToEventManager: { [HostInstance]: EventManager } = {}
 local instanceToBindings: { [HostInstance]: { [string]: any } } = {}
@@ -159,7 +159,7 @@ local function removeAllTags(hostInstance: Instance)
 end
 
 local function applyProp(hostInstance: Instance, key, newValue, oldValue): ()
-	-- ROBLOX performance: gets checked in applyProps so we can assume the key is valid
+	-- performance: gets checked in applyProps so we can assume the key is valid
 	-- if key == "ref" or key == "children" then
 	--   return
 	-- end
@@ -204,7 +204,7 @@ end
 
 local function applyProps(hostInstance: Instance, props: Object): ()
 	for propKey, value in props do
-		-- ROBLOX performance: avoid the function call by inlining check here
+		-- performance: avoid the function call by inlining check here
 		if propKey == "ref" or propKey == "children" then
 			continue
 		end
@@ -221,7 +221,7 @@ local function setInitialProperties(
 ): ()
 	-- deviation: Use Roact's prop application logic
 	local success, errorMessage = xpcall(applyProps, identity, domElement, rawProps)
-	-- ROBLOX deviation: Roblox renderer doesn't currently track where instances
+	-- deviation: Roblox renderer doesn't currently track where instances
 	-- were created the way that legacy Roact did, but DEV mode should include
 	-- component stack traces as a separate warning
 	if not success then
@@ -245,7 +245,7 @@ local function safelyApplyProperties(domElement: HostInstance, updatePayload: Ar
 		if value == Object.None then
 			value = nil
 		end
-		-- ROBLOX performance: avoid the function call by inlining check here
+		-- performance: avoid the function call by inlining check here
 		if propKey ~= "ref" and propKey ~= "children" then
 			applyProp(domElement, propKey, value, lastProps[propKey])
 		end
@@ -261,7 +261,7 @@ local function updateProperties(domElement: HostInstance, updatePayload: Array<a
 	local success, errorMessage = xpcall(safelyApplyProperties, identity, domElement, updatePayload, lastProps)
 
 	if not success then
-		-- ROBLOX deviation: Roblox renderer doesn't currently track where instances
+		-- deviation: Roblox renderer doesn't currently track where instances
 		-- were created the way that legacy Roact did, but DEV mode should include
 		-- component stack traces as a separate warning
 		local fullMessage = string.format(updatePropsError, domElement.Name, domElement.ClassName, errorMessage)
@@ -276,7 +276,7 @@ local function updateProperties(domElement: HostInstance, updatePayload: Array<a
 	end
 end
 
--- ROBLOX deviation: Clear out references to components when they unmount so we
+-- deviation: Clear out references to components when they unmount so we
 -- avoid leaking memory when they're removed
 local function cleanupHostComponent(domElement: HostInstance)
 	if instanceToEventManager[domElement] ~= nil then
@@ -310,7 +310,7 @@ return {
 	updateProperties = updateProperties,
 	cleanupHostComponent = cleanupHostComponent,
 
-	-- ROBLOX deviation: expose maps to test for Instance cleanups
+	-- deviation: expose maps to test for Instance cleanups
 	_instanceToEventManager = instanceToEventManager,
 	_instanceToBindings = instanceToBindings,
 }

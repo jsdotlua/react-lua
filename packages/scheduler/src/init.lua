@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/scheduler/index.js
+-- upstream: https://github.com/facebook/react/blob/efd8f6442d1aa7c4566fe812cba03e7e83aaccc3/packages/scheduler/index.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -20,7 +20,7 @@ end
 local Scheduler = initializeScheduler(nil --[[ no host config, use default ]])
 local Tracing = require(script.Tracing)
 local TracingSubscriptions = require(script.TracingSubscriptions)
--- ROBLOX deviation export Tracing type from the package exports to avoid direct file access
+-- deviation export Tracing type from the package exports to avoid direct file access
 export type Interaction = Tracing.Interaction
 
 -- Enables `act` to use mock scheduling logic when running tests. Since there
@@ -66,7 +66,7 @@ local exports = {
 	},
 }
 
--- ROBLOX FIXME Luau: need to fix CLI-56768 to remove any cast
+-- FIXME Luau: need to fix CLI-56768 to remove any cast
 for k, v in Tracing :: any do
 	exports.tracing[k] = v
 end

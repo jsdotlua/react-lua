@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/types.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/backend/types.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -18,7 +18,7 @@ type Set<T> = LuauPolyfill.Set<T>
 type Symbol = Object
 local exports = {}
 
--- ROBLOX deviation: rotriever re-exports types to the top-level export
+-- deviation: rotriever re-exports types to the top-level export
 local ReactShared = require(Packages.Shared)
 type ReactContext<T> = ReactShared.ReactContext<T>
 type Source = ReactShared.Source
@@ -33,7 +33,7 @@ type Interaction = DevToolsViewsProfilerTypes.Interaction
 
 type ResolveNativeStyle = (any) -> Object?
 
--- ROBLOX deviation: Luau currently can't express enumerations of literals
+-- deviation: Luau currently can't express enumerations of literals
 --  | 0 -- PROD
 --  | 1; -- DEV
 type BundleType = number
@@ -90,14 +90,14 @@ export type GetFiberIDForNative = (NativeType, boolean?) -> number | nil
 export type FindNativeNodesForFiberID = (number) -> Array<NativeType>?
 
 export type ReactProviderType<T> = {
-	-- ROBLOX TODO: Luau can't express field names that require quoted accessor
+	-- TODO: Luau can't express field names that require quoted accessor
 	--   $$typeof: Symbol | number,
 	[string]: Symbol | number,
 	_context: ReactContext<T>,
 	--   ...
 }
 
--- ROBLOX deviation: most of the instance methods are nil-able upstream, but we can't typecheck inline when using the colon call operator
+-- deviation: most of the instance methods are nil-able upstream, but we can't typecheck inline when using the colon call operator
 export type ReactRenderer = {
 	findFiberByHostInstance: (NativeType) -> Fiber?,
 	version: string,
@@ -151,7 +151,7 @@ export type ChangeDescription = {
 
 export type CommitDataBackend = {
 	-- Tuple of fiber ID and change description
-	-- ROBLOX TODO: how to express bracket syntax embedded in Array type?
+	-- TODO: how to express bracket syntax embedded in Array type?
 	-- changeDescriptions: Array<[number, ChangeDescription]> | nil,
 	changeDescriptions: Array<Array<number | ChangeDescription>> | nil,
 	duration: number,
@@ -168,7 +168,7 @@ export type ProfilingDataForRootBackend = {
 	commitData: Array<CommitDataBackend>,
 	displayName: string,
 	-- Tuple of Fiber ID and base duration
-	-- ROBLOX TODO: how to express bracket syntax embedded in Array type?
+	-- TODO: how to express bracket syntax embedded in Array type?
 
 	initialTreeBaseDurations: Array<any>,
 	-- Tuple of Interaction ID and commit indices
@@ -184,7 +184,7 @@ export type ProfilingDataBackend = {
 	rendererID: number,
 }
 
--- ROBLOX deviation: Roact stable keys - slightly widen the type definition of a
+-- deviation: Roact stable keys - slightly widen the type definition of a
 -- stable key so that it's likely to work with existing Roact code. Includes
 -- numbers for mixed/sparse tables
 type RoactStableKey = string | number
@@ -255,7 +255,7 @@ exports.InspectElementHydratedPathType = "hydrated-path"
 
 type InspectElementFullData = {
 	id: number,
-	-- ROBLOX TODO: Luau can't express literals
+	-- TODO: Luau can't express literals
 	--   type: 'full-data',
 	type: string,
 	value: InspectedElement,
@@ -263,7 +263,7 @@ type InspectElementFullData = {
 
 type InspectElementHydratedPath = {
 	id: number,
-	-- ROBLOX TODO: Luau can't express literals
+	-- TODO: Luau can't express literals
 	--   type: 'hydrated-path',
 	type: string,
 	path: Array<string | number>,
@@ -272,14 +272,14 @@ type InspectElementHydratedPath = {
 
 type InspectElementNoChange = {
 	id: number,
-	-- ROBLOX TODO: Luau can't express literals
+	-- TODO: Luau can't express literals
 	--   type: 'no-change',
 	type: string,
 }
 
 type InspectElementNotFound = {
 	id: number,
-	-- ROBLOX TODO: Luau can't express literals
+	-- TODO: Luau can't express literals
 	--   type: 'not-found',
 	type: string,
 }
@@ -292,7 +292,7 @@ export type InspectedElementPayload =
 
 export type InstanceAndStyle = { instance: Object | nil, style: Object | nil }
 
--- ROBLOX TODO: Luau can't express literals
+-- TODO: Luau can't express literals
 --   type Type = 'props' | 'hooks' | 'state' | 'context';
 type Type = string
 
@@ -325,15 +325,15 @@ export type RendererInterface = {
 	stopProfiling: () -> (),
 	storeAsGlobal: (number, Array<string | number>, number) -> (),
 	updateComponentFilters: (Array<ComponentFilter>) -> (),
-	-- ROBLOX TODO: once we are back up to 70% coverage, use [string]: any to approximate the ... below
+	-- TODO: once we are back up to 70% coverage, use [string]: any to approximate the ... below
 	--   ...
-	-- ROBLOX deviation: add specific exports needed so the contract is explcit and explicitly typed
+	-- deviation: add specific exports needed so the contract is explcit and explicitly typed
 	getDisplayNameForRoot: (fiber: Fiber) -> string,
 }
 
 export type Handler = (any) -> ()
 
--- ROBLOX TODO? move these types into shared so reconciler and devtools don't have circlar dep?
+-- TODO? move these types into shared so reconciler and devtools don't have circlar dep?
 export type DevToolsHook = {
 	listeners: {
 		[string]: Array<Handler>, --[[ ...]]
@@ -364,7 +364,7 @@ export type DevToolsHook = {
 		-- Added in v16.9 to support Fast Refresh
 		boolean?
 	) -> (),
-	-- ROBLOX deviation: track specific additions to interface needed instead of catch-all
+	-- deviation: track specific additions to interface needed instead of catch-all
 	supportsFiber: boolean,
 	isDisabled: boolean?,
 	--   ...

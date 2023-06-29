@@ -35,9 +35,9 @@ export type ReactFragment = ReactEmpty | Iterable<React_Node>
 
 export type ReactNodeList = ReactEmpty | React_Node
 
--- ROBLOX deviation START: Roblox renderer doesn't support TextNode, only use of this type is in this file
+-- deviation START: Roblox renderer doesn't support TextNode, only use of this type is in this file
 -- export type ReactText = string | number;
--- ROBLOX deviation END
+-- deviation END
 export type ReactProvider<T> = {
 	["$$typeof"]: number,
 	type: ReactProviderType<T>,
@@ -46,38 +46,38 @@ export type ReactProvider<T> = {
 	props: {
 		value: T,
 		children: ReactNodeList?,
-		-- ROBLOX deviation START: only make this open to extension if absolutely necessary
+		-- deviation START: only make this open to extension if absolutely necessary
 		-- ...
-		-- ROBLOX deviation END
+		-- deviation END
 	},
-	-- ROBLOX deviation START: only make this open to extension if absolutely necessary
+	-- deviation START: only make this open to extension if absolutely necessary
 	-- ...
-	-- ROBLOX deviation END
+	-- deviation END
 }
 
 export type ReactProviderType<T> = {
 	["$$typeof"]: number,
 	_context: ReactContext<T>,
-	-- ROBLOX deviation START: only make this open to extension if absolutely necessary
+	-- deviation START: only make this open to extension if absolutely necessary
 	-- ...
-	-- ROBLOX deviation END
+	-- deviation END
 }
 
 export type ReactConsumer<T> = {
 	["$$typeof"]: number,
-	type: ReactContext<T>, -- ROBLOX FIXME: Luau can't do <T> because:  Recursive type being used with different parameters
+	type: ReactContext<T>, -- FIXME: Luau can't do <T> because:  Recursive type being used with different parameters
 	key: nil | string,
 	ref: nil,
 	props: {
 		children: (value: T) -> ReactNodeList,
 		unstable_observedBits: number?,
-		-- ROBLOX deviation START: only make this open to extension if absolutely necessary
+		-- deviation START: only make this open to extension if absolutely necessary
 		-- ...
-		-- ROBLOX deviation END
+		-- deviation END
 	},
-	-- ROBLOX deviation START: only make this open to extension if absolutely necessary
+	-- deviation START: only make this open to extension if absolutely necessary
 	-- ...
-	-- ROBLOX deviation END
+	-- deviation END
 }
 
 export type ReactContext<T> = {
@@ -94,9 +94,9 @@ export type ReactContext<T> = {
 	-- This value may be added by application code
 	-- to improve DEV tooling display names
 	displayName: string?,
-	-- ROBLOX deviation START: only make this open to extension if absolutely necessary
+	-- deviation START: only make this open to extension if absolutely necessary
 	-- ...
-	-- ROBLOX deviation END
+	-- deviation END
 }
 
 export type ReactPortal = {
@@ -106,17 +106,17 @@ export type ReactPortal = {
 	children: ReactNodeList,
 	-- TODO: figure out the API for cross-renderer implementation.
 	implementation: any,
-	-- ROBLOX deviation START: only make this open to extension if absolutely necessary
+	-- deviation START: only make this open to extension if absolutely necessary
 	-- ...
-	-- ROBLOX deviation END
+	-- deviation END
 }
 
 export type RefObject = { current: any }
 
--- ROBLOX deviation START: No Luau support for numeric literal types
+-- deviation START: No Luau support for numeric literal types
 -- export type EventPriority = 0 | 1 | 2;
 export type EventPriority = number
--- ROBLOX deviation END
+-- deviation END
 
 local exports = {}
 exports.DiscreteEvent = 0
@@ -157,9 +157,9 @@ export type ReactScope = {
 
 export type ReactScopeQuery = (
 	type: string,
-	-- ROBLOX deviation START: leave closed to extension unless necessary
+	-- deviation START: leave closed to extension unless necessary
 	props: { [string]: any? },
-	-- ROBLOX deviation END
+	-- deviation END
 	instance: any
 ) -> boolean
 
@@ -170,7 +170,7 @@ export type ReactScopeInstance = {
 	getChildContextValues: <T>(context: ReactContext<T>) -> Array<T>,
 }
 
--- ROBLOX deviation START: Bindings are unique to Roact
+-- deviation START: Bindings are unique to Roact
 -- FIXME Luau: can't create recursive type with different parameters, so we
 -- need to split the generic `map` method into a different type and then
 -- re-combine those types together
@@ -184,7 +184,7 @@ type ReactBindingMap = {
 
 export type ReactBinding<T> = CoreReactBinding<T> & ReactBindingMap
 export type ReactBindingUpdater<T> = (T) -> ()
--- ROBLOX deviation END
+-- deviation END
 
 -- Mutable source version can be anything (e.g. number, string, immutable data structure)
 -- so long as it changes every time any part of the source changes.
@@ -232,7 +232,7 @@ export type Wakeable = {
 		self: Wakeable,
 		onFulfill: () -> ...any,
 		onReject: () -> ...any
-		-- ROBLOX FIXME Luau: needs union type packs to parse () | Wakeable
+		-- FIXME Luau: needs union type packs to parse () | Wakeable
 	) -> nil | Wakeable,
 	-- Special flag to opt out of tracing interactions across a Suspense boundary.
 	__reactDoNotTraceInteractions: boolean?,
@@ -241,7 +241,7 @@ export type Wakeable = {
 -- The subset of a Promise that React APIs rely on. This resolves a value.
 -- This doesn't require a return value neither from the handler nor the
 -- then function.
--- ROBLOX FIXME: workaround for Luau recursive type used with different parameters. delete this copy once that issue is resolved.
+-- FIXME: workaround for Luau recursive type used with different parameters. delete this copy once that issue is resolved.
 export type _Thenable<R> = {
 	andThen: <U>(self: _Thenable<R>, onFulfill: (R) -> ...U, onReject: (error: any) -> ...U) -> (),
 }
@@ -251,7 +251,7 @@ export type Thenable<R> = {
 		self: Thenable<R>,
 		onFulfill: (R) -> ...(_Thenable<U> | U),
 		onReject: (error: any) -> ...(_Thenable<U> | U)
-		-- ROBLOX FIXME Luau: need union type packs to parse () | Thenable<U>: CLI-49836
+		-- FIXME Luau: need union type packs to parse () | Thenable<U>: CLI-49836
 	) -> nil | _Thenable<U>,
 }
 

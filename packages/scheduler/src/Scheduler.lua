@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/Scheduler.js
+-- upstream: https://github.com/facebook/react/blob/9abc2785cb070148d64fae81e523246b90b92016/packages/scheduler/src/Scheduler.js
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
 *
@@ -7,7 +7,7 @@
 *
 ]]
 
--- ROBLOX deviation: return an initializer function instead of the module itself
+-- deviation: return an initializer function instead of the module itself
 -- for easier dependency injection with unstable_mock
 return function(hostConfig)
 	local Packages = script.Parent.Parent
@@ -26,7 +26,7 @@ return function(hostConfig)
 	local forceFrameRate = SchedulerHostConfig.forceFrameRate
 	local requestPaint = SchedulerHostConfig.requestPaint
 
-	-- ROBLOX deviation? inline the MinHeap to see if the module-level visibility lets Luau optimize better
+	-- deviation? inline the MinHeap to see if the module-level visibility lets Luau optimize better
 	-- local SchedulerMinHeap = require(script.Parent.SchedulerMinHeap)
 	-- local push = SchedulerMinHeap.push
 	-- local peek = SchedulerMinHeap.peek
@@ -37,7 +37,7 @@ return function(hostConfig)
 		sortIndex: number,
 	}
 
-	-- ROBLOX deviation: This file contains several workarounds for Luau analysis issues by using the `::` operator
+	-- deviation: This file contains several workarounds for Luau analysis issues by using the `::` operator
 	local compare, siftUp, siftDown
 
 	local push = function(heap: Heap, node: Node): ()
@@ -239,10 +239,10 @@ return function(hostConfig)
 		isPerformingWork = true
 		local previousPriorityLevel = currentPriorityLevel
 
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, result
 		if not _G.__YOLO__ then
-			-- ROBLOX performance: don't nest try/catch here, Lua can do better, and it eliminated an anon function creation
+			-- performance: don't nest try/catch here, Lua can do better, and it eliminated an anon function creation
 			if enableProfiling then
 				ok, result = xpcall(workLoop, describeError, hasTimeRemaining, initialTime)
 
@@ -263,7 +263,7 @@ return function(hostConfig)
 			result = workLoop(hasTimeRemaining, initialTime)
 		end
 
-		-- ROBLOX: finally
+		-- NOTE: finally
 		currentTask = nil
 		currentPriorityLevel = previousPriorityLevel
 		isPerformingWork = false
@@ -347,7 +347,7 @@ return function(hostConfig)
 		local previousPriorityLevel = currentPriorityLevel
 		currentPriorityLevel = priorityLevel
 
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, result
 		if not _G.__YOLO__ then
 			ok, result = xpcall(eventHandler, describeError)
@@ -356,7 +356,7 @@ return function(hostConfig)
 			result = eventHandler()
 		end
 
-		-- ROBLOX: finally
+		-- NOTE: finally
 		currentPriorityLevel = previousPriorityLevel
 
 		if not ok then
@@ -383,7 +383,7 @@ return function(hostConfig)
 		local previousPriorityLevel = currentPriorityLevel
 		currentPriorityLevel = priorityLevel
 
-		-- ROBLOX deviation: YOLO flag for disabling pcall
+		-- deviation: YOLO flag for disabling pcall
 		local ok, result
 		if not _G.__YOLO__ then
 			ok, result = xpcall(eventHandler, describeError)
@@ -392,7 +392,7 @@ return function(hostConfig)
 			result = eventHandler()
 		end
 
-		-- ROBLOX: finally
+		-- NOTE: finally
 		currentPriorityLevel = previousPriorityLevel
 
 		if not ok then
@@ -410,7 +410,7 @@ return function(hostConfig)
 			local previousPriorityLevel = currentPriorityLevel
 			currentPriorityLevel = parentPriorityLevel
 
-			-- ROBLOX deviation: YOLO flag for disabling pcall
+			-- deviation: YOLO flag for disabling pcall
 			local ok, result
 			if not _G.__YOLO__ then
 				ok, result = xpcall(callback, describeError, ...)
@@ -419,7 +419,7 @@ return function(hostConfig)
 				result = callback(...)
 			end
 
-			-- ROBLOX: finally
+			-- NOTE: finally
 			currentPriorityLevel = previousPriorityLevel
 
 			if not ok then
@@ -566,7 +566,7 @@ return function(hostConfig)
 		unstable_getFirstCallbackNode = unstable_getFirstCallbackNode,
 		unstable_now = getCurrentTime,
 		unstable_forceFrameRate = forceFrameRate,
-		-- ROBLOX TODO: use if-expressions when all clients are on 503+
+		-- TODO: use if-expressions when all clients are on 503+
 		unstable_Profiling = (function()
 			if enableProfiling then
 				return {

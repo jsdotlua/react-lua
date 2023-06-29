@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react-reconciler/src/ReactFiberErrorLogger.js
+-- upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react-reconciler/src/ReactFiberErrorLogger.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -37,7 +37,7 @@ exports.logCapturedError = function(boundary: Fiber, errorInfo: CapturedValue<an
 		-- Allow injected showErrorDialog() to prevent default console.error logging.
 		-- This enables renderers like ReactNative to better manage redbox behavior.
 		if logError == false then
-			-- ROBLOX Luau FIXME: needs void return Luau bugfix
+			-- FIXME Luau: needs void return Luau bugfix
 			return nil
 		end
 
@@ -104,19 +104,19 @@ exports.logCapturedError = function(boundary: Fiber, errorInfo: CapturedValue<an
 			console["error"](inspect(error_)) -- Don't transform to our wrapper
 		end
 
-		-- ROBLOX Luau FIXME: needs void return Luau bugfix
+		-- FIXME Luau: needs void return Luau bugfix
 		return nil
 	end)
 
 	if not ok then
 		warn("failed to error with error: " .. inspect(e))
-		-- ROBLOX TODO: we may need to think about this more deeply and do something different
+		-- TODO: we may need to think about this more deeply and do something different
 		-- This method must not throw, or React internal state will get messed up.
 		-- If console.error is overridden, or logCapturedError() shows a dialog that throws,
 		-- we want to report this error outside of the normal stack as a last resort.
 		-- https://github.com/facebook/react/issues/13188
 		setTimeout(function()
-			-- ROBLOX FIXME: the top-level Luau VM handler doesn't deal with non-string errors, so massage it until VM support lands
+			-- FIXME: the top-level Luau VM handler doesn't deal with non-string errors, so massage it until VM support lands
 			error(errorToString(e :: any))
 		end)
 	end

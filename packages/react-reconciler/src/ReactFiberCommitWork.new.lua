@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/7f08e908b10a58cda902611378ec053003d371ed/packages/react-reconciler/src/ReactFiberCommitWork.new.js
+-- upstream: https://github.com/facebook/react/blob/7f08e908b10a58cda902611378ec053003d371ed/packages/react-reconciler/src/ReactFiberCommitWork.new.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -19,8 +19,8 @@ end
 
 local __DEV__ = _G.__DEV__ :: boolean
 local __YOLO__ = _G.__YOLO__ :: boolean
--- ROBLOX DEVIATION: keep track of the pcall run depth and stop wrapping pcalls after we hit MAX_RUN_DEPTH.
--- ROBLOX note: if this number is raised to 195, the test in RoactRecursiveLayoutPcallDepth will fail
+-- deviation: keep track of the pcall run depth and stop wrapping pcalls after we hit MAX_RUN_DEPTH.
+-- NOTE: if this number is raised to 195, the test in RoactRecursiveLayoutPcallDepth will fail
 local runDepth = 0
 local MAX_RUN_DEPTH = 20
 
@@ -41,7 +41,7 @@ local function isCallable(value)
 end
 
 local Packages = script.Parent.Parent
--- ROBLOX: use patched console from shared
+-- NOTE: use patched console from shared
 local console = require(Packages.Shared).console
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
@@ -52,14 +52,14 @@ local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
 type Instance = ReactFiberHostConfig.Instance
 type Container = ReactFiberHostConfig.Container
 type TextInstance = ReactFiberHostConfig.TextInstance
--- ROBLOX deviation START: we have to inline, because type imports don't work across dynamic requires like HostConfig
+-- deviation START: we have to inline, because type imports don't work across dynamic requires like HostConfig
 -- local type {
 --   SuspenseInstance,
 --   ChildSet,
 --   UpdatePayload,
 type UpdatePayload = Array<any>
 -- } = require(script.Parent.ReactFiberHostConfig)
--- ROBLOX deviation END
+-- deviation END
 local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
@@ -71,7 +71,7 @@ type UpdateQueue<T> = ReactInternalTypes.UpdateQueue<T>
 
 -- local ReactFiberHooks = require(script.Parent["ReactFiberHooks.new"])
 -- type FunctionComponentUpdateQueue = ReactFiberHooks.FunctionComponentUpdateQueue
--- ROBLOX deviation: inline the typedef here to avoid circular dependency
+-- deviation: inline the typedef here to avoid circular dependency
 type Effect = {
 	tag: HookFlags,
 	create: () -> (() -> ())?,
@@ -92,7 +92,7 @@ type OffscreenState = ReactFiberOffscreenComponent.OffscreenState
 local ReactHookEffectTags = require(script.Parent.ReactHookEffectTags)
 type HookFlags = ReactHookEffectTags.HookFlags
 
--- ROBLOX deviation: import tracing as a top-level export to avoid direct file access
+-- deviation: import tracing as a top-level export to avoid direct file access
 local Schedule_tracing_wrap = require(Packages.Scheduler).tracing.unstable_wrap
 local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
@@ -184,7 +184,7 @@ local commitHydratedSuspenseInstance = ReactFiberHostConfig.commitHydratedSuspen
 local clearContainer = ReactFiberHostConfig.clearContainer
 -- local prepareScopeUpdate = ReactFiberHostConfig.prepareScopeUpdate
 
--- ROBLOX deviation: Lazy init to avoid circular dependencies
+-- deviation: Lazy init to avoid circular dependencies
 local ReactFiberWorkLoop
 
 local function resolveRetryWakeable(boundaryFiber: Fiber, wakeable: Wakeable): ()
@@ -217,7 +217,7 @@ local HookHasEffect = ReactHookEffectTags.HasEffect
 local HookLayout = ReactHookEffectTags.Layout
 local HookPassive = ReactHookEffectTags.Passive
 
--- ROBLOX deviation: lazy init to break cyclic dependency
+-- deviation: lazy init to break cyclic dependency
 local didWarnAboutReassigningPropsRef
 local didWarnAboutReassigningProps = function()
 	if not didWarnAboutReassigningPropsRef then
@@ -247,10 +247,10 @@ local function callComponentWillUnmountWithTimer(current, instance)
 	instance.props = current.memoizedProps
 	instance.state = current.memoizedState
 	if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(current.mode, ProfileMode) ~= 0 then
-		-- ROBLOX performance? we could hoist start...Timer() out and eliminate the anon function, but then the timer would incldue the pcall overhead
+		-- performance? we could hoist start...Timer() out and eliminate the anon function, but then the timer would incldue the pcall overhead
 		local ok, exception = xpcall(function()
 			startLayoutEffectTimer()
-			-- ROBLOX deviation: Call with ":" so that the method receives self
+			-- deviation: Call with ":" so that the method receives self
 			instance:componentWillUnmount()
 		end, describeError)
 
@@ -260,14 +260,14 @@ local function callComponentWillUnmountWithTimer(current, instance)
 			error(exception)
 		end
 	else
-		-- ROBLOX deviation: Call with ":" so that the method receives self
+		-- deviation: Call with ":" so that the method receives self
 		instance:componentWillUnmount()
 	end
 end
 
 -- Capture errors so they don't interrupt unmounting.
 function safelyCallComponentWillUnmount(current: Fiber, instance: any, nearestMountedAncestor): ()
-	-- ROBLOX performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
+	-- performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
 	local ok, error_ = xpcall(callComponentWillUnmountWithTimer, describeError, current, instance)
 
 	if not ok then
@@ -279,20 +279,20 @@ local function safelyDetachRef(current: Fiber, nearestMountedAncestor: Fiber): (
 	local ref = current.ref
 	if ref ~= nil then
 		if typeof(ref) == "function" then
-			-- ROBLOX performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
+			-- performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
 			local ok, error_ = xpcall(ref, describeError)
 			if not ok then
 				captureCommitPhaseError(current, nearestMountedAncestor, error_)
 			end
 		else
-			-- ROBLOX FIXME Luau: next line gets Expected type table, got 'RefObject | {| [string]: any, _stringRef: string? |}' instead
+			-- FIXME Luau: next line gets Expected type table, got 'RefObject | {| [string]: any, _stringRef: string? |}' instead
 			ref.current = nil
 		end
 	end
 end
 
 local function safelyCallDestroy(current: Fiber, nearestMountedAncestor: Fiber | nil, destroy: () -> ()): ()
-	-- ROBLOX performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
+	-- performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
 	local ok, error_ = xpcall(destroy, describeError)
 	if not ok then
 		captureCommitPhaseError(current, nearestMountedAncestor, error_)
@@ -347,7 +347,7 @@ local function commitBeforeMutationLifeCycles(current: Fiber | nil, finishedWork
 					prevState
 				)
 				if __DEV__ then
-					-- ROBLOX deviation: not possible to return `undefined` in Lua
+					-- deviation: not possible to return `undefined` in Lua
 					-- local didWarnSet = ((didWarnAboutUndefinedSnapshotBeforeUpdate: any): Set<mixed>)
 					-- if snapshot == nil and not didWarnSet[finishedWork.type] then
 					--   didWarnSet[finishedWork.type] = true
@@ -431,7 +431,7 @@ local function commitHookEffectListMount(flags: HookFlags, finishedWork: Fiber)
 								.. "up, return nil (or nothing)."
 						elseif typeof(destroy.andThen) == "function" then
 							addendum =
-								-- ROBLOX FIXME: write a real program that does the equivalent and update this example, LUAFDN-754
+								-- FIXME: write a real program that does the equivalent and update this example, LUAFDN-754
 								"\n\nIt looks like you wrote useEffect(Promise.new(function() --[[...]] end) or returned a Promise. " .. "Instead, write the async function inside your effect " .. "and call it immediately:\n\n" .. "useEffect(function()\n" .. "  function fetchData()\n" .. "    -- You can await here\n" .. "    local response = MyAPI.getData(someId):await()\n" .. "    -- ...\n" .. "  end\n" .. "  fetchData()\n" .. "end, {someId}) -- Or {} if effect doesn't need props or state\n\n" .. "Learn more about data fetching with Hooks: https://reactjs.org/link/hooks-data-fetching"
 						else
 							addendum = " You returned: " .. destroy
@@ -484,7 +484,7 @@ end
 local function recursivelyCommitLayoutEffects(
 	finishedWork: Fiber,
 	finishedRoot: FiberRoot,
-	-- ROBLOX deviation: pass in these functions to avoid dependency cycle
+	-- deviation: pass in these functions to avoid dependency cycle
 	_captureCommitPhaseError: (
 		sourceFiber: Fiber,
 		nearestMountedAncestor: Fiber?,
@@ -520,7 +520,7 @@ local function recursivelyCommitLayoutEffects(
 						nil,
 						child,
 						finishedRoot,
-						-- ROBLOX deviation: pass in these functions to avoid dependency cycle
+						-- deviation: pass in these functions to avoid dependency cycle
 						captureCommitPhaseError,
 						schedulePassiveEffectCallback
 					)
@@ -535,7 +535,7 @@ local function recursivelyCommitLayoutEffects(
 					end
 				else
 					local ok, error_ = xpcall(
-						-- ROBLOX deviation: pass in captureCommitPhaseError function to avoid dependency cycle
+						-- deviation: pass in captureCommitPhaseError function to avoid dependency cycle
 						recursivelyCommitLayoutEffects,
 						describeError,
 						child,
@@ -568,7 +568,7 @@ local function recursivelyCommitLayoutEffects(
 						resetCurrentDebugFiberInDEV()
 					end
 				else
-					-- ROBLOX TODO? pass in captureCommitPhaseError?
+					-- TODO? pass in captureCommitPhaseError?
 					local ok, error_ = xpcall(commitLayoutEffectsForProfiler, describeError, finishedWork, finishedRoot)
 					if not ok then
 						captureCommitPhaseError(finishedWork, finishedWork.return_, error_)
@@ -608,7 +608,7 @@ local function recursivelyCommitLayoutEffects(
 							nil,
 							child,
 							finishedRoot,
-							-- ROBLOX deviation: pass in this function to avoid dependency cycle
+							-- deviation: pass in this function to avoid dependency cycle
 							captureCommitPhaseError,
 							schedulePassiveEffectCallback
 						)
@@ -632,7 +632,7 @@ local function recursivelyCommitLayoutEffects(
 						resetCurrentDebugFiberInDEV()
 					end
 				else
-					-- ROBLOX deviation: YOLO flag for disabling pcall
+					-- deviation: YOLO flag for disabling pcall
 					local ok, error_
 					if not __YOLO__ and runDepth < MAX_RUN_DEPTH then
 						--[[
@@ -642,7 +642,7 @@ local function recursivelyCommitLayoutEffects(
 						runDepth += 1
 
 						ok, error_ = xpcall(
-							-- ROBLOX deviation: pass in this function to avoid dependency cycle
+							-- deviation: pass in this function to avoid dependency cycle
 							recursivelyCommitLayoutEffects,
 							describeError,
 							child,
@@ -678,12 +678,12 @@ local function recursivelyCommitLayoutEffects(
 					and enableProfilerCommitHooks
 					and bit32.band(finishedWork.mode, ProfileMode) ~= 0
 				then
-					-- ROBLOX try
+					-- try
 					local ok, error_ = xpcall(function()
 						startLayoutEffectTimer()
 						commitHookEffectListMount(bit32.bor(HookLayout, HookHasEffect), finishedWork)
 					end, describeError)
-					-- ROBLOX finally
+					-- finally
 					recordLayoutEffectDuration(finishedWork)
 					if not ok then
 						error(error_)
@@ -724,7 +724,7 @@ local function recursivelyCommitLayoutEffects(
 			end
 		end
 
-		-- ROBLOX performance: avoid cmp on always-false value
+		-- performance: avoid cmp on always-false value
 		-- if enableScopeAPI then
 		--   -- TODO: This is a temporary solution that allowed us to transition away from React Flare on www.
 		--   if bit32.band(flags, Ref) ~= 0 and tag ~= ScopeComponent then
@@ -753,7 +753,7 @@ function commitLayoutEffectsForProfiler(finishedWork: Fiber, finishedRoot: Fiber
 
 		if
 			bit32.band(flags, OnRenderFlag) ~= NoFlags
-			-- ROBLOX deviation: our mocked functions are tables with __call, since they have fields
+			-- deviation: our mocked functions are tables with __call, since they have fields
 			and isCallable(onRender)
 		then
 			if enableSchedulerTracing then
@@ -781,7 +781,7 @@ function commitLayoutEffectsForProfiler(finishedWork: Fiber, finishedRoot: Fiber
 		if enableProfilerCommitHooks then
 			if
 				bit32.band(flags, OnCommitFlag) ~= NoFlags
-				-- ROBLOX deviation: our mocked functions are tables with __call, since they have fields
+				-- deviation: our mocked functions are tables with __call, since they have fields
 				and isCallable(onCommit)
 			then
 				if enableSchedulerTracing then
@@ -844,7 +844,7 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber)
 			then
 				local ok, result = xpcall(function()
 					startLayoutEffectTimer()
-					-- ROBLOX deviation: Call with ":" so that the method receives self
+					-- deviation: Call with ":" so that the method receives self
 					instance:componentDidMount()
 				end, describeError)
 				-- finally
@@ -853,7 +853,7 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber)
 					error(result)
 				end
 			else
-				-- ROBLOX deviation: Call with ":" so that the method receives self
+				-- deviation: Call with ":" so that the method receives self
 				instance:componentDidMount()
 			end
 		else
@@ -951,7 +951,7 @@ function commitLayoutEffectsForHostRoot(finishedWork: Fiber)
 	if updateQueue ~= nil then
 		local instance = nil
 		if finishedWork.child ~= nil then
-			-- ROBLOX TODO: localize child, workaround Luau type refinement shortcomings
+			-- TODO: localize child, workaround Luau type refinement shortcomings
 			local child = finishedWork.child
 			if child.tag == HostComponent then
 				instance = getPublicInstance(child.stateNode)
@@ -1006,7 +1006,7 @@ local function hideOrUnhideAllChildren(finishedWork, isHidden)
 			-- Found a nested Offscreen component that is hidden. Don't search
 			-- any deeper. This tree should remain hidden.
 			elseif node.child ~= nil then
-				-- ROBLOX FIXME: type casts to silence analyze, Luau doesn't understand nil check
+				-- FIXME: type casts to silence analyze, Luau doesn't understand nil check
 				(node.child :: Fiber).return_ = node
 				node = node.child :: Fiber
 				continue
@@ -1018,11 +1018,11 @@ local function hideOrUnhideAllChildren(finishedWork, isHidden)
 				if node.return_ == nil or node.return_ == finishedWork then
 					return
 				end
-				node = node.return_ :: Fiber -- ROBLOX TODO: Luau narrowing doesn't understand this loop until nil pattern
+				node = node.return_ :: Fiber -- TODO: Luau narrowing doesn't understand this loop until nil pattern
 			end
-			-- ROBLOX FIXME: cast to any to silence analyze
+			-- FIXME: cast to any to silence analyze
 			(node.sibling :: Fiber).return_ = node.return_
-			-- ROBLOX FIXME: recast to silence analyze while Luau doesn't understand nil check
+			-- FIXME: recast to silence analyze while Luau doesn't understand nil check
 			node = node.sibling :: Fiber
 		end
 	end
@@ -1039,7 +1039,7 @@ function commitAttachRef(finishedWork: Fiber)
 			instanceToUse = instance
 		end
 		-- Moved outside to ensure DCE works with this flag
-		-- ROBLOX performance: avoid cmp on always-false value
+		-- performance: avoid cmp on always-false value
 		-- if enableScopeAPI and finishedWork.tag == ScopeComponent then
 		--   instanceToUse = instance
 		-- end
@@ -1047,7 +1047,7 @@ function commitAttachRef(finishedWork: Fiber)
 			ref(instanceToUse)
 		else
 			if __DEV__ then
-				-- ROBLOX FIXME: We won't be able to recognize a ref object by checking
+				-- FIXME: We won't be able to recognize a ref object by checking
 				-- for the existence of the `current` key, since it won't be initialized
 				-- at this point. We might consider using a symbol to uniquely identify
 				-- ref objects, or relying more heavily on Luau types
@@ -1208,7 +1208,7 @@ function commitNestedUnmounts(
 			if node.return_ == nil or node.return_ == root then
 				return
 			end
-			node = node.return_ :: Fiber -- ROBLOX TODO: Luau narrowing doesn't understand this loop until nil pattern
+			node = node.return_ :: Fiber -- TODO: Luau narrowing doesn't understand this loop until nil pattern
 		end
 		(node.sibling :: Fiber).return_ = node.return_
 		node = node.sibling :: Fiber
@@ -1290,13 +1290,13 @@ local function getHostParentFiber(fiber: Fiber): Fiber
 		end
 		parent = parent.return_
 	end
-	-- ROBLOX deviation START: use React 18 approach, which Luau understands better than invariant
+	-- deviation START: use React 18 approach, which Luau understands better than invariant
 	error(
 		Error.new(
 			"Expected to find a host parent. This error is likely caused by a bug " .. "in React. Please file an issue."
 		)
 	)
-	-- ROBLOX deviation END
+	-- deviation END
 end
 
 function isHostParent(fiber: Fiber): boolean
@@ -1310,7 +1310,7 @@ function getHostSibling(fiber: Fiber): Instance?
 	-- TODO: Find a more efficient way to do this.
 	local node: Fiber = fiber
 	while true do
-		-- ROBLOX deviation: we can't `continue` with labels in luau, so some variable
+		-- deviation: we can't `continue` with labels in luau, so some variable
 		-- juggling is used instead
 		local continueOuter = false
 		-- If we didn't find anything, let's try the next sibling.
@@ -1320,7 +1320,7 @@ function getHostSibling(fiber: Fiber): Instance?
 				-- last sibling.
 				return nil
 			end
-			node = node.return_ :: Fiber -- ROBLOX TODO: Luau narrowing doesn't understand this loop until nil pattern
+			node = node.return_ :: Fiber -- TODO: Luau narrowing doesn't understand this loop until nil pattern
 		end
 		(node.sibling :: Fiber).return_ = node.return_ :: Fiber
 		node = node.sibling :: Fiber
@@ -1361,7 +1361,7 @@ local function commitPlacement(finishedWork: Fiber)
 	-- Recursively insert all host nodes into the parent.
 	local parentFiber = getHostParentFiber(finishedWork)
 
-	-- Note: these two variables *must* always be updated together.
+	-- NOTE: these two variables *must* always be updated together.
 	local parent
 	local isContainer
 	local parentStateNode = parentFiber.stateNode
@@ -1406,7 +1406,7 @@ end
 function insertOrAppendPlacementNodeIntoContainer(node: Fiber, before: Instance?, parent: Container)
 	local tag = node.tag
 	local isHost = tag == HostComponent or tag == HostText
-	-- ROBLOX performance: avoid always-false compare for Roblox renderer in hot path
+	-- performance: avoid always-false compare for Roblox renderer in hot path
 	if isHost then -- or (enableFundamentalAPI and tag == FundamentalComponent) then
 		local stateNode = node.stateNode
 		if before then
@@ -1434,7 +1434,7 @@ end
 function insertOrAppendPlacementNode(node: Fiber, before: Instance?, parent: Instance): ()
 	local tag = node.tag
 	local isHost = tag == HostComponent or tag == HostText
-	-- ROBLOX performance: avoid always-false compare for Roblox renderer in hot path
+	-- performance: avoid always-false compare for Roblox renderer in hot path
 	if isHost then -- or (enableFundamentalAPI and tag == FundamentalComponent) then
 		local stateNode = node.stateNode
 		if before then
@@ -1473,16 +1473,16 @@ function unmountHostComponents(
 	-- currentParentIsValid.
 	local currentParentIsValid = false
 
-	-- Note: these two variables *must* always be updated together.
+	-- NOTE: these two variables *must* always be updated together.
 	local currentParent
 	local currentParentIsContainer
 
 	while true do
 		if not currentParentIsValid then
-			-- ROBLOX FIXME Luau: Luau doesn't understand the nil guard at the top of the loop
+			-- FIXME Luau: Luau doesn't understand the nil guard at the top of the loop
 			local parent = node.return_ :: Fiber
 			while true do
-				-- ROBLOX deviation START: use React 18 approach so Luau understands control flow better
+				-- deviation START: use React 18 approach so Luau understands control flow better
 				if parent == nil then
 					error(
 						Error.new(
@@ -1491,7 +1491,7 @@ function unmountHostComponents(
 						)
 					)
 				end
-				-- ROBLOX deviation END
+				-- deviation END
 				local parentStateNode = parent.stateNode
 				if parent.tag == HostComponent then
 					currentParent = parentStateNode
@@ -1505,14 +1505,14 @@ function unmountHostComponents(
 					currentParent = parentStateNode.containerInfo
 					currentParentIsContainer = true
 					break
-					-- ROBLOX performance: eliminate always-false compare for Roblox in hot path
+					-- performance: eliminate always-false compare for Roblox in hot path
 					-- elseif parent.tag == FundamentalComponent then
 					--   if enableFundamentalAPI then
 					--     currentParent = parentStateNode.instance
 					--     currentParentIsContainer = false
 					--   end
 				end
-				-- ROBLOX FIXME Luau: Luau doesn't understand the nil guard at the top of the loop
+				-- FIXME Luau: Luau doesn't understand the nil guard at the top of the loop
 				parent = parent.return_ :: Fiber
 			end
 			currentParentIsValid = true
@@ -1527,18 +1527,18 @@ function unmountHostComponents(
 				--   ((currentParent: any): Container),
 				--   (fundamentalNode: Instance),
 				-- )
-				-- ROBLOX FIXME: type coercion
+				-- FIXME: type coercion
 				removeChildFromContainer(currentParent, node.stateNode)
 			else
 				-- removeChild(
 				--   ((currentParent: any): Instance),
 				--   (fundamentalNode: Instance),
 				-- )
-				-- ROBLOX FIXME: type coercion
+				-- FIXME: type coercion
 				removeChild(currentParent, node.stateNode)
 			end
 		-- Don't visit children because we already visited them.
-		-- ROBLOX performance? fundamentalAPI  and suspenseServerRender are always false for Roblox. avoid unnecessary cmp in hot path
+		-- performance? fundamentalAPI  and suspenseServerRender are always false for Roblox. avoid unnecessary cmp in hot path
 		-- elseif enableFundamentalAPI and node.tag == FundamentalComponent then
 		--   local fundamentalNode = node.stateNode.instance
 		--   commitNestedUnmounts(
@@ -1554,14 +1554,14 @@ function unmountHostComponents(
 		--     --   ((currentParent: any): Container),
 		--     --   (fundamentalNode: Instance),
 		--     -- )
-		--     -- ROBLOX FIXME: type coercion
+		--     -- FIXME: type coercion
 		--     removeChildFromContainer(currentParent, fundamentalNode)
 		--   else
 		--     -- removeChild(
 		--     --   ((currentParent: any): Instance),
 		--     --   (fundamentalNode: Instance),
 		--     -- )
-		--     -- ROBLOX FIXME: type coercion
+		--     -- FIXME: type coercion
 		--     removeChild(currentParent, fundamentalNode)
 		--   end
 		-- elseif
@@ -1618,7 +1618,7 @@ function unmountHostComponents(
 			if node.return_ == nil or node.return_ == current then
 				return
 			end
-			-- ROBLOX FIXME Luau: Luau doesn't understand narrowing by guard above
+			-- FIXME Luau: Luau doesn't understand narrowing by guard above
 			node = node.return_ :: Fiber
 			if node.tag == HostPortal then
 				-- When we go out of the portal, we need to restore the parent.
@@ -1626,7 +1626,7 @@ function unmountHostComponents(
 				currentParentIsValid = false
 			end
 		end
-		-- ROBLOX TODO: flowtype makes an impossible leap here, contribute this annotation upstream
+		-- TODO: flowtype makes an impossible leap here, contribute this annotation upstream
 		(node.sibling :: Fiber).return_ = node.return_
 		node = node.sibling :: Fiber
 	end
@@ -1638,7 +1638,7 @@ local function commitDeletion(
 	nearestMountedAncestor: Fiber,
 	renderPriorityLevel: ReactPriorityLevel
 ): ()
-	-- ROBLOX performance? supportsMutation always true, eliminate cmp on hot path
+	-- performance? supportsMutation always true, eliminate cmp on hot path
 	-- if supportsMutation then
 	-- Recursively delete all host nodes from the parent.
 	-- Detach refs and call componentWillUnmount() on the whole subtree.
@@ -1743,12 +1743,12 @@ local function commitWork(current: Fiber | nil, finishedWork: Fiber)
 		-- e.g. a destroy function in one component should never override a ref set
 		-- by a create function in another component during the same commit.
 		if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(finishedWork.mode, ProfileMode) ~= 0 then
-			-- ROBLOX try
+			-- try
 			local ok, result = xpcall(function()
 				startLayoutEffectTimer()
 				commitHookEffectListUnmount(bit32.bor(HookLayout, HookHasEffect), finishedWork, finishedWork.return_)
 			end, describeError)
-			-- ROBLOX finally
+			-- finally
 			recordLayoutEffectDuration(finishedWork)
 			if not ok then
 				error(result)
@@ -1956,7 +1956,7 @@ end
 -- TODO: Use an effect tag.
 function isSuspenseBoundaryBeingHidden(current: Fiber | nil, finishedWork: Fiber): boolean
 	if current ~= nil then
-		-- ROBLOX TODO: remove typechecks when narrowing works better
+		-- TODO: remove typechecks when narrowing works better
 		local oldState: SuspenseState | nil = (current :: Fiber).memoizedState
 		if oldState == nil or (oldState :: SuspenseState).dehydrated ~= nil then
 			local newState: SuspenseState | nil = finishedWork.memoizedState
@@ -2016,10 +2016,10 @@ local function commitPassiveMount(finishedRoot: FiberRoot, finishedWork: Fiber):
 	then
 		if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(finishedWork.mode, ProfileMode) ~= 0 then
 			startPassiveEffectTimer()
-			-- ROBLOX try
+			-- try
 			local ok, error_ =
 				xpcall(commitHookEffectListMount, describeError, bit32.bor(HookPassive, HookHasEffect), finishedWork)
-			-- ROBLOX finally
+			-- finally
 			recordPassiveEffectDuration(finishedWork)
 			if not ok then
 				error(error_)

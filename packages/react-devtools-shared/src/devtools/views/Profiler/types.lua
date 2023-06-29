@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/views/Profiler/types.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/views/Profiler/types.js
 -- /**
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -114,7 +114,7 @@ export type ProfilingDataFrontend = {
 }
 
 export type CommitDataExport = {
-	-- ROBLOX TODO: how to express bracket syntax embedded in Array type?
+	-- TODO: how to express bracket syntax embedded in Array type?
 	--   changeDescriptions: Array<[number, ChangeDescription]> | nil,
 	changeDescriptions: Array<Array<number | ChangeDescription>> | nil,
 	duration: number,
@@ -142,7 +142,7 @@ export type ProfilingDataForRootExport = {
 
 -- Serializable version of ProfilingDataFrontend data.
 export type ProfilingDataExport = {
-	-- ROBLOX TODO: Luau can't express literals/enums
+	-- TODO: Luau can't express literals/enums
 	--   version: 4,
 	version: number,
 	dataForRoots: Array<ProfilingDataForRootExport>,

@@ -1,5 +1,5 @@
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/utils.js
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/utils.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -12,7 +12,7 @@ local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
--- ROBLOX deviation: Use HttpService for JSON
+-- deviation: Use HttpService for JSON
 local JSON = game:GetService("HttpService")
 
 local exports = {}
@@ -123,7 +123,7 @@ exports.smartParse = function(value): number?
 	if value == "Infinity" then
 		return math.huge
 	elseif value == "NaN" then
-		-- ROBLOX deviation: no NaN
+		-- deviation: no NaN
 		return 0
 	elseif value == "undefined" then
 		return nil
@@ -134,7 +134,7 @@ end
 
 exports.smartStringify = function(value)
 	if typeof(value) == "number" then
-		-- ROBLOX deviation: these numbers don't exist
+		-- deviation: these numbers don't exist
 		-- if Number.isNaN(value) then
 		-- 	return'NaN'
 		-- elseif not Number.isFinite(value) then
