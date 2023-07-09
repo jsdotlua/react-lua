@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated all `.lua` file extensions to `.luau`
+- Change from legacy `core-packages` Wally scope to `jsdotlua`
 - Drop the `rc` flag from the version number
 
 ### Fixed
