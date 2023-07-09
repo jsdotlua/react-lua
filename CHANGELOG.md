@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [17.0.1] - 2023-07-09
+
+### Changed
+
+- Updated all `.lua` file extensions to `.luau`
+- Drop the `rc` flag from the version number
+
 ### Fixed
 
 - Fixed React build not including correct dependencies (#8)
