@@ -1,0 +1,6 @@
+{
+  "name": "jest-react",
+  "tree": {
+    "$path": "src/"
+  }
+}

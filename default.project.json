@@ -20,6 +20,9 @@
         "ReactRoblox": {
             "$path": "packages/react-roblox/default.project.json"
         },
+        "JestReact": {
+            "$path": "packages/jest-react/default.project.json"
+        },
         "RoactCompat": {
             "$path": "packages/roact-compat/default.project.json"
         },
