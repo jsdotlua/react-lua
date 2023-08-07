@@ -32,6 +32,9 @@
         "Shared": {
             "$path": "packages/shared/default.project.json"
         },
+        "LuaJest": {
+            "$path": "packages/lua-jest/default.project.json"
+        },
         
         "_Index": {
             "$path": "deps/_Index"

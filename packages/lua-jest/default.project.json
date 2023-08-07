@@ -1,0 +1,6 @@
+{
+  "name": "lua-jest",
+  "tree": {
+    "$path": "src/"
+  }
+}
