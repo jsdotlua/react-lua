@@ -9,7 +9,7 @@ realm = 'shared'
 
 [dependencies]
 LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
-React = 'jsdotlua/react@17.0.1-rc.19'
-ReactReconciler = 'jsdotlua/react-reconciler@17.0.1-rc.19'
-Scheduler = 'jsdotlua/scheduler@17.0.1-rc.19'
-Shared = 'jsdotlua/shared@17.0.1-rc.19'
+React = 'jsdotlua/react@17.0.1'
+ReactReconciler = 'jsdotlua/react-reconciler@17.0.1'
+Scheduler = 'jsdotlua/scheduler@17.0.1'
+Shared = 'jsdotlua/shared@17.0.1'
