@@ -1,4 +1,4 @@
--- ROBLOX note: Mimicking https://github.com/facebook/jest/blob/4453901c0239939cc2c1c8b7c7d121447f6f5f52/packages/jest-fake-timers/src/legacyFakeTimers.ts#L506
+-- note: Mimicking https://github.com/facebook/jest/blob/4453901c0239939cc2c1c8b7c7d121447f6f5f52/packages/jest-fake-timers/src/legacyFakeTimers.ts#L506
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -8,6 +8,8 @@
  * @emails react-core
  * @jest-environment node
  ]]
+
+type CleanupFn = () -> ()
 
 type Timer = {
 	expiry: number,
@@ -70,7 +72,7 @@ end
 local function advanceTimersByTime(msToRun: number): ()
 	-- Only run a generous number of timers and then bail.
 	-- This is just to help avoid recursive loops
-	-- ROBLOX TODO: this needs to match the conversion in the setTimeout polyfill for now
+	-- TODO: this needs to match the conversion in the setTimeout polyfill for now
 	local secondsToRun = msToRun / 1000
 	local i = 0
 	while i < 100000 do
@@ -217,7 +219,7 @@ local function requireOverride(scriptInstance: ModuleScript): any
 	end
 	-- FIXME: an extra special hack that prevents us from frequently reloading
 	-- `jest-roblox`, and therefore dodges the expensive modules found in:
-	-- jest-roblox -> luau-polyfill@0.1.5 -> RegExp
+	-- jest--> luau-polyfill@0.1.5 -> RegExp
 	if scriptInstance.Name == "RegExp" then
 		return require(scriptInstance) :: any
 	end
@@ -230,7 +232,7 @@ local function requireOverride(scriptInstance: ModuleScript): any
 	local moduleResult
 	-- First, check the mock cache and see if this is being mocked
 	if typeof(mocks[scriptInstance]) == "function" then
-		-- ROBLOX FIXME: Luau flow analysis bug workaround
+		-- FIXME: Luau flow analysis bug workaround
 		moduleResult = (mocks[scriptInstance] :: () -> any)()
 
 		if moduleResult == nil then
@@ -330,7 +332,7 @@ local Module = {
 	unmock = unmock,
 }
 
--- ROBLOX upstream https://github.com/facebook/react/blob/6d50a9d090a2a672fc3dea5ce77a3a05332a6caa/fixtures/legacy-jsx-runtimes/setupTests.js
+-- upstream https://github.com/facebook/react/blob/6d50a9d090a2a672fc3dea5ce77a3a05332a6caa/fixtures/legacy-jsx-runtimes/setupTests.js
 --[[*
 * Copyright (c) Facebook, Inc. and its affiliates.
 *
@@ -351,7 +353,7 @@ local function shouldIgnoreConsoleError(format, args)
 				-- in development that is reported by jsdom. Ignore because it's noisy.
 				return true
 			end
-			-- ROBLOX FIXME: The "Warning: " prefix is applied before the string
+			-- FIXME: The "Warning: " prefix is applied before the string
 			-- reaches this function, which appears to not be the case upstream
 			if string.find(format, "Warning: The above error occurred") == 1 then
 				-- This looks like an error addendum from ReactFiberErrorLogger.
@@ -389,7 +391,7 @@ local function normalizeCodeLocInfo(str)
 	-- React format:
 	--    in Component (at filename.js:123)
 
-	-- ROBLOX deviation: In roblox/luau, we're using the stack frame from luau,
+	-- deviation: In roblox/luau, we're using the stack frame from luau,
 	-- which looks like:
 	--     in Component (at ModulePath.FileName.lua:123)
 	return (string.gsub(str, "\n    in ([%w%-%._]+)[^\n]*", "\n    in %1 (at **)"))
@@ -469,7 +471,7 @@ function createConsoleMatcher(consoleMethod, matcherName)
 				-- doesn't match the number of arguments.
 				-- We'll fail the test if it happens.
 				local argIndex = 0
-				-- ROBLOX FIXME selene: remove _ assignment when bug in selene is fixed https://github.com/Kampfkarren/selene/issues/406
+				-- FIXME selene: remove _ assignment when bug in selene is fixed https://github.com/Kampfkarren/selene/issues/406
 				local _ = string.gsub(format, "%%s", function()
 					argIndex = argIndex + 1
 					return argIndex - 1
@@ -793,7 +795,7 @@ local RobloxJest = {
 	mock = Module.mock,
 	unmock = Module.unmock,
 
-	-- ROBLOX TODO: use roblox-jest fake timers impl and delete these
+	-- TODO: use lua-jest fake timers impl and delete these
 	useFakeTimers = FakeTimers.useFakeTimers,
 	useRealTimers = FakeTimers.useRealTimers,
 	runAllTimers = FakeTimers.runAllTimers,

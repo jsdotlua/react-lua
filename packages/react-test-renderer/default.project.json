@@ -1,0 +1,6 @@
+{
+  "name": "react-test-renderer",
+  "tree": {
+    "$path": "src/"
+  }
+}

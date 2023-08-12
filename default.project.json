@@ -20,6 +20,9 @@
         "ReactRoblox": {
             "$path": "packages/react-roblox/default.project.json"
         },
+        "ReactTestRenderer": {
+            "$path": "packages/react-test-renderer/default.project.json"
+        },
         "JestReact": {
             "$path": "packages/jest-react/default.project.json"
         },
@@ -34,6 +37,10 @@
         },
         "LuaJest": {
             "$path": "packages/lua-jest/default.project.json"
+        },
+
+        "JestGlobals": {
+            "$path": "packages/jest-globals/default.project.json"
         },
         
         "_Index": {

@@ -1,0 +1,6 @@
+{
+  "name": "jest-globals",
+  "tree": {
+    "$path": "src/"
+  }
+}
