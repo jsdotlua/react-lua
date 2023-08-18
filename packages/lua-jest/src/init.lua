@@ -334,11 +334,11 @@ local Module = {
 
 -- upstream https://github.com/facebook/react/blob/6d50a9d090a2a672fc3dea5ce77a3a05332a6caa/fixtures/legacy-jsx-runtimes/setupTests.js
 --[[*
-* Copyright (c) Facebook, Inc. and its affiliates.
-*
-* This source code is licensed under the MIT license found in the
-* LICENSE file in the root directory of this source tree.
-]]
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ ]]
 
 local Packages = script.Parent.Parent.Parent
 local JestDiff = require(Packages.JestDiff)
