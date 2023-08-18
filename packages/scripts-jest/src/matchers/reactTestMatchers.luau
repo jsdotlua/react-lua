@@ -17,6 +17,7 @@ local Error = LuauPolyfill.Error
  
  -- Lua TODO: upstream this explicit import, possible in Jest 27+
  local expect = require(Packages.JestGlobals).expect
+ local JestReact = require(Packages.JestReact)
  local SchedulerMatchers = require(script.Parent.schedulerTestMatchers)
 
 
