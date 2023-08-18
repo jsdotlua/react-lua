@@ -9,3 +9,7 @@ realm = 'shared'
 
 [dependencies]
 LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
+
+[dev_dependencies]
+JestGlobals = 'jsdotlua/jest-globals@3.2.5'
+ScriptsJest = '../scripts-jest'

@@ -208,7 +208,7 @@ local function requireOverride(scriptInstance: ModuleScript): any
 	-- override requires of ourself; this would result in the module cache
 	-- deviating into a bunch of separate ones.
 	--
-	-- TODO: This is a little janky, so we should find a way to do this that's a
+	-- Lua TODO: This is a little janky, so we should find a way to do this that's a
 	-- little more robust. We may want to apply it to anything in ScriptsJest?
 	if
 		scriptInstance == script
@@ -452,6 +452,7 @@ local InteractionTracingMatchers = {
 -- hitting the Module's cache
 local require = Module.requireOverride
 local ScriptsJest = {
+	setupTests = require(script.Parent.setupTests),
 	Matchers = {
 		toContainNoInteractions = InteractionTracingMatchers.toContainNoInteractions,
 		toHaveBeenLastNotifiedOfInteraction = InteractionTracingMatchers.toHaveBeenLastNotifiedOfInteraction,
