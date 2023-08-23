@@ -1,4 +1,4 @@
--- upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react-test-renderer/src/ReactTestHostConfig.js
+-- upstream: https://github.com/facebook/react/blob/172e89b4bf0ec5ee5738af0156d90b0deef4d494/packages/react-test-renderer/src/ReactTestHostConfig.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -8,6 +8,7 @@
  * @flow
 ]]
 
+local __DEV__ = _G.__DEV__
 local Packages = script.Parent.Parent
 
 local LuauPolyfill = require(Packages.LuauPolyfill)
@@ -15,10 +16,11 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
+type Array<T> = LuauPolyfill.Array<T>
+type Function = (...any) -> any
 local setTimeout = LuauPolyfill.setTimeout
 local clearTimeout = LuauPolyfill.clearTimeout
-
--- ROBLOX: use patched console from shared
+-- Lua DEVIATION: use mockable console from shared, rather than polyfill
 local console = require(Packages.Shared).console
 
 local ReactTypes = require(Packages.Shared)
@@ -27,17 +29,12 @@ type ReactFundamentalComponentInstance<T, U> = ReactTypes.ReactFundamentalCompon
 local ReactSymbols = require(Packages.Shared).ReactSymbols
 local REACT_OPAQUE_ID_TYPE = ReactSymbols.REACT_OPAQUE_ID_TYPE
 
-local RobloxComponentProps = require(script.Parent.roblox.RobloxComponentProps)
-
-type Array<T> = { [number]: T }
-type Function = (any) -> any
-
 export type Type = string
 export type Props = Object
 export type Container = {
 	children: Array<Instance | TextInstance>,
 	createNodeMock: Function,
-	tag: string, -- ROBLOX deviation: Luau can't specify literals
+	tag: "CONTAINER",
 }
 export type Instance = {
 	type: string,
@@ -51,7 +48,7 @@ export type Instance = {
 export type TextInstance = {
 	text: string,
 	isHidden: boolean,
-	tag: string,
+	tag: "TEXT",
 }
 export type HydratableInstance = Instance | TextInstance
 export type PublicInstance = Instance | TextInstance
@@ -60,17 +57,16 @@ export type UpdatePayload = Object
 -- Unused
 -- export type ChildSet = void;
 
--- FIXME (roblox): This typically uses a builtin flowtype called 'TimeoutID', we
+-- Lua FIXME: This typically uses a builtin flowtype called 'TimeoutID', we
 -- should find a common solution for polyfill types with Luau
 export type TimeoutHandle = any
+-- Lua DEVIATION: typed Lua doesn't support numeric literals
 export type NoTimeout = number
 export type EventResponder = any
--- deviation: explicitly include `$$typeof` in type def
-export type OpaqueIDType = string | Object
--- export type OpaqueIDType = string | {
---      toString: () -> string?,
---      valueOf: () -> string?,
--- };
+export type OpaqueIDType = string | {
+	toString: () -> string?, -- Lua deviation: typed Lua can't model `| ()` so make nil-able [sic]
+	valueOf: () -> string?, -- Lua deviation: typed Lua can't model `| ()` so make nil-able [sic]
+}
 
 export type RendererInspectionConfig = {}
 
@@ -84,22 +80,23 @@ local exports = Object.assign(
 
 local NO_CONTEXT = {}
 local UPDATE_SIGNAL = {}
+-- Lua TODO: use the WeakMap impl in polyfill
 local nodeToInstanceMap: { [Object]: Instance? } = {}
 
-if _G.__DEV__ then
+if __DEV__ then
 	Object.freeze(NO_CONTEXT)
 	Object.freeze(UPDATE_SIGNAL)
 end
 
 exports.getPublicInstance = function(inst: Instance | TextInstance)
-	-- ROBLOX FIXME Luau: Luau should narrow to Instance based on singleton type comparison
+	-- Lua FIXME Luau: Luau should narrow to Instance based on singleton type comparison
 	if inst.tag == "INSTANCE" then
 		local createNodeMock = (inst :: Instance).rootContainerInstance.createNodeMock
 		local mockNode = createNodeMock({
 			type = (inst :: Instance).type,
 			props = (inst :: Instance).props,
 		})
-		if typeof(mockNode) == "table" then
+		if type(mockNode) == "table" then
 			nodeToInstanceMap[mockNode] = inst :: Instance
 		end
 		return mockNode
@@ -107,8 +104,8 @@ exports.getPublicInstance = function(inst: Instance | TextInstance)
 		return inst
 	end
 end
-exports.appendChild = function(parentInstance: Instance | Container, child: Instance | TextInstance)
-	if _G.__DEV__ then
+exports.appendChild = function(parentInstance: Instance | Container, child: Instance | TextInstance): ()
+	if __DEV__ then
 		if not Array.isArray(parentInstance.children) then
 			console.error(
 				"An invalid container has been provided. "
@@ -129,7 +126,7 @@ exports.insertBefore = function(
 	parentInstance: Instance | Container,
 	child: Instance | TextInstance,
 	beforeChild: Instance | TextInstance
-)
+): ()
 	local index = Array.indexOf(parentInstance.children, child)
 	if index ~= -1 then
 		Array.splice(parentInstance.children, index, 1)
@@ -138,13 +135,12 @@ exports.insertBefore = function(
 	Array.splice(parentInstance.children, beforeIndex, 0, child)
 end
 
-exports.removeChild = function(parentInstance: Instance | Container, child: Instance | TextInstance)
-	RobloxComponentProps.removeTags(child)
+exports.removeChild = function(parentInstance: Instance | Container, child: Instance | TextInstance): ()
 	local index = Array.indexOf(parentInstance.children, child)
 	Array.splice(parentInstance.children, index, 1)
 end
 
-exports.clearContainer = function(container: Container)
+exports.clearContainer = function(container: Container): ()
 	Array.splice(container.children, 0)
 end
 
@@ -202,7 +198,6 @@ exports.finalizeInitialChildren = function(
 	rootContainerInstance: Container,
 	hostContext: Object
 ): boolean
-	RobloxComponentProps.setInitialTags(testElement, type_, props, rootContainerInstance)
 	return false
 end
 
@@ -254,10 +249,9 @@ exports.commitUpdate = function(
 	oldProps: Props,
 	newProps: Props,
 	internalInstanceHandle: Object
-)
+): ()
 	instance.type = type
 	instance.props = newProps
-	RobloxComponentProps.updateTags(instance, newProps, oldProps)
 end
 
 exports.commitMount = function(instance: Instance, type: string, newProps: Props, internalInstanceHandle: Object)
@@ -287,62 +281,6 @@ exports.unhideTextInstance = function(textInstance: TextInstance, text: string)
 	textInstance.isHidden = false
 end
 
-exports.getFundamentalComponentInstance = function(
-	fundamentalInstance: ReactFundamentalComponentInstance<any, any>
-): Instance
-	local impl = fundamentalInstance.impl
-	local props = fundamentalInstance.props
-	local state = fundamentalInstance.state
-	return impl.getInstance(nil, props, state)
-end
-
-exports.mountFundamentalComponent = function(fundamentalInstance: ReactFundamentalComponentInstance<any, any>)
-	local impl = fundamentalInstance.impl
-	local instance = fundamentalInstance.instance
-	local props = fundamentalInstance.props
-	local state = fundamentalInstance.state
-	local onMount = impl.onMount
-	if onMount ~= nil then
-		onMount(nil, instance, props, state)
-	end
-end
-
-exports.shouldUpdateFundamentalComponent = function(
-	fundamentalInstance: ReactFundamentalComponentInstance<any, any>
-): boolean
-	local impl = fundamentalInstance.impl
-	local prevProps = fundamentalInstance.prevProps
-	local props = fundamentalInstance.props
-	local state = fundamentalInstance.state
-	local shouldUpdate = impl.shouldUpdate
-	if shouldUpdate ~= nil then
-		return shouldUpdate(nil, prevProps, props, state)
-	end
-	return true
-end
-exports.updateFundamentalComponent = function(fundamentalInstance: ReactFundamentalComponentInstance<any, any>)
-	local impl = fundamentalInstance.impl
-	local instance = fundamentalInstance.instance
-	local prevProps = fundamentalInstance.prevProps
-	local props = fundamentalInstance.props
-	local state = fundamentalInstance.state
-	local onUpdate = impl.onUpdate
-	if onUpdate ~= nil then
-		onUpdate(nil, instance, prevProps, props, state)
-	end
-end
-
-exports.unmountFundamentalComponent = function(fundamentalInstance: ReactFundamentalComponentInstance<any, any>)
-	local impl = fundamentalInstance.impl
-	local instance = fundamentalInstance.instance
-	local props = fundamentalInstance.props
-	local state = fundamentalInstance.state
-	local onUnmount = impl.onUnmount
-	if onUnmount ~= nil then
-		onUnmount(nil, instance, props, state)
-	end
-end
-
 exports.getInstanceFromNode = function(mockNode: Object): Object?
 	local instance = nodeToInstanceMap[mockNode]
 	if instance ~= nil then
@@ -353,7 +291,7 @@ end
 
 local clientId: number = 0
 exports.makeClientId = function(): OpaqueIDType
-	-- FIXME (roblox): convert to base 36 representation
+	-- FIXME (Lua): convert to base 36 representation
 	-- return result = 'c_' + (clientId++).toString(36)
 	local result = "c_" .. clientId
 	clientId += 1
@@ -361,7 +299,7 @@ exports.makeClientId = function(): OpaqueIDType
 end
 
 exports.makeClientIdInDEV = function(warnOnAccessInDEV: () -> ()): OpaqueIDType
-	-- FIXME (roblox): convert to base 36 representation
+	-- Lua FIXME: convert to base 36 representation
 	-- local id = 'c_' + (clientId++).toString(36)
 	local id = "c_" .. clientId
 	clientId += 1
@@ -378,7 +316,7 @@ exports.makeClientIdInDEV = function(warnOnAccessInDEV: () -> ()): OpaqueIDType
 end
 
 exports.isOpaqueHydratingObject = function(value: any): boolean
-	return typeof(value) == "table" and value["$$typeof"] == REACT_OPAQUE_ID_TYPE
+	return type(value) == "table" and value["$$typeof"] == REACT_OPAQUE_ID_TYPE
 end
 
 exports.makeOpaqueHydratingObject = function(attemptToReadValue: () -> ()): OpaqueIDType
@@ -407,6 +345,10 @@ end
 
 exports.getInstanceFromScope = function(scopeInstance: Object): Object?
 	return nodeToInstanceMap[scopeInstance] or nil
+end
+
+exports.detachDeletedInstance = function(node: Instance): ()
+	-- noop
 end
 
 return exports
