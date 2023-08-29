@@ -10,7 +10,7 @@
 
 return function()
 	local Packages = script.Parent.Parent.Parent
-	local jestExpect = require(Packages.Dev.JestGlobals).expect
+	local expect = require(Packages.Dev.JestGlobals).expect
 	local LuaJest = require(Packages.Dev.LuaJest)
 
 	local scheduleCallback
@@ -41,11 +41,11 @@ return function()
 			table.insert(log, "C")
 		end)
 
-		jestExpect(log).toEqual({})
+		expect(log).toEqual({})
 
 		LuaJest.runAllTimers()
 
-		jestExpect(log).toEqual({ "A", "B", "C" })
+		expect(log).toEqual({ "A", "B", "C" })
 	end)
 
 	it("executes callbacks in order of priority", function()
@@ -64,9 +64,9 @@ return function()
 			table.insert(log, "D")
 		end)
 
-		jestExpect(log).toEqual({})
+		expect(log).toEqual({})
 		LuaJest.runAllTimers()
-		jestExpect(log).toEqual({ "C", "D", "A", "B" })
+		expect(log).toEqual({ "C", "D", "A", "B" })
 	end)
 
 	it("handles errors", function()
@@ -84,16 +84,16 @@ return function()
 			error("Oops C")
 		end)
 
-		jestExpect(LuaJest.runAllTimers).toThrow("Oops A")
-		jestExpect(log).toEqual({ "A" })
+		expect(LuaJest.runAllTimers).toThrow("Oops A")
+		expect(log).toEqual({ "A" })
 
 		log = {}
 
 		-- B and C flush in a subsequent event. That way, the second error is not
 		-- swallowed.
-		jestExpect(function()
+		expect(function()
 			LuaJest.runAllTimers()
 		end).toThrow("Oops C")
-		jestExpect(log).toEqual({ "B", "C" })
+		expect(log).toEqual({ "B", "C" })
 	end)
 end

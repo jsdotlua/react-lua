@@ -14,7 +14,7 @@ local LuaJest = require(Packages.Dev.LuaJest)
 return function()
 	describe("Tracing", function()
 		local JestGlobals = require(Packages.Dev.JestGlobals)
-		local jestExpect = JestGlobals.expect
+		local expect = JestGlobals.expect
 
 		local SchedulerTracing
 
@@ -25,7 +25,7 @@ return function()
 		end)
 
 		it("should return the value of a traced function", function()
-			jestExpect(SchedulerTracing.unstable_trace("arbitrary", 0, function()
+			expect(SchedulerTracing.unstable_trace("arbitrary", 0, function()
 				return 123
 			end)).toBe(123)
 		end)
@@ -37,7 +37,7 @@ return function()
 					return 123
 				end)
 			end)
-			jestExpect(wrapped()).toBe(123)
+			expect(wrapped()).toBe(123)
 		end)
 
 		it("should execute traced callbacks", function()
@@ -47,11 +47,11 @@ return function()
 				done = true
 			end)
 
-			jestExpect(done).toBe(true)
+			expect(done).toBe(true)
 		end)
 
 		it("should return the value of a clear function", function()
-			jestExpect(SchedulerTracing.unstable_clear(function()
+			expect(SchedulerTracing.unstable_clear(function()
 				return 123
 			end)).toBe(123)
 		end)
@@ -63,7 +63,7 @@ return function()
 			end)
 
 			wrappedCallback()
-			jestExpect(done).toBe(true)
+			expect(done).toBe(true)
 		end)
 	end)
 end

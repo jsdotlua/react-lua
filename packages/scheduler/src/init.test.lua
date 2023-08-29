@@ -10,11 +10,11 @@
 return function()
 	local Packages = script.Parent.Parent
 	local LuaJest = require(Packages.LuaJest)
-	local jestExpect = require(Packages.JestGlobals).expect
+	local expect = require(Packages.JestGlobals).expect
 	local getJestMatchers = require(script.Parent.getJestMatchers)
 
 	beforeAll(function()
-		jestExpect.extend(getJestMatchers(jestExpect))
-		jestExpect.extend(LuaJest.Matchers)
+		expect.extend(getJestMatchers(expect))
+		expect.extend(LuaJest.Matchers)
 	end)
 end

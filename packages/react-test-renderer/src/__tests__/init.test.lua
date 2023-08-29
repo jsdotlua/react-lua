@@ -8,14 +8,19 @@
  * LICENSE file in the root directory of this source tree.
  * @flow
  *]]
-return function()
+ return function()
 	local Packages = script.Parent.Parent.Parent
-	local LuaJest = require(Packages.LuaJest)
-	local jestExpect = require(Packages.JestGlobals).expect
-	local getJestMatchers = require(script.Parent["getJestMatchers.roblox"])
+	local expect = require(Packages.Dev.JestGlobals).expect
+	local RobloxJest = require(Packages.Dev.RobloxJest)
+	local getTestRendererJestMatchers = require(Packages.Dev.JestReact).getJestMatchers
+	local getSchedulerJestMatchers = require(Packages.Scheduler).getJestMatchers
 
 	beforeAll(function()
-		jestExpect.extend(getJestMatchers(jestExpect))
-		jestExpect.extend(LuaJest.Matchers)
+		expect.extend(getTestRendererJestMatchers(expect))
+		expect.extend(getSchedulerJestMatchers(expect))
+		expect.extend({
+			toErrorDev = RobloxJest.Matchers.toErrorDev,
+			toWarnDev = RobloxJest.Matchers.toWarnDev,
+		})
 	end)
 end

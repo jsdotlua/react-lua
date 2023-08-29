@@ -61,7 +61,7 @@ end
 
 return function()
 	LuaJest = require(Packages.LuaJest)
-	local jestExpect = require(Packages.JestGlobals).expect
+	local expect = require(Packages.JestGlobals).expect
 
 	describe("ReactTestRenderer", function()
 		beforeEach(function()
@@ -83,7 +83,7 @@ return function()
 
 			local renderer = ReactTestRenderer.create(React.createElement(Link))
 
-			jestExpect(renderer.toJSON()).toEqual({
+			expect(renderer.toJSON()).toEqual({
 				type = "a",
 				props = {
 					role = "link",
@@ -98,7 +98,7 @@ return function()
 
 			local renderer = ReactTestRenderer.create(React.createElement(Empty))
 
-			jestExpect(renderer.toJSON()).toEqual(nil)
+			expect(renderer.toJSON()).toEqual(nil)
 		end)
 		it("exposes a type flag", function()
 			local function Link()
@@ -110,11 +110,11 @@ return function()
 			local renderer = ReactTestRenderer.create(React.createElement(Link))
 			local object = renderer.toJSON()
 			-- FIXME: needs to stringify $$typeof because Symbol module is reset. Un-stringify once we've found a solution.
-			jestExpect(tostring(object["$$typeof"])).toEqual(tostring(Symbol.for_("react.test.json")))
+			expect(tostring(object["$$typeof"])).toEqual(tostring(Symbol.for_("react.test.json")))
 
 			-- $$typeof should not be enumerable.
 			for key, _ in object do
-				jestExpect(key).never.toEqual("$$typeof")
+				expect(key).never.toEqual("$$typeof")
 			end
 		end)
 		it("can render a composite component", function()
@@ -132,7 +132,7 @@ return function()
 
 			local renderer = ReactTestRenderer.create(React.createElement(Component))
 
-			jestExpect(renderer.toJSON()).toEqual({
+			expect(renderer.toJSON()).toEqual({
 				type = "div",
 				props = {
 					className = "purple",
@@ -177,7 +177,7 @@ return function()
 
 			local renderer = ReactTestRenderer.create(React.createElement(Component))
 
-			jestExpect(renderer.toJSON()).toEqual({
+			expect(renderer.toJSON()).toEqual({
 				type = "div",
 				props = {
 					className = "purple",
@@ -191,7 +191,7 @@ return function()
 					},
 				},
 			})
-			jestExpect(renders).toEqual(6)
+			expect(renders).toEqual(6)
 		end)
 		it("exposes the instance", function()
 			local Mouse = React.Component:extend("Mouse")
@@ -211,7 +211,7 @@ return function()
 			end
 
 			local renderer = ReactTestRenderer.create(React.createElement(Mouse))
-			jestExpect(renderer.toJSON()).toEqual({
+			expect(renderer.toJSON()).toEqual({
 				type = "div",
 				props = {},
 				children = {
@@ -222,7 +222,7 @@ return function()
 			local mouse = renderer.getInstance()
 
 			mouse:handleMoose()
-			jestExpect(renderer.toJSON()).toEqual({
+			expect(renderer.toJSON()).toEqual({
 				type = "div",
 				children = {
 					"moose",
@@ -233,7 +233,7 @@ return function()
 		it("updates types", function()
 			local renderer = ReactTestRenderer.create(React.createElement("div", nil, "mouse"))
 
-			jestExpect(renderer.toJSON()).toEqual({
+			expect(renderer.toJSON()).toEqual({
 				type = "div",
 				props = {},
 				children = {
@@ -241,7 +241,7 @@ return function()
 				},
 			})
 			renderer.update(React.createElement("span", nil, "mice"))
-			jestExpect(renderer.toJSON()).toEqual({
+			expect(renderer.toJSON()).toEqual({
 				type = "span",
 				props = {},
 				children = {
@@ -257,7 +257,7 @@ return function()
 					return table.insert(log, r)
 				end,
 			}))
-			jestExpect(log).toEqual({ nil })
+			expect(log).toEqual({ nil })
 		end)
 		it("warns correctly for refs on SFCs", function()
 			local function Bar()
@@ -281,7 +281,7 @@ return function()
 			end
 
 			ReactTestRenderer.create(React.createElement(Baz))
-			jestExpect(function()
+			expect(function()
 				return ReactTestRenderer.create(React.createElement(Foo))
 			end).toErrorDev(
 				"Warning: Function components cannot be given refs. Attempts "
@@ -401,7 +401,7 @@ return function()
 				}),
 				{}
 			)
-			jestExpect(log).toEqual({
+			expect(log).toEqual({
 				mockDivInstance,
 				mockInputInstance,
 				mockListItemInstance,
@@ -433,11 +433,11 @@ return function()
 			local renderer = ReactTestRenderer.create(React.createElement(App))
 			local child = renderer.root:findByType(Child)
 
-			jestExpect(child.children).toEqual({
+			expect(child.children).toEqual({
 				"b",
 			})
 			-- deviation: no need to pretty format
-			jestExpect(renderer.toTree()).toEqual({
+			expect(renderer.toTree()).toEqual({
 				instance = nil,
 				nodeType = "component",
 				props = {},
@@ -471,11 +471,11 @@ return function()
 			}))
 			local child = renderer.root:findByType(Child)
 
-			jestExpect(child.children).toEqual({
+			expect(child.children).toEqual({
 				"a",
 			})
 			-- deviation: no need to pretty format
-			jestExpect(renderer.toTree()).toEqual({
+			expect(renderer.toTree()).toEqual({
 				instance = nil,
 				nodeType = "component",
 				props = {
@@ -514,7 +514,7 @@ return function()
 			cleanNodeOrArray(tree)
 
 			-- deviation: no need to pretty format
-			jestExpect(tree).toEqual({
+			expect(tree).toEqual({
 				instance = nil,
 				nodeType = "component",
 				props = {},
@@ -542,7 +542,7 @@ return function()
 			end
 			local renderer = ReactTestRenderer.create(React.createElement(App))
 			local NonComponent = {}
-			jestExpect(function()
+			expect(function()
 				renderer.root:findByType(NonComponent)
 			end).toThrow('No instances found with node type: "Unknown"')
 		end)

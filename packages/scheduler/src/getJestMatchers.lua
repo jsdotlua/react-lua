@@ -35,7 +35,7 @@ local function captureAssertion(fn): { pass: boolean, message: (() -> string)? }
 	return { pass = true }
 end
 
-return function(jestExpect)
+return function(expect)
 	local function assertYieldsWereCleared(scheduler)
 		local actualYields = scheduler.unstable_clearYields()
 		if #actualYields ~= 0 then
@@ -50,7 +50,7 @@ return function(jestExpect)
 		local actualYields = scheduler.unstable_clearYields()
 
 		return captureAssertion(function()
-			jestExpect(actualYields).toEqual(expectedYields)
+			expect(actualYields).toEqual(expectedYields)
 		end)
 	end
 
@@ -61,7 +61,7 @@ return function(jestExpect)
 		local actualYields = scheduler.unstable_clearYields()
 
 		return captureAssertion(function()
-			jestExpect(actualYields).toEqual(expectedYields)
+			expect(actualYields).toEqual(expectedYields)
 		end)
 	end
 
@@ -71,7 +71,7 @@ return function(jestExpect)
 		Scheduler.unstable_flushUntilNextPaint()
 		local actualYields = Scheduler.unstable_clearYields()
 		return captureAssertion(function()
-			jestExpect(actualYields).toEqual(expectedYields)
+			expect(actualYields).toEqual(expectedYields)
 		end)
 	end
 
@@ -84,7 +84,7 @@ return function(jestExpect)
 		local actualYields = scheduler.unstable_clearYields()
 
 		return captureAssertion(function()
-			jestExpect(actualYields).toEqual(expectedYields)
+			expect(actualYields).toEqual(expectedYields)
 		end)
 	end
 
@@ -93,7 +93,7 @@ return function(jestExpect)
 		local actualYields = scheduler.unstable_clearYields()
 
 		return captureAssertion(function()
-			jestExpect(actualYields).toEqual(expectedYields)
+			expect(actualYields).toEqual(expectedYields)
 		end)
 	end
 
@@ -101,7 +101,7 @@ return function(jestExpect)
 		assertYieldsWereCleared(scheduler)
 		return captureAssertion(function()
 			--  TODO Luau: if we wrap this function, we get an odd analyze error: Type '() -> ()' could not be converted into '{|  |}'
-			jestExpect(scheduler.unstable_flushAllWithoutAsserting).toThrow(rest)
+			expect(scheduler.unstable_flushAllWithoutAsserting).toThrow(rest)
 		end)
 	end
 

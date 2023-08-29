@@ -11,7 +11,7 @@ return function()
 	local Packages = script.Parent.Parent.Parent
 	local LuaJest = require(Packages.Dev.LuaJest)
 	local JestGlobals = require(Packages.Dev.JestGlobals)
-	local jestExpect = JestGlobals.expect
+	local expect = JestGlobals.expect
 	-- note: this uses a post-17.0.1 commit that removes a reliance on SharedArrayBuffer, but remains API compatible with 17.x
 
 	local Scheduler
@@ -43,7 +43,7 @@ return function()
 			SchedulerFeatureFlags.enableProfiling = false
 
 			Scheduler = require(script.Parent.Parent.Scheduler)()
-			jestExpect(Scheduler.unstable_Profiling).toBe(nil)
+			expect(Scheduler.unstable_Profiling).toBe(nil)
 		end)
 		beforeEach(function()
 			LuaJest.resetModules()
@@ -261,10 +261,10 @@ return function()
 			end, {
 				label = "Foo",
 			})
-			jestExpect(Scheduler).toFlushAndYieldThrough({ "Yield 1", "Yield 3" })
+			expect(Scheduler).toFlushAndYieldThrough({ "Yield 1", "Yield 3" })
 			Scheduler.unstable_advanceTime(100)
-			jestExpect(Scheduler).toFlushAndYield({ "Yield 2", "Yield 4" })
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushAndYield({ "Yield 2", "Yield 4" })
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │XX________XX____________
 Task 2 [User-blocking]       │        ____XXXXXX
@@ -282,12 +282,12 @@ Task 1 [Normal]              │  XXXXXXXX________XXXXXX
 					Scheduler.unstable_advanceTime(200)
 				end
 			end)
-			jestExpect(Scheduler).toFlushAndYieldThrough({ "Yield 1", "Yield 2" })
+			expect(Scheduler).toFlushAndYieldThrough({ "Yield 1", "Yield 2" })
 			Scheduler.unstable_advanceTime(100)
 			cancelCallback(task_)
 			Scheduler.unstable_advanceTime(1000)
-			jestExpect(Scheduler).toFlushWithoutYielding()
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushWithoutYielding()
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │______XXXXXXXXXXXXXXXXXXXXXX
 Task 1 [Normal]              │XXXXXX__O canceled
@@ -299,11 +299,11 @@ Task 1 [Normal]              │XXXXXX__O canceled
 				Scheduler.unstable_advanceTime(300)
 				error("Oops")
 			end)
-			jestExpect(Scheduler).toFlushAndThrow("Oops")
+			expect(Scheduler).toFlushAndThrow("Oops")
 			Scheduler.unstable_advanceTime(100)
 			Scheduler.unstable_advanceTime(1000)
-			jestExpect(Scheduler).toFlushWithoutYielding()
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushWithoutYielding()
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │______XXXXXXXXXXXXXXXXXXXXXX
 Task 1 [Normal]              │XXXXXXO errored
@@ -330,13 +330,13 @@ Task 1 [Normal]              │XXXXXXO errored
 					Scheduler.unstable_advanceTime(200)
 				end
 			end)
-			jestExpect(Scheduler).toFlushAndYieldThrough({ "Yield 1", "Yield 2" })
+			expect(Scheduler).toFlushAndYieldThrough({ "Yield 1", "Yield 2" })
 			Scheduler.unstable_advanceTime(100)
 			cancelCallback(task1)
 			cancelCallback(task2)
 			Scheduler.unstable_advanceTime(1000)
-			jestExpect(Scheduler).toFlushWithoutYielding()
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushWithoutYielding()
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │______XXXXXXXXXXXXXXXXXXXXXX
 Task 1 [Normal]              │XXXXXX__O canceled
@@ -349,9 +349,9 @@ Task 2 [Normal]              │________O canceled
 				Scheduler.unstable_yieldValue("A")
 				Scheduler.unstable_advanceTime(1000)
 			end)
-			jestExpect(Scheduler).toFlushAndYield({ "A" })
+			expect(Scheduler).toFlushAndYield({ "A" })
 			cancelCallback(task_)
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │____________________
 Task 1 [Normal]              │XXXXXXXXXXXXXXXXXXXX
@@ -377,8 +377,8 @@ Task 1 [Normal]              │XXXXXXXXXXXXXXXXXXXX
 			cancelCallback(task_)
 			cancelCallback(task_)
 			cancelCallback(task_)
-			jestExpect(Scheduler).toFlushAndYield({ "A" })
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushAndYield({ "A" })
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │XXXXXXXXXXXX____________________
 Task 1 [Normal]              │____________XXXXXXXXXXXXXXXXXXXX
@@ -393,10 +393,10 @@ Task 2 [Normal]              │    ________O canceled
 			end, {
 				delay = 1000,
 			})
-			jestExpect(Scheduler).toFlushWithoutYielding()
+			expect(Scheduler).toFlushWithoutYielding()
 			Scheduler.unstable_advanceTime(1000)
-			jestExpect(Scheduler).toFlushAndYield({ "A" })
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushAndYield({ "A" })
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │XXXXXXXXXXXXXXXXXXXX____________________
 Task 1 [Normal]              │                    XXXXXXXXXXXXXXXXXXXX
@@ -410,8 +410,8 @@ Task 1 [Normal]              │                    XXXXXXXXXXXXXXXXXXXX
 				delay = 1000,
 			})
 			cancelCallback(task_)
-			jestExpect(Scheduler).toFlushWithoutYielding()
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushWithoutYielding()
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │
 ]])
@@ -423,23 +423,23 @@ Task 1 [Normal]              │                    XXXXXXXXXXXXXXXXXXXX
 			-- deviation: any lower than this, and the buffer doesn't overslow and we try to table.unpack() too many elements
 			local originalMaxIterations = 41000
 			local taskId = 1
-			jestExpect(function()
+			expect(function()
 				while taskId < originalMaxIterations do
 					taskId += 1
 					local task_ = scheduleCallback(NormalPriority, function()
 						return {}
 					end)
 					cancelCallback(task_)
-					jestExpect(Scheduler).toFlushAndYield({})
+					expect(Scheduler).toFlushAndYield({})
 				end
 			end).toErrorDev("Event log exceeded maximum size", { withoutStack = true })
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual("(empty profile)")
+			expect(stopProfilingAndPrintFlamegraph()).toEqual("(empty profile)")
 			Scheduler.unstable_Profiling.startLoggingProfilingEvents()
 			scheduleCallback(NormalPriority, function()
 				Scheduler.unstable_advanceTime(1000)
 			end)
-			jestExpect(Scheduler).toFlushAndYield({})
-			jestExpect(stopProfilingAndPrintFlamegraph()).toEqual([[
+			expect(Scheduler).toFlushAndYield({})
+			expect(stopProfilingAndPrintFlamegraph()).toEqual([[
 
 !!! Main thread              │____________________
 Task 41000 [Normal]          │XXXXXXXXXXXXXXXXXXXX
