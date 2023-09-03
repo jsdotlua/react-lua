@@ -3,7 +3,7 @@ name = 'jsdotlua/react-reconciler'
 description = 'https://github.com/grilme99/CorePackages'
 version = '17.0.1'
 license = 'MIT'
-authors = ['Roblox Corporation']
+authors = ['Meta Platforms']
 registry = 'https://github.com/UpliftGames/wally-index'
 realm = 'shared'
 
