@@ -9,6 +9,8 @@ realm = 'shared'
 
 [dependencies]
 LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
+MorePolyfill = 'jsdotlua/more-polyfill@0.1.0'
+RegexLua = 'jsdotlua/regex-lua@1.0.2'
 React = 'jsdotlua/react@17.0.2'
 ReactDebugTools = 'jsdotlua/react-debug-tools@17.0.2'
 ReactIs = 'jsdotlua/react-is@17.0.2'

@@ -56,7 +56,7 @@ local Bridge = require(script.Parent.Parent.bridge)
 type FrontendBridge = Bridge.FrontendBridge
 
 local devtoolsTypes = require(script.Parent.types)
-type Store = devtoolsTypes.Store
+export type Store = devtoolsTypes.Store
 type Capabilities = devtoolsTypes.Capabilities
 
 local debug_ = function(methodName, ...)
