@@ -1,0 +1,19 @@
+[package]
+name = 'jsdotlua/react-devtools-core'
+description = 'https://github.com/grilme99/CorePackages'
+version = '17.0.2'
+license = 'MIT'
+authors = ['Roblox Corporation']
+registry = 'https://github.com/UpliftGames/wally-index'
+realm = 'shared'
+
+[dependencies]
+LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
+MorePolyfill = 'jsdotlua/more-polyfill@0.1.0'
+RegexLua = 'jsdotlua/regex-lua@1.0.2'
+React = 'jsdotlua/react@17.0.2'
+ReactDebugTools = 'jsdotlua/react-debug-tools@17.0.2'
+ReactIs = 'jsdotlua/react-is@17.0.2'
+ReactReconciler = 'jsdotlua/react-reconciler@17.0.2'
+ReactRoblox = 'jsdotlua/react-roblox@17.0.2'
+Shared = 'jsdotlua/shared@17.0.2'

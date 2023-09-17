@@ -17,14 +17,7 @@ type Map<K, V> = LuauPolyfill.Map<K, V>
 type Array<K> = LuauPolyfill.Array<K>
 
 local exports = {}
---[[*
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- ]]
+
 local constantsModule = require(script.Parent.Parent.Parent.Parent.constants)
 local __DEBUG__ = constantsModule.__DEBUG__
 local TREE_OPERATION_ADD = constantsModule.TREE_OPERATION_ADD

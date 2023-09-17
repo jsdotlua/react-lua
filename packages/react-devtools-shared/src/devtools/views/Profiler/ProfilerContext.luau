@@ -108,17 +108,25 @@ local function ProfilerContextController(props: Props)
 	local selectedElementID = useContext(TreeStateContext).selectedElementID
 	local dispatch = useContext(TreeDispatcherContext)
 
-	local profilerStore = store.profilerStore
+	-- deviation: use getter method
+	-- local profilerStore = store.profilerStore
+	local profilerStore = store:getProfilerStore()
 
 	local subscription = useMemo(function()
 		return {
 			getCurrentValue = function()
 				return {
-					didRecordCommits = profilerStore.didRecordCommits,
-					isProcessingData = profilerStore.isProcessingData,
-					isProfiling = profilerStore.isProfiling,
-					profilingData = profilerStore.profilingData,
-					supportsProfiling = store.supportsProfiling,
+					-- deviation: use getter method
+					-- didRecordCommits = profilerStore.didRecordCommits,
+					didRecordCommits = profilerStore:didRecordCommits(),
+					-- isProcessingData = profilerStore.isProcessingData,
+					isProcessingData = profilerStore:isProcessingData(),
+					-- isProfiling = profilerStore.isProfiling,
+					isProfiling = profilerStore:isProfiling(),
+					-- profilingData = profilerStore.profilingData,
+					profilingData = profilerStore:profilingData(),
+					-- supportsProfiling = store.supportsProfiling,
+					supportsProfiling = store:getSupportsProfiling(),
 				}
 			end,
 			subscribe = function(callback: Function)
@@ -171,13 +179,15 @@ local function ProfilerContextController(props: Props)
 		setRootID(id)
 	end, { setRootID :: any, selectFiber })
 
-	if prevProfilingData ~= profilingData then
-		batchedUpdates(function()
+	-- deviation: wrap batchedUpdates in a useEffect
+	React.useEffect(function()
+		if prevProfilingData ~= profilingData then
 			setPrevProfilingData(profilingData)
 
 			local dataForRoots = if profilingData ~= nil then profilingData.dataForRoots else nil
 			if dataForRoots ~= nil then
-				local firstRootID = dataForRoots:keys()[1].value or nil
+				-- deviation: Luau keys implementation gives an array instead of an iterator
+				local firstRootID = dataForRoots:keys()[1] or nil
 
 				if rootID == nil or not dataForRoots:has(rootID) then
 					local selectedElementRootID = nil
@@ -191,15 +201,15 @@ local function ProfilerContextController(props: Props)
 					end
 				end
 			end
-		end)
-	end
+		end
+	end, { prevProfilingData, profilingData })
 
 	local startProfiling = useCallback(function()
-		return store.profilerStore:startProfiling()
-	end, { store })
+		return profilerStore:startProfiling()
+	end, { profilerStore })
 	local stopProfiling = useCallback(function()
-		return store.profilerStore:stopProfiling()
-	end, { store })
+		return profilerStore:stopProfiling()
+	end, { profilerStore })
 
 	local isCommitFilterEnabled, setIsCommitFilterEnabled =
 		useLocalStorage("React::DevTools::isCommitFilterEnabled", false)
@@ -210,20 +220,20 @@ local function ProfilerContextController(props: Props)
 	local selectedTabID, selectTab = useState("flame-chart" :: TabID)
 	local selectedInteractionID, selectInteraction = useState(nil :: number | nil)
 
-	if isProfiling then
-		batchedUpdates(function()
-			if selectedCommitIndex ~= nil then
-				selectCommitIndex(nil)
-			end
-			if selectedFiberID ~= nil then
-				selectFiberID(nil)
-				selectFiberName(nil)
-			end
-			if selectedInteractionID ~= nil then
-				selectInteraction(nil)
-			end
-		end)
-	end
+	-- if isProfiling then
+	-- 	batchedUpdates(function()
+	-- 		if selectedCommitIndex ~= nil then
+	-- 			selectCommitIndex(nil)
+	-- 		end
+	-- 		if selectedFiberID ~= nil then
+	-- 			selectFiberID(nil)
+	-- 			selectFiberName(nil)
+	-- 		end
+	-- 		if selectedInteractionID ~= nil then
+	-- 			selectInteraction(nil)
+	-- 		end
+	-- 	end)
+	-- end
 
 	local value = useMemo(function()
 		return {

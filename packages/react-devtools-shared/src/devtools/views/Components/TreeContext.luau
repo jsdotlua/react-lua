@@ -26,8 +26,8 @@
 -- This enables each section to potentially override (or mask) previous values.
 
 local Packages = script.Parent.Parent.Parent.Parent.Parent
-local RegexLua = require(Packages.RegexLua)
-type RegExp = RegexLua.RegExp
+-- local RegexLua = require(Packages.RegexLua)
+type RegExp = any -- RegexLua.RegExp
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
@@ -60,7 +60,7 @@ local StoreContext = contextModule.StoreContext
 
 -- deviation: take Store type from types file instead
 -- local Store = require(script.Parent.Parent.store)
-local devtoolsTypes = require(script.Parent.Parent.types)
+local devtoolsTypes = require(script.Parent.Parent.Parent.types)
 type Store = devtoolsTypes.Store
 
 local types = require(script.Parent.types)
@@ -206,7 +206,7 @@ local function reduceTreeState(store: Store, state: State, action: Action): Stat
 	if ownerID == nil then
 		local actionType = action.type
 		if action.type == "HANDLE_STORE_MUTATION" then
-			numElements = store.numElements
+			numElements = store:getNumElements()
 
 			-- If the currently-selected Element has been removed from the tree, update selection state.
 			local removedIDs = action.payload[2] :: Map<number, number>
@@ -632,7 +632,7 @@ local function reduceOwnersState(store: Store, state: State, action: Action): St
 	-- -- Changes in the selected owner require re-calculating the owners tree.
 	if ownerFlatTree ~= state.ownerFlatTree or action.type == "HANDLE_STORE_MUTATION" then
 		if ownerFlatTree == nil then
-			numElements = store.numElements
+			numElements = store:getNumElements()
 		else
 			numElements = #ownerFlatTree
 		end
@@ -749,7 +749,7 @@ local function TreeContextController(props: Props)
 
 	local state, dispatch = useReducer(reducer, {
 		-- Tree
-		numElements = store.numElements,
+		numElements = store:getNumElements(),
 		ownerSubtreeLeafElementID = nil,
 		selectedElementID = if defaultSelectedElementID == nil then nil else defaultSelectedElementID,
 		selectedElementIndex = if defaultSelectedElementIndex == nil then nil else defaultSelectedElementIndex,
@@ -786,9 +786,9 @@ local function TreeContextController(props: Props)
 		end
 		bridge:addListener("selectFiber", handleSelectFiber)
 		return function()
-			return bridge.removeListener("selectFiber", handleSelectFiber)
+			return bridge:removeListener("selectFiber", handleSelectFiber)
 		end
-	end, { bridge, dispatchWrapper })
+	end, { bridge::any, dispatchWrapper })
 
 	-- If a newly-selected search result or inspection selection is inside of a collapsed subtree, auto expand it.
 	-- This needs to be a layout effect to avoid temporarily flashing an incorrect selection.

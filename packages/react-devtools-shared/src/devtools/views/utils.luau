@@ -18,8 +18,8 @@ local Object = LuauPolyfill.Object
 local Array = LuauPolyfill.Array
 type Object = LuauPolyfill.Object
 
-local RegexLua = require(Packages.RegexLua)
-type Regexp = RegexLua.Regexp
+-- local RegexLua = require(Packages.RegexLua)
+-- type Regexp = RegexLua.Regexp
 
 -- deviation: `escapeStringRegExp` needs regex replace functionality for its implementation
 -- but Regex-Lua has not implemented it yet.

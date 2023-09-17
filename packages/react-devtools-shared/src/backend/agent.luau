@@ -65,7 +65,7 @@ type RendererInterface = BackendTypes.RendererInterface
 local SharedTypes = require(script.Parent.Parent.types)
 type ComponentFilter = SharedTypes.ComponentFilter
 
-local debug_ = function(methodName, ...)
+local function debug_(methodName, ...)
 	if __DEBUG__ then
 		-- deviation: simpler print
 		print(methodName, ...)
@@ -346,6 +346,7 @@ function Agent:getProfilingData(rendererIdObject: { rendererID: RendererID }): (
 		console.warn(string.format('Invalid renderer id "%d"', rendererID))
 	end
 
+	print("GET PROFILING DATA from", renderer)
 	self._bridge:send("profilingData", (renderer :: RendererInterface).getProfilingData())
 end
 function Agent:getProfilingStatus()

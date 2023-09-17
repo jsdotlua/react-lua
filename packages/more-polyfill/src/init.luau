@@ -1,4 +1,4 @@
-local JSON = require(script.Parent.json)
+local JSON = require(script.json)
 
 return {
 	JSON = JSON,

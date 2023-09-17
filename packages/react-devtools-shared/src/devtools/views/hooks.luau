@@ -164,14 +164,24 @@ type UseEditableValueState = {
 -- Forked from https://usehooks.com/useLocalStorage/
 local function useLocalStorage<T>(key: string, initialValue: T | (() -> T)): (T, (value: T | (() -> T)) -> ())
 	local getValueFromLocalStorage = useCallback(function()
-		xpcall(function()
-			local item = localStorageGetItem(key)
-			if item ~= nil then
-				return JSON.parse(item)
-			end
-		end, function(err)
-			console.log(error)
+		local itemSuccess, item = pcall(function()
+			return localStorageGetItem(key)
 		end)
+		if not itemSuccess then
+			console.log(item)
+		end
+
+		if item ~= nil then
+			local jsonSuccess, result=pcall(function()
+				return JSON.parse(item)
+			end)
+			if jsonSuccess then
+				return result
+			else
+				console.log(result)
+			end
+		end
+
 		if type(initialValue) == "function" then
 			return ((initialValue :: any) :: () -> T)()
 		else
