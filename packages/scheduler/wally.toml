@@ -1,7 +1,7 @@
 [package]
 name = 'jsdotlua/scheduler'
 description = 'https://github.com/grilme99/CorePackages'
-version = '17.0.1'
+version = '17.0.2'
 license = 'MIT'
 authors = ['Roblox Corporation']
 registry = 'https://github.com/UpliftGames/wally-index'
@@ -9,9 +9,8 @@ realm = 'shared'
 
 [dependencies]
 LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
-Shared = 'jsdotlua/shared@17.0.1-rc.19'
+Shared = 'jsdotlua/shared@17.0.2'
 
 [dev_dependencies]
 JestGlobals = 'jsdotlua/jest-globals@3.2.5'
 ScriptsJest = '../scripts-jest'
-

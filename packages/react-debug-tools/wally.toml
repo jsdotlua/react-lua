@@ -1,7 +1,7 @@
 [package]
 name = 'jsdotlua/react-debug-tools'
 description = 'https://github.com/grilme99/CorePackages'
-version = '17.0.1'
+version = '17.0.2'
 license = 'MIT'
 authors = ['Roblox Corporation']
 registry = 'https://github.com/UpliftGames/wally-index'
@@ -9,5 +9,5 @@ realm = 'shared'
 
 [dependencies]
 LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
-ReactReconciler = 'jsdotlua/react-reconciler@17.0.1-rc.19'
-Shared = 'jsdotlua/shared@17.0.1-rc.19'
+ReactReconciler = 'jsdotlua/react-reconciler@17.0.2'
+Shared = 'jsdotlua/shared@17.0.2'

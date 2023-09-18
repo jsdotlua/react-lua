@@ -1,7 +1,7 @@
 [package]
 name = 'jsdotlua/react-devtools-shared'
 description = 'https://github.com/grilme99/CorePackages'
-version = '17.0.1'
+version = '17.0.2'
 license = 'MIT'
 authors = ['Roblox Corporation']
 registry = 'https://github.com/UpliftGames/wally-index'
@@ -9,9 +9,9 @@ realm = 'shared'
 
 [dependencies]
 LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
-React = 'jsdotlua/react@17.0.1-rc.19'
-ReactDebugTools = 'jsdotlua/react-debug-tools@17.0.1-rc.19'
-ReactIs = 'jsdotlua/react-is@17.0.1-rc.19'
-ReactReconciler = 'jsdotlua/react-reconciler@17.0.1-rc.19'
-ReactRoblox = 'jsdotlua/react-roblox@17.0.1-rc.19'
-Shared = 'jsdotlua/shared@17.0.1-rc.19'
+React = 'jsdotlua/react@17.0.2'
+ReactDebugTools = 'jsdotlua/react-debug-tools@17.0.2'
+ReactIs = 'jsdotlua/react-is@17.0.2'
+ReactReconciler = 'jsdotlua/react-reconciler@17.0.2'
+ReactRoblox = 'jsdotlua/react-roblox@17.0.2'
+Shared = 'jsdotlua/shared@17.0.2'

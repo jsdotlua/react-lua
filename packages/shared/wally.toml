@@ -1,7 +1,7 @@
 [package]
 name = 'jsdotlua/shared'
 description = 'https://github.com/grilme99/CorePackages'
-version = '17.0.1'
+version = '17.0.2'
 license = 'MIT'
 authors = ['Roblox Corporation']
 registry = 'https://github.com/UpliftGames/wally-index'
