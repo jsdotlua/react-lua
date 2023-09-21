@@ -73,7 +73,7 @@ local function connectToDevTools(options: ConnectOptions?)
 		warn("DevTools didn't get injected into this page")
 		return
 	end
-	print("Connect to devtools!")
+	-- print("Connect to devtools!")
 	--   local {
 	--     host = 'localhost',
 	--     nativeStyleEditorValidAttributes,

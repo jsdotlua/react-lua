@@ -38,8 +38,8 @@ local CommitFlamegraph = require(script.Parent.CommitFlamegraph).default
 local RecordToggle = require(script.Parent.RecordToggle).default
 -- local ReloadAndProfileButton = require(script.Parent.ReloadAndProfileButton).default
 -- local ProfilingImportExportButtons = require(script.Parent.ProfilingImportExportButtons).default
--- local SnapshotSelector = require(script.Parent.SnapshotSelector).default
--- local SidebarCommitInfo = require(script.Parent.SidebarCommitInfo).default
+local SnapshotSelector = require(script.Parent.SnapshotSelector).default
+local SidebarCommitInfo = require(script.Parent.SidebarCommitInfo).default
 -- local SidebarInteractions = require(script.Parent.SidebarInteractions).default
 -- local SidebarSelectedFiberInfo = require(script.Parent.SidebarSelectedFiberInfo).default
 
@@ -83,7 +83,7 @@ local function Profiler(_: {})
 	local selectTab = profilerStore.selectTab
 	local supportsProfiling = profilerStore.supportsProfiling
 
-	local view = nil
+	local view: React.ReactElement<any> = nil
 	if didRecordCommits then
 		if selectedTabID == "flame-chart" then
 			view = React.createElement(CommitFlamegraph)
@@ -107,24 +107,29 @@ local function Profiler(_: {})
 
 	local sidebar = nil
 	if not isProfiling and not isProcessingData and didRecordCommits then
-		-- if selectedTabID == "interactions" then
-		-- 	sidebar = React.createElement(SidebarInteractions)
-		-- elseif selectedTabID == "flame-chart" or selectedTabID == "ranked-chart" then
-		-- 	-- TRICKY
-		-- 	-- Handle edge case where no commit is selected because of a min-duration filter update.
-		-- 	-- In that case, the selected commit index would be null.
-		-- 	-- We could still show a sidebar for the previously selected fiber,
-		-- 	-- but it would be an odd user experience.
-		-- 	-- TODO (ProfilerContext) This check should not be necessary.
-		-- 	if selectedCommitIndex ~= nil then
-		-- 		if selectedFiberID ~= nil then
-		-- 			sidebar = React.createElement(SidebarSelectedFiberInfo)
-		-- 		else
-		-- 			sidebar = React.createElement(SidebarCommitInfo)
-		-- 		end
-		-- 	end
-		-- end
+		if selectedTabID == "interactions" then
+			-- sidebar = React.createElement(SidebarInteractions)
+			-- todo
+			view = React.createElement(TodoView, { name = "SidebarInteractions" })
+		elseif selectedTabID == "flame-chart" or selectedTabID == "ranked-chart" then
+			-- TRICKY
+			-- Handle edge case where no commit is selected because of a min-duration filter update.
+			-- In that case, the selected commit index would be null.
+			-- We could still show a sidebar for the previously selected fiber,
+			-- but it would be an odd user experience.
+			-- TODO (ProfilerContext) This check should not be necessary.
+			if selectedCommitIndex ~= nil then
+				if selectedFiberID ~= nil then
+					view = React.createElement(TodoView, { name = "SidebarSelectedFiberInfo" })
+					-- sidebar = React.createElement(SidebarSelectedFiberInfo)
+				else
+					sidebar = React.createElement(SidebarCommitInfo)
+				end
+			end
+		end
 	end
+
+	local leftFraction = 0.7
 
 	-- deviation: use Roblox view objects
 	return React.createElement(
@@ -133,70 +138,94 @@ local function Profiler(_: {})
 		React.createElement(
 			Div,
 			{
+				name = "columns",
 				-- className=styles.Profiler
+				direction = Enum.FillDirection.Horizontal,
 			},
 			React.createElement(
 				Div,
 				{
+					name = "left-column",
 					-- className=styles.LeftColumn
 					frameProps = {
-						Size = UDim2.fromScale(0.5, 1),
+						Size = UDim2.fromScale(leftFraction, 1),
 					},
 				},
 				React.createElement(
-					Div,
+					"Frame",
 					{
+						Name = "toolbar-container",
 						-- className=styles.Toolbar
-						direction = Enum.FillDirection.Horizontal,
-						frameProps = {
+						BackgroundTransparency = 1,
+						Size = UDim2.new(1, 0, 0, BAR_HEIGHT),
+					},
+					React.createElement("UITableLayout", {
+						Name = "table-layout",
+						FillEmptySpaceColumns = true,
+						FillDirection = Enum.FillDirection.Vertical,
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						HorizontalAlignment = Enum.HorizontalAlignment.Left,
+						VerticalAlignment = Enum.VerticalAlignment.Center,
+					}),
+					React.createElement(
+						"Frame",
+						{
+							Name = "row",
+							BackgroundTransparency = 1,
 							Size = UDim2.new(1, 0, 0, BAR_HEIGHT),
 						},
-					},
-					-- React.createElement(RecordToggle, {
-					-- 	disabled = not supportsProfiling,
-					-- }),
-					-- React.createElement(ReloadAndProfileButton),
-					-- React.createElement(ClearProfilingDataButton),
-					-- React.createElement(ProfilingImportExportButtons),
-					-- React.createElement(Div, {
-					-- 	-- className = styles.VRule
-					-- }),
-					React.createElement(TabBar, {
-						currentTab = selectedTabID,
-						id = "Profiler",
-						selectTab = selectTab,
-						tabs = tabs,
-						type = "profiler",
-					})
-					-- React.createElement(RootSelector)
-					-- React.createElement(Div, {
-					-- 	-- className = styles.Space
-					-- })
-					-- React.createElement(SettingsModalContextToggle),
-					-- didRecordCommits
-					-- 	and React.createElement(
-					-- 		Fragment,
-					-- 		nil,
-					-- 		React.createElement(Div, {
-					-- 			-- className = styles.VRule
-					-- 		}),
-					-- 		React.createElement(SnapshotSelector)
-					-- 	)
+						-- React.createElement(RecordToggle, {
+						-- 	disabled = not supportsProfiling,
+						-- }),
+						-- React.createElement(ReloadAndProfileButton),
+						-- React.createElement(ClearProfilingDataButton),
+						-- React.createElement(ProfilingImportExportButtons),
+						-- React.createElement(Div, {
+						-- 	-- className = styles.VRule
+						-- }),
+						React.createElement(TabBar, {
+							currentTab = selectedTabID,
+							id = "Profiler",
+							selectTab = selectTab,
+							tabs = tabs,
+							type = "profiler",
+						}),
+						-- React.createElement(RootSelector)
+						-- React.createElement(Div, {
+						-- 	-- className = styles.Space
+						-- })
+						-- React.createElement(SettingsModalContextToggle),
+						-- didRecordCommits
+						-- 	and React.createElement(
+						-- 		Fragment,
+						-- 		nil,
+						-- 		React.createElement(Div, {
+						-- 			-- className = styles.VRule
+						-- 		}),
+						React.createElement(SnapshotSelector)
+						-- 	)
+					)
 				),
 				React.createElement(
 					Div,
 					{
+						name = "content",
 						-- className = styles.Content,
+						frameProps = {
+							Size = UDim2.new(1, 0, 1, -BAR_HEIGHT),
+						},
 					},
 					view
 					-- React.createElement(ModalDialog)
 				)
 			),
 			React.createElement(Div, {
+				name = "right-column",
 				-- className=styles.RightColumn
 				frameProps = {
-					Position = UDim2.fromScale(0.5, 0),
-					Size = UDim2.fromScale(0.5, 1),
+					Position = UDim2.fromScale(leftFraction, 0),
+					Size = UDim2.fromScale(1 - leftFraction, 1),
+					LayoutOrder = 2,
 				},
 			}, sidebar)
 			-- React.createElement(SettingsModal)
@@ -211,18 +240,18 @@ tabs = {
 		label = "Flamegraph",
 		title = "Flamegraph chart",
 	},
-	{
-		id = "ranked-chart",
-		icon = "ranked-chart",
-		label = "Ranked",
-		title = "Ranked chart",
-	},
-	{
-		id = "interactions",
-		icon = "interactions",
-		label = "Interactions",
-		title = "Profiled interactions",
-	},
+	-- {
+	-- 	id = "ranked-chart",
+	-- 	icon = "ranked-chart",
+	-- 	label = "Ranked",
+	-- 	title = "Ranked chart",
+	-- },
+	-- {
+	-- 	id = "interactions",
+	-- 	icon = "interactions",
+	-- 	label = "Interactions",
+	-- 	title = "Profiled interactions",
+	-- },
 }
 
 function NoProfilingData()

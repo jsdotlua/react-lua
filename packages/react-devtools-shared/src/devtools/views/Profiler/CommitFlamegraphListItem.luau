@@ -29,15 +29,14 @@ local useCallback = React.useCallback
 local useContext = React.useContext
 
 --  import {areEqual} from 'react-window';
---  import {barWidthThreshold} from './constants';
---  import {getGradientColor} from './utils';
-local ChartNode = require(script.Parent.ChartNode)
+local barWidthThreshold = require(script.Parent.constants).barWidthThreshold
+local getGradientColor = require(script.Parent.utils).getGradientColor
+local ChartNode = require(script.Parent.ChartNode).default
 --  import {SettingsContext} from '../Settings/SettingsContext';
 
 local FlamegraphChartBuilder = require(script.Parent.FlamegraphChartBuilder)
 type ChartNodeType = FlamegraphChartBuilder.ChartNode
 type ChartData = FlamegraphChartBuilder.ChartData
---  import type {ItemData} from './CommitFlamegraph';
 
 -- deviation: define ItemData type here to avoid cyclic requires
 -- import type {TooltipFiberData} from './HoveredFiberInfo';
@@ -50,19 +49,19 @@ export type ItemData = {
 	selectedChartNode: ChartNodeType | nil,
 	selectedChartNodeIndex: number,
 	selectFiber: (id: number | nil, name: string | nil) -> (),
-	width: number,
+	-- width: number,
 }
 
 type Props = {
 	data: ItemData,
 	index: number,
-	style: Object,
+	-- style: Object,
 }
 
 local function CommitFlamegraphListItem(props: Props)
 	local data = props.data
 	local index = props.index
-	local style = props.style
+	-- local style = props.style
 
 	local chartData = data.chartData
 	local onElementMouseEnter = data.onElementMouseEnter
@@ -71,7 +70,8 @@ local function CommitFlamegraphListItem(props: Props)
 	local selectedChartNode = data.selectedChartNode
 	local selectedChartNodeIndex = data.selectedChartNodeIndex
 	local selectFiber = data.selectFiber
-	local width = data.width
+	-- deviation: use Roblox scaling unit
+	local width = 1 -- data.width
 
 	local renderPathNodes = chartData.renderPathNodes
 	local maxSelfDuration = chartData.maxSelfDuration
@@ -106,9 +106,12 @@ local function CommitFlamegraphListItem(props: Props)
 	local selectedNodeOffset = scaleX(if selectedChartNode ~= nil then selectedChartNode.offset else 0, width)
 
 	return React.createElement(
-		Fragment,
-		nil,
-		Array.map(row, function(chartNode)
+		Div,
+		{
+			direction = Enum.FillDirection.Horizontal,
+			height = lineHeight,
+		},
+		Array.map(row, function(chartNode: ChartNodeType): any
 			local didRender = chartNode.didRender
 			local id = chartNode.id
 			local label = chartNode.label
@@ -131,14 +134,14 @@ local function CommitFlamegraphListItem(props: Props)
 				return nil
 			end
 
-			local color = "url(#didNotRenderPattern)"
-			local textColor = "var(--color-commit-did-not-render-pattern-text)"
+			local color = Color3.fromRGB(190, 156, 235) -- "url(#didNotRenderPattern)"
+			local textColor = Color3.fromHex("#333333") --"var(--color-commit-did-not-render-pattern-text)"
 			if didRender then
 				color = getGradientColor(selfDuration / maxSelfDuration)
-				textColor = "var(--color-commit-gradient-text)"
+				textColor = Color3.fromHex("#000000") -- "var(--color-commit-gradient-text)"
 			elseif renderPathNodes:has(id) then
-				color = "var(--color-commit-did-not-render-fill)"
-				textColor = "var(--color-commit-did-not-render-fill-text)"
+				color = Color3.fromHex("#cfd1d5") -- "var(--color-commit-did-not-render-fill)"
+				textColor = Color3.fromHex("#000000") -- "var(--color-commit-did-not-render-fill-text)"
 			end
 
 			return React.createElement(ChartNode, {
@@ -154,10 +157,11 @@ local function CommitFlamegraphListItem(props: Props)
 					handleMouseEnter(chartNode)
 				end,
 				onMouseLeave = handleMouseLeave,
+				textColor = textColor,
 				--   textStyle={color: textColor},
 				width = nodeWidth,
 				x = nodeOffset - selectedNodeOffset,
-				y = top,
+				-- y = top,
 			})
 		end)
 	)

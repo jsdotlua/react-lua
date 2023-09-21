@@ -228,6 +228,7 @@ local function DevTools(props: Props)
 						}, showTabBar and React.createElement(
 							Div,
 							{
+								name = "tab-bar-container",
 								direction = Enum.FillDirection.Horizontal,
 								frameProps = {
 									Size = UDim2.new(1, 0, 0, BAR_HEIGHT),
@@ -249,6 +250,7 @@ local function DevTools(props: Props)
 						React.createElement(
 							Div,
 							{
+								name = "components-tab",
 								frameProps = {
 									Position = UDim2.fromOffset(0, BAR_HEIGHT),
 									Size = UDim2.new(1, 0, 1, -BAR_HEIGHT),
@@ -266,6 +268,7 @@ local function DevTools(props: Props)
 						React.createElement(
 							Div,
 							{
+								name = "profiler-tabs",
 								frameProps = {
 									Position = UDim2.fromOffset(0, BAR_HEIGHT),
 									Size = UDim2.new(1, 0, 1, -BAR_HEIGHT),

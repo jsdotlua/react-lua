@@ -42,7 +42,7 @@ export type Props = {
 	tabs: Array<TabInfo>,
 	type: "navigation" | "profiler" | "settings",
 	-- deviation: Roblox view props
-	startOrderAt: number?
+	startOrderAt: number?,
 }
 
 local function TabBar(props: Props)
@@ -54,11 +54,15 @@ local function TabBar(props: Props)
 	local type = props.type
 	local startOrderAt = props.startOrderAt or 0
 
-	if not Array.some(tabs, function(tab)
+	-- deviation: wrap side-effects in useEffect
+	local oneSelected = Array.some(tabs, function(tab)
 		return tab.id == currentTab
-	end) then
-		selectTab(tabs[1].id)
-	end
+	end)
+	React.useEffect(function()
+		if not oneSelected then
+			selectTab(tabs[1].id)
+		end
+	end, { oneSelected })
 
 	local onChange = useCallback(function(payload)
 		local currentTarget = payload.currentTarget
@@ -100,7 +104,7 @@ local function TabBar(props: Props)
 	return React.createElement(
 		Fragment,
 		nil,
-		Array.map(tabs, function(tab, index)
+		Array.map(tabs, function(tab: TabInfo, index: number): any
 			-- local icon = tab.icon
 			local id = tab.id
 			local label = tab.label
@@ -139,7 +143,7 @@ local function TabBar(props: Props)
 				text = label,
 				frameProps = {
 					LayoutOrder = index + startOrderAt,
-				}
+				},
 			})
 
 			-- if title then

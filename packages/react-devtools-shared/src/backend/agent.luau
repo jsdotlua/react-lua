@@ -346,7 +346,7 @@ function Agent:getProfilingData(rendererIdObject: { rendererID: RendererID }): (
 		console.warn(string.format('Invalid renderer id "%d"', rendererID))
 	end
 
-	print("GET PROFILING DATA from", renderer)
+	-- print("GET PROFILING DATA from", renderer)
 	self._bridge:send("profilingData", (renderer :: RendererInterface).getProfilingData())
 end
 function Agent:getProfilingStatus()

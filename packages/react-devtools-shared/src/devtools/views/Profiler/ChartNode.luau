@@ -44,10 +44,11 @@ type Props = {
 	onMouseEnter: (event: SyntheticMouseEvent) -> (),
 	onMouseLeave: (event: SyntheticMouseEvent) -> (),
 	placeLabelAboveNode: boolean?,
-	textStyle: Object?,
+	-- deviation: pass textColor directly instead
+	textColor: Color3,
 	width: number,
 	x: number,
-	y: number,
+	-- y: number,
 }
 
 local minWidthToDisplay = 35
@@ -61,10 +62,11 @@ local function ChartNode(props: Props)
 	local onMouseEnter = props.onMouseEnter
 	local onMouseLeave = props.onMouseLeave
 	local onDoubleClick = props.onDoubleClick
-	local textStyle = props.textStyle
+	-- deviation: pass textColor directly instead
+	local textColor = props.textColor
 	local width = props.width
 	local x = props.x
-	local y = props.y
+	-- local y = props.y
 
 	if onDoubleClick ~= nil then
 		warn("todo: double click not supported")
@@ -72,10 +74,12 @@ local function ChartNode(props: Props)
 
 	return React.createElement("TextButton", {
 		BackgroundColor3 = color,
+		TextColor3 = textColor,
 		BackgroundTransparency = if isDimmed then 0.5 else 0,
-		Text = "",
-		Size = UDim2.fromOffset(width, height),
-		Position = UDim2.fromOffset(x, y),
+		Text = label,
+		Size = UDim2.new(width, 0, 0, height),
+		LayoutOrder = x,
+		-- Position = UDim2.new(0, 0, 0, 0),
 		[ReactRoblox.Event.MouseEnter] = onMouseEnter,
 		[ReactRoblox.Event.MouseLeave] = onMouseLeave,
 		[ReactRoblox.Event.MouseButton1Click] = onClick,

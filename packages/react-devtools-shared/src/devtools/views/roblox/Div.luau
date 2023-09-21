@@ -13,15 +13,24 @@ local Object = LuauPolyfill.Object
 local React = require(Packages.React)
 
 type Props = {
+	name: string?,
 	padding: number | UDim | nil,
 	xAlignment: Enum.HorizontalAlignment?,
 	yAlignment: Enum.VerticalAlignment?,
 	direction: Enum.FillDirection?,
+	maxWidth: number?,
+	minWidth: number?,
+	maxHeight: number?,
+	minHeight: number?,
 	frameProps: {
 		ClipsDescendants: boolean?,
 		LayoutOrder: number?,
 		Visible: boolean,
 		[string]: any,
+	}?,
+	layoutProps: {
+		HorizontalAlignment: Enum.HorizontalAlignment?,
+		VerticalAlignment: Enum.VerticalAlignment?,
 	}?,
 	children: { React.Node }?,
 }
@@ -43,17 +52,32 @@ local function Div(props: Props, ref)
 		"Frame",
 		Object.assign({
 			ref = ref,
+			Name = props.name,
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(1, 0, 1, 0),
 		}, props.frameProps),
-		React.createElement("UIListLayout", {
-			Padding = padding,
-			SortOrder = Enum.SortOrder.LayoutOrder,
-			FillDirection = direction,
-			HorizontalAlignment = horizontalAlignment,
-			VerticalAlignment = verticalAlignment,
-		}),
+		React.createElement(
+			"UIListLayout",
+			Object.assign({
+				Name = "list-layout-" .. string.lower(direction.Name),
+				Padding = padding,
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				FillDirection = direction,
+				HorizontalAlignment = horizontalAlignment,
+				VerticalAlignment = verticalAlignment,
+			}, props.layoutProps)
+		),
+		if props.maxWidth
+				or props.minWidth
+				or props.maxHeight
+				or props.minHeight
+			then React.createElement("UISizeConstraint", {
+				Name = "size-constraint",
+				MaxSize = Vector2.new(props.maxWidth or math.huge, props.maxHeight or math.huge),
+				MinSize = Vector2.new(props.minWidth or 0, props.minHeight or 0),
+			})
+			else nil,
 		props.children
 	)
 end

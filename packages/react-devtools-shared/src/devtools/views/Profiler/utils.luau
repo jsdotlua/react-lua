@@ -31,23 +31,26 @@ type ProfilingDataFrontend = profilerTypes.ProfilingDataFrontend
 type SnapshotNode = profilerTypes.SnapshotNode
 
 local commitGradient = {
-	"var(--color-commit-gradient-0)",
-	"var(--color-commit-gradient-1)",
-	"var(--color-commit-gradient-2)",
-	"var(--color-commit-gradient-3)",
-	"var(--color-commit-gradient-4)",
-	"var(--color-commit-gradient-5)",
-	"var(--color-commit-gradient-6)",
-	"var(--color-commit-gradient-7)",
-	"var(--color-commit-gradient-8)",
-	"var(--color-commit-gradient-9)",
-} -- Combines info from the Store (frontend) and renderer interfaces (backend) into the format required by the Profiler UI.
+	Color3.fromHex("#37afa9"), -- "var(--color-commit-gradient-0)",
+	Color3.fromHex("#63b19e"), -- "var(--color-commit-gradient-1)",
+	Color3.fromHex("#80b393"), -- "var(--color-commit-gradient-2)",
+	Color3.fromHex("#97b488"), -- "var(--color-commit-gradient-3)",
+	Color3.fromHex("#abb67d"), -- "var(--color-commit-gradient-4)",
+	Color3.fromHex("#beb771"), -- "var(--color-commit-gradient-5)",
+	Color3.fromHex("#cfb965"), -- "var(--color-commit-gradient-6)",
+	Color3.fromHex("#dfba57"), -- "var(--color-commit-gradient-7)",
+	Color3.fromHex("#efbb49"), -- "var(--color-commit-gradient-8)",
+	Color3.fromHex("#febc38"), -- "var(--color-commit-gradient-9)",
+}
+
+-- Combines info from the Store (frontend) and renderer interfaces (backend) into the format required by the Profiler UI.
 -- This format can then be quickly exported (and re-imported).
 local function prepareProfilingDataFrontendFromBackendAndStore(
 	dataBackends: Array<ProfilingDataBackend>,
 	operationsByRootID: Map<number, Array<Array<number>>>,
 	snapshotsByRootID: Map<number, Map<number, SnapshotNode>>
 ): ProfilingDataFrontend
+print("snapshotsByRootID", snapshotsByRootID)
 	local dataForRoots: Map<number, ProfilingDataForRootFrontend> = Map.new()
 	for _, dataBackend in dataBackends do
 		for _, ref in dataBackend.dataForRoots do
@@ -210,11 +213,13 @@ local function getGradientColor(value: number)
 	local maxIndex = #commitGradient
 	local index
 	if Number.isNaN(value) then
-		index = 0
+		-- deviation: use 1 because 1-indexing
+		index = 1
 	elseif not Number.isFinite(value) then
 		index = maxIndex
 	else
-		index = math.max(0, math.min(maxIndex, value)) * maxIndex
+		-- deviation: use 1 because 1-indexing
+		index = math.max(1, math.min(maxIndex, value)) * maxIndex
 	end
 	return commitGradient[math.round(index)]
 end

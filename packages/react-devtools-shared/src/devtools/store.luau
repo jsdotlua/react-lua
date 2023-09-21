@@ -161,6 +161,7 @@ function Store.new(bridge: FrontendBridge, config: Config?): Store
 
 	local isProfiling = false
 	if config ~= nil then
+		-- print("Dev tools store config:", config)
 		isProfiling = (config :: Config).isProfiling == true
 
 		local supportsNativeInspection = (config :: Config).supportsNativeInspection
@@ -720,12 +721,16 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 
 	-- The first two values are always rendererID and rootID
 	local rendererID = operations[1]
+
 	local addedElementIDs = {}
 	-- This is a mapping of removed ID -> parent ID:
 	local removedElementIDs = {}
 	-- We'll use the parent ID to adjust selection if it gets deleted.
+
 	-- deviation: 1-indexed means this is 3, not 2
 	local i = 3
+
+	-- Reassemble the string table.
 	local stringTable: Array<any> = {
 		-- deviation: element 1 corresponds to empty string
 		"", -- ID = 0 corresponds to the null string.
@@ -752,9 +757,16 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 		-- i = i + nextLength
 	end
 
+	local translateOperation = {
+		[TREE_OPERATION_ADD] = "TREE_OPERATION_ADD",
+		[TREE_OPERATION_REMOVE] = "TREE_OPERATION_REMOVE",
+		[TREE_OPERATION_REORDER_CHILDREN] = "TREE_OPERATION_REORDER_CHILDREN",
+		[TREE_OPERATION_UPDATE_TREE_BASE_DURATION] = "TREE_OPERATION_UPDATE_TREE_BASE_DURATION",
+	}
 	-- deviation: 1-indexing, use <= not <
 	while i <= #operations do
 		local operation = operations[i]
+		print("operation =", translateOperation[operation])
 		if operation == TREE_OPERATION_ADD then
 			local id = operations[i + 1]
 			local type_ = operations[i + 2]
@@ -778,6 +790,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 				end
 
 				local supportsProfiling = operations[i] > 0
+				-- print("bridge capabilities supportsProfiling",supportsProfiling)
 				i += 1
 
 				local hasOwnerMetadata = operations[i] > 0
@@ -808,19 +821,18 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 			else
 				parentID = (operations[i] :: any) :: number
 				i += 1
+
 				ownerID = (operations[i] :: any) :: number
 				i += 1
 
 				local displayNameStringID = operations[i]
 				-- deviation: 1-indexed
 				local displayName = stringTable[displayNameStringID + 1]
-
 				i += 1
 
 				local keyStringID = operations[i]
 				-- deviation: 1-indexed
 				local key = stringTable[keyStringID + 1]
-
 				i += 1
 
 				if __DEBUG__ then

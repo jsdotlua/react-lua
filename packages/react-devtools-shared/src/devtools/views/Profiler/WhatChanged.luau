@@ -152,5 +152,7 @@ local function WhatChanged(props: Props)
 	--       {changes}
 	--     </div>
 end
+exports.WhatChanged = WhatChanged
+exports.default = WhatChanged
 
 return exports

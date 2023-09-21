@@ -11,7 +11,7 @@ local function RobloxDevtools(_: {})
 
 	React.useEffect(function()
 		if not data then
-			print("setupDevtools!")
+			-- print("setupDevtools!")
 			local devtoolsSetupData = setupDevtools()
 
 			setData({
@@ -22,30 +22,36 @@ local function RobloxDevtools(_: {})
 		return
 	end, { data or false })
 
-	if data then
-		return React.createElement(DevTools, {
-			bridge = data.bridge, --((bridge:: any):: FrontendBridge),
-			-- canViewElementSourceFunction = canViewElementSourceFunction,
-			showTabBar = true,
-			store = data.store, --((store:: any):: Store),
-			warnIfLegacyBackendDetected = true,
-			-- viewElementSourceFunction = viewElementSourceFunction,
-		})
-	-- print("DEV TOOLS DATA=", data)
-	-- 		return React.createElement("TextLabel", {
-	-- 			BackgroundTransparency = 1,
-	-- 			BorderSizePixel = 0,
-	-- 			Size = UDim2.new(1, 0, 1, 0),
-	-- 			Text = "Devtools have loaded!",
-	-- 		})
-	else
-		return React.createElement("TextLabel", {
-			BackgroundTransparency = 1,
+	return React.createElement(
+		"Frame",
+		{
+			BackgroundColor3 = Color3.fromRGB(235, 235, 235),
 			BorderSizePixel = 0,
-			Size = UDim2.new(1, 0, 1, 0),
-			Text = "Devtools not loaded",
-		})
-	end
+			Size = UDim2.fromScale(1, 1),
+		},
+		if data
+			then React.createElement(DevTools, {
+				bridge = data.bridge, --((bridge:: any):: FrontendBridge),
+				-- canViewElementSourceFunction = canViewElementSourceFunction,
+				showTabBar = true,
+				store = data.store, --((store:: any):: Store),
+				warnIfLegacyBackendDetected = true,
+				-- viewElementSourceFunction = viewElementSourceFunction,
+			})
+			-- print("DEV TOOLS DATA=", data)
+			-- 		return React.createElement("TextLabel", {
+			-- 			BackgroundTransparency = 1,
+			-- 			BorderSizePixel = 0,
+			-- 			Size = UDim2.new(1, 0, 1, 0),
+			-- 			Text = "Devtools have loaded!",
+			-- 		})
+			else React.createElement("TextLabel", {
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Size = UDim2.new(1, 0, 1, 0),
+				Text = "Devtools not loaded",
+			})
+	)
 end
 
 return RobloxDevtools

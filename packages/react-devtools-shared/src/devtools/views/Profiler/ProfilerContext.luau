@@ -142,7 +142,7 @@ local function ProfilerContextController(props: Props)
 				end
 			end,
 		}
-	end, { profilerStore, store })
+	end, { profilerStore :: any, store })
 	local subscriptionState = useSubscription(subscription) -- <StoreProfilingState>
 	local didRecordCommits = subscriptionState.didRecordCommits
 	local isProcessingData = subscriptionState.isProcessingData
@@ -220,20 +220,23 @@ local function ProfilerContextController(props: Props)
 	local selectedTabID, selectTab = useState("flame-chart" :: TabID)
 	local selectedInteractionID, selectInteraction = useState(nil :: number | nil)
 
-	-- if isProfiling then
-	-- 	batchedUpdates(function()
-	-- 		if selectedCommitIndex ~= nil then
-	-- 			selectCommitIndex(nil)
-	-- 		end
-	-- 		if selectedFiberID ~= nil then
-	-- 			selectFiberID(nil)
-	-- 			selectFiberName(nil)
-	-- 		end
-	-- 		if selectedInteractionID ~= nil then
-	-- 			selectInteraction(nil)
-	-- 		end
-	-- 	end)
-	-- end
+	-- deviation: wrap batchesUpdates in useEffect
+	React.useEffect(function()
+		if isProfiling then
+			batchedUpdates(function()
+				if selectedCommitIndex ~= nil then
+					selectCommitIndex(nil)
+				end
+				if selectedFiberID ~= nil then
+					selectFiberID(nil)
+					selectFiberName(nil)
+				end
+				if selectedInteractionID ~= nil then
+					selectInteraction(nil)
+				end
+			end)
+		end
+	end, { isProfiling :: any, selectedCommitIndex, selectedFiberID, selectedInteractionID })
 
 	local value = useMemo(function()
 		return {

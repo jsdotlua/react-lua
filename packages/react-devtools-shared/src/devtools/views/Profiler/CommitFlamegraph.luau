@@ -34,7 +34,8 @@ local useState = React.useState
 local ProfilerContextModule = require(script.Parent.ProfilerContext)
 local ProfilerContext = ProfilerContextModule.ProfilerContext
 local NoCommitData = require(script.Parent.NoCommitData).default
-local CommitFlamegraphListItem = require(script.Parent.CommitFlamegraphListItem).default;
+local CommitFlamegraphListItemModule = require(script.Parent.CommitFlamegraphListItem)
+local CommitFlamegraphListItem = CommitFlamegraphListItemModule.default
 -- local HoveredFiberInfo = require(script.Parent.HoveredFiberInfo).default
 local scale = require(script.Parent.utils).scale
 -- import {useHighlightNativeElement} from '../hooks';
@@ -53,12 +54,12 @@ local types = require(script.Parent.types)
 type CommitTree = types.CommitTree
 
 -- deviation: avoid cyclic import and require move ItemData type from CommitFlamegraphListItem
-export type ItemData = CommitFlamegraphListItem.ItemData
+export type ItemData = CommitFlamegraphListItemModule.ItemData
 
 -- deviation: pre-declaration
 local CommitFlamegraph
 
-local function CommitFlamegraphAutoSizer(_: {})
+local function CommitFlamegraphAutoSizer(_: {}): React.ReactElement<any>
 	local profilerStore = useContext(StoreContext):getProfilerStore()
 	local profilerValue = useContext(ProfilerContext)
 	local rootID = profilerValue.rootID
@@ -72,40 +73,51 @@ local function CommitFlamegraphAutoSizer(_: {})
 		selectFiber(nil, nil)
 	end, { selectFiber })
 
+	print("selectedCommitIndex", selectedCommitIndex)
+	-- print("profilingCache", profilingCache)
+
 	local commitTree: CommitTree | nil = nil
 	local chartData: ChartData | nil = nil
-	if selectedCommitIndex ~= nil then
+	if false and selectedCommitIndex ~= nil then
 		commitTree = profilingCache:getCommitTree({
 			commitIndex = selectedCommitIndex,
 			rootID = (rootID :: any) :: number,
 		})
+
+		print("commitTree", commitTree)
 
 		chartData = profilingCache:getFlamegraphChartData({
 			commitIndex = selectedCommitIndex,
 			commitTree = commitTree,
 			rootID = (rootID :: any) :: number,
 		})
+		print("chartData", chartData)
 	end
 
 	if commitTree ~= nil and chartData ~= nil and chartData.depth > 0 then
 		return React.createElement(
 			Div,
 			{
+				name = "flamegraph-container",
 				-- className={styles.Container}
 				-- onClick={deselectCurrentFiber}
 			},
-			React.createElement(AutoSizer, {}, function(info)
-				local height = info.height
-				local width = info.width
-				-- Force Flow types to avoid checking for `null` here because there's no static proof that
-				-- by the time this render prop function is called, the values of the `let` variables have not changed.
-				return React.createElement(CommitFlamegraph, {
-					chartData = (chartData :: any) :: ChartData,
-					commitTree = (commitTree :: any) :: CommitTree,
-					height = height,
-					width = width,
-				})
-			end)
+			React.createElement(CommitFlamegraph, {
+				chartData = (chartData :: any) :: ChartData,
+				commitTree = (commitTree :: any) :: CommitTree,
+			})
+			-- React.createElement(AutoSizer, {}, function(info)
+			-- 	local height = info.height
+			-- 	local width = info.width
+			-- 	-- Force Flow types to avoid checking for `null` here because there's no static proof that
+			-- 	-- by the time this render prop function is called, the values of the `let` variables have not changed.
+			-- 	return React.createElement(CommitFlamegraph, {
+			-- 		chartData = (chartData :: any) :: ChartData,
+			-- 		commitTree = (commitTree :: any) :: CommitTree,
+			-- 		height = height,
+			-- 		width = width,
+			-- 	})
+			-- end)
 		)
 	else
 		return React.createElement(NoCommitData)
@@ -117,19 +129,19 @@ exports.default = CommitFlamegraphAutoSizer
 type Props = {
 	chartData: ChartData,
 	commitTree: CommitTree,
-	height: number,
-	width: number,
+	-- height: number,
+	-- width: number,
 }
 
 function CommitFlamegraph(props: Props)
 	local chartData = props.chartData
-	local commitTree = props.commitTree
-	local height = props.height
-	local width = props.width
+	-- local commitTree = props.commitTree
+	-- local height = props.height
+	-- local width = props.width
 	local hoveredFiberData, setHoveredFiberData = useState(nil :: TooltipFiberData | nil)
 	--   local {lineHeight} = useContext(SettingsContext);
-    -- todo: implement SettingsContext
-    local lineHeight = 10
+	-- todo: implement SettingsContext
+	local lineHeight = 10
 	local profilerValue = useContext(ProfilerContext)
 
 	local selectFiber = profilerValue.selectFiber
@@ -179,12 +191,12 @@ function CommitFlamegraph(props: Props)
 				0,
 				if selectedChartNode ~= nil then selectedChartNode.treeBaseDuration else chartData.baseDuration,
 				0,
-				width
+				1 -- width
 			),
 			selectedChartNode = selectedChartNode,
 			selectedChartNodeIndex = selectedChartNodeIndex,
 			selectFiber = selectFiber,
-			width = width,
+			-- width = width,
 		}
 	end, {
 		chartData :: any,
@@ -193,7 +205,7 @@ function CommitFlamegraph(props: Props)
 		selectedChartNode,
 		selectedChartNodeIndex,
 		selectFiber,
-		width,
+		-- width,
 	})
 
 	-- Tooltip used to show summary of fiber info on hover
@@ -204,20 +216,34 @@ function CommitFlamegraph(props: Props)
 			else nil
 	end, { hoveredFiberData })
 
-	return React.createElement(
-		Tooltip,
-		{
-			label = tooltipLabel,
+	local items = {}
+	for i = 1, chartData.depth do
+		items[i] = React.createElement(CommitFlamegraphListItem, {
+			key = tostring(i),
+			data = itemData,
+			index = i,
+		})
+	end
+	return React.createElement(Div, {
+		direction = Enum.FillDirection.Vertical,
+		layoutProps = {
+			VerticalAlignment = Enum.VerticalAlignment.Top,
 		},
-		React.createElement(FixedSizeList, {
-			height = height,
-			innerElementType = InnerElementType,
-			itemCount = chartData.depth,
-			itemData = itemData,
-			itemSize = lineHeight,
-			width = width,
-		}, CommitFlamegraphListItem)
-	)
+	}, items)
+	-- return React.createElement(
+	-- 	Tooltip,
+	-- 	{
+	-- 		label = tooltipLabel,
+	-- 	},
+	-- 	React.createElement(FixedSizeList, {
+	-- 		height = height,
+	-- 		innerElementType = InnerElementType,
+	-- 		itemCount = chartData.depth,
+	-- 		itemData = itemData,
+	-- 		itemSize = lineHeight,
+	-- 		width = width,
+	-- 	}, CommitFlamegraphListItem)
+	-- )
 end
 
 -- local InnerElementType = forwardRef(({children, ...rest}, ref) => (

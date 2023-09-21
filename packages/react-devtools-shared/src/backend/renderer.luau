@@ -3017,6 +3017,7 @@ exports.attach = function(
 		initialIDToRootMap = Map.new(idToRootMap)
 		idToContextsMap = Map.new()
 
+		-- print("hook.getFiberRoots(rendererID)", hook.getFiberRoots(rendererID))
 		hook.getFiberRoots(rendererID):forEach(function(root)
 			local rootID = getFiberID(getPrimaryFiber(root.current));
 			((displayNamesByRootID :: any) :: DisplayNamesByRootID):set(rootID, getDisplayNameForRoot(root.current))

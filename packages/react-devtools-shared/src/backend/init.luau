@@ -24,8 +24,10 @@ type Object = { [string]: any }
 local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): () -> ()
 	if hook == nil then
 		-- DevTools didn't get injected into this page (maybe b'c of the contentType).
+		warn("DevTools didn't get injected into this page (maybe b'c of the contentType).")
 		return function() end
 	end
+	-- print("INIT BACKEND", hook)
 	local subs = {
 		hook.sub("renderer-attached", function(args: {
 			id: number,
@@ -56,6 +58,7 @@ local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): ()
 	}
 
 	local attachRenderer = function(id: number, renderer: ReactRenderer)
+		-- print("attach renderer", id)
 		-- deviation: require attach lazily to avoid the require of renderer causing Roact to initialize prematurely.
 		local attach = require(script.renderer).attach
 
@@ -65,6 +68,7 @@ local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): ()
 		if rendererInterface == nil then
 			if type(renderer.findFiberByHostInstance) == "function" then
 				-- react-reconciler v16+
+				-- print("attach render with hook!", hook, id, global)
 				rendererInterface = attach(hook, id, renderer, global)
 			elseif renderer.ComponentTree then
 				-- react-dom v15
@@ -93,6 +97,7 @@ local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): ()
 
 	-- Connect renderers that have already injected themselves.
 	hook.renderers:forEach(function(renderer, id)
+		-- print("attach injected renderer", id)
 		attachRenderer(id, renderer)
 	end)
 
@@ -109,6 +114,7 @@ local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): ()
 	hook.emit("react-devtools", agent)
 	hook.reactDevtoolsAgent = agent
 	local function onAgentShutdown()
+		-- print("onAgentShutdown", onAgentShutdown)
 		Array.forEach(subs, function(fn)
 			fn()
 		end)
