@@ -73,25 +73,25 @@ local function CommitFlamegraphAutoSizer(_: {}): React.ReactElement<any>
 		selectFiber(nil, nil)
 	end, { selectFiber })
 
-	print("selectedCommitIndex", selectedCommitIndex)
+	-- print("selectedCommitIndex", selectedCommitIndex)
 	-- print("profilingCache", profilingCache)
 
 	local commitTree: CommitTree | nil = nil
 	local chartData: ChartData | nil = nil
-	if false and selectedCommitIndex ~= nil then
+	if selectedCommitIndex ~= nil then
 		commitTree = profilingCache:getCommitTree({
 			commitIndex = selectedCommitIndex,
 			rootID = (rootID :: any) :: number,
 		})
 
-		print("commitTree", commitTree)
+		-- print("commitTree", commitTree)
 
 		chartData = profilingCache:getFlamegraphChartData({
 			commitIndex = selectedCommitIndex,
 			commitTree = commitTree,
 			rootID = (rootID :: any) :: number,
 		})
-		print("chartData", chartData)
+		-- print("chartData", chartData)
 	end
 
 	if commitTree ~= nil and chartData ~= nil and chartData.depth > 0 then
@@ -169,24 +169,26 @@ function CommitFlamegraph(props: Props)
 		return nil
 	end, { chartData :: any, selectedFiberID, selectedChartNodeIndex })
 
-	-- local handleElementMouseEnter = useCallback(function(args)
-	-- 	local id = args.id
-	-- 	local name = args.name
+	local handleElementMouseEnter = useCallback(function(args)
+		local id = args.id
+		local name = args.name
 
-	-- 	highlightNativeElement(id) -- Highlight last hovered element.
-	-- 	setHoveredFiberData({ id, name }) -- Set hovered fiber data for tooltip
-	-- end, { highlightNativeElement })
+		-- highlightNativeElement(id) -- Highlight last hovered element.
+		setHoveredFiberData({ id, name }) -- Set hovered fiber data for tooltip
+	end, { --[[ highlightNativeElement ]]
+	})
 
-	-- local handleElementMouseLeave = useCallback(function()
-	-- 	clearHighlightNativeElement() -- clear highlighting of element on mouse leave
-	-- 	setHoveredFiberData(nil) -- clear hovered fiber data for tooltip
-	-- end, { clearHighlightNativeElement })
+	local handleElementMouseLeave = useCallback(function()
+		-- clearHighlightNativeElement() -- clear highlighting of element on mouse leave
+		setHoveredFiberData(nil :: any) -- clear hovered fiber data for tooltip
+	end, { --[[clearHighlightNativeElement]]
+	})
 
 	local itemData: ItemData = useMemo(function()
 		return {
 			chartData = chartData,
-			onElementMouseEnter = nil :: any, --handleElementMouseEnter,
-			onElementMouseLeave = nil :: any, --handleElementMouseLeave,
+			onElementMouseEnter = handleElementMouseEnter,
+			onElementMouseLeave = handleElementMouseLeave,
 			scaleX = scale(
 				0,
 				if selectedChartNode ~= nil then selectedChartNode.treeBaseDuration else chartData.baseDuration,
@@ -200,8 +202,8 @@ function CommitFlamegraph(props: Props)
 		}
 	end, {
 		chartData :: any,
-		-- handleElementMouseEnter,
-		-- handleElementMouseLeave,
+		handleElementMouseEnter,
+		handleElementMouseLeave,
 		selectedChartNode,
 		selectedChartNodeIndex,
 		selectFiber,
@@ -224,7 +226,10 @@ function CommitFlamegraph(props: Props)
 			index = i,
 		})
 	end
+
+	-- print("chartData", chartData)
 	return React.createElement(Div, {
+		name = "commit-flamegraph",
 		direction = Enum.FillDirection.Vertical,
 		layoutProps = {
 			VerticalAlignment = Enum.VerticalAlignment.Top,

@@ -8,13 +8,12 @@ local teardown = require(script.Parent.teardown)
 type Teardown = Teardown.Teardown
 
 local function createPluginToolbar(plugin: Plugin): Teardown
-	print("create react-lua plugin")
 	local pluginToolbar = plugin:CreateToolbar("React Devtools Extension")
 	local openDevtoolsButton = pluginToolbar:CreateButton("Open", "", "")
 
 	local pluginGui = plugin:CreateDockWidgetPluginGui(
 		"react-dev-tools",
-		DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Right, true, false, 400, 300, 200, 150)
+		DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Right, true, false, 400, 300, 200, 300)
 	)
 	pluginGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	pluginGui.Title = "React Devtools Extension"

@@ -3,7 +3,7 @@ name = 'jsdotlua/more-polyfill'
 description = 'https://github.com/grilme99/CorePackages'
 version = '0.1.0'
 license = 'MIT'
-authors = ['jsdotlua']
+authors = ['jeparlefrancais <jeparlefrancais21@gmail.com>']
 registry = 'https://github.com/UpliftGames/wally-index'
 realm = 'shared'
 

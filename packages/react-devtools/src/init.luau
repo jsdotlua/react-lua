@@ -16,4 +16,19 @@ local connectToDevTools = require(Packages.ReactDevtoolsCore).backend.connectToD
 -- If you need more control, use `react-devtools-core` directly instead of `react-devtools`.
 connectToDevTools()
 
+-- deviation: we need to inject devtools again
+local ReactReconciler = require(Packages.ReactReconciler)({})
+
+local function mockFindFiberByHostInstance()
+	warn("mockFindFiberByHostInstance")
+	return nil
+end
+
+ReactReconciler.injectIntoDevTools({
+	findFiberByHostInstance = mockFindFiberByHostInstance,
+	bundleType = if _G.__DEV__ then 1 else 0,
+	version = "17.0.2",
+	rendererPackageName = "ReactRoblox",
+})
+
 return nil

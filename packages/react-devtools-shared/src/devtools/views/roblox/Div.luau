@@ -11,6 +11,7 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 local Object = LuauPolyfill.Object
 
 local React = require(Packages.React)
+local ReactRoblox = require(Packages.ReactRoblox)
 
 type Props = {
 	name: string?,
@@ -22,6 +23,8 @@ type Props = {
 	minWidth: number?,
 	maxHeight: number?,
 	minHeight: number?,
+	order: number?,
+	onClick: () -> (),
 	frameProps: {
 		ClipsDescendants: boolean?,
 		LayoutOrder: number?,
@@ -47,16 +50,28 @@ local function Div(props: Props, ref)
 		then UDim.new(0, 0)
 		elseif type(props.padding) == "number" then UDim.new(0, props.padding)
 		else props.padding
+	local onClick = props.onClick
 
 	return React.createElement(
-		"Frame",
-		Object.assign({
-			ref = ref,
-			Name = props.name,
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			Size = UDim2.new(1, 0, 1, 0),
-		}, props.frameProps),
+		if onClick then "TextButton" else "Frame",
+		Object.assign(
+			{
+				ref = ref,
+				Name = props.name,
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Size = UDim2.new(1, 0, 1, 0),
+				LayoutOrder = props.order,
+			},
+			if onClick
+				then {
+					AutoButtonColor = false,
+					Text = "",
+					[ReactRoblox.Event.Activated] = onClick,
+				}
+				else {},
+			props.frameProps
+		),
 		React.createElement(
 			"UIListLayout",
 			Object.assign({

@@ -11,7 +11,6 @@ local function RobloxDevtools(_: {})
 
 	React.useEffect(function()
 		if not data then
-			-- print("setupDevtools!")
 			local devtoolsSetupData = setupDevtools()
 
 			setData({
@@ -38,13 +37,6 @@ local function RobloxDevtools(_: {})
 				warnIfLegacyBackendDetected = true,
 				-- viewElementSourceFunction = viewElementSourceFunction,
 			})
-			-- print("DEV TOOLS DATA=", data)
-			-- 		return React.createElement("TextLabel", {
-			-- 			BackgroundTransparency = 1,
-			-- 			BorderSizePixel = 0,
-			-- 			Size = UDim2.new(1, 0, 1, 0),
-			-- 			Text = "Devtools have loaded!",
-			-- 		})
 			else React.createElement("TextLabel", {
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,

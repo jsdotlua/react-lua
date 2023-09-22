@@ -11,9 +11,14 @@
 
 local Packages = script.Parent.Parent.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
 type Map<K, V> = LuauPolyfill.Map<K, V>
 type Array<K> = LuauPolyfill.Array<K>
+
 local exports = {}
+
+local Div = require(script.Parent.Parent.roblox.Div)
+local Text = require(script.Parent.Parent.roblox.Text)
 
 local React = require(Packages.React)
 local useContext = React.useContext
@@ -28,9 +33,9 @@ type Props = {
 	fiberID: number,
 }
 
-local function WhatChanged(props: Props)
+local function WhatChanged(props: Props): React.ReactElement<any>?
 	local fiberID = props.fiberID
-	local profilerStore = useContext(StoreContext).profilerStore
+	local profilerStore = useContext(StoreContext):getProfilerStore()
 	local profilerContext = useContext(ProfilerContext)
 	local rootID = profilerContext.rootID
 	local selectedCommitIndex = profilerContext.selectedCommitIndex
@@ -56,15 +61,26 @@ local function WhatChanged(props: Props)
 	end
 
 	if changeDescription.isFirstMount then
-		error("todo")
-		-- return (
-		--   <div className={styles.Component}>
-		--     <label className={styles.Label}>Why did this render?</label>
-		--     <div className={styles.Item}>
-		--       This is the first time the component rendered.
-		--     </div>
-		--   </div>
-		-- );
+		return React.createElement(
+			Div,
+			{
+				name = "what-changed",
+				frameProps = {
+					AutomaticSize = Enum.AutomaticSize.Y,
+				},
+			},
+			React.createElement(Text, {
+				expand = false,
+				text = "Why did this render?",
+				fontSize = 16,
+				order = 1,
+			}),
+			React.createElement(Text, {
+				expand = false,
+				text = "This is the first time the component rendered.",
+				order = 2,
+			})
+		)
 	end
 
 	local changes = {}
@@ -72,10 +88,22 @@ local function WhatChanged(props: Props)
 	if changeDescription.context == true then
 		table.insert(
 			changes,
-			error("todo")
-			-- <div key="context" className={styles.Item}>
-			--   • Context changed
-			-- </div>,
+			React.createElement(
+				Div,
+				{
+					key = "context",
+					name = "context-changed",
+					frameProps = {
+						AutomaticSize = Enum.AutomaticSize.Y,
+					},
+				},
+				React.createElement(Text, {
+					order = 1,
+					expand = false,
+					fontSize = 14,
+					text = "• Context changed:",
+				})
+			)
 		)
 	elseif
 		type(changeDescription.context) == "table"
@@ -84,73 +112,151 @@ local function WhatChanged(props: Props)
 	then
 		table.insert(
 			changes,
-			error("todo")
-			-- <div key="context" className={styles.Item}>
-			--   • Context changed:
-			--   {changeDescription.context.map(key => (
-			--     <span key={key} className={styles.Key}>
-			--       {key}
-			--     </span>
-			--   ))}
-			-- </div>,
+			React.createElement(
+				Div,
+				{
+					key = "context",
+					name = "context-changed",
+					frameProps = {
+						AutomaticSize = Enum.AutomaticSize.Y,
+					},
+				},
+				React.createElement(Text, {
+					order = 1,
+					expand = false,
+					fontSize = 14,
+					text = "• Context changed:",
+				}),
+				Array.map(changeDescription.context, function(key, index): any
+					return React.createElement(Text, {
+						order = 1 + index,
+						key = key,
+						expand = false,
+						text = key,
+					})
+				end)
+			)
 		)
 	end
 
 	if changeDescription.didHooksChange then
 		table.insert(
 			changes,
-			error("todo")
-			-- <div key="hooks" className={styles.Item}>
-			--   • Hooks changed
-			-- </div>,
+			React.createElement(
+				Div,
+				{
+					key = "hooks",
+					name = "hooks-changed",
+					frameProps = {
+						AutomaticSize = Enum.AutomaticSize.Y,
+					},
+				},
+				React.createElement(Text, {
+					order = 1,
+					expand = false,
+					fontSize = 14,
+					text = "• Hooks changed:",
+				})
+			)
 		)
 	end
 
 	if changeDescription.props ~= nil and #changeDescription.props ~= 0 then
 		table.insert(
 			changes,
-			error("todo")
-			-- <div key="props" className={styles.Item}>
-			--   • Props changed:
-			--   {changeDescription.props.map(key => (
-			--     <span key={key} className={styles.Key}>
-			--       {key}
-			--     </span>
-			--   ))}
-			-- </div>,
+			React.createElement(
+				Div,
+				{
+					key = "props",
+					name = "props-changed",
+					frameProps = {
+						AutomaticSize = Enum.AutomaticSize.Y,
+					},
+				},
+				React.createElement(Text, {
+					order = 1,
+					expand = false,
+					fontSize = 14,
+					text = "• Props changed:",
+				}),
+				Array.map(changeDescription.props, function(key, index): any
+					return React.createElement(Text, {
+						order = 1 + index,
+						key = key,
+						expand = false,
+						text = key,
+					})
+				end)
+			)
 		)
 	end
 
-	if changeDescription.state ~= nil and #changeDescription.stateh ~= 0 then
+	if changeDescription.state ~= nil and #changeDescription.state ~= 0 then
 		table.insert(
 			changes,
-			error("todo")
-			-- <div key="state" className={styles.Item}>
-			--   • State changed:
-			--   {changeDescription.state.map(key => (
-			--     <span key={key} className={styles.Key}>
-			--       {key}
-			--     </span>
-			--   ))}
-			-- </div>,
+			React.createElement(
+				Div,
+				{
+					key = "state",
+					name = "state-changed",
+					frameProps = {
+						AutomaticSize = Enum.AutomaticSize.Y,
+					},
+				},
+				React.createElement(Text, {
+					order = 1,
+					expand = false,
+					fontSize = 14,
+					text = "• State changed:",
+				}),
+				Array.map(changeDescription.state, function(key, index): any
+					return React.createElement(Text, {
+						order = 1 + index,
+						key = key,
+						expand = false,
+						text = key,
+					})
+				end)
+			)
 		)
 	end
 
 	if #changes == 0 then
 		table.insert(
 			changes,
-			error("todo")
-			-- <div key="nothing" className={styles.Item}>
-			--   The parent component rendered.
-			-- </div>,
+			React.createElement(
+				Div,
+				{
+					key = "nothing",
+					name = "nothing",
+					frameProps = {
+						AutomaticSize = Enum.AutomaticSize.Y,
+					},
+				},
+				React.createElement(Text, {
+					order = 1,
+					expand = false,
+					fontSize = 14,
+					text = "The parent component rendered.",
+				})
+			)
 		)
 	end
 
-	return error("todo")
-	--     <div className={styles.Component}>
-	--       <label className={styles.Label}>Why did this render?</label>
-	--       {changes}
-	--     </div>
+	return React.createElement(
+		Div,
+		{
+			name = "what-changed",
+			frameProps = {
+				AutomaticSize = Enum.AutomaticSize.Y,
+			},
+		},
+		React.createElement(Text, {
+			expand = false,
+			text = "Why did this render?",
+		}),
+		changes
+	)
 end
 exports.WhatChanged = WhatChanged
 exports.default = WhatChanged

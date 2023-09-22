@@ -28,7 +28,7 @@ local Bridge = ReactDevtoolsShared.bridge
 local installHook = ReactDevtoolsShared.hook.installHook
 local initBackend = ReactDevtoolsShared.backend.initBackend
 -- import {__DEBUG__} from 'react-devtools-shared/src/constants';
-local __DEBUG__ = true
+local __DEBUG__ = false
 -- import setupNativeStyleEditor from 'react-devtools-shared/src/backend/NativeStyleEditor/setupNativeStyleEditor';
 -- import {getDefaultComponentFilters} from 'react-devtools-shared/src/utils';
 
@@ -48,6 +48,7 @@ type ConnectOptions = {
 	--   ...
 }
 
+-- deviation: set global in _G instead of window
 -- installHook(window);
 installHook(_G)
 
@@ -60,7 +61,7 @@ local function debug(methodName: string, ...)
 		local args = {}
 		local totalArgs = select("#", ...)
 		for i = 1, totalArgs do
-			table.insert(args, LuauPolyfill.util.inspect((select(i, ...)), { depth =  5 }))
+			table.insert(args, LuauPolyfill.util.inspect((select(i, ...)), { depth = 5 }))
 		end
 		console.log(`[core/backend] {methodName}` .. string.rep(" %s", totalArgs), unpack(args))
 	end
@@ -110,19 +111,26 @@ local function connectToDevTools(options: ConnectOptions?)
 
 	-- deviation: setup Roblox bindable event
 	do
-		local bindableToFrontend = ReplicatedStorage:FindFirstChild("ReactDevtoolsFrontendBindable")
-		local bindableToBackend = ReplicatedStorage:FindFirstChild("ReactDevtoolsBackendBindable")
+		local bindableToFrontend: BindableEvent? = ReplicatedStorage:FindFirstChild("ReactDevtoolsFrontendBindable")
+		local bindableToBackend: BindableEvent? = ReplicatedStorage:FindFirstChild("ReactDevtoolsBackendBindable")
 		if
 			bindableToFrontend == nil
 			or bindableToBackend == nil
 			or not bindableToFrontend:IsA("BindableEvent")
 			or not bindableToBackend:IsA("BindableEvent")
 		then
+			if bindableToFrontend then
+				bindableToFrontend:Destroy()
+			end
+			if bindableToBackend then
+				bindableToBackend:Destroy()
+			end
 			scheduleRetry()
 			return
 		end
 
 		bindableToBackend.Event:Connect(function(data)
+			-- print("[backend] received message", data)
 			for _, fn in messageListeners do
 				local success, err: any = pcall(fn, data)
 				if not success then
@@ -135,12 +143,19 @@ local function connectToDevTools(options: ConnectOptions?)
 				end
 			end
 		end)
+
+		-- print("\n\n### backend wait for event on bindableToFrontend\n\n")
+		while not bindableToFrontend:GetAttribute("Ready") do
+			bindableToFrontend:GetAttributeChangedSignal("Ready"):Wait()
+		end
+		-- print("\n\n===== received ready signal !!!\n\n")
+
 		bridge = Bridge.new({
 			listen = function(fn)
 				table.insert(messageListeners, fn)
 				return function()
 					local index = Array.indexOf(messageListeners, fn)
-					if index >= 0 then
+					if index > 0 then
 						Array.splice(messageListeners, index, 1)
 					end
 				end

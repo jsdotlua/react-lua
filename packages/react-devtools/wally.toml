@@ -3,7 +3,7 @@ name = 'jsdotlua/react-devtools'
 description = 'https://github.com/grilme99/CorePackages'
 version = '17.0.2'
 license = 'MIT'
-authors = ['Roblox Corporation']
+authors = ['Facebook, Inc']
 registry = 'https://github.com/UpliftGames/wally-index'
 realm = 'shared'
 

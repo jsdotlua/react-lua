@@ -172,7 +172,7 @@ local function useLocalStorage<T>(key: string, initialValue: T | (() -> T)): (T,
 		end
 
 		if item ~= nil then
-			local jsonSuccess, result=pcall(function()
+			local jsonSuccess, result = pcall(function()
 				return JSON.parse(item)
 			end)
 			if jsonSuccess then
@@ -222,50 +222,52 @@ local function useLocalStorage<T>(key: string, initialValue: T | (() -> T)): (T,
 end
 exports.useLocalStorage = useLocalStorage
 
--- export function useModalDismissSignal(
---   modalRef: {current: HTMLDivElement | null, ...},
---   dismissCallback: () => void,
---   dismissOnClickOutside?: boolean = true,
--- ): void {
---   useEffect(() => {
---     if (modalRef.current === null) {
---       return () => {};
---     }
+local function useModalDismissSignal(
+	modalRef: { current: HTMLDivElement | nil },
+	dismissCallback: () -> (),
+	dismissOnClickOutside: boolean? -- = true,
+): ()
+	if dismissOnClickOutside == nil then
+		dismissOnClickOutside = true
+	end
+	useEffect(function()
+		if modalRef.current == nil then
+			return function() end
+		end
 
---     const handleDocumentKeyDown = ({key}: any) => {
---       if (key === 'Escape') {
---         dismissCallback();
---       }
---     };
+		local function handleDocumentKeyDown(event: any)
+			local key = event.key
+			if key == "Escape" then
+				dismissCallback()
+			end
+		end
 
---     const handleDocumentClick = (event: any) => {
---       // $FlowFixMe
---       if (
---         modalRef.current !== null &&
---         !modalRef.current.contains(event.target)
---       ) {
---         event.stopPropagation();
---         event.preventDefault();
+		local function handleDocumentClick(event: any)
+			-- $FlowFixMe
+			if modalRef.current ~= nil and not modalRef.current.contains(event.target) then
+				event.stopPropagation()
+				event.preventDefault()
 
---         dismissCallback();
---       }
---     };
+				dismissCallback()
+			end
+		end
 
---     // It's important to listen to the ownerDocument to support the browser extension.
---     // Here we use portals to render individual tabs (e.g. Profiler),
---     // and the root document might belong to a different window.
---     const ownerDocument = modalRef.current.ownerDocument;
---     ownerDocument.addEventListener('keydown', handleDocumentKeyDown);
---     if (dismissOnClickOutside) {
---       ownerDocument.addEventListener('click', handleDocumentClick);
---     }
+		-- It's important to listen to the ownerDocument to support the browser extension.
+		-- Here we use portals to render individual tabs (e.g. Profiler),
+		-- and the root document might belong to a different window.
+		local ownerDocument = modalRef.current.ownerDocument
+		ownerDocument.addEventListener("keydown", handleDocumentKeyDown)
+		if dismissOnClickOutside then
+			ownerDocument.addEventListener("click", handleDocumentClick)
+		end
 
---     return () => {
---       ownerDocument.removeEventListener('keydown', handleDocumentKeyDown);
---       ownerDocument.removeEventListener('click', handleDocumentClick);
---     };
---   }, [modalRef, dismissCallback, dismissOnClickOutside]);
--- }
+		return function()
+			ownerDocument:removeEventListener("keydown", handleDocumentKeyDown)
+			ownerDocument:removeEventListener("click", handleDocumentClick)
+		end
+	end, { modalRef :: any, dismissCallback, dismissOnClickOutside })
+end
+exports.useModalDismissSignal = useModalDismissSignal
 
 -- // Copied from https://github.com/facebook/react/pull/15022
 local function useSubscription<Value>(config: {

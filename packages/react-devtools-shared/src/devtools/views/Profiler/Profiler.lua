@@ -11,7 +11,6 @@
 local Packages = script.Parent.Parent.Parent.Parent.Parent
 local LuauPolyfill = require(Packages.LuauPolyfill)
 local Array = LuauPolyfill.Array
-local Map = LuauPolyfill.Map
 
 type Map<K, V> = LuauPolyfill.Map<K, V>
 type Array<K> = LuauPolyfill.Array<K>
@@ -41,12 +40,12 @@ local RecordToggle = require(script.Parent.RecordToggle).default
 local SnapshotSelector = require(script.Parent.SnapshotSelector).default
 local SidebarCommitInfo = require(script.Parent.SidebarCommitInfo).default
 -- local SidebarInteractions = require(script.Parent.SidebarInteractions).default
--- local SidebarSelectedFiberInfo = require(script.Parent.SidebarSelectedFiberInfo).default
+local SidebarSelectedFiberInfo = require(script.Parent.SidebarSelectedFiberInfo).default
 
--- local SettingsModal = "react-devtools-shared/src/devtools/views/Settings/SettingsModal"
--- local SettingsModalContextToggle = "react-devtools-shared/src/devtools/views/Settings/SettingsModalContextToggle"
-local SettingsModalContextModule = require(script.Parent.Parent.Settings.SettingsModalContext)
-local SettingsModalContextController = SettingsModalContextModule.SettingsModalContextController
+-- local SettingsModal = require(script.Parent.Parent.Settings.SettingsModal).default
+local SettingsModalContextToggle = require(script.Parent.Parent.Settings.SettingsModalContextToggle).default
+-- local SettingsModalContextModule = require(script.Parent.Parent.Settings.SettingsModalContext)
+-- local SettingsModalContextController = SettingsModalContextModule.SettingsModalContextController
 local portaledContent = require(script.Parent.Parent.portaledContent).default
 local Store = require(script.Parent.Parent.Parent.store)
 type Store = Store.Store
@@ -120,8 +119,7 @@ local function Profiler(_: {})
 			-- TODO (ProfilerContext) This check should not be necessary.
 			if selectedCommitIndex ~= nil then
 				if selectedFiberID ~= nil then
-					view = React.createElement(TodoView, { name = "SidebarSelectedFiberInfo" })
-					-- sidebar = React.createElement(SidebarSelectedFiberInfo)
+					sidebar = React.createElement(SidebarSelectedFiberInfo)
 				else
 					sidebar = React.createElement(SidebarCommitInfo)
 				end
@@ -132,9 +130,16 @@ local function Profiler(_: {})
 	local leftFraction = 0.7
 
 	-- deviation: use Roblox view objects
+	-- return React.createElement(
+	-- 	SettingsModalContextController,
+	-- 	nil,
 	return React.createElement(
-		SettingsModalContextController,
-		nil,
+		"Frame",
+		{
+			Name = "container",
+			BackgroundTransparency = 1,
+			Size = UDim2.fromScale(1, 1),
+		},
 		React.createElement(
 			Div,
 			{
@@ -194,7 +199,7 @@ local function Profiler(_: {})
 						-- React.createElement(Div, {
 						-- 	-- className = styles.Space
 						-- })
-						-- React.createElement(SettingsModalContextToggle),
+						React.createElement(SettingsModalContextToggle),
 						-- didRecordCommits
 						-- 	and React.createElement(
 						-- 		Fragment,
@@ -228,9 +233,11 @@ local function Profiler(_: {})
 					LayoutOrder = 2,
 				},
 			}, sidebar)
-			-- React.createElement(SettingsModal)
 		)
+		-- deviation: move SettingsModal up
+		-- React.createElement(SettingsModal)
 	)
+	-- )
 end
 
 tabs = {

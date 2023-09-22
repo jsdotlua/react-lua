@@ -41,6 +41,8 @@ local StoreContext = contextModule.StoreContext
 
 export type Props = {}
 
+local BAR_HEIGHT = 40
+
 local function SidebarSelectedFiberInfo(_: Props)
 	local profilerStore = useContext(StoreContext):getProfilerStore()
 	local profilerValue = useContext(ProfilerContext)
@@ -84,10 +86,10 @@ local function SidebarSelectedFiberInfo(_: Props)
 	-- };
 
 	useEffect(function()
-		local selectedElement = selectedListItemRef.current
-		if selectedElement ~= nil and type(selectedElement.scrollIntoView) == "function" then
-			-- selectedElement.scrollIntoView({block: 'nearest', inline: 'nearest'});
-		end
+		-- local selectedElement = selectedListItemRef.current
+		-- if selectedElement ~= nil and type(selectedElement.scrollIntoView) == "function" then
+		-- 	selectedElement.scrollIntoView({block: 'nearest', inline: 'nearest'});
+		-- end
 	end, { selectedCommitIndex })
 
 	local listItems = {}
@@ -102,6 +104,7 @@ local function SidebarSelectedFiberInfo(_: Props)
 			React.createElement(Text, {
 				key = tostring(commitIndex),
 				ref = if selectedCommitIndex == commitIndex then selectedListItemRef else nil,
+				expand = false,
 				text = `{formatTime(timestamp)}s for {formatDuration(duration)}ms`,
 				onMouseDown = function()
 					selectCommitIndex(commitIndex)
@@ -128,16 +131,23 @@ local function SidebarSelectedFiberInfo(_: Props)
 			Div,
 			{
 				name = "toolbar",
+				direction = Enum.FillDirection.Horizontal,
 				-- className = styles.Toolbar,
+				frameProps = {
+					Size = UDim2.new(1, 0, 0, BAR_HEIGHT),
+				},
 			},
 			React.createElement(Text, {
+				expand = false,
 				text = selectedFiberName or "Selected component",
+				order = 1,
 			}),
 			React.createElement(Text, {
 				text = "Back to commit view",
 				onMouseDown = function()
 					selectFiber(nil, nil)
 				end,
+				order = 2,
 			})
 		),
 		React.createElement(
@@ -145,6 +155,7 @@ local function SidebarSelectedFiberInfo(_: Props)
 			{
 				name = "content",
 				-- className = styles.Toolbar,
+				direction = Enum.FillDirection.Vertical,
 			},
 			React.createElement(WhatChanged, {
 				fiberID = (selectedFiberID :: any) :: number,
@@ -154,6 +165,7 @@ local function SidebarSelectedFiberInfo(_: Props)
 					Fragment,
 					{},
 					React.createElement(Text, {
+						expand = false,
 						text = "Rendered at:",
 						frameProps = { LayoutOrder = 2 },
 					}),
@@ -161,6 +173,7 @@ local function SidebarSelectedFiberInfo(_: Props)
 				),
 			#listItems == 0
 				and React.createElement(Text, {
+					expand = false,
 					text = "Did not render during this profiling session.",
 					frameProps = { LayoutOrder = 2 },
 				})

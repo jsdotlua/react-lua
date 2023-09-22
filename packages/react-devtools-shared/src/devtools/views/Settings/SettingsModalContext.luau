@@ -41,7 +41,9 @@ function SettingsModalContextController(props: { children: React.Node })
 		setIsModalShowing,
 	})
 
-	return React.createElement(SettingsModalContext.Provider, { value = value }, props.children)
+	return React.createElement(SettingsModalContext.Provider, {
+		value = value,
+	}, props.children)
 end
 
 exports.SettingsModalContext = SettingsModalContext

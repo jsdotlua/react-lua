@@ -33,13 +33,17 @@ local Profiler = require(script.Parent.Profiler.Profiler).default
 local TabBarModule = require(script.Parent.TabBar)
 local TabBar = TabBarModule.TabBar
 
--- local {SettingsContextController} from './Settings/SettingsContext';
+local SettingsModal = require(script.Parent.Settings.SettingsModal).default
+local SettingsModalContextModule = require(script.Parent.Settings.SettingsModalContext)
+local SettingsModalContextController = SettingsModalContextModule.SettingsModalContextController
+
+local SettingsContextController = require(script.Parent.Settings.SettingsContext).SettingsContextController
 local TreeContext = require(script.Parent.Components.TreeContext)
 local TreeContextController = TreeContext.TreeContextController
 -- local ViewElementSourceContext from './Components/ViewElementSourceContext';
 local ProfilerContext = require(script.Parent.Profiler.ProfilerContext)
 local ProfilerContextController = ProfilerContext.ProfilerContextController
--- local {ModalDialogContextController} from './ModalDialog';
+-- local ModalDialogContextController = require(script.Parent.ModalDialog).ModalDialogContextController
 -- local ReactLogo from './ReactLogo';
 -- local UnsupportedVersionDialog from './UnsupportedVersionDialog';
 -- local WarnIfLegacyBackendDetected from './WarnIfLegacyBackendDetected';
@@ -205,87 +209,91 @@ local function DevTools(props: Props)
 				{ value = contextMenu },
 				-- React.createElement(
 				-- 	ModalDialogContextController,
-				-- 	nil,
-				-- React.createElement(
-				-- 	SettingsContextController,
-				-- 	{
-				-- 		browserTheme = browserTheme,
-				-- 		componentsPortalContainer = componentsPortalContainer,
-				-- 		profilerPortalContainer = profilerPortalContainer,
-				-- 	},
-				-- 	React.createElement(
-				-- 		ViewElementSourceContext.Provider,
-				-- 		{ value = viewElementSource },
+				-- 	{},
 				React.createElement(
-					TreeContextController,
-					nil,
+					SettingsModalContextController,
+					{},
 					React.createElement(
-						ProfilerContextController,
-						nil,
-						-- todo
-						React.createElement(Div, {
-							ref = devToolsRef,
-						}, showTabBar and React.createElement(
-							Div,
-							{
-								name = "tab-bar-container",
-								direction = Enum.FillDirection.Horizontal,
-								frameProps = {
-									Size = UDim2.new(1, 0, 0, BAR_HEIGHT),
-								},
-							},
-							-- <ReactLogo />,
-							React.createElement(Text, {
-								text = _G.DEVTOOLS_VERSION or "<version>",
-							}),
-							-- <div className={styles.Spacer} />
-							React.createElement(TabBar, {
-								currentTab = tab,
-								id = "DevTools",
-								selectTab = setTab,
-								tabs = tabs,
-								type = "navigation",
-							})
-						)),
+						SettingsContextController,
+						{
+							browserTheme = browserTheme,
+							componentsPortalContainer = componentsPortalContainer,
+							profilerPortalContainer = profilerPortalContainer,
+						},
+						-- 	React.createElement(
+						-- 		ViewElementSourceContext.Provider,
+						-- 		{ value = viewElementSource },
 						React.createElement(
-							Div,
-							{
-								name = "components-tab",
-								frameProps = {
-									Position = UDim2.fromOffset(0, BAR_HEIGHT),
-									Size = UDim2.new(1, 0, 1, -BAR_HEIGHT),
-									Visible = tab == "components",
-								},
-							},
-							-- todo: render Components instead of text
-							React.createElement(Text, {
-								text = "Components tab!",
-							})
-							-- React.createElement(Components, {
-							-- 	portalContainer = componentsPortalContainer,
-							-- })
-						),
-						React.createElement(
-							Div,
-							{
-								name = "profiler-tabs",
-								frameProps = {
-									Position = UDim2.fromOffset(0, BAR_HEIGHT),
-									Size = UDim2.new(1, 0, 1, -BAR_HEIGHT),
-									Visible = tab == "profiler",
-								},
-							},
-							React.createElement(Profiler, {
-								portalContainer = profilerPortalContainer,
-							})
+							TreeContextController,
+							nil,
+							React.createElement(
+								ProfilerContextController,
+								nil,
+								React.createElement(Div, {
+									ref = devToolsRef,
+								}, showTabBar and React.createElement(
+									Div,
+									{
+										name = "tab-bar-container",
+										direction = Enum.FillDirection.Horizontal,
+										frameProps = {
+											Size = UDim2.new(1, 0, 0, BAR_HEIGHT),
+										},
+									},
+									-- <ReactLogo />,
+									React.createElement(Text, {
+										text = _G.DEVTOOLS_VERSION or "<version>",
+									}),
+									-- <div className={styles.Spacer} />
+									React.createElement(TabBar, {
+										currentTab = tab,
+										id = "DevTools",
+										selectTab = setTab,
+										tabs = tabs,
+										type = "navigation",
+									})
+								)),
+								React.createElement(
+									Div,
+									{
+										name = "components-tab",
+										frameProps = {
+											Position = UDim2.fromOffset(0, BAR_HEIGHT),
+											Size = UDim2.new(1, 0, 1, -BAR_HEIGHT),
+											Visible = tab == "components",
+										},
+									},
+									-- todo: render Components instead of text
+									React.createElement(Text, {
+										text = "Components tab!",
+									})
+									-- React.createElement(Components, {
+									-- 	portalContainer = componentsPortalContainer,
+									-- })
+								),
+								React.createElement(
+									Div,
+									{
+										name = "profiler-tabs",
+										frameProps = {
+											Position = UDim2.fromOffset(0, BAR_HEIGHT),
+											Size = UDim2.new(1, 0, 1, -BAR_HEIGHT),
+											Visible = tab == "profiler",
+										},
+									},
+									React.createElement(Profiler, {
+										portalContainer = profilerPortalContainer,
+									})
+								),
+								React.createElement(SettingsModal)
+							)
 						)
 					)
+					-- )
+					-- warnIfLegacyBackendDetected and React.createElement(WarnIfLegacyBackendDetected),
+					-- warnIfUnsupportedVersionDetected and React.createElement(UnsupportedVersionDialog)
+					-- )
 				)
-				-- 	)
-				-- )
-				-- warnIfLegacyBackendDetected and React.createElement(WarnIfLegacyBackendDetected),
-				-- warnIfUnsupportedVersionDetected and React.createElement(UnsupportedVersionDialog)
-				-- )
 			)
 		)
 	)

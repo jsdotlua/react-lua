@@ -18,8 +18,8 @@ type Store = ReactDevtoolsShared.Store
 
 installHook(_G)
 
-local frontendBindable = ReplicatedStorage:FindFirstChild("ReactDevtoolsFrontendBindable")
-local backendBindable = ReplicatedStorage:FindFirstChild("ReactDevtoolsBackendBindable")
+local frontendBindable: BindableEvent = ReplicatedStorage:FindFirstChild("ReactDevtoolsFrontendBindable")
+local backendBindable: BindableEvent = ReplicatedStorage:FindFirstChild("ReactDevtoolsBackendBindable")
 
 local function setupDevtools(): { bridge: any, store: Store }?
 	local hook: DevToolsHook? = _G.__REACT_DEVTOOLS_GLOBAL_HOOK__
@@ -28,26 +28,23 @@ local function setupDevtools(): { bridge: any, store: Store }?
 		return nil
 	end
 
-	if frontendBindable == nil then
-		print("Create frontendBindable")
+	if (frontendBindable :: BindableEvent?) == nil then
 		frontendBindable = Instance.new("BindableEvent")
 		frontendBindable.Name = "ReactDevtoolsFrontendBindable"
 		frontendBindable.Parent = ReplicatedStorage
-		print("  ->", frontendBindable)
 	end
 
-	if backendBindable == nil then
-		print("Create backendBindable")
+	if (backendBindable :: BindableEvent?) == nil then
 		backendBindable = Instance.new("BindableEvent")
 		backendBindable.Name = "ReactDevtoolsBackendBindable"
 		backendBindable.Parent = ReplicatedStorage
-		print("  ->", backendBindable)
 	end
 
 	local listeners: { (any) -> () } = {}
 
 	-- socket.onmessage
 	frontendBindable.Event:Connect(function(event)
+		-- print("[plugin] received event", event)
 		local data = event
 		-- local data = event.data
 		--   try {
@@ -76,6 +73,7 @@ local function setupDevtools(): { bridge: any, store: Store }?
 
 	local bridge = Bridge.new({
 		listen = function(fn)
+			-- print("[plugin] add listener")
 			table.insert(listeners, fn)
 			return function()
 				local index = Array.indexOf(listeners, fn)
@@ -87,18 +85,24 @@ local function setupDevtools(): { bridge: any, store: Store }?
 		send = function(event: string, payload: any, transferable: Array<any>?)
 			-- send to backend!
 			-- socket.send(JSON.stringify({event, payload}));
-			if backendBindable == nil then
-				print("skip sending to backend", event, payload)
+			if (backendBindable :: BindableEvent?) == nil then
+				warn("skip sending to backend", event, payload)
 			else
+				-- print("[plugin] send", event, payload)
 				backendBindable:Fire({ event = event, payload = payload })
 			end
 		end,
 	})
 
+	-- print("create plugin bridge")
+	frontendBindable:SetAttribute("Ready", true)
+
 	local store = Store.new(bridge, {
 		supportsNativeInspection = false,
-		supportsProfiling = true,
+		-- supportsProfiling = true,
 	})
+
+	-- print("\n>>> Fire frontend bindable begin signal\n")
 
 	-- log("Connected")
 	-- reload()

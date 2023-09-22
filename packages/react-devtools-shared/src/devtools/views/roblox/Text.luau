@@ -21,8 +21,8 @@ type Props = {
 	expand: boolean?,
 	onMouseDown: (() -> ())?,
 	disabled: boolean?,
+	order: number?,
 	frameProps: {
-		LayoutOrder: number?,
 		[string]: any,
 	}?,
 }
@@ -51,6 +51,7 @@ local function Text(props: Props, ref)
 			AutoButtonColor = if isButton then not props.disabled else nil,
 			BackgroundTransparency = if isButton then 0.5 else 1,
 			BorderSizePixel = 0,
+			LayoutOrder = props.order,
 			Size = UDim2.new(0, 0, if expand then 1 else 0, 0),
 			TextSize = fontSize,
 			Font = font,
@@ -60,12 +61,14 @@ local function Text(props: Props, ref)
 			[ReactRoblox.Event.Activated] = if not props.disabled then props.onMouseDown else nil,
 		}, props.frameProps),
 		React.createElement("UIPadding", {
+			Name ="padding",
 			PaddingLeft = UDim.new(0, padding),
 			PaddingRight = UDim.new(0, padding),
 			PaddingTop = UDim.new(0, padding),
 			PaddingBottom = UDim.new(0, padding),
 		}),
 		React.createElement("UISizeConstraint", {
+			Name = "size-constraint",
 			MaxSize = Vector2.new(textSize.X, if expand then math.huge else textSize.Y),
 			MinSize = textSize,
 		})

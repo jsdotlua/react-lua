@@ -59,7 +59,7 @@ local devtoolsTypes = require(script.Parent.types)
 export type Store = devtoolsTypes.Store
 type Capabilities = devtoolsTypes.Capabilities
 
-local debug_ = function(methodName, ...)
+local function debug_(methodName, ...)
 	if __DEBUG__ then
 		print("Store", methodName, ...)
 	end
@@ -757,16 +757,9 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 		-- i = i + nextLength
 	end
 
-	local translateOperation = {
-		[TREE_OPERATION_ADD] = "TREE_OPERATION_ADD",
-		[TREE_OPERATION_REMOVE] = "TREE_OPERATION_REMOVE",
-		[TREE_OPERATION_REORDER_CHILDREN] = "TREE_OPERATION_REORDER_CHILDREN",
-		[TREE_OPERATION_UPDATE_TREE_BASE_DURATION] = "TREE_OPERATION_UPDATE_TREE_BASE_DURATION",
-	}
 	-- deviation: 1-indexing, use <= not <
 	while i <= #operations do
 		local operation = operations[i]
-		print("operation =", translateOperation[operation])
 		if operation == TREE_OPERATION_ADD then
 			local id = operations[i + 1]
 			local type_ = operations[i + 2]
@@ -1030,7 +1023,8 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 		self._hasOwnerMetadata = false
 		self._supportsProfiling = false
 
-		for _, capabilities in self._rootIDToCapabilities do
+		for _, entry in self._rootIDToCapabilities do
+			local capabilities = entry[2]
 			local hasOwnerMetadata, supportsProfiling = capabilities.hasOwnerMetadata, capabilities.supportsProfiling
 
 			if hasOwnerMetadata then

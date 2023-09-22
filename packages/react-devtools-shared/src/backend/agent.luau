@@ -346,7 +346,6 @@ function Agent:getProfilingData(rendererIdObject: { rendererID: RendererID }): (
 		console.warn(string.format('Invalid renderer id "%d"', rendererID))
 	end
 
-	-- print("GET PROFILING DATA from", renderer)
 	self._bridge:send("profilingData", (renderer :: RendererInterface).getProfilingData())
 end
 function Agent:getProfilingStatus()
@@ -518,13 +517,7 @@ function Agent:reloadAndProfile(recordChangeDescriptions: boolean)
 	sessionStorageSetItem(SESSION_STORAGE_RELOAD_AND_PROFILE_KEY, "true")
 	sessionStorageSetItem(
 		SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY,
-		(function()
-			if recordChangeDescriptions then
-				return "true"
-			end
-
-			return "false"
-		end)()
+		if recordChangeDescriptions then "true" else "false"
 	)
 
 	-- This code path should only be hit if the shell has explicitly told the Store that it supports profiling.

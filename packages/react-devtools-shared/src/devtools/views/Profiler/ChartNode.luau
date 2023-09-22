@@ -9,25 +9,11 @@
  * @flow
  ]]
 local Packages = script.Parent.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Array = LuauPolyfill.Array
-local Map = LuauPolyfill.Map
-local console = LuauPolyfill.console
-
-type Object = LuauPolyfill.Object
-type Array<K> = LuauPolyfill.Array<K>
-
-local Div = require(script.Parent.Parent.roblox.Div)
-local Text = require(script.Parent.Parent.roblox.Text)
 
 local exports = {}
 
 local React = require(Packages.React)
 local ReactRoblox = require(Packages.ReactRoblox)
-local Fragment = React.Fragment
-local memo = React.memo
-local useCallback = React.useCallback
-local useContext = React.useContext
 
 -- import styles from './ChartNode.css';
 
@@ -73,6 +59,7 @@ local function ChartNode(props: Props)
 	end
 
 	return React.createElement("TextButton", {
+		Name = label,
 		BackgroundColor3 = color,
 		TextColor3 = textColor,
 		BackgroundTransparency = if isDimmed then 0.5 else 0,
@@ -80,6 +67,7 @@ local function ChartNode(props: Props)
 		Size = UDim2.new(width, 0, 0, height),
 		LayoutOrder = x,
 		-- Position = UDim2.new(0, 0, 0, 0),
+		TextTruncate = Enum.TextTruncate.AtEnd,
 		[ReactRoblox.Event.MouseEnter] = onMouseEnter,
 		[ReactRoblox.Event.MouseLeave] = onMouseLeave,
 		[ReactRoblox.Event.MouseButton1Click] = onClick,

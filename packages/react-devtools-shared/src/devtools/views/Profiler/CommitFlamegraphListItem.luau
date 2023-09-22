@@ -78,7 +78,7 @@ local function CommitFlamegraphListItem(props: Props)
 	local rows = chartData.rows
 
 	-- todo: implement SettingsContext
-	local lineHeight = 10 -- useContext(SettingsContext).lineHeight;
+	local lineHeight = 14 -- useContext(SettingsContext).lineHeight;
 
 	local handleClick = useCallback(function(event, id: number, name: string)
 		-- event.stopPropagation()
@@ -108,8 +108,9 @@ local function CommitFlamegraphListItem(props: Props)
 	return React.createElement(
 		Div,
 		{
+			name = "flamegraph-list-item",
 			direction = Enum.FillDirection.Horizontal,
-			height = lineHeight,
+			maxHeight = lineHeight,
 		},
 		Array.map(row, function(chartNode: ChartNodeType): any
 			local didRender = chartNode.didRender
@@ -125,14 +126,14 @@ local function CommitFlamegraphListItem(props: Props)
 
 			-- Filter out nodes that are too small to see or click.
 			-- This also helps render large trees faster.
-			if nodeWidth < barWidthThreshold then
-				return nil
-			end
+			-- if nodeWidth < barWidthThreshold then
+			-- 	return nil
+			-- end
 
 			-- Filter out nodes that are outside of the horizontal window.
-			if nodeOffset + nodeWidth < selectedNodeOffset or nodeOffset > selectedNodeOffset + width then
-				return nil
-			end
+			-- if nodeOffset + nodeWidth < selectedNodeOffset or nodeOffset > selectedNodeOffset + width then
+			-- 	return nil
+			-- end
 
 			local color = Color3.fromRGB(190, 156, 235) -- "url(#didNotRenderPattern)"
 			local textColor = Color3.fromHex("#333333") --"var(--color-commit-did-not-render-pattern-text)"

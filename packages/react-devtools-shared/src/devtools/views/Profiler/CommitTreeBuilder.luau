@@ -1,4 +1,5 @@
 --!strict
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/views/Profiler/CommitTreeBuilder.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -232,7 +233,7 @@ local function recursivelyInitializeTree(
 	nodes: Map<number, CommitTreeNode>,
 	dataForRoot: ProfilingDataForRootFrontend
 ): ()
-	print("dataForRoot.snapshots", dataForRoot.snapshots)
+	-- print("dataForRoot.snapshots", dataForRoot.snapshots)
 	local node = dataForRoot.snapshots:get(id)
 	if node ~= nil then
 		nodes:set(id, {
@@ -296,9 +297,9 @@ local function getCommitTree(ref: {
 
 		-- Mutate the tree
 		if operations ~= nil and commitIndex <= #operations then
-			print("try updateTree...")
+			-- print("try updateTree...")
 			local commitTree = updateTree({ nodes = nodes, rootID = rootID }, operations[commitIndex])
-			print("update tree done!")
+			-- print("update tree done!")
 
 			if __DEBUG__ then
 				__printTree(commitTree)

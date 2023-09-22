@@ -165,13 +165,10 @@ function ProfilerStore.new(bridge: FrontendBridge, store: Store, defaultIsProfil
 			end
 			-- Record snapshot of tree at the time profiling is started.
 			-- This info is required to handle cases of e.g. nodes being removed during profiling.
-			print("\n\n\n\ntake snapshots!" ,self._store:getRoots())
 			for _, rootID in self._store:getRoots() do
-				print("    rootID", rootID)
 				local profilingSnapshots = Map.new()
 				self._initialSnapshotsByRootID:set(rootID, profilingSnapshots)
 				self:_takeProfilingSnapshotRecursive(rootID, profilingSnapshots)
-				print("    profilingSnapshots", profilingSnapshots)
 			end
 		end
 		if self._isProfiling ~= isProfiling then

@@ -50,7 +50,6 @@ local function prepareProfilingDataFrontendFromBackendAndStore(
 	operationsByRootID: Map<number, Array<Array<number>>>,
 	snapshotsByRootID: Map<number, Map<number, SnapshotNode>>
 ): ProfilingDataFrontend
-print("snapshotsByRootID", snapshotsByRootID)
 	local dataForRoots: Map<number, ProfilingDataForRootFrontend> = Map.new()
 	for _, dataBackend in dataBackends do
 		for _, ref in dataBackend.dataForRoots do
