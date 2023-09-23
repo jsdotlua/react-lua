@@ -753,7 +753,7 @@ local function getCurrentFiberForDevTools()
 end
 
 exports.injectIntoDevTools = function(devToolsConfig: DevToolsConfig): boolean
-	print("injectIntoDevTools", devToolsConfig)
+	-- print("injectIntoDevTools", devToolsConfig)
 	local findFiberByHostInstance = devToolsConfig.findFiberByHostInstance
 	local ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher
 	local getCurrentFiber = nil
