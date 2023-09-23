@@ -1,0 +1,55 @@
+{
+  "name": "react-lua-roblox-devtools-plugin",
+  "tree": {
+    "$path": "src/",
+    "Packages": {
+      "$className": "Folder",
+      "React": {
+        "$path": "../react/default.project.json"
+      },
+      "ReactDevtools": {
+        "$path": "../react-devtools/default.project.json"
+      },
+      "ReactDevtoolsCore": {
+        "$path": "../react-devtools-core/default.project.json"
+      },
+      "ReactDebugTools": {
+        "$path": "../react-debug-tools/default.project.json"
+      },
+      "ReactDevtoolsShared": {
+        "$path": "../react-devtools-shared/default.project.json"
+      },
+      "ReactIs": {
+        "$path": "../react-is/default.project.json"
+      },
+      "ReactReconciler": {
+        "$path": "../react-reconciler/default.project.json"
+      },
+      "ReactRoblox": {
+        "$path": "../react-roblox/default.project.json"
+      },
+      "RoactCompat": {
+        "$path": "../roact-compat/default.project.json"
+      },
+      "Scheduler": {
+        "$path": "../scheduler/default.project.json"
+      },
+      "Shared": {
+        "$path": "../shared/default.project.json"
+      },
+      "MorePolyfill": {
+          "$path": "../more-polyfill/default.project.json"
+      },
+
+      "_Index": {
+        "$path": "../../deps/_Index"
+      },
+      "LuauPolyfill": {
+        "$path": "../../deps/LuauPolyfill.lua"
+      },
+      "Promise": {
+        "$path": "../../deps/Promise.lua"
+      }
+    }
+  }
+}

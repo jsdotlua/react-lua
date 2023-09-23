@@ -65,7 +65,7 @@ type RendererInterface = BackendTypes.RendererInterface
 local SharedTypes = require(script.Parent.Parent.types)
 type ComponentFilter = SharedTypes.ComponentFilter
 
-local debug_ = function(methodName, ...)
+local function debug_(methodName, ...)
 	if __DEBUG__ then
 		-- deviation: simpler print
 		print(methodName, ...)
@@ -517,13 +517,7 @@ function Agent:reloadAndProfile(recordChangeDescriptions: boolean)
 	sessionStorageSetItem(SESSION_STORAGE_RELOAD_AND_PROFILE_KEY, "true")
 	sessionStorageSetItem(
 		SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY,
-		(function()
-			if recordChangeDescriptions then
-				return "true"
-			end
-
-			return "false"
-		end)()
+		if recordChangeDescriptions then "true" else "false"
 	)
 
 	-- This code path should only be hit if the shell has explicitly told the Store that it supports profiling.

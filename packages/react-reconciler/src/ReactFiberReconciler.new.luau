@@ -736,7 +736,7 @@ if __DEV__ then
 	end
 end
 
-function findHostInstanceByFiber(fiber: Fiber): Instance | TextInstance | nil
+local function findHostInstanceByFiber(fiber: Fiber): Instance | TextInstance | nil
 	local hostFiber = findCurrentHostFiber(fiber)
 	if hostFiber == nil then
 		return nil
@@ -744,15 +744,16 @@ function findHostInstanceByFiber(fiber: Fiber): Instance | TextInstance | nil
 	return hostFiber.stateNode
 end
 
-function emptyFindFiberByHostInstance(instance: Instance | TextInstance): Fiber | nil
+local function emptyFindFiberByHostInstance(instance: Instance | TextInstance): Fiber | nil
 	return nil
 end
 
-function getCurrentFiberForDevTools()
+local function getCurrentFiberForDevTools()
 	return ReactCurrentFiber.current
 end
 
 exports.injectIntoDevTools = function(devToolsConfig: DevToolsConfig): boolean
+	-- print("injectIntoDevTools", devToolsConfig)
 	local findFiberByHostInstance = devToolsConfig.findFiberByHostInstance
 	local ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher
 	local getCurrentFiber = nil

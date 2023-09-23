@@ -38,7 +38,7 @@ local contextStackCursor: StackCursor<HostContext | NoContextT> = createCursor(N
 local contextFiberStackCursor: StackCursor<Fiber | NoContextT> = createCursor(NO_CONTEXT)
 local rootInstanceStackCursor: StackCursor<Container | NoContextT> = createCursor(NO_CONTEXT)
 
-function requiredContext<Value>(c: Value | NoContextT): Value
+local function requiredContext<Value>(c: Value | NoContextT): Value
 	-- performance: eliminate expensive optional cmp in hot path
 	-- invariant(
 	--   c ~= NO_CONTEXT,
@@ -48,14 +48,14 @@ function requiredContext<Value>(c: Value | NoContextT): Value
 	return c :: any
 end
 
-function getRootHostContainer(): Container
+local function getRootHostContainer(): Container
 	-- performance: inline requiredContext impl for hot path
 	-- local rootInstance = requiredContext(rootInstanceStackCursor.current)
 	-- return rootInstance
 	return rootInstanceStackCursor.current
 end
 
-function pushHostContainer(fiber: Fiber, nextRootInstance: Container)
+local function pushHostContainer(fiber: Fiber, nextRootInstance: Container)
 	-- Push current root instance onto the stack
 	-- This allows us to reset root when portals are popped.
 	push(rootInstanceStackCursor, nextRootInstance, fiber)
@@ -75,20 +75,20 @@ function pushHostContainer(fiber: Fiber, nextRootInstance: Container)
 	push(contextStackCursor, nextRootContext, fiber)
 end
 
-function popHostContainer(fiber: Fiber)
+local function popHostContainer(fiber: Fiber)
 	pop(contextStackCursor, fiber)
 	pop(contextFiberStackCursor, fiber)
 	pop(rootInstanceStackCursor, fiber)
 end
 
-function getHostContext(): HostContext
+local function getHostContext(): HostContext
 	-- performance: inline requiredContext impl for hot path
 	-- local context = requiredContext(contextStackCursor.current)
 	-- return context
 	return contextStackCursor.current
 end
 
-function pushHostContext(fiber: Fiber)
+local function pushHostContext(fiber: Fiber)
 	local rootInstance: Container = requiredContext(rootInstanceStackCursor.current)
 	local context: HostContext = requiredContext(contextStackCursor.current)
 	local nextContext = getChildHostContext(context, fiber.type, rootInstance)
@@ -104,7 +104,7 @@ function pushHostContext(fiber: Fiber)
 	push(contextStackCursor, nextContext, fiber)
 end
 
-function popHostContext(fiber: Fiber)
+local function popHostContext(fiber: Fiber)
 	-- Do not pop unless this Fiber provided the current context.
 	-- pushHostContext() only pushes Fibers that provide unique contexts.
 	if contextFiberStackCursor.current ~= fiber then

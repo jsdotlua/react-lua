@@ -124,16 +124,14 @@ local function getChartData(ref: {
 		if currentDepth > #rows then
 			table.insert(rows, { chartNode })
 		else
-			table.insert(rows[currentDepth - 1], chartNode)
+			-- deviation: remove -1 because of 1-indexing
+			table.insert(rows[currentDepth], chartNode)
 		end
-		do
-			local i = #children
-			while i >= 1 do
-				local childID = children[i]
-				local childChartNode = walkTree(childID, rightOffset, currentDepth)
-				rightOffset -= childChartNode.treeBaseDuration
-				i -= 1
-			end
+
+		for i = #children, 1, -1 do
+			local childID = children[i]
+			local childChartNode = walkTree(childID, rightOffset, currentDepth + 1)
+			rightOffset -= childChartNode.treeBaseDuration
 		end
 		return chartNode
 	end
@@ -158,7 +156,7 @@ local function getChartData(ref: {
 				-- FIXME Luau: Luau doesn't understand error() narrows, needs type states
 				baseDuration += (node :: CommitTreeNode).treeBaseDuration
 				-- deviation START: walkTree does table.insert(tbl, currentDepth - 1), so the parameter here needs to be a valid index with after substracting 1 at the start
-				walkTree(id, baseDuration, 2)
+				walkTree(id, baseDuration, 1)
 				-- deviation END
 				i -= 1
 			end

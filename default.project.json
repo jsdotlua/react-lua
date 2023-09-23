@@ -8,6 +8,12 @@
         "ReactDebugTools": {
             "$path": "packages/react-debug-tools/default.project.json"
         },
+        "ReactDevtools": {
+            "$path": "packages/react-devtools/default.project.json"
+        },
+        "ReactDevtoolsCore": {
+            "$path": "packages/react-devtools-core/default.project.json"
+        },
         "ReactDevtoolsShared": {
             "$path": "packages/react-devtools-shared/default.project.json"
         },
@@ -29,7 +35,10 @@
         "Shared": {
             "$path": "packages/shared/default.project.json"
         },
-        
+        "MorePolyfill": {
+            "$path": "packages/more-polyfill/default.project.json"
+        },
+
         "_Index": {
             "$path": "deps/_Index"
         },

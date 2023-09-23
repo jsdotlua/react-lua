@@ -13,14 +13,18 @@
 	* limitations under the License.
 ]]
 
+local store = require(script.store)
+export type Store = store.Store
+
 return {
 	utils = require(script.utils),
-	store = require(script.store),
+	store = store,
 	cache = require(script.cache),
 	devtools = {
 		Components = {
 			views = {
 				types = require(script.views.Components.types),
+				DevTools = require(script.views.DevTools),
 			},
 		},
 	},

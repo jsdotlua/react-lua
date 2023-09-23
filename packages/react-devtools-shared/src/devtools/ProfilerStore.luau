@@ -75,7 +75,7 @@ function ProfilerStore.new(bridge: FrontendBridge, store: Store, defaultIsProfil
 		if element ~= nil then
 			local snapshotNode: SnapshotNode = {
 				id = elementID,
-				children = Array.slice(element.children, 0),
+				children = Array.slice(element.children, 1),
 				displayName = element.displayName,
 				hocDisplayNames = element.hocDisplayNames,
 				key = element.key,
@@ -96,6 +96,7 @@ function ProfilerStore.new(bridge: FrontendBridge, store: Store, defaultIsProfil
 			2 --[[ adapatation: added 1 to array index ]]
 		]
 		if self._isProfiling then
+			-- print("onBridgeOperations", operations)
 			local profilingOperations = self._inProgressOperationsByRootID:get(rootID)
 			if profilingOperations == nil then
 				profilingOperations = { operations }
@@ -116,7 +117,9 @@ function ProfilerStore.new(bridge: FrontendBridge, store: Store, defaultIsProfil
 		end
 	end
 	function profilerStore:onBridgeProfilingData(dataBackend: ProfilingDataBackend)
+		-- print("received onBridgeProfilingData", dataBackend)
 		if self._isProfiling then
+			-- print("ignore profiling data", dataBackend, "because not profiling")
 			-- This should never happen, but if it does- ignore previous profiling data.
 			return
 		end
@@ -132,19 +135,21 @@ function ProfilerStore.new(bridge: FrontendBridge, store: Store, defaultIsProfil
 				self._inProgressOperationsByRootID,
 				self._initialSnapshotsByRootID
 			)
-			Array.splice(self._dataBackends, 0)
+			Array.splice(self._dataBackends, 1)
 			self:emit("isProcessingData")
 		end
 	end
+
 	function profilerStore:onBridgeShutdown()
 		self._bridge:removeListener("operations", self.onBridgeOperations)
 		self._bridge:removeListener("profilingData", self.onBridgeProfilingData)
 		self._bridge:removeListener("profilingStatus", self.onProfilingStatus)
 		self._bridge:removeListener("shutdown", self.onBridgeShutdown)
 	end
+
 	function profilerStore:onProfilingStatus(isProfiling: boolean)
 		if isProfiling then
-			Array.splice(self._dataBackends, 0)
+			Array.splice(self._dataBackends, 1)
 			self._dataFrontend = nil
 			self._initialRendererIDs:clear()
 			self._initialSnapshotsByRootID:clear()
@@ -175,11 +180,14 @@ function ProfilerStore.new(bridge: FrontendBridge, store: Store, defaultIsProfil
 			-- and re-assemble it on the front-end into a format (ProfilingDataFrontend) that can power the Profiler UI.
 			-- During this time, DevTools UI should probably not be interactive.
 			if not isProfiling then
-				Array.splice(self._dataBackends, 0)
+				-- print("PROFILING SESSION FINISHED!", self._dataBackends)
+				-- print("self._rendererIDsThatReportedProfilingData :")
+				Array.splice(self._dataBackends, 1)
 				self._rendererQueue:clear() -- Only request data from renderers that actually logged it.
 				-- This avoids unnecessary bridge requests and also avoids edge case mixed renderer bugs.
 				-- (e.g. when v15 and v16 are both present)
 				for _, rendererID in self._rendererIDsThatReportedProfilingData do
+					-- print("  ->  rendererID=",  rendererID)
 					if not self._rendererQueue:has(rendererID) then
 						self._rendererQueue:add(rendererID)
 						self._bridge:send("getProfilingData", {
@@ -256,7 +264,7 @@ function ProfilerStore:profilingData(value: ProfilingDataFrontend | nil): ...Pro
 		console.warn("Profiling data cannot be updated while profiling is in progress.")
 		return
 	end
-	Array.splice(self._dataBackends, 0)
+	Array.splice(self._dataBackends, 1)
 	self._dataFrontend = value
 	self._initialRendererIDs:clear()
 	self._initialSnapshotsByRootID:clear()
@@ -266,7 +274,7 @@ function ProfilerStore:profilingData(value: ProfilingDataFrontend | nil): ...Pro
 	return
 end
 function ProfilerStore:clear(): ...any?
-	Array.splice(self._dataBackends, 0)
+	Array.splice(self._dataBackends, 1)
 	self._dataFrontend = nil
 	self._initialRendererIDs:clear()
 	self._initialSnapshotsByRootID:clear()

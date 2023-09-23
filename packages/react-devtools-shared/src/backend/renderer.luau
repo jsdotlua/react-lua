@@ -546,7 +546,7 @@ exports.attach = function(
 		end
 	end
 
-	local debug_ = function(name: string, fiber: Fiber, parentFiber: Fiber?): ()
+	local function debug_(name: string, fiber: Fiber, parentFiber: Fiber?): ()
 		if __DEBUG__ then
 			-- deviation: Use string nil rather than null as it is Roblox convenion
 			local displayName = getDisplayNameForFiber(fiber) or "nil"
@@ -1174,12 +1174,12 @@ exports.attach = function(
 				operations[i + j - 1] = pendingSimulatedUnmountedIDs[j] :: number
 			end
 
-			i = i + #pendingSimulatedUnmountedIDs
+			i += #pendingSimulatedUnmountedIDs
 
 			-- The root ID should always be unmounted last.
 			if pendingUnmountedRootID ~= nil then
 				operations[i] = pendingUnmountedRootID :: number
-				i = i + 1
+				i += 1
 			end
 		end
 
@@ -1189,7 +1189,7 @@ exports.attach = function(
 			operations[i + j - 1] = pendingOperations[j] :: number
 		end
 
-		i = i + #pendingOperations
+		i += #pendingOperations
 
 		-- Let the frontend know about tree operations.
 		-- The first value in this array will identify which root it corresponds to,
@@ -3017,6 +3017,7 @@ exports.attach = function(
 		initialIDToRootMap = Map.new(idToRootMap)
 		idToContextsMap = Map.new()
 
+		-- print("hook.getFiberRoots(rendererID)", hook.getFiberRoots(rendererID))
 		hook.getFiberRoots(rendererID):forEach(function(root)
 			local rootID = getFiberID(getPrimaryFiber(root.current));
 			((displayNamesByRootID :: any) :: DisplayNamesByRootID):set(rootID, getDisplayNameForRoot(root.current))

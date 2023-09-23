@@ -266,6 +266,7 @@ function Bridge:shutdown()
 		console.warn("Bridge was already shutdown.")
 		return
 	end
+	-- print("!!! BRIDGE shutdown", debug.traceback(""))
 
 	-- Queue the shutdown outgoing message for subscribers.
 	self:send("shutdown")

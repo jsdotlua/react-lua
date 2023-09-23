@@ -1,4 +1,5 @@
 --!strict
+-- upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/devtools/views/Profiler/CommitTreeBuilder.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -17,14 +18,7 @@ type Map<K, V> = LuauPolyfill.Map<K, V>
 type Array<K> = LuauPolyfill.Array<K>
 
 local exports = {}
---[[*
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- ]]
+
 local constantsModule = require(script.Parent.Parent.Parent.Parent.constants)
 local __DEBUG__ = constantsModule.__DEBUG__
 local TREE_OPERATION_ADD = constantsModule.TREE_OPERATION_ADD
@@ -89,8 +83,10 @@ local function updateTree(commitTree: CommitTree, operations: Array<number>): Co
 	-- Clone the original tree so edits don't affect it.
 	local nodes = Map.new(commitTree.nodes)
 
+	-- print("update trees with nodes", nodes._map)
 	-- Clone nodes before mutating them so edits don't affect the original.
 	local function getClonedNode(id: number): CommitTreeNode
+		-- print("> getClonedNode", id)
 		local clonedNode = table.clone((nodes:get(id) :: any) :: CommitTreeNode)
 		nodes:set(id, clonedNode)
 		return clonedNode
@@ -237,6 +233,7 @@ local function recursivelyInitializeTree(
 	nodes: Map<number, CommitTreeNode>,
 	dataForRoot: ProfilingDataForRootFrontend
 ): ()
+	-- print("dataForRoot.snapshots", dataForRoot.snapshots)
 	local node = dataForRoot.snapshots:get(id)
 	if node ~= nil then
 		nodes:set(id, {
@@ -262,35 +259,54 @@ local function getCommitTree(ref: {
 	rootID: number,
 }): CommitTree
 	local commitIndex, profilerStore, rootID = ref.commitIndex, ref.profilerStore, ref.rootID
+	-- print("commitIndex", commitIndex)
+	-- print("profilerStore", profilerStore)
+
 	if not rootToCommitTreeMap:has(rootID) then
 		rootToCommitTreeMap:set(rootID, {})
 	end
 	local commitTrees = (rootToCommitTreeMap:get(rootID) :: any) :: Array<CommitTree>
+
+	-- print("commitTrees", commitTrees)
 	if commitIndex <= #commitTrees then
 		return commitTrees[commitIndex]
 	end
+
 	local profilingData = profilerStore:profilingData()
 	-- FIXME Luau: need to understand error() means profilingData gets nil-ability stripped. needs type states.
 	if profilingData == nil then
 		error("No profiling data available")
 	end
+
 	local dataForRoot = (profilingData :: ProfilingDataFrontend).dataForRoots:get(rootID)
 	-- FIXME Luau: need to understand error() means profilingData gets nil-ability stripped. needs type states.
 	if dataForRoot == nil then
 		error(string.format('Could not find profiling data for root "%s"', tostring(rootID)))
 	end
-	local operations = (dataForRoot :: ProfilingDataForRootFrontend).operations -- Commits are generated sequentially and cached.
+
+	local operations = (dataForRoot :: ProfilingDataForRootFrontend).operations
+
+	-- Commits are generated sequentially and cached.
 	-- If this is the very first commit, start with the cached snapshot and apply the first mutation.
 	-- Otherwise load (or generate) the previous commit and append a mutation to it.
 	if commitIndex == 1 then
-		local nodes = Map.new() -- Construct the initial tree.
+		local nodes = Map.new()
+
+		-- Construct the initial tree.
 		recursivelyInitializeTree(rootID, 0, nodes, dataForRoot :: ProfilingDataForRootFrontend) -- Mutate the tree
+
+		-- Mutate the tree
 		if operations ~= nil and commitIndex <= #operations then
+			-- print("try updateTree...")
 			local commitTree = updateTree({ nodes = nodes, rootID = rootID }, operations[commitIndex])
+			-- print("update tree done!")
+
 			if __DEBUG__ then
 				__printTree(commitTree)
 			end
+
 			table.insert(commitTrees, commitTree)
+
 			return commitTree
 		end
 	else
@@ -299,15 +315,20 @@ local function getCommitTree(ref: {
 			profilerStore = profilerStore,
 			rootID = rootID,
 		})
+
 		if operations ~= nil and commitIndex <= #operations then
 			local commitTree = updateTree(previousCommitTree, operations[commitIndex])
+
 			if __DEBUG__ then
 				__printTree(commitTree)
 			end
+
 			table.insert(commitTrees, commitTree)
+
 			return commitTree
 		end
 	end
+
 	error(
 		string.format(
 			'getCommitTree(): Unable to reconstruct tree for root "%s" and commit %s',
