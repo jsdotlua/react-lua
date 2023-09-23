@@ -109,10 +109,13 @@ local function CommitFlamegraphListItem(props: Props)
 		Div,
 		{
 			name = "flamegraph-list-item",
-			direction = Enum.FillDirection.Horizontal,
+			direction = false, -- Enum.FillDirection.Horizontal,
 			maxHeight = lineHeight,
+			frameProps = {
+				ClipsDescendants = true,
+			},
 		},
-		Array.map(row, function(chartNode: ChartNodeType): any
+		Array.map(row, function(chartNode: ChartNodeType, nodeIndex: number): any
 			local didRender = chartNode.didRender
 			local id = chartNode.id
 			local label = chartNode.label
@@ -135,7 +138,7 @@ local function CommitFlamegraphListItem(props: Props)
 			-- 	return nil
 			-- end
 
-			local color = Color3.fromRGB(190, 156, 235) -- "url(#didNotRenderPattern)"
+			local color = Color3.fromRGB(182, 182, 182) -- "url(#didNotRenderPattern)"
 			local textColor = Color3.fromHex("#333333") --"var(--color-commit-did-not-render-pattern-text)"
 			if didRender then
 				color = getGradientColor(selfDuration / maxSelfDuration)

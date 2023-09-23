@@ -100,7 +100,7 @@ local function CommitFlamegraphAutoSizer(_: {}): React.ReactElement<any>
 			{
 				name = "flamegraph-container",
 				-- className={styles.Container}
-				-- onClick={deselectCurrentFiber}
+				onClick = deselectCurrentFiber,
 			},
 			React.createElement(CommitFlamegraph, {
 				chartData = (chartData :: any) :: ChartData,
@@ -152,12 +152,14 @@ function CommitFlamegraph(props: Props)
 
 	local selectedChartNodeIndex = useMemo(function()
 		if selectedFiberID == nil then
-			return 0
+			-- deviation: use 1 to select first row
+			return 1
 		end
 		-- The selected node might not be in the tree for this commit,
 		-- so it's important that we have a fallback plan.
 		local depth = chartData.idToDepthMap:get(selectedFiberID)
-		return if depth ~= nil then depth - 1 else 0
+		-- deviation: depth 1 is row 1 and first depth is 1
+		return if depth ~= nil then depth else 1
 	end, { chartData :: any, selectedFiberID })
 
 	local selectedChartNode = useMemo(function()
@@ -227,7 +229,6 @@ function CommitFlamegraph(props: Props)
 		})
 	end
 
-	-- print("chartData", chartData)
 	return React.createElement(Div, {
 		name = "commit-flamegraph",
 		direction = Enum.FillDirection.Vertical,

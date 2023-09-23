@@ -96,17 +96,40 @@ local function SnapshotCommitListItem(props: Props)
 		-- end
 	end
 
-	return React.createElement("TextButton", {
-		BorderMode = Enum.BorderMode.Inset,
-		BorderSizePixel = if isSelected then 2 else 0,
-		BorderColor3 = Color3.new(0, 0, 0),
-		BackgroundTransparency = 0,
-		BackgroundColor3 = if percentage > 0 then getGradientColor(percentage) else Color3.new(0, 0, 0),
-		Size = UDim2.new(1 / #filteredCommitIndices, 0, percentage, 0),
-		LayoutOrder = index,
-		Text = "",
-		[ReactRoblox.Event.Activated] = handleMouseDown,
-	})
+	local mouseInside, setMouseInside = React.useState(false)
+
+	local function handleMouseEnter(_)
+		setMouseInside(true)
+	end
+
+	local function handleMouseLeave(_)
+		setMouseInside(false)
+	end
+
+	return React.createElement(
+		"TextButton",
+		{
+			BorderSizePixel = 0,
+			BackgroundTransparency = 1,
+			Size = UDim2.new(1 / #filteredCommitIndices, 0, 1, 0),
+			LayoutOrder = index,
+			Text = "",
+			[ReactRoblox.Event.Activated] = handleMouseDown,
+			[ReactRoblox.Event.MouseEnter] = handleMouseEnter,
+			[ReactRoblox.Event.MouseLeave] = handleMouseLeave,
+		},
+		React.createElement("Frame", {
+			Active = false,
+			BorderMode = Enum.BorderMode.Inset,
+			BorderSizePixel = if isSelected then 2 elseif mouseInside then 1 else 0,
+			BorderColor3 = Color3.new(0, 0, 0),
+			AnchorPoint = Vector2.new(0, 1),
+			Position = UDim2.new(0, 0, 1, 0),
+			BackgroundTransparency = if isSelected or mouseInside then 0 else 0.4,
+			BackgroundColor3 = if percentage > 0 then getGradientColor(percentage) else Color3.new(0, 0, 0),
+			Size = UDim2.new(1, 0, percentage, 0),
+		})
+	)
 	--   return (
 	--     <div
 	--       className={styles.Outer}

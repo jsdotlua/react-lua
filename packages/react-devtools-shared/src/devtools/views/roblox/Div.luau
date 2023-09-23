@@ -18,13 +18,13 @@ type Props = {
 	padding: number | UDim | nil,
 	xAlignment: Enum.HorizontalAlignment?,
 	yAlignment: Enum.VerticalAlignment?,
-	direction: Enum.FillDirection?,
+	direction: Enum.FillDirection | nil | false,
 	maxWidth: number?,
 	minWidth: number?,
 	maxHeight: number?,
 	minHeight: number?,
 	order: number?,
-	onClick: () -> (),
+	onClick: (() -> ())?,
 	frameProps: {
 		ClipsDescendants: boolean?,
 		LayoutOrder: number?,
@@ -39,7 +39,9 @@ type Props = {
 }
 
 local function Div(props: Props, ref)
-	local direction = props.direction or Enum.FillDirection.Vertical
+	local direction: Enum.FillDirection | false = if props.direction == nil
+		then Enum.FillDirection.Vertical
+		else props.direction
 	local horizontalAlignment = if props.xAlignment == nil then Enum.HorizontalAlignment.Left else props.xAlignment
 	local verticalAlignment = if props.yAlignment == nil
 		then if direction == Enum.FillDirection.Vertical
@@ -72,17 +74,19 @@ local function Div(props: Props, ref)
 				else {},
 			props.frameProps
 		),
-		React.createElement(
-			"UIListLayout",
-			Object.assign({
-				Name = "list-layout-" .. string.lower(direction.Name),
-				Padding = padding,
-				SortOrder = Enum.SortOrder.LayoutOrder,
-				FillDirection = direction,
-				HorizontalAlignment = horizontalAlignment,
-				VerticalAlignment = verticalAlignment,
-			}, props.layoutProps)
-		),
+		if direction
+			then React.createElement(
+				"UIListLayout",
+				Object.assign({
+					Name = "list-layout-" .. string.lower(direction.Name),
+					Padding = padding,
+					SortOrder = Enum.SortOrder.LayoutOrder,
+					FillDirection = direction,
+					HorizontalAlignment = horizontalAlignment,
+					VerticalAlignment = verticalAlignment,
+				}, props.layoutProps)
+			)
+			else nil,
 		if props.maxWidth
 				or props.minWidth
 				or props.maxHeight
