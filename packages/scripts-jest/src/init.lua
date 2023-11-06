@@ -12,7 +12,6 @@
 local LuauPolyfill = require(Pacakges.LuauPolyfill)
 local Object = LuauPolyfill.Object
 
-
 type Timer = {
 	expiry: number,
 	callback: () -> (),

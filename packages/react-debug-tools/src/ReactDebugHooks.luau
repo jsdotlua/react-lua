@@ -294,7 +294,7 @@ end
 local function useLayoutEffect(
 	-- deviation START: Luau needs union type packs for this type to translate idiomatically
 	-- create: () -> () -> () | void,
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	-- deviation END
 	inputs: Array<unknown> | void | nil --[[ CHECK: verify if `null` wasn't used differently than `undefined` ]]
 ): ()
@@ -304,7 +304,7 @@ end
 local function useEffect(
 	-- deviation START: Luau needs union type packs for this type to translate idiomatically
 	-- create: () -> () -> () | void,
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	-- deviation END
 	inputs: Array<unknown> | void | nil --[[ CHECK: verify if `null` wasn't used differently than `undefined` ]]
 ): ()

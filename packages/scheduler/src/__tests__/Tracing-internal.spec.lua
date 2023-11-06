@@ -317,16 +317,12 @@ return function()
 
 			describe("advanced integration", function()
 				it("should return a unique threadID per request", function()
-					expect(SchedulerTracing.unstable_getThreadID()).never.toBe(
-						SchedulerTracing.unstable_getThreadID()
-					)
+					expect(SchedulerTracing.unstable_getThreadID()).never.toBe(SchedulerTracing.unstable_getThreadID())
 				end)
 
 				it("should expose the current set of interactions to be externally manipulated", function()
 					SchedulerTracing.unstable_trace("outer event", currentTime(), function()
-						expect(SchedulerTracing.__interactionsRef.current).toBe(
-							SchedulerTracing.unstable_getCurrent()
-						)
+						expect(SchedulerTracing.__interactionsRef.current).toBe(SchedulerTracing.unstable_getCurrent())
 
 						SchedulerTracing.__interactionsRef.current = Set.new({
 							{ name = "override event" },

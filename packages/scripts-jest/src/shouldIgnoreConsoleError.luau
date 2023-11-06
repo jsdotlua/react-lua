@@ -15,27 +15,23 @@ local function shouldIgnoreConsoleError(format, args)
 				-- Ignore it too.
 				return true
 			end
-			if string.find(format, "'ReactDOM.render is no longer supported in React 18'") ~= nil 
-                or string.find(format, "'ReactDOM.hydrate is no longer supported in React 18'") ~= nil then 
+			if
+				string.find(format, "'ReactDOM.render is no longer supported in React 18'") ~= nil
+				or string.find(format, "'ReactDOM.hydrate is no longer supported in React 18'") ~= nil
+			then
 				-- We haven't finished migrating our tests to use createRoot.
 				return true
 			end
 		end
 	else
-		if
-			format ~= nil
-			and type(format.message) == "string"
-			and type(format.stack) == "string"
-			and #args == 0
-		then
+		if format ~= nil and type(format.message) == "string" and type(format.stack) == "string" and #args == 0 then
 			-- In production, ReactFiberErrorLogger logs error objects directly.
 			-- They are noisy too so we'll try to ignore them.
 			return true
 		end
 	end
-    -- Looks legit
+	-- Looks legit
 	return false
 end
 
 return shouldIgnoreConsoleError
-

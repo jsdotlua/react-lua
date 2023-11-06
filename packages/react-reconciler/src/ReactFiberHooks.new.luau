@@ -175,7 +175,7 @@ export type Hook = {
 export type Effect = {
 	tag: HookFlags,
 	-- TODO: this needs Luau type pack support to express accurately
-	create: (() -> (() -> ())) | () -> (),
+	create: (() -> () -> ()) | () -> (),
 	destroy: (() -> ())?,
 	deps: Array<any> | nil,
 	next: Effect,
@@ -1243,7 +1243,7 @@ end
 
 local function mountEffect(
 	-- TODO: Luau needs union type packs for this type to translate idiomatically
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	deps: Array<any>?
 ): ()
 	if __DEV__ then
@@ -1263,7 +1263,7 @@ end
 
 local function updateEffect(
 	-- TODO: Luau needs union type packs for this type to translate idiomatically
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	deps: Array<any>?
 ): ()
 	if __DEV__ then
@@ -1278,7 +1278,7 @@ end
 
 local function mountLayoutEffect(
 	-- TODO: Luau needs union type packs for this type to translate idiomatically
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	deps: Array<any>?
 ): ()
 	if __DEV__ and enableDoubleInvokingEffects then
@@ -1290,7 +1290,7 @@ end
 
 local function updateLayoutEffect(
 	-- TODO: Luau needs union type packs for this type to translate idiomatically
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	deps: Array<any>?
 ): ()
 	updateEffectImpl(UpdateEffect, HookLayout, create, deps)
@@ -1938,7 +1938,7 @@ if __DEV__ then
 		end,
 		useEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useEffect"
@@ -1958,7 +1958,7 @@ if __DEV__ then
 		end,
 		useLayoutEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useLayoutEffect"
@@ -2075,7 +2075,7 @@ if __DEV__ then
 		end,
 		useEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useEffect"
@@ -2093,7 +2093,7 @@ if __DEV__ then
 		end,
 		useLayoutEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useLayoutEffect"
@@ -2206,7 +2206,7 @@ if __DEV__ then
 		end,
 		useEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useEffect"
@@ -2224,7 +2224,7 @@ if __DEV__ then
 		end,
 		useLayoutEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useLayoutEffect"
@@ -2337,7 +2337,7 @@ if __DEV__ then
 		end,
 		useEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any> | nil
 		): ()
 			currentHookNameInDev = "useEffect"
@@ -2355,7 +2355,7 @@ if __DEV__ then
 		end,
 		useLayoutEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useLayoutEffect"
@@ -2471,7 +2471,7 @@ if __DEV__ then
 		end,
 		useEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any> | nil
 		): ()
 			currentHookNameInDev = "useEffect"
@@ -2491,7 +2491,7 @@ if __DEV__ then
 		end,
 		useLayoutEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any> | nil
 		): ()
 			currentHookNameInDev = "useLayoutEffect"
@@ -2618,7 +2618,7 @@ if __DEV__ then
 		end,
 		useEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any> | nil
 		): ()
 			currentHookNameInDev = "useEffect"
@@ -2638,7 +2638,7 @@ if __DEV__ then
 		end,
 		useLayoutEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useLayoutEffect"
@@ -2766,7 +2766,7 @@ if __DEV__ then
 		end,
 		useEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any> | nil
 		): ()
 			currentHookNameInDev = "useEffect"
@@ -2786,7 +2786,7 @@ if __DEV__ then
 		end,
 		useLayoutEffect = function(
 			-- TODO: Luau needs union type packs for this type to translate idiomatically
-			create: (() -> ()) | (() -> (() -> ())),
+			create: (() -> ()) | (() -> () -> ()),
 			deps: Array<any>?
 		): ()
 			currentHookNameInDev = "useLayoutEffect"

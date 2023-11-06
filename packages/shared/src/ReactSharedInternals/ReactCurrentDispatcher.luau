@@ -47,12 +47,12 @@ export type Dispatcher = {
 	-- deviation END
 	useEffect: (
 		-- TODO: Luau needs union type packs for this type to translate idiomatically
-		create: (() -> ()) | (() -> (() -> ())),
+		create: (() -> ()) | (() -> () -> ()),
 		deps: Array<any> | nil
 	) -> (),
 	useLayoutEffect: (
 		-- TODO: Luau needs union type packs for this type to translate idiomatically
-		create: (() -> ()) | (() -> (() -> ())),
+		create: (() -> ()) | (() -> () -> ()),
 		deps: Array<any> | nil
 	) -> (),
 	useCallback: <T>(callback: T, deps: Array<any> | nil) -> T,

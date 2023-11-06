@@ -14,14 +14,13 @@ local Error = LuauPolyfill.Error
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *]]
- 
- -- Lua TODO: upstream this explicit import, possible in Jest 27+
- local expect = require(Packages.JestGlobals).expect
- local JestReact = require(Packages.JestReact)
- local SchedulerMatchers = require(script.Parent.schedulerTestMatchers)
 
+-- Lua TODO: upstream this explicit import, possible in Jest 27+
+local expect = require(Packages.JestGlobals).expect
+local JestReact = require(Packages.JestReact)
+local SchedulerMatchers = require(script.Parent.schedulerTestMatchers)
 
- local function captureAssertion(fn): { pass: true, message: nil } | { pass: false, message: () -> string }
+local function captureAssertion(fn): { pass: true, message: nil } | { pass: false, message: () -> string }
 	-- Trick to use a Jest matcher inside another Jest matcher. `fn` contains an
 	-- assertion; if it throws, we capture the error and return it, so the stack
 	-- trace presented to the user points to the original assertion in the
@@ -33,7 +32,7 @@ local Error = LuauPolyfill.Error
 		-- that's not helpful, so we trim it down a bit
 		local stringResult = tostring(result)
 		local subMessageIndex = string.find(stringResult, " ")
-        -- Lua TODO: upstream this assert, it could technically happen and is needed to silence strict type checking
+		-- Lua TODO: upstream this assert, it could technically happen and is needed to silence strict type checking
 		assert(subMessageIndex, "assertion failure error not in expected format")
 		local message = string.sub(stringResult, subMessageIndex + 1)
 
@@ -52,9 +51,10 @@ local function assertYieldsWereCleared(Scheduler)
 	local actualYields = Scheduler.unstable_clearYields()
 
 	if #actualYields ~= 0 then
-		error(Error.new("Log of yielded values is not empty. " 
-			.. "Call expect(Scheduler).toHaveYielded(...) first."
-		), 3)
+		error(
+			Error.new("Log of yielded values is not empty. " .. "Call expect(Scheduler).toHaveYielded(...) first."),
+			3
+		)
 	end
 end
 
@@ -71,5 +71,5 @@ local function toMatchRenderedOutput(_matcherContext, ReactNoop, expectedJSX)
 end
 
 local exports = table.clone(SchedulerMatchers)
-exports.toMatchRenderedOutput = toMatchRenderedOutput;
+exports.toMatchRenderedOutput = toMatchRenderedOutput
 return exports

@@ -6,10 +6,12 @@ local Object = LuauPolyfill.Object
 -- Lua TODO: upstream this explicit require, supported by jest 27+
 local expect = require(Packages.JestGlobals).expect
 
-expect.extend(Object.assign(
-    table.clone(require(script.Parent.matchers.reactTestMatchers)),
-    require(script.Parent.matchers.toThrow),
-    require(script.Parent.matchers.toWarnDev)
-))
+expect.extend(
+	Object.assign(
+		table.clone(require(script.Parent.matchers.reactTestMatchers)),
+		require(script.Parent.matchers.toThrow),
+		require(script.Parent.matchers.toWarnDev)
+	)
+)
 
 -- Lua TODO: put console patching in here

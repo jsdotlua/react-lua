@@ -130,7 +130,7 @@ exports.useBinding = useBinding
 
 local function useEffect(
 	-- TODO: Luau needs union type packs for this type to translate idiomatically
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	deps: Array<any> | nil
 ): ()
 	local dispatcher = resolveDispatcher()
@@ -140,7 +140,7 @@ exports.useEffect = useEffect
 
 local function useLayoutEffect(
 	-- TODO: Luau needs union type packs for this type to translate idiomatically
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	deps: Array<any> | nil
 ): ()
 	local dispatcher = resolveDispatcher()

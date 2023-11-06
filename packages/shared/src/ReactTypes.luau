@@ -195,7 +195,7 @@ export type MutableSourceGetSnapshotFn<Source, Snapshot> = (source: Source) -> S
 export type MutableSourceSubscribeFn<Source, Snapshot> = (
 	source: Source,
 	callback: (snapshot: Snapshot) -> ()
-) -> (() -> ())
+) -> () -> ()
 
 export type MutableSourceGetVersionFn = (_source: NonMaybeType<any>) -> MutableSourceVersion
 

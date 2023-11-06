@@ -8,7 +8,7 @@
  * LICENSE file in the root directory of this source tree.
  * @flow
  *]]
- return function()
+return function()
 	local Packages = script.Parent.Parent.Parent
 	local expect = require(Packages.Dev.JestGlobals).expect
 	local RobloxJest = require(Packages.Dev.RobloxJest)

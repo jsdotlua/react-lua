@@ -346,10 +346,7 @@ return function()
 					expect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
 					expect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(secondEvent)
 					expect(onWorkStopped).toHaveBeenCalledTimes(1)
-					expect(onWorkStopped).toHaveBeenLastNotifiedOfWork(
-						Set.new({ firstEvent, secondEvent }),
-						threadID
-					)
+					expect(onWorkStopped).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent, secondEvent }), threadID)
 				end, threadID)
 				expect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(2)
 				expect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(firstEvent)

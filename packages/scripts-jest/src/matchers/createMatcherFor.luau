@@ -24,9 +24,9 @@ local function normalizeCodeLocInfo(str)
 end
 
 return function(consoleMethod, matcherName)
-    -- Lua deviation: additional first self param, extra ... to test for arity
+	-- Lua deviation: additional first self param, extra ... to test for arity
 	return function(_matcherContext, callback, expectedMessages, options, ...)
-        -- Lua note: require is here on purpose, console isn't a built-in like in JS
+		-- Lua note: require is here on purpose, console isn't a built-in like in JS
 		local LuauPolyfill = require(Packages.LuauPolyfill)
 		local Array = LuauPolyfill.Array
 		local console = LuauPolyfill.console
@@ -40,25 +40,22 @@ return function(consoleMethod, matcherName)
 				expectedMessages = { expectedMessages }
 			elseif not Array.isArray(expectedMessages) then
 				error(
-						`{matcherName}() requires a parameter of type string or an array of strings `
+					`{matcherName}() requires a parameter of type string or an array of strings `
 						.. `but was given {typeof(expectedMessages)})`
 				)
 			end
 			-- Lua deviation: since an empty table will return true for `Array.isArray(options)`
-            -- check if the table is not empty as well, this is required for tests to pass
-			if
-				type(options) ~= "table"
-				or (Array.isArray(options) and next(options) ~= nil)
-			then
+			-- check if the table is not empty as well, this is required for tests to pass
+			if type(options) ~= "table" or (Array.isArray(options) and next(options) ~= nil) then
 				error(
-						`{matcherName}() second argument, when present, should be an object. `
+					`{matcherName}() second argument, when present, should be an object. `
 						.. "Did you forget to wrap the messages into an array?"
 				)
 			end
 			if select("#", ...) > 0 then
-                -- `matcher` comes from Jest, so it's more than 2 in practice
+				-- `matcher` comes from Jest, so it's more than 2 in practice
 				error(
-                        `{matcherName}() received more than two arguments. `
+					`{matcherName}() received more than two arguments. `
 						.. "Did you forget to wrap the messages into an array?"
 				)
 			end
@@ -80,30 +77,24 @@ return function(consoleMethod, matcherName)
 
 			local function isLikelyAComponentStack(message)
 				return type(message) == "string"
-					and (string.match(message, "\n    in ") ~= nil
-                        or string.match(message, "\n    at ") ~= nil)
+					and (string.match(message, "\n    in ") ~= nil or string.match(message, "\n    at ") ~= nil)
 			end
 
 			local function consoleSpy(format, ...)
 				-- Ignore uncaught errors reported by jsdom
 				-- and React addendums because they're too noisy.
 				local args = { ... }
-				if
-					not logAllErrors
-					and consoleMethod == "error"
-					and shouldIgnoreConsoleError(format, args)
-				then
+				if not logAllErrors and consoleMethod == "error" and shouldIgnoreConsoleError(format, args) then
 					return
 				end
 
-                -- Lua deviation BEGIN: upstream uses a tiny external util package, here we inline making format more durable
+				-- Lua deviation BEGIN: upstream uses a tiny external util package, here we inline making format more durable
 				local message = format
-				local formattedOk, formattedOrError =
-					pcall(string.format, format, unpack(args))
+				local formattedOk, formattedOrError = pcall(string.format, format, unpack(args))
 				if formattedOk then
 					message = formattedOrError
 				end
-                -- Lua deviation END
+				-- Lua deviation END
 				local normalizedMessage = normalizeCodeLocInfo(message)
 
 				-- Remember if the number of %s interpolations
@@ -114,7 +105,7 @@ return function(consoleMethod, matcherName)
 					argIndex += 1
 					return argIndex - 1
 				end)
-                -- Lua deviation: lua needs a secondary way to detect mismatches due to format errors
+				-- Lua deviation: lua needs a secondary way to detect mismatches due to format errors
 				if not formattedOk or argIndex ~= #args then
 					lastWarningWithMismatchingFormat = {
 						format = format,
@@ -125,11 +116,7 @@ return function(consoleMethod, matcherName)
 
 				-- Protect against accidentally passing a component stack
 				-- to warning() which already injects the component stack.
-				if
-					#args >= 2
-					and isLikelyAComponentStack(args[#args])
-					and isLikelyAComponentStack(args[#args - 1])
-				then
+				if #args >= 2 and isLikelyAComponentStack(args[#args]) and isLikelyAComponentStack(args[#args - 1]) then
 					lastWarningWithExtraComponentStack = { format = format }
 				end
 
@@ -137,8 +124,7 @@ return function(consoleMethod, matcherName)
 					local expectedMessage = expectedMessages[index]
 					if
 						normalizedMessage == expectedMessage
-						or normalizedMessage:find(expectedMessage, 1, true)
-							~= nil
+						or normalizedMessage:find(expectedMessage, 1, true) ~= nil
 					then
 						if isLikelyAComponentStack(normalizedMessage) then
 							table.insert(warningsWithComponentStack, normalizedMessage)
@@ -158,15 +144,13 @@ return function(consoleMethod, matcherName)
 						.. tostring(JestDiff.diff(expectedMessages[1], normalizedMessage))
 				else
 					errorMessage = "Unexpected warning recorded: "
-						.. tostring(
-							JestDiff.diff(expectedMessages, { normalizedMessage })
-						)
+						.. tostring(JestDiff.diff(expectedMessages, { normalizedMessage }))
 				end
 
 				-- Record the call stack for unexpected warnings.
 				-- We don't throw an Error here though,
 				-- Because it might be suppressed by ReactFiberScheduler.
-				table.insert(unexpectedWarnings, Error.new((errorMessage))
+				table.insert(unexpectedWarnings, Error.new(errorMessage))
 			end
 
 			-- TODO Decide whether we need to support nested toWarn* expectations.
@@ -189,7 +173,7 @@ return function(consoleMethod, matcherName)
 			-- Any unexpected Errors thrown by the callback should fail the test.
 			-- This should take precedence since unexpected errors could block warnings.
 			if caughtError then
-                -- Lua note: specific second argument tuned based on React's test suite needs
+				-- Lua note: specific second argument tuned based on React's test suite needs
 				error(caughtError, 4)
 			end
 
@@ -207,9 +191,7 @@ return function(consoleMethod, matcherName)
 			if #expectedMessages > 0 then
 				return {
 					message = function()
-						return string.format(
-							`Expected warning was not recorded:\n  {expectedMessages[1]}`
-						)
+						return string.format(`Expected warning was not recorded:\n  {expectedMessages[1]}`)
 					end,
 					pass = false,
 				}
@@ -221,20 +203,20 @@ return function(consoleMethod, matcherName)
 					return {
 						message = function()
 							return `Expected {withoutStack} warnings without a component stack but received {#warningsWithoutComponentStack}:\n`
-							.. table.concat(warningsWithoutComponentStack, "\n")
+								.. table.concat(warningsWithoutComponentStack, "\n")
 						end,
 						pass = false,
 					}
 				end
 			elseif withoutStack == true then
-                -- We're expecting that all warnings won't have the stack.
-                -- If some warnings have it, it's an error.
+				-- We're expecting that all warnings won't have the stack.
+				-- If some warnings have it, it's an error.
 				if #warningsWithComponentStack > 0 then
 					return {
 						message = function()
 							return `Received warning unexpectedly includes a component stack:\n  {warningsWithComponentStack[1]}`
 								.. "\nIf this warning intentionally includes the component stack, remove "
-								.. `{withoutStack: true} from the {matcherName}() call. If you have a mix of `
+								.. `\{withoutStack = true\} from the {matcherName}() call. If you have a mix of `
 								.. `warnings with and without stack in one {matcherName}() call, pass `
 								.. "{withoutStack: N} where N is the number of warnings without stacks."
 						end,
@@ -249,29 +231,25 @@ return function(consoleMethod, matcherName)
 						message = function()
 							return `Received warning unexpectedly does not include a component stack:\n  {warningsWithoutComponentStack[1]}`
 								.. "\nIf this warning intentionally omits the component stack, add "
-                                .. `\{withoutStack: true\} to the {matcherName} call.`
+								.. `\{withoutStack = true\} to the {matcherName} call.`
 						end,
 						pass = false,
 					}
 				end
 			else
-				error(Error.new(
-					`The second argument for {matcherName}(), when specified, must be an object. It may have a `
-						.. 'property called "withoutStack" whose value may be undefined, boolean, or a number. '
-						.. `Instead received {typeof(withoutStack)}.`)
+				error(
+					Error.new(
+						`The second argument for {matcherName}(), when specified, must be an object. It may have a `
+							.. 'property called "withoutStack" whose value may be undefined, boolean, or a number. '
+							.. `Instead received {typeof(withoutStack)}.`
+					)
 				)
 			end
 
 			if lastWarningWithMismatchingFormat ~= nil then
 				return {
 					message = function()
-						return `Received {
-                            #lastWarningWithMismatchingFormat.args
-                        } arguments for a message with {
-                            lastWarningWithMismatchingFormat.expectedArgCount
-                        } placeholders:\n  {
-                            lastWarningWithMismatchingFormat.format
-                        }`
+						return `Received {#lastWarningWithMismatchingFormat.args} arguments for a message with {lastWarningWithMismatchingFormat.expectedArgCount} placeholders:\n  {lastWarningWithMismatchingFormat.format}`
 					end,
 					pass = false,
 				}
@@ -279,11 +257,9 @@ return function(consoleMethod, matcherName)
 			if lastWarningWithExtraComponentStack ~= nil then
 				return {
 					message = function()
-						return `Received more than one component stack for a warning:\n  {
-                            lastWarningWithExtraComponentStack.format
-                        }`
+						return `Received more than one component stack for a warning:\n  {lastWarningWithExtraComponentStack.format}`
 							.. "\nDid you accidentally pass a stack to warning() as the last argument? "
-                            .. "Don't forget warning() already injects the component stack automatically."
+							.. "Don't forget warning() already injects the component stack automatically."
 					end,
 					pass = false,
 				}

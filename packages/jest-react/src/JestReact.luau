@@ -35,7 +35,7 @@ local function captureAssertion(fn): { pass: true, message: nil } | { pass: fals
 		-- that's not helpful, so we trim it down a bit
 		local stringResult = tostring(result)
 		local subMessageIndex = string.find(stringResult, " ")
-        -- Lua TODO: upstream this assert, it could technically happen and is needed to satisfy strict type checking
+		-- Lua TODO: upstream this assert, it could technically happen and is needed to satisfy strict type checking
 		assert(subMessageIndex, "assertion failure error not in expected format")
 		local message = string.sub(stringResult, subMessageIndex + 1)
 
@@ -52,14 +52,16 @@ end
 
 local function assertYieldsWereCleared(root)
 	local Scheduler = root._Scheduler
-    local actualYields = Scheduler.unstable_clearYields()
-    if #actualYields ~= 0 then
-        error(Error.new(
-            "Log of yielded values is not empty. "
-                .. "Call expect(ReactTestRenderer).unstable_toHaveYielded(...) first."),
-            3
-        )
-    end
+	local actualYields = Scheduler.unstable_clearYields()
+	if #actualYields ~= 0 then
+		error(
+			Error.new(
+				"Log of yielded values is not empty. "
+					.. "Call expect(ReactTestRenderer).unstable_toHaveYielded(...) first."
+			),
+			3
+		)
+	end
 end
 
 -- Lua TODO: is this missing the matcher's self param?
