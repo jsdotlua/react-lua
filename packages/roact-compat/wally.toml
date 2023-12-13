@@ -8,7 +8,7 @@ registry = 'https://github.com/UpliftGames/wally-index'
 realm = 'shared'
 
 [dependencies]
-LuauPolyfill = 'jsdotlua/luau-polyfill@1.2.3'
+LuauPolyfill = 'jsdotlua/luau-polyfill@=1.2.3'
 React = 'jsdotlua/react@17.0.2'
 ReactRoblox = 'jsdotlua/react-roblox@17.0.2'
 Shared = 'jsdotlua/shared@17.0.2'
