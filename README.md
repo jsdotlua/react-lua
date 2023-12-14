@@ -19,6 +19,22 @@ When possible, upstream flowtype and definitely-typed types have been translated
 
 This repository is a fork of [`roblox/react-lua`](https://github.com/roblox/react-lua) with the intention of being the Roblox and global Lua community go-to for React in Lua. Roblox's repository is a read-only mirror of their internal project, and as such cannot be contributed to by the community. They have not published React to any public package registry and have not made alterations for easier use by the community.
 
+### Original Project Authors
+
+Roblox has removed commit author history in their public mirror, which means the original project authors cannot be properly credited. Below is a list of people who originally worked on React Lua, extracted from the `rotriever.toml` file in Roblox's repository.
+
+Please note that many of these emails may be inactive, as much of the original team working on React Lua are no longer at Roblox.
+
+```
+"Paul Doyle <pdoyle@roblox.com>",
+"Matt Hargett <mhargett@roblox.com>",
+"Max Mines <mmines@roblox.com>",
+"Carlo Conte <cconte@roblox.com>",
+"Henry Allen <hallen@roblox.com>",
+"Olivier Trepanier <otrepanier@roblox.com>",
+"Hugh Collins <hcollins@roblox.com>"
+```
+
 ## Status
 
 The [react repo](https://github.com/facebook/react) is a monorepo with a number of member projects in its `packages` folder, managed by a Yarn workspace. Below is a description of each of those package, its status in React Lua, and how it likely fits into our future plans.
