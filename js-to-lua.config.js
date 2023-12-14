@@ -9,9 +9,9 @@ module.exports = {
         primaryBranch: "main"
     },
     downstream: {
-        owner: "roblox",
-        repo: "roact-alignment",
-        primaryBranch: "master",
+        owner: "jsdotlua",
+        repo: "react-lua",
+        primaryBranch: "main",
         patterns: [
             "**/*.lua"
         ],
