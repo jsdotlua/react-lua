@@ -1,0 +1,54 @@
+site_name: Roact Documentation
+site_url: https://roblox.github.io/roact-alignment/
+repo_name: Roblox/roact-alignment
+repo_url: https://github.com/Roblox/roact-alignment
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: indigo
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: indigo
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+plugins:
+  - search:
+      separator: '[\s\-\.]'
+
+nav:
+  - Home: index.md
+  - Deviations: deviations.md
+  - Configuration: configuration.md
+  - Migrating From 1.x:
+    - Minimum Requirements: migrating-from-1x/minimum-requirements.md
+    - Add Roact 17 Dependency: migrating-from-1x/upgrading-to-roact-17.md
+    - Adopt New Features: migrating-from-1x/adopt-new-features.md
+    - Convert Legacy Conventions: migrating-from-1x/convert-legacy-conventions.md
+  - API Reference:
+    - React: api-reference/react.md
+    - ReactRoblox: api-reference/react-roblox.md
+    - RoactCompat: api-reference/roact-compat.md
+    - Additional Libraries: api-reference/additional-libraries.md
+  - Benchmarks: bench.md
+
+extra_css:
+  - extra.css
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  # FIXME: Add this back when the tabbed extension is supported by docs-deploy
+  # - pymdownx.tabbed:
+  #     alternate_style: false

@@ -1,0 +1,9 @@
+{
+  "name": "RoactAlignment",
+  "tree": {
+    "$path": "Packages",
+    "_Workspace": {
+      "$path": "WorkspaceStatic"
+    }
+  }
+}

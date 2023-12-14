@@ -1,7 +1,0 @@
-[tools]
-rojo = "rojo-rbx/rojo@7.2.1"
-wally = "UpliftGames/wally@0.3.2"
-stylua = "johnnymorganz/stylua@0.17.1"
-selene = "Kampfkarren/selene@0.25.0"
-luau-lsp = "johnnymorganz/luau-lsp@1.18.1"
-wally-package-types = "johnnymorganz/wally-package-types@1.2.1"

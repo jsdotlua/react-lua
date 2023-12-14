@@ -1,0 +1,22 @@
+[package]
+name = "React"
+version = { workspace = true }
+authors = { workspace = true }
+publish = true
+content_root = "src"
+files = ["*", "!**/__tests__/**"]
+
+[dependencies]
+LuauPolyfill = { workspace = true }
+Shared = { path = "../shared" }
+
+[dev_dependencies]
+PerformanceBenchmarks = { git = "https://github.com/Roblox/roact-performance-benchmarks", rev = "main" }
+JestReact = { path = "../jest-react" }
+JestGlobals = { workspace = true }
+Promise = { workspace = true}
+ReactCache = { path = "../react-cache" }
+ReactNoopRenderer = { path = "../react-noop-renderer" }
+ReactRoblox = { path = "../react-roblox" }
+ReactTestRenderer = { path = "../react-test-renderer" }
+Scheduler = { path = "../scheduler" }
