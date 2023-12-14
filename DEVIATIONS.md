@@ -1,9 +1,11 @@
+**NOTE:** This file serves as historical documentation for the history of React-lua, but ideally should not be used as an update-to-date API reference. This document makes reference to several different Roblox internal projects and links to websites and projects inaccessible to the public.
 
 # Deviations and Conflicts
 
-Upstream naming and logic has some deviations and incompatibilities with existing Roact. These will need to be addressed before aligned Roact can run existing Roact codebases. I'm expecting to do a combination of refactoring those codebases and introducing compatibility layers.
 
-#### Table of Contents
+Upstream naming and logic has some deviations and incompatibilities with legacy Roact. These will need to be addressed before React Lua can run existing Roact codebases. This will require a combination of refactoring those codebases and introducing compatibility layers.
+
+## Table of Contents
 
 * [Naming](#naming)
   * [Component Lifecycle](#component-lifecycle) c
@@ -184,6 +186,8 @@ The most straightforward approach would be to export `Roact.Children` with a val
 `Roact.Children` was exported with a value equal to `"children"` in the `roact-compat` package. We searched for instances of downstream code that uses `children` as a key but found none.
 
 </details>
+
+## Behavior
 
 ### Old Context (Roact only)
 
