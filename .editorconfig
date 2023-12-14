@@ -1,0 +1,11 @@
+root = true
+
+[*.lua]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = false
+
+[*.json]
+indent_style = spaces
+indent_width = 2
