@@ -1,7 +1,7 @@
-site_name: Roact Documentation
-site_url: https://roblox.github.io/roact-alignment/
-repo_name: Roblox/roact-alignment
-repo_url: https://github.com/Roblox/roact-alignment
+site_name: React Lua Documentation
+site_url: https://jsdotlua.github.io/react-lua/
+repo_name: jsdotlua/react-lua
+repo_url: https://github.com/jsdotlua/react-lua
 
 theme:
   name: material
