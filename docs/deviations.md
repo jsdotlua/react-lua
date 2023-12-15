@@ -1,29 +1,33 @@
-While Roact has been architected to align with React JS's APIs and idioms, a small number of deviations have been introduced for one or several of the following reasons:
+# Deviations
+
+While React Lua has been architected to align with React JS's APIs and idioms, a small number of deviations have been introduced for one or several of the following reasons:
 
 * Differences between JavaScript and Luau
 * Differences between Roblox and the HTML DOM
 * Supporting features from legacy Roact that are not in React JS
-* Easier adoption of Roact 17+ by users of legacy Roact
+* Easier adoption of React Lua by users of legacy Roact
 
-The following list attempts to comprehensively describe all of the differences between Roact 17+ and its equivalent upstream version in React JS. It is intended to be a companion to the [Roact 17 adoption guide](migrating-from-1x/adopt-new-features.md), which focuses more on the differences between legacy Roact and Roact 17+.
+The following list attempts to comprehensively describe all of the differences between React Lua and its equivalent upstream version in React JS. It is intended to be a companion to the [React Lua adoption guide](migrating-from-legacy/adopt-new-features.md), which focuses more on the differences between legacy Roact and React Lua.
 
 ## JSX
 
-The Luau ecosystem does not yet have the tooling to support JSX. Instead, use `React.createElement` as your primary tool for building UIs with Roact 17. Element construction in Roact is exactly like [using React without JSX](https://react.dev/reference/react/createElement#creating-an-element-without-jsx).
+The Luau ecosystem does not yet have the tooling to support JSX. Instead, use `React.createElement` as your primary tool for building UIs with React Lua. Element construction in React Lua is exactly like [using React without JSX](https://react.dev/reference/react/createElement#creating-an-element-without-jsx).
 
 !!! info
-	Future support for a JSX-equivalent feature for Luau has been proposed, and will be considered as Roact 17+ is adopted.
+	Future support for a JSX-equivalent feature for Luau has been proposed, and will be considered as React Lua is adopted.
 
-## React.useState
+## `React.useState`
 
 `React.useState` returns two values rather than an array containing two values.
 
 Luau does not have syntactic sugar for destructuring like javascript:
+
 ```js
 const [value, setValue] = React.useState(0);
 ```
 
 However, it _does_ support multiple return values, so we can support a very similar usage:
+
 ```lua
 local value, setValue = React.useState(0)
 ```
@@ -33,6 +37,7 @@ local value, setValue = React.useState(0)
 ### Dependency Arrays
 
 In React JS, some hooks [accept an array of dependency values](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) that determine when they need to be re-invoked:
+
 ```js
 useEffect(() => {
   document.title = `You clicked ${count} times`;
@@ -45,14 +50,16 @@ React JS provides warnings in DEV mode when a dependency array changes length be
 
 ### Deviations for Luau
 
-Hooks in Roact 17+ aim to treat dependency arrays exactly like React JS. However, arrays in luau that contain nil-able values might be indistinguishable from similar arrays that simply have different lengths.
+Hooks in React Lua aim to treat dependency arrays exactly like React JS. However, arrays in luau that contain nil-able values might be indistinguishable from similar arrays that simply have different lengths.
 
 For example:
+
 ```lua
 print(#{"A", "B", nil} == #{ "A", "B" }) -- prints: true
 ```
 
 This means that, if we align behavior directly with React JS, we introduce a possible scenario in which a correctly-specified dependency array triggers warnings about differences in length:
+
 ```lua
 local root = ReactRoblox.createRoot(someContainer)
 local function Component(props: { A: number, B: number? })
@@ -69,7 +76,7 @@ root:render(React.createElement(Component, { A = 1, B = 2 }))
 root:render(React.createElement(Component, { A = 1 }))
 ```
 
-To address this and support the same API as React JS, Roact 17 introduces two minor deviations:
+To address this and support the same API as React JS, React Lua introduces two minor deviations:
 
 * If a dependency array changes in length, **a re-render will always be triggered** (in React JS, the comparison is short-circuited in production with the assumption that warnings had been ignored or addressed)
 * If a dependency array changes in length, we assume the developer provided an array ending with one or more nil-able values, and we **suppress the warning**
@@ -87,9 +94,10 @@ In React JS, the reserved "key" prop is used to provide stable identities to DOM
 
 Since order has no inherent meaning in Roblox's DOM, legacy Roact generally expected children to be provided as a _map_ instead of an array, where the keys to the map are the stable keys associated with the elements. This behavior was used instead of a reserved "key" prop (more info in the [Roact documentation](https://roblox.github.io/roact/performance/reduce-reconciliation/#stable-keys)).
 
-Roact 17+ supports _both_ methods for providing keys. Both of the following examples are valid and equivalent.
+React Lua supports _both_ methods for providing keys. Both of the following examples are valid and equivalent.
 
 With table keys:
+
 ```lua
 -- Returns a fragment of items in an ordered list
 function NumberList(props)
@@ -106,6 +114,7 @@ end
 ```
 
 Using the special "key" prop:
+
 ```lua
 -- Returns a fragment of items in an ordered list
 function NumberList(props)
@@ -133,18 +142,22 @@ return React.createElement("Frame", nil, {
 })
 ```
 
-In the above example, Roact doesn't know whether you wanted to use "label1" or "Label" as the key, so it falls back to the explicitly provided key ("label1"). In [Dev Mode](configuration.md#dev), it will output an appropriate warning as well.
+In the above example, React doesn't know whether you wanted to use "label1" or "Label" as the key, so it falls back to the explicitly provided key ("label1"). In [Dev Mode](configuration.md#dev), it will output an appropriate warning as well.
 
 ## Class Components
+
 Luau does not currently have ES6's `class` semantics. For class components, Roact exposes an `extend` method to provide equivalent behavior.
 
-### React.Component:extend
-```
+### `React.Component:extend`
+
+```lua
 React.Component:extend(name: string): ReactComponent
 ```
+
 The `extend` method on components replaces the `extend` behavior used in ES6's class components. It returns a React component definition, which can then be used to define lifecycle methods.
 
-For example, a class component in Roact can be created like this:
+For example, a class component in React Lua can be created like this:
+
 ```lua
 local MyComponent = React.Component:extend("MyComponent")
 
@@ -160,20 +173,22 @@ end
 Equivalently, `React.PureComponent:extend` is used to define PureComponents.
 
 ### Constructors
-Since Luau currently lacks a `class` feature, there are also no inheritable constructors; instead, Roact provides a lifecycle method called `init` that takes the place of the constructor, running immediately after an instance of that class is created.
+
+Since Luau currently lacks a `class` feature, there are also no inheritable constructors; instead, React Lua provides a lifecycle method called `init` that takes the place of the constructor, running immediately after an instance of that class is created.
 
 For all intents and purposes, this should behave exactly like a constructor for a class component in React JS, except that there is no `super` logic needed.
 
 ### Calling `setState` in Constructors
+
 In React JS, `setState` is not allowed inside component constructors. Instead, React documentation suggests that `this.state` should be assigned to directly, but _never anywhere else_.
 
 Legacy Roact opts to allow `setState` inside of the `init` method (equivalent to a constructor), because it allows documentation to consistently warn against assigning directly to `self.state`. However, for backwards compatibility, it still supports direct assignments to `self.state` in `init`.
 
 #### Recommended Use
 
-As with legacy Roact, Roact 17 allows both direct assignment and use of `setState`. This allows guidance from legacy Roact documentation and common practice to remain accurate.
+As with legacy Roact, React Lua allows both direct assignment and use of `setState`. This allows guidance from legacy Roact documentation and common practice to remain accurate.
 
-In Roact 17+, it is still recommended to use `setState` inside of component `init` methods. This means that you will _always_ avoid assigning directly to `self.state`.
+In React Lua, it is still recommended to use `setState` inside of component `init` methods. This means that you will _always_ avoid assigning directly to `self.state`.
 
 #### Behavior
 
@@ -191,35 +206,44 @@ When used in a constructor, `setState` will treat the `updater` argument exactly
 Error boundaries are not yet fully supported due to a limitation in Luau around recursive `pcall` depth. Future updates to React will unravel the recursive traversal and enable these features.
 
 ### Property Validation
+
 The legacy api `validateProps` is still present and has a backwards-compatible API.
 
 ## Function Components
+
 In JavaScript, functions are also objects, which means that they can have member fields defined on them. Luau does not allow this, so some features are not available on function components.
 
 !!! info
 	With the introduction of Hooks, function components are the preferred style of component definition. Giving up features like `defaultProps` and prop validation is not ideal, so future API additions may provide a way to create smarter function components.
 
-### defaultProps
+### `defaultProps`
+
 For the time being, function components do not support the `defaultProps` feature. In the future, we may want to re-implement it in terms of hooks to make sure that function components with hooks are as appealing and feature-rich as possible.
 
-### propTypes
+### `propTypes`
+
 For the time being, function components do not support the `propTypes` feature. While propTypes is less often used and can in many cases be superseded by static type checking, we may want to, in the future, re-implement it in terms of hooks to make sure that function components with hooks are as appealing and feature-rich as possible.
 
-### validateProps
-In Roact 17, we continue to support legacy Roact's `validateProps`. Prior Roact documentation on this method can be found [here](https://roblox.github.io/roact/api-reference/#validateprops).
+### `validateProps`
+
+In React Lua, we continue to support legacy Roact's `validateProps`. Prior Roact documentation on this method can be found [here](https://roblox.github.io/roact/api-reference/#validateprops).
 
 ## Bindings and Refs
+
 Roact supports callback refs, refs created using `React.createRef`, and refs using the `React.useRef` hook. However, under the hood, Refs are built on top of a concept called Bindings.
 
 ### Bindings
+
 Roact introduces a bindings feature that provides a unidirectional data binding that can be updated outside of the render cycle (much like refs could).
 
 For now, bindings are documented in more detail [here](https://roblox.github.io/roact/advanced/bindings-and-refs/#bindings).
 
 ### Host Properties with Instance Values
+
 The Roblox API exposes certain host properties that must be assigned _Instance references_ as values. Effectively, there are native APIs that expect a `ref.current` value as a value.
 
 The logic of bindings is a perfect fit for this scenario. Consider the following example:
+
 ```lua
 local PopupButtons = Roact.Component:extend("PopupButtons")
 function PopupButtons:init()
@@ -245,6 +269,7 @@ function PopupButtons:render()
 	})
 end
 ```
+
 This example poses a problem. Since children will be rendered in an arbitrary order, one of the following will happen:
 
 1. Confirm Button renders first and its ref is assigned
@@ -259,7 +284,8 @@ Or:
 3. Confirm Button renders and its ref is assigned
 4. Confirm Button's NextSelectionRight property is properly set to the Cancel Button's ref
 
-Thus, it would require much more trickery to make even a simple gamepad neighbor assignment work correctly. However *with refs implemented as bindings*, the above scenario can be solved pretty simply:
+Thus, it would require much more trickery to make even a simple gamepad neighbor assignment work correctly. However _with refs implemented as bindings_, the above scenario can be solved pretty simply:
+
 ```lua
 -- ...
 	return Roact.createElement("Frame", nil {
@@ -278,6 +304,7 @@ Thus, it would require much more trickery to make even a simple gamepad neighbor
 	})
 -- ...
 ```
+
 With the above implementation, something like the following happens:
 
 1. Confirm Button renders first and its ref is assigned

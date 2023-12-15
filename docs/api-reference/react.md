@@ -5,9 +5,10 @@
 
 The `React` package is the entry point for most React logic and behavior. Most of its API members align directly to their equivalents in [React JS](https://reactjs.org/docs/react-api.html). Some API members have slightly different behavior, different guidance around their usage, or slightly different function signatures to better accommodate Luau functionality and idioms.
 
-### API Deviations
+## API Deviations
 
-#### Not Supported
+### Not Supported
+
 The following API members are notable absences relative to React JS 17.0.1:
 
 * `React.createFactory` - Considered legacy and will likely not be included
@@ -18,14 +19,16 @@ Additionally, the following APIs are implemented, but have blocking issues that 
 * [`React.lazy`](#reactlazy)
 * [`React.Suspense`](#reactsuspense)
 
-#### Undocumented
+### Undocumented
+
 The `React` packages includes some features that are undocumented in React JS 17.0.1, but are present in its implementation. The following API members may be less stable than the features that are fully documented upstream:
 
 * [`React.createMutableSource`](#reactcreatemutablesource)
 * [`React.useMutableSource`](#reactusemutablesource)
 
-#### Unique to Roblox
-`React` also exports a small collection of [Roact-exclusive APIs](#roblox-and-luau) which have no upstream equivalent. These are designed to facilitate better integration with the Luau language and the Roblox engine functionality.
+### Unique to Roblox
+
+`React` also exports a small collection of [Lua-exclusive APIs](#roblox-and-luau) which have no upstream equivalent. These are designed to facilitate better integration with the Luau language and the Roblox engine functionality.
 
 * [`React.None`](#reactnone)
 * [`React.Event`](#reactevent)
@@ -35,7 +38,8 @@ The `React` packages includes some features that are undocumented in React JS 17
 * [`React.createBinding`](#reactcreatebinding)
 * [`React.joinBindings`](#reactjoinbindings)
 
-## React.Component
+## `React.Component`
+
 <a href='https://beta.reactjs.org/reference/react/Component' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='API Change' src='../../images/apichange.svg'/>
 
 Luau does not have ES6's class semantics, so class components work slightly differently from React JS in the following ways:
@@ -43,10 +47,10 @@ Luau does not have ES6's class semantics, so class components work slightly diff
 * Use `Component:extend` in place of ES6 class semantics
 * Implement an `init` method on components instead of a constructor
 
-Roact 17 also includes the following deviations:
+React-lua also includes the following deviations:
 
 * Instead of initializing component state by assigning a value to `self.state` in the `init` method, use `setState` as you would elsewhere (this is inherited from Legacy Roact for compatibility and consistency)
-* Error boundaries are not fully supported in Roact 17 at this time due to a limitation in recursive `pcall` depth
+* Error boundaries are not fully supported in React-lua at this time due to a limitation in recursive `pcall` depth
 
 ```lua
 local MyComponent = React.Component:extend("MyComponent")
@@ -74,12 +78,14 @@ end
 
 Check the [deviations guide](../deviations.md#class-components) for more detailed information.
 
-## React.PureComponent
+## `React.PureComponent`
+
 <a href='https://beta.reactjs.org/reference/react/PureComponent' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='API Change' src='../../images/apichange.svg'/>
 
 The same deviations to `React.Component` apply equivalently to `React.PureComponent`. Check the [deviations guide](../deviations.md#class-components) for more detailed information.
 
-## React.memo
+## `React.memo`
+
 <a href='https://beta.reactjs.org/reference/react/memo' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 ```lua
@@ -88,12 +94,13 @@ local MyComponent = React.memo(function MyComponent(props)
 end)
 ```
 
-Guidance specified in the [React documentation](https://beta.reactjs.org/reference/react/memo#usage) applies for Roact as well. Use this only as a performance optimization, and only when relevant to the use case.
+Guidance specified in the [React documentation](https://beta.reactjs.org/reference/react/memo#usage) applies for React Lua as well. Use this only as a performance optimization, and only when relevant to the use case.
 
-## React.createElement
+## `React.createElement`
+
 <a href='https://beta.reactjs.org/reference/react/createElement' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
-While the `createElement` API is aligned to React JS, current tooling in Luau does not support an equivalent for JSX. When writing Roact code, you'll use `createElement` directly much more often than in React JS.
+While the `createElement` API is aligned to React JS, current tooling in Luau does not support an equivalent for JSX. When writing React Lua code, you'll use `createElement` directly much more often than in React JS.
 
 ```lua
 --[[
@@ -111,7 +118,8 @@ local element = React.createElement(
 )
 ```
 
-## React.cloneElement
+## `React.cloneElement`
+
 <a href='https://beta.reactjs.org/reference/react/cloneElement' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Clone an existing element, using its provided config values (props, `ref`, and `key`) as a starting point.
@@ -121,7 +129,8 @@ local onlyChild = React.Children.only(props.children)
 local cloned = React.cloneElement(onlyChild, { Text = "Cloned" })
 ```
 
-## React.isValidElement
+## `React.isValidElement`
+
 <a href='https://beta.reactjs.org/reference/react/isValidElement' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Returns `true` if the provided value is a React element; otherwise, returns `false`.
@@ -132,22 +141,24 @@ if React.isValidElement(props.frameContents) then
 end
 ```
 
-## React.Children
+## `React.Children`
+
 <a href='https://beta.reactjs.org/reference/react/Children' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Deviation' src='../../images/deviation.svg'/>
 
 !!! warning
-	This field can often be confused with a Legacy Roact API ca	lled `Roact.Children`. In the legacy API, `Roact.Children` was a special opaque prop key that could be used to pass children through props tables. In Roact 17, the `children` string key is reserved and used instead. Learn more about how to migrate away from `Roact.Children` in the [migration guide](../migrating-from-1x/convert-legacy-conventions.md#reserved-keys).
+	This field can often be confused with a Legacy Roact API called `Roact.Children`. In the legacy API, `Roact.Children` was a special opaque prop key that could be used to pass children through props tables. In React Lua, the `children` string key is reserved and used instead. Learn more about how to migrate away from `Roact.Children` in the [migration guide](../migrating-from-legacy/convert-legacy-conventions.md#reserved-keys).
 
 A collection of utilities for manipulating the children provided to a React component via `props.children` or `self.props.children`. The `children` property should always be used as an opaque data structure; manipulate it via `React.Children` utilities rather than accessing it directly.
 
 There are a few notable deviations:
 
 * React Children values with type "userdata" will be treated as nil in callbacks. This means that a `React.None` child passed to `React.Children.forEach` or `React.Children.map` will be treated the same as a nil value or boolean in the callbacks. `React.Children.count` will not include userdata children in the count.
-* The `context` argument for mapChildren is not passed to the callback. This is typically used to pass `this` in javascript, but does not have an equivalent in lua.
+* The `context` argument for mapChildren is not passed to the callback. This is typically used to pass `this` in javascript, but does not have an equivalent in Lua.
 * React Children utilities work with tables with string keys as well as arrays
 
 
-### React.Children.map
+### `React.Children.map`
+
 <a href='https://beta.reactjs.org/reference/react/Children#children-map' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Use `React.Children.map` to transform each member child of the `children` property.
@@ -166,7 +177,8 @@ local function OrderedList(props)
 end
 ```
 
-### React.Children.forEach
+### `React.Children.forEach`
+
 <a href='https://beta.reactjs.org/reference/react/Children#children-foreach' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Accepts a function that will be called with each member child of the `children` property. Similar to `React.Children.map`, but the provided callback does not return a new child.
@@ -191,7 +203,8 @@ local function SeparatorList(props)
 end
 ```
 
-### React.Children.count
+### `React.Children.count`
+
 <a href='https://beta.reactjs.org/reference/react/Children#children-count' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Returns the number of child members in the provided `children` object.
@@ -208,7 +221,8 @@ local function List(props)
 end
 ```
 
-### React.Children.only
+### `React.Children.only`
+
 <a href='https://beta.reactjs.org/reference/react/Children#children-only' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Asserts that the provided object is a single React element. If the provided object is an array or table of elements, this function will throw; otherwise, it returns the element that was passed into it.
@@ -225,7 +239,8 @@ local function Box(props)
 end
 ```
 
-### React.Children.toArray
+### `React.Children.toArray`
+
 <a href='https://beta.reactjs.org/reference/react/Children#children-toarray' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Converts the opaque `children` prop into an array. The resulting value can then be manipulated with typical Lua array semantics or using utility methods that operate on array-like Lua tables.
@@ -244,10 +259,11 @@ local function FilteredList(props)
 end
 ```
 
-## React.Fragment
+## `React.Fragment`
+
 <a href='https://beta.reactjs.org/reference/react/Fragment' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
-Renders multiple components using a special component called a `Fragment`. Fragments are useful for returning multiple elements from a single component without creating additional Instances in the DataModel.
+Renders multiple components using a special component called a `Fragment`. Fragments are useful for returning multiple elements from a single component without creating additional UI elements.
 
 ```lua
 function MyComponent:render()
@@ -260,10 +276,11 @@ function MyComponent:render()
 end
 ```
 
-## React.createRef
+## `React.createRef`
+
 <a href='https://beta.reactjs.org/reference/react/createRef' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
-Creates a Ref object which can be used to access underlying Instances in the DataModel. Use this as an escape hatch when you need to interact directly with Roblox Instances.
+Creates a Ref object which can be used to access underlying Instances in the DataModel. Use this as an escape hatch when you need to interact directly with Roblox Instances (or equivalent in other environments).
 
 ```lua
 local MyComponent = React.Component:extend("MyComponent")
@@ -281,7 +298,8 @@ function MyComponent:componentDidMount()
 end
 ```
 
-## React.forwardRef
+## `React.forwardRef`
+
 <a href='https://beta.reactjs.org/reference/react/forwardRef' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 In some cases, you may want your component to accept a ref and forward it to a child, typically a Roblox host component.
@@ -302,7 +320,8 @@ local ref = React.createRef()
 React.createElement(FancyButton, { ref = ref, text = "Click me!" })
 ```
 
-## React.createContext
+## `React.createContext`
+
 <a href='https://beta.reactjs.org/reference/react/createContext' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 Creates a Context object. Context is a mechanism for passing information through many levels of the React component tree without needing to explicitly pass it down at each level.
@@ -311,7 +330,8 @@ Creates a Context object. Context is a mechanism for passing information through
 local MyContext = React.createContext(defaultValue)
 ```
 
-### Context.Provider
+### `Context.Provider`
+
 <a href='https://beta.reactjs.org/reference/react/createContext#provider' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 The Context object returned from `createContext` includes a `Provider` component, which can be used to pass a context value into the component tree.
@@ -320,7 +340,8 @@ The Context object returned from `createContext` includes a `Provider` component
 React.createElement(MyContext.Provider, { value = someValue })
 ```
 
-### Context.Consumer
+### `Context.Consumer`
+
 <a href='https://beta.reactjs.org/reference/react/createContext#consumer' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 The Context object returned from `createContext` includes a `Consumer` component, which can be used to retrieve a context value that was provided higher up in the tree.
@@ -331,14 +352,15 @@ React.createElement(MyContext.Consumer, nil, function(value)
 end)
 ```
 
-## React.lazy
+## `React.lazy`
+
 <a href='https://beta.reactjs.org/reference/react/lazy' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 !!! warning
 	Though `React.lazy`'s functionality is implemented, it may not be especially useful without complete support for [`React.Suspense`](#reactsuspense).
 
 !!! warning
-	The `lazy` utility is designed an ecosystem where loading modules can be expensive. **This is rarely a concern in the context of Luau projects.** Since `lazy` relies upon a dynamic call to `require`, tooling like type checking may not work correctly. Use `React.lazy` with caution and intent, and only if it has a measurable performance impact.
+	The `lazy` utility is designed for an ecosystem where loading modules can be expensive. **This is rarely a concern in the context of Luau projects.** Since `lazy` relies upon a dynamic call to `require`, tooling like type checking may not work correctly. Use `React.lazy` with caution and intent, and only if it has a measurable performance impact.
 
 Wraps a component in a lazy-loading container that waits until the component is used in a render before calling the function to load it.
 
@@ -349,7 +371,8 @@ end)
 ```
 
 
-## React.Suspense
+## `React.Suspense`
+
 <a href='https://beta.reactjs.org/reference/react/Suspense' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Deviation' src='../../images/deviation.svg'/>
 
 !!! warning
@@ -374,7 +397,7 @@ React.createElement(
 
 Hooks allow simple function components to introduce stateful behaviors without incurring the overhead or complexity of the full [Component](#reactcomponent) lifecycle.
 
-### React.useState
+### `React.useState`
 <a href='https://beta.reactjs.org/reference/react/useState' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='API Change' src='../../images/apichange.svg'/>
 
 `useState` is a React Hook that creates a state variable that can be used and updated by your component. Updating the state will cause the component to re-render.
@@ -394,15 +417,19 @@ end
 ```
 
 Note that Luau does not have syntactic sugar for destructuring like javascript:
+
 ```js
 const [value, setValue] = useState(0);
 ```
-However, it _does_ support multiple return values, so Roact 17 supports a very similar usage:
+
+However, it *does* support multiple return values, so React Lua supports a very similar usage:
+
 ```lua
 local value, setValue = useState(0)
 ```
 
-### React.useEffect
+### `React.useEffect`
+
 <a href='https://beta.reactjs.org/reference/react/useEffect' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useEffect` is a React Hook that causes a side effect to run after a component's render has completed, allowing synchronization with external systems.
@@ -421,7 +448,7 @@ local function LastInputLabel(props)
 		return function()
 			connection:Disconnect()
 		end
-	end)
+	end, {})
 
 	return React.createElement("TextLabel", {
 		Text = string.format("Last input: %s", lastInput)
@@ -429,7 +456,8 @@ local function LastInputLabel(props)
 end
 ```
 
-### React.useContext
+### `React.useContext`
+
 <a href='https://beta.reactjs.org/reference/react/useContext' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useContext` is a React Hook that allows a component to read from and subscribe to context values provided from [`createContext`](#reactcreatecontext).
@@ -448,7 +476,8 @@ local function ThemedLabel(props)
 end
 ```
 
-### React.useReducer
+### `React.useReducer`
+
 <a href='https://beta.reactjs.org/reference/react/useReducer' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useReducer` is a React Hook that introduces a reducer function to your component for managing complex state. See the [`Rodux` documentation](https://roblox.github.io/rodux/introduction/reducers/) for detailed examples of the reducer pattern in Lua.
@@ -492,15 +521,19 @@ end
 ```
 
 Just like the `useState` hook, we use Luau's multiple returns to approximate JavaScript's destructuring. The following JS:
+
 ```js
 const [state, dispatch] = useReducer(reducer, initialState);
 ```
-However, it _does_ support multiple return values, so Roact 17 supports a very similar usage:
+
+Becomes:
+
 ```lua
 local state, dispatch = useReducer(reducer, initialState)
 ```
 
-### React.useCallback
+### `React.useCallback`
+
 <a href='https://beta.reactjs.org/reference/react/useCallback' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useCallback` is a React Hook that allows a component to cache a function definition between re-renders.
@@ -521,7 +554,8 @@ local function EquippableItemTile(props)
 end
 ```
 
-### React.useMemo
+### `React.useMemo`
+
 <a href='https://beta.reactjs.org/reference/react/useMemo' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useMemo` is a React Hook that caches a computed value between re-renders.
@@ -543,7 +577,8 @@ local function FilteredTodoList(props)
 end
 ```
 
-### React.useRef
+### `React.useRef`
+
 <a href='https://beta.reactjs.org/reference/react/useRef' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useRef` is a React Hook that stores a value that's not needed for rendering. In other words, refs are arbitrary value containers that do no invoke re-renders when they change.
@@ -566,7 +601,8 @@ local function TextBoxWithButton(props)
 end
 ```
 
-### React.useImperativeHandle
+### `React.useImperativeHandle`
+
 <a href='https://beta.reactjs.org/reference/react/useImperativeHandle' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useImperativeHandle` is a React Hook that provides a way to customize a handle that's exposed as a ref.
@@ -612,7 +648,8 @@ local function TodoListApp(props)
 end
 ```
 
-### React.useLayoutEffect
+### `React.useLayoutEffect`
+
 <a href='https://beta.reactjs.org/reference/react/useLayoutEffect' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/>
 
 `useLayoutEffect` is an alternative version of `useEffect` that fires after the component runs its render function, but before the Roblox `Instance` hierarchy is reconciled with the new properties.
@@ -620,12 +657,13 @@ end
 !!! caution
 	Use this hook sparingly. While `useEffect` runs asynchronously after a render operation is completed, `useLayoutEffect` runs _during_ an update in between rendering and reconciliation: this can introduce performance issues if used carelessly.
 
-	In React JS, `useLayoutEffect` is most often used to measure and position elements before the browser repaints them. It's not yet clear how this use case translates to roblox usage, and this hook should be used with caution until performance is investigated in detail and best practices emerge.
+	In React JS, `useLayoutEffect` is most often used to measure and position elements before the browser repaints them. It's not yet clear how this use case translates to Roblox usage, and this hook should be used with caution until performance is investigated in detail and best practices emerge.
 
-### React.useBinding
+### `React.useBinding`
+
 <img alt='Roblox' src='../../images/roblox.svg'/>
 
-A hook introduced in Roact that creates a `Binding` object. Bindings are isolated containers that automatically update. Creates and returns a binding and its associated updater function as multiple return values, [similar to `useState`](#reactusestate).
+A hook introduced in React Lua that creates a `Binding` object. Bindings are isolated containers that automatically update. Creates and returns a binding and its associated updater function as multiple return values, [similar to `useState`](#reactusestate).
 
 ```lua
 local function DisplaysSize(props)
@@ -648,10 +686,10 @@ end
 
 A `Binding` has the following API:
 
-#### getValue
+#### `getValue`
 
 !!! warning
-	Using `getValue` inside a component's `render` method is likely to result in using stale values! Using the unwrapped value directly won't allow Roact to subscribe to a binding's updates. To guarantee that a bound value will update, use the binding itself for your prop value or use the `map` method to map the value to a new one.
+	Using `getValue` inside a component's `render` method is likely to result in using stale values! Using the unwrapped value directly won't allow React to subscribe to a binding's updates. To guarantee that a bound value will update, use the binding itself for your prop value or use the `map` method to map the value to a new one.
 
 Returns the internal value of the binding. This is helpful when updating a binding relative to its current value.
 
@@ -668,7 +706,7 @@ local function UpdateOnClick()
 end
 ```
 
-#### map
+#### `map`
 
 Returns a new binding that maps the existing binding's value to something else. For example, `map` can be used to transform an animation progress value like `0.4` into a property that can be consumed by a Roblox Instance like `UDim2.new(0.4, 0, 1, 0)`.
 
@@ -689,25 +727,30 @@ local function UpdateOnClick()
 end
 ```
 
-## React.Profiler
+## `React.Profiler`
+
 Refer to [React Profiler API documentation](https://beta.reactjs.org/reference/react/Profiler).
 
-## React.StrictMode
+## `React.StrictMode`
+
 Refer to [React StrictMode API documentation](https://beta.reactjs.org/reference/react/StrictMode).
 
-## React.createMutableSource
+## `React.createMutableSource`
+
 Refer to [relevant React RFC](https://github.com/reactjs/rfcs/pull/147).
 
-## React.useMutableSource
+## `React.useMutableSource`
+
 Refer to [relevant React RFC](https://github.com/reactjs/rfcs/pull/147).
 
 ## Roblox and Luau
 
-The React package shipped from Roact includes certain APIs designed specifically to account for nuances of the Luau language and to more easily leverage Roblox engine features.
+The `React` package shipped from React Lua includes certain APIs designed specifically to account for nuances of the Luau language and to more easily leverage Roblox engine features.
 
-These APIs are unique to Roact and do not have equivalents in React JS.
+These APIs are unique to React Lua and do not have equivalents in React JS.
 
-### React.None
+### `React.None`
+
 <img alt='Roblox' src='../../images/roblox.svg'/>
 
 A placeholder value that can be used to remove fields from a table (by changing the value to nil) when merging tables. This allows state fields to be nil-able despite lua treating table fields with `nil` values as semantically equivalent to absent fields.
@@ -740,13 +783,14 @@ A placeholder value that can be used to remove fields from a table (by changing 
 
 	Additionally, `React.None` is not intended to be used as a prop value, and may be reverted to nil by internal React logic in some cases if it's provided as one.
 
-### React.Event
+### `React.Event`
+
 <img alt='Roblox' src='../../images/roblox.svg'/>
 
-A special key that can be used to interact with [events on Roblox Instance objects](https://developer.roblox.com/en-us/api-reference/function/Instance/GetPropertyChangedSignal). Index into `Roact.Event` with the name of an Event that's defined for the given host Instance class in order to get a special prop key that connects to that event:
+A special key that can be used to interact with [events on Roblox Instance objects](https://developer.roblox.com/en-us/api-reference/function/Instance/GetPropertyChangedSignal). Index into `React.Event` with the name of an Event that's defined for the given host Instance class in order to get a special prop key that connects to that event:
 
 ```lua
-Roact.createElement("ImageButton", {
+React.createElement("ImageButton", {
 	[React.Event.MouseButton1Click] = function(rbx, x, y)
 		print(rbx, "clicked at position", x, y)
 	end,
@@ -758,13 +802,14 @@ The event connection will be automatically created when the host element is moun
 !!! info
 	Event callbacks receive the Roblox Instance as the first parameter, followed by any parameters yielded by the event.
 
-### React.Change
+### `React.Change`
+
 <img alt='Roblox' src='../../images/roblox.svg'/>
 
-A special key that can be used to interact with the [`GetPropertyChangedSignal` method on Roblox Instance objects](https://developer.roblox.com/en-us/api-reference/function/Instance/GetPropertyChangedSignal). Index into `Roact.Change` with the name of the property to get a special prop key that connects to the change signal of an Instance with that property:
+A special key that can be used to interact with the [`GetPropertyChangedSignal` method on Roblox Instance objects](https://developer.roblox.com/en-us/api-reference/function/Instance/GetPropertyChangedSignal). Index into `React.Change` with the name of the property to get a special prop key that connects to the change signal of an Instance with that property:
 
 ```lua
-Roact.createElement("ScrollingFrame", {
+React.createElement("ScrollingFrame", {
 	[React.Change.CanvasPosition] = function(rbx)
 		print("ScrollingFrame scrolled to", rbx.CanvasPosition)
 	end,
@@ -773,11 +818,12 @@ Roact.createElement("ScrollingFrame", {
 
 The change signal connection will be automatically created when the host element is mounted and automatically disconnected when the element is unmounted.
 
-### React.Tag
+### `React.Tag`
+
 <img alt='Roblox' src='../../images/roblox.svg'/>
 
 ```lua
-local button = Roact.createElement("TextButton", {
+local button = React.createElement("TextButton", {
 	[React.Tag] = "confirm-button"
 	Text = "Confirm",
 	-- ...
@@ -787,12 +833,15 @@ local button = Roact.createElement("TextButton", {
 A special key that can be used to apply [`CollectionService`](https://developer.roblox.com/en-us/api-reference/class/CollectionService) tags to a host component.
 
 Multiple tags can be provided as a single space-delimited string. For example:
+
 ```lua
 [React.Tag] = "some-tag some-other-tag"
 ```
+
 will apply "some-tag" and "some-other-tag" as `CollectionService` tags to the underlying Roblox Instance when the component is mounted.
 
-### React.createBinding
+### `React.createBinding`
+
 <img alt='Roblox' src='../../images/roblox.svg'/>
 
 Creates a binding object. This function can be used outside of React function components and works similarly to [`useBinding`](#reactusebinding).
@@ -823,7 +872,8 @@ function DisplaysSize:render()
 end
 ```
 
-### React.joinBindings
+### `React.joinBindings`
+
 <img alt='Roblox' src='../../images/roblox.svg'/>
 
 Combines a map or array of bindings into a single binding. The new binding's value will have the same keys as the input table of bindings. Each time any of the input bindings update, the resulting binding will update as well with a new value.
@@ -865,4 +915,3 @@ local function Flex()
 	)
 end
 ```
-

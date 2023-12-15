@@ -1,14 +1,15 @@
 # Aligning files guide
 
-We are aligning files by going through them module by module. We keep track of them in a [Adapt roact-alignment implementation](https://github.com/Roblox/roact-alignment/milestone/1) milestone.
+We are aligning files by going through them module by module.
 
 ## Prerequisites
 
 In this guide we assume that you have the following project cloned inside of the common directory:
+
 * js-to-lua [repo link](https://github.com/roblox/js-to-lua)
   * checkout `main` branch
-* roact-alignment [repo link](https://github.com/roblox/roact-alignment)
-  * your working branch on top of `master` branch
+* react-lua [repo link](https://github.com/jsdotlua/react-lua)
+  * your working branch on top of `main` branch
 * react [repo link](https://github.com/facebook/react)
   * checkout `v17.0.2` tag
 
@@ -25,7 +26,7 @@ Depending on the size of the module and/or your preference you can either align 
 ```shell
 dist/apps/convert-js-to-lua/index.js \
   --input ../react/packages/react-devtools-shared/src/**/*.js \
-  --output ../roact-alignment/modules/ \
+  --output ../react-lua/modules/ \
   --rootDir ../react/packages \
   --plugin=knownImports --plugin=jestGlobals \
   --babelTransformConfig babel-flow-transform-react.config.json \
@@ -37,7 +38,7 @@ This will run the conversion on all the files in the `react-devtools-shared` whi
 ```shell
 dist/apps/convert-js-to-lua/index.js \
   --input ../react/packages/react-devtools-shared/src/<path_to_a_js_file> \
-  --output ../roact-alignment/modules/ \
+  --output ../react-lua/modules/ \
   --rootDir ../react/packages \
   --plugin=knownImports --plugin=jestGlobals \
   --babelTransformConfig babel-flow-transform-react.config.json \
@@ -46,17 +47,17 @@ dist/apps/convert-js-to-lua/index.js \
 
 eg.
 
-```
+```shell
 dist/apps/convert-js-to-lua/index.js \
   --input ../react/packages/react-devtools-shared/src/utils.js \
-  --output ../roact-alignment/modules/ \
+  --output ../react-lua/modules/ \
   --rootDir ../react/packages \
   --plugin=knownImports --plugin=jestGlobals \
   --babelTransformConfig babel-flow-transform-react.config.json \
   --babelConfig babel-flow.config.json
 ```
 
-After we run the automatic conversion the file will contain a lot of changes. Please additionally run `stylua module` in the roact-alignment directory to make sure all the files are converted according to the StyLua configuration.
+After we run the automatic conversion the file will contain a lot of changes. Please additionally run `stylua module` in the react-lua directory to make sure all the files are converted according to the StyLua configuration.
 
 Now our job is to capture the deviations that the original code has made and mark them with appropriate `ROBLOX deviation START` / `ROBLOX deviation END` comments.
 
@@ -81,7 +82,7 @@ As for the actual deviations that need to be marked let's look at the following 
 ![Bridge shutdown method's diff before marking a deviation](diff-bridge-shutdown-method-before.png)
 ![Bridge shutdown method's diff after marking a deviation](diff-bridge-shutdown-method-after.png)
 
-In order to make that process a little bit easier we've created a set of VSCode snippets that you can use - [link](#snippets) to snippets section. 
+In order to make that process a little bit easier we've created a set of VSCode snippets that you can use - [link](#snippets) to snippets section.
 
 ## Snippets
 
@@ -95,6 +96,7 @@ In order to use the snippets you should configure a hot key (keyboard shortcut) 
 * `deviation-start` and `deviation-end` - will only insert a proper deviation start/end comment. We use those to avoid typos.
 
 There are couple more utility snippets for special cases that were occurring more often:
+
 * `deviation-block-type` - it will wrap a block with deviation comments, comment out the block and insert a duplicate but change `local` for `type`. It's useful when js-to-lua imported locals from a module when it should actually import types
 * `deviation-line` and `deviation-line-skipped` are similar to their block equivalents but will use the current line instead of selected block of code
 

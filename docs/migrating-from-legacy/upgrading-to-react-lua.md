@@ -1,9 +1,9 @@
-# Adding a Roact 17 Dependency
+# Adding a React Lua Dependency
 
-Roact 17 is available as a collection of packages hosted in the https://github.com/roblox/roact-alignment repository. Internal Roblox projects use a package manager called [Rotriever](https://github.com/roblox/rotriever) to resolve and manage dependencies.
+React Lua is available as a collection of packages hosted in the https://github.com/jsdotlua/react-lua repository. Internal Roblox projects use a package manager called [Rotriever](https://github.com/roblox/rotriever) to resolve and manage dependencies.
 
 !!! info
-	Roact 17 is a "package workspace", meaning that it consists of multiple packages living in the same project. We recommend using Rotriever version [0.5.4](https://github.com/Roblox/rotriever/releases/tag/v0.5.4) or newer to make sure it has the latest workspace feature support.
+	React Lua is a "package workspace", meaning that it consists of multiple packages living in the same project. We recommend using Rotriever version [0.5.4](https://github.com/Roblox/rotriever/releases/tag/v0.5.4) or newer to make sure it has the latest workspace feature support.
 
 	Refer to [Rotriever's documentation](https://roblox.github.io/rotriever/installation/) for more information on how to install or upgrade your version.
 
@@ -21,7 +21,7 @@ Roact 17 is available as a collection of packages hosted in the https://github.c
 
 ## Replacing Legacy Roact
 
-The easiest way to adopt Roact 17 in an existing Roact project is to change your existing dependency on legacy Roact.
+The easiest way to adopt React Lua in an existing Roact project is to change your existing dependency on legacy Roact.
 
 Make the following changes to your `rotriever.toml` manifest file:
 ```diff
@@ -32,7 +32,7 @@ Make the following changes to your `rotriever.toml` manifest file:
 
 This creates a dependency on the `RoactCompat` package, which provides [a compatibility layer](../api-reference/roact-compat.md) for migrating from legacy APIs.
 
-Since it's still named `Roact` in the above snippet, it will be aliased to `Roact` in your code. If your code meets the [minimum requirements](minimum-requirements.md), this dependency change will upgrade your project to Roact 17 without requiring any further changes to your source code.
+Since it's still named `Roact` in the above snippet, it will be aliased to `Roact` in your code. If your code meets the [minimum requirements](minimum-requirements.md), this dependency change will upgrade your project to React Lua without requiring any further changes to your source code.
 
 ### Accessing New Features
 
@@ -55,10 +55,10 @@ You may need to additionally account for other dependencies in your project that
 
 You might encounter this if you have existing dependencies on any of the following:
 
-* [InfiniteScroller](https://github.com/Roblox/infinite-scroller) (compatible with Roact 17 from version 0.8.0 onwards)
-* [RoactFitComponents](https://github.com/roblox/roact-fit-components) (compatible with Roact 17 from version 2.0.0 onwards)
-* [RoactRodux](https://github.com/Roblox/roact-rodux) (compatible with Roact 17 from version 0.4.1 onwards)
-* [UIBlox](https://github.com/Roblox/uiblox) (compatible with Roact 17 on the latest master)
+* [InfiniteScroller](https://github.com/Roblox/infinite-scroller) (compatible with React Lua from version 0.8.0 onwards)
+* [RoactFitComponents](https://github.com/roblox/roact-fit-components) (compatible with React Lua from version 2.0.0 onwards)
+* [RoactRodux](https://github.com/Roblox/roact-rodux) (compatible with React Lua from version 0.4.1 onwards)
+* [UIBlox](https://github.com/Roblox/uiblox) (compatible with React Lua on the latest master)
 * Numerous other projects that depend on legacy Roact, especially if they're older than the latest version
 
 To resolve this, you can patch over any dependencies on legacy Roact and align them with your newly-added version. Add this additional section to your `rotriever.toml` manifest file:
@@ -70,13 +70,13 @@ Roact = { target = "github.com/roblox/roact-alignment", version = "17.0.1", pack
 To learn more about patching dependencies, check out [the Rotriever documentation](https://roblox.github.io/rotriever/guide/specifying-dependencies/#patching-dependencies).
 
 !!! caution
-	When you're patching over Roact, make sure your other dependencies are compatible with Roact 17. You may need to upgrade them to more recent versions so that they comply with the [Roact 17 requirements](minimum-requirements.md).
+	When you're patching over Roact, make sure your other dependencies are compatible with React Lua. You may need to upgrade them to more recent versions so that they comply with the [React Lua requirements](minimum-requirements.md).
 
 ## Testing with Both
 
-In some cases, you may not yet be equipped to safely adopt Roact 17, but you want to begin adopting it in tests or storybooks so your project can enforce compatibility.
+In some cases, you may not yet be equipped to safely adopt React Lua, but you want to begin adopting it in tests or storybooks so your project can enforce compatibility.
 
-One reasonable way to accomplish this is to depend on _both_ projects, but to conditionally swap in Roact 17 at runtime. To do this, make sure your `rotriever.toml` manifest file contains the following:
+One reasonable way to accomplish this is to depend on _both_ projects, but to conditionally swap in React Lua at runtime. To do this, make sure your `rotriever.toml` manifest file contains the following:
 ```toml
 [dependencies]
 Roact = "github.com/roblox/roact@1.4"
@@ -85,7 +85,7 @@ Roact = "github.com/roblox/roact@1.4"
 RoactCompat = "github.com/roblox/roact-alignment@17.0.1"
 ```
 
-This declares a dependency on legacy Roact as well as a [dev dependency](https://roblox.github.io/rotriever/guide/specifying-dependencies/#development-dependencies) on Roact 17.
+This declares a dependency on legacy Roact as well as a [dev dependency](https://roblox.github.io/rotriever/guide/specifying-dependencies/#development-dependencies) on React Lua.
 
 In your test runner script or other equivalent entry point, check the value of a global (or flag, or any other preferred configuration method), and overwrite the `Roact` API with that of `RoactCompat` when enabled. It may look something like this:
 

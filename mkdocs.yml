@@ -27,11 +27,11 @@ nav:
   - Home: index.md
   - Deviations: deviations.md
   - Configuration: configuration.md
-  - Migrating From 1.x:
-    - Minimum Requirements: migrating-from-1x/minimum-requirements.md
-    - Add Roact 17 Dependency: migrating-from-1x/upgrading-to-roact-17.md
-    - Adopt New Features: migrating-from-1x/adopt-new-features.md
-    - Convert Legacy Conventions: migrating-from-1x/convert-legacy-conventions.md
+  - Migrating From Legacy Roact:
+    - Minimum Requirements: migrating-from-legacy/minimum-requirements.md
+    - Add React Lua Dependency: migrating-from-legacy/upgrading-to-react-lua.md
+    - Adopt New Features: migrating-from-legacy/adopt-new-features.md
+    - Convert Legacy Conventions: migrating-from-legacy/convert-legacy-conventions.md
   - API Reference:
     - React: api-reference/react.md
     - ReactRoblox: api-reference/react-roblox.md
