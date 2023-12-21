@@ -1,5 +1,10 @@
 # Adding a React Lua Dependency
 
+!!! warning
+	This page is written for internal Roblox employees, and makes reference in its entirety to internal tools and workflows you likely do not have access to. If you'd like to rewrite this page with installation instructions relevant to Roblox developers, please see [this](https://github.com/jsdotlua/react-lua/issues/22) issue.
+
+---
+
 React Lua is available as a collection of packages hosted in the https://github.com/jsdotlua/react-lua repository. Internal Roblox projects use a package manager called [Rotriever](https://github.com/roblox/rotriever) to resolve and manage dependencies.
 
 !!! info
