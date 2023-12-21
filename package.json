@@ -1,0 +1,19 @@
+{
+  "name": "workspace",
+  "private": true,
+  "workspaces": [
+    "modules/*"
+  ],
+  "scripts": {
+    "prepare": "npmluau",
+    "build-assets": "sh ./scripts/build-assets.sh",
+    "lint": "selene modules",
+    "format": "stylua modules",
+    "style-check": "stylua modules --check",
+    "clean": "rm -rf roblox build node_modules"
+  },
+  "devDependencies": {
+    "commander": "^11.1.0",
+    "npmluau": "^0.1.1"
+  }
+}

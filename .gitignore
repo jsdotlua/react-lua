@@ -17,3 +17,11 @@ site/
 
 default_modules
 modules_*
+
+.yarn
+/*.tgz
+
+**/sourcemap.json
+**/node_modules
+/build
+/roblox
