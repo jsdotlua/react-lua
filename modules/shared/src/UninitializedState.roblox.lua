@@ -13,7 +13,7 @@
 	* limitations under the License.
 ]]
 --!strict
-local console = require(script.Parent.console)
+local console = require("./console")
 
 -- ROBLOX DEVIATION: Initialize state to a singleton that warns on access and errors on assignment
 -- initial state singleton

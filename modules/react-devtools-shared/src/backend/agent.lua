@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Set<T> = LuauPolyfill.Set<T>
 local console = LuauPolyfill.console
 local JSON = game:GetService("HttpService")
@@ -16,46 +15,46 @@ type Function = (...any) -> ...any
 type Array<T> = { [number]: T }
 type Object = { [string]: any }
 
-local EventEmitter = require(script.Parent.Parent.events)
+local EventEmitter = require("../events")
 type EventEmitter<Events> = EventEmitter.EventEmitter<Events>
 -- ROBLOX FIXME: need to implement lodash.throttle, pass through for now
 -- import throttle from 'lodash.throttle';
 local throttle = function(fn: Function, _limit: number): Function
 	return fn
 end
-local constants = require(script.Parent.Parent.constants)
+local constants = require("../constants")
 local SESSION_STORAGE_LAST_SELECTION_KEY = constants.SESSION_STORAGE_LAST_SELECTION_KEY
 local SESSION_STORAGE_RELOAD_AND_PROFILE_KEY =
 	constants.SESSION_STORAGE_RELOAD_AND_PROFILE_KEY
 local SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY =
 	constants.SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY
 local __DEBUG__ = constants.__DEBUG__
-local storage = require(script.Parent.Parent.storage)
+local storage = require("../storage")
 local sessionStorageGetItem = storage.sessionStorageGetItem
 local sessionStorageRemoveItem = storage.sessionStorageRemoveItem
 local sessionStorageSetItem = storage.sessionStorageSetItem
--- local Highlighter = require(script.Parent.views.Highlighter)
+-- local Highlighter = require("./views/Highlighter")
 -- local setupHighlighter = Highlighter.default
 -- ROBLOX TODO: stub for now
 local setupHighlighter = function(bridge, agent) end
--- local TraceUpdates = require(script.Parent.views.TraceUpdates)
+-- local TraceUpdates = require("./views/TraceUpdates")
 -- local setupTraceUpdates = TraceUpdates.initialize
 -- local setTraceUpdatesEnabled = TraceUpdates.toggleEnabled
 -- ROBLOX TODO: stub these for now
 local setupTraceUpdates = function(agent) end
 local setTraceUpdatesEnabled = function(enabled: boolean) end
 
--- local console = require(script.Parent.console)
+-- local console = require("./console")
 -- local patchConsole = console.patch
 -- local unpatchConsole = console.unpatch
 -- ROBLOX TODO: stub these for now. they're used to force the debugger to break immediately when console.error is called
 local patchConsole = function(obj) end
 local unpatchConsole = function() end
 
-local Bridge = require(script.Parent.Parent.bridge)
+local Bridge = require("../bridge")
 type BackendBridge = Bridge.BackendBridge
 
-local BackendTypes = require(script.Parent.types)
+local BackendTypes = require("./types")
 type InstanceAndStyle = BackendTypes.InstanceAndStyle
 type NativeType = BackendTypes.NativeType
 type OwnersList = BackendTypes.OwnersList
@@ -64,7 +63,7 @@ type PathMatch = BackendTypes.PathMatch
 type RendererID = BackendTypes.RendererID
 type RendererInterface = BackendTypes.RendererInterface
 
-local SharedTypes = require(script.Parent.Parent.types)
+local SharedTypes = require("../types")
 type ComponentFilter = SharedTypes.ComponentFilter
 
 local debug_ = function(methodName, ...)

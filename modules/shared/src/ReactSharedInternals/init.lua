@@ -22,8 +22,7 @@
 	* React depends on Shared
 	* Shared has no intra-workspace dependencies (no cycles)
 ]]
-local Packages = script.Parent.Parent
-local console = require(Packages.LuauPolyfill).console
+local console = require("@pkg/@jsdotlua/luau-polyfill").console
 local function onlyInTestError(functionName: string)
 	return function()
 		console.error(functionName .. " is only available in tests, not in production")
@@ -31,12 +30,12 @@ local function onlyInTestError(functionName: string)
 end
 
 -- import assign from 'object-assign';
-local ReactCurrentDispatcher = require(script.ReactCurrentDispatcher)
+local ReactCurrentDispatcher = require("./ReactCurrentDispatcher")
 export type Dispatcher = ReactCurrentDispatcher.Dispatcher
-local ReactCurrentBatchConfig = require(script.ReactCurrentBatchConfig)
-local ReactCurrentOwner = require(script.ReactCurrentOwner)
-local ReactDebugCurrentFrame = require(script.ReactDebugCurrentFrame)
-local IsSomeRendererActing = require(script.IsSomeRendererActing)
+local ReactCurrentBatchConfig = require("./ReactCurrentBatchConfig")
+local ReactCurrentOwner = require("./ReactCurrentOwner")
+local ReactDebugCurrentFrame = require("./ReactDebugCurrentFrame")
+local IsSomeRendererActing = require("./IsSomeRendererActing")
 
 local ReactSharedInternals = {
 	ReactCurrentDispatcher = ReactCurrentDispatcher,

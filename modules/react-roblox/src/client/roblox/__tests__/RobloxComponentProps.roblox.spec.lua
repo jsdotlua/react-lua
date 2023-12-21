@@ -4,7 +4,7 @@ local Scheduler
 local RobloxComponentProps
 
 local Packages = script.Parent.Parent.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
@@ -12,10 +12,10 @@ local it = JestGlobals.it
 
 beforeEach(function()
 	jest.resetModules()
-	React = require(Packages.React)
-	ReactRoblox = require(Packages.ReactRoblox)
-	Scheduler = require(Packages.Scheduler)
-	RobloxComponentProps = require(script.Parent.Parent.RobloxComponentProps)
+	React = require("@pkg/@jsdotlua/react")
+	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
+	RobloxComponentProps = require("./RobloxComponentProps")
 end)
 
 local function getSizeOfMap(map)

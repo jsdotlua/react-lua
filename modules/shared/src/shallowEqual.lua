@@ -8,7 +8,7 @@
  *
  *
 ]]
-local is = require(script.Parent.objectIs)
+local is = require("./objectIs")
 
 --[[*
  * Performs equality by iterating through keys on an object and returning false

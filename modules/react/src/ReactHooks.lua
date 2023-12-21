@@ -9,14 +9,13 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 -- ROBLOX TODO: we only pull in Dispatcher here for the typecheck, remove once Luau narrowing improves
 type Dispatcher = ReactTypes.Dispatcher
 type MutableSource<T> = ReactTypes.MutableSource<T>
@@ -30,13 +29,13 @@ type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscr
 >
 type ReactProviderType<T> = ReactTypes.ReactProviderType<T>
 type ReactContext<T> = ReactTypes.ReactContext<T>
-local ReactFiberHostConfig = require(Packages.Shared)
+local ReactFiberHostConfig = require("@pkg/@jsdotlua/shared")
 type OpaqueIDType = ReactFiberHostConfig.OpaqueIDType
 
--- local invariant = require(Packages.Shared).invariant
+-- local invariant = require("@pkg/@jsdotlua/shared").invariant
 
 local ReactCurrentDispatcher =
-	require(Packages.Shared).ReactSharedInternals.ReactCurrentDispatcher
+	require("@pkg/@jsdotlua/shared").ReactSharedInternals.ReactCurrentDispatcher
 
 type BasicStateAction<S> = ((S) -> S) | S
 type Dispatch<A> = (A) -> ()

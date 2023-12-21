@@ -10,7 +10,7 @@
  ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local xdescribe = JestGlobals.xdescribe
 local it = JestGlobals.it
@@ -18,16 +18,16 @@ local xit = JestGlobals.xit
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
-local Bridge = require(script.Parent.Parent.bridge)
+local Bridge = require("./bridge")
 type FrontendBridge = Bridge.FrontendBridge
 
-local devtoolsTypes = require(script.Parent.Parent.devtools.types)
+local devtoolsTypes = require("./devtools/types")
 type Store = devtoolsTypes.Store
 
-local ProfilerTypes = require(script.Parent.Parent.devtools.views.Profiler.types)
+local ProfilerTypes = require("./devtools/views/Profiler/types")
 type ProfilingDataFrontend = ProfilerTypes.ProfilingDataFrontend
 
 local global = _G
@@ -65,7 +65,7 @@ xdescribe("ProfilingCache", function()
 
 	beforeEach(function()
 		_G.__PROFILE__ = true
-		utils = require(script.Parent.utils)
+		utils = require("./utils")
 		act = utils.act
 
 		bridge = global.bridge
@@ -74,9 +74,9 @@ xdescribe("ProfilingCache", function()
 		store:setRecordChangeDescriptions(true)
 
 		--PropTypes = require_("prop-types")
-		React = require(Packages.React)
-		ReactRoblox = require(Packages.ReactRoblox)
-		Scheduler = require(Packages.Dev.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		SchedulerTracing = Scheduler.tracing
 
 		utils.beforeEachProfiling()

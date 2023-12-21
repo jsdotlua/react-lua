@@ -9,8 +9,7 @@
 --  * @flow
 -- ]]
 
-local Packages = script.Parent.Parent
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type MutableSourceGetVersionFn = ReactTypes.MutableSourceGetVersionFn
 type MutableSource<T> = ReactTypes.MutableSource<T>
 

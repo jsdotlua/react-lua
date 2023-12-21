@@ -14,8 +14,7 @@
 ]]
 -- built-in flowtypes reverse engineered based on usage and enabling strict type checking on test suites
 --!strict
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Error = LuauPolyfill.Error
 type Array<T> = LuauPolyfill.Array<T>
 type Object = { [string]: any }

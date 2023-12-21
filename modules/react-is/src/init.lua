@@ -8,19 +8,18 @@
  *
  * @flow
  ]]
-local Packages = script.Parent
 -- ROBLOX deviation START: not used
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
 -- ROBLOX deviation START: use patched console from shared
 -- local console = LuauPolyfill.console
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 -- ROBLOX deviation END
 local exports = {}
 -- ROBLOX deviation START: fix import
 -- local sharedReactSymbolsModule = require(Packages.shared.ReactSymbols)
-local sharedReactSymbolsModule = require(Packages.Shared).ReactSymbols
+local sharedReactSymbolsModule = require("@pkg/@jsdotlua/shared").ReactSymbols
 -- ROBLOX deviation END
 local REACT_CONTEXT_TYPE = sharedReactSymbolsModule.REACT_CONTEXT_TYPE
 local REACT_ELEMENT_TYPE = sharedReactSymbolsModule.REACT_ELEMENT_TYPE
@@ -36,7 +35,7 @@ local REACT_SUSPENSE_TYPE = sharedReactSymbolsModule.REACT_SUSPENSE_TYPE
 local REACT_SUSPENSE_LIST_TYPE = sharedReactSymbolsModule.REACT_SUSPENSE_LIST_TYPE
 -- ROBLOX deviation START: fix import
 -- local isValidElementType = require(Packages.shared.isValidElementType).default
-local isValidElementType = require(Packages.Shared).isValidElementType
+local isValidElementType = require("@pkg/@jsdotlua/shared").isValidElementType
 -- ROBLOX deviation END
 -- ROBLOX deviation START: additional imports
 local REACT_BINDING_TYPE = sharedReactSymbolsModule.REACT_BINDING_TYPE

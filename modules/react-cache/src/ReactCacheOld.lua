@@ -7,8 +7,7 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: unnecessary import
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
@@ -21,7 +20,7 @@ local inspect = LuauPolyfill.util.inspect
 -- ROBLOX deviation END
 -- ROBLOX deviation START: use console from React Shared
 -- local console = LuauPolyfill.console
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 -- ROBLOX deviation END
 type Map<T, U> = LuauPolyfill.Map<T, U>
 local exports = {}
@@ -31,13 +30,13 @@ local deleteEntry
 -- ROBLOX deviation START: fix import
 -- local sharedReactTypesModule = require(Packages.shared.ReactTypes)
 -- type Thenable = sharedReactTypesModule.Thenable
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Thenable<R> = ReactTypes.Thenable<R>
 -- ROBLOX deviation END
-local React = require(Packages.React)
-local createLRU = require(script.Parent.LRU).createLRU
+local React = require("@pkg/@jsdotlua/react")
+local createLRU = require("./LRU").createLRU
 -- ROBLOX deviation START: add this type in an attempt to tighten up the types to detect bugs found manually
-local LRU = require(script.Parent.LRU)
+local LRU = require("./LRU")
 type Entry<T> = LRU.Entry<T>
 type Record<K, V> = { [K]: V }
 -- ROBLOX deviation END
@@ -71,7 +70,7 @@ local Rejected = 2
 local ReactCurrentDispatcher =
 	-- ROBLOX deviation START: import from Shared package
 	-- React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher
-	require(Packages.Shared).ReactSharedInternals.ReactCurrentDispatcher
+	require("@pkg/@jsdotlua/shared").ReactSharedInternals.ReactCurrentDispatcher
 -- ROBLOX deviation END
 local function readContext(Context, observedBits)
 	local dispatcher = ReactCurrentDispatcher.current

@@ -8,7 +8,7 @@
 --  * @flow
 --  */
 
-local Types = require(script.Parent.types)
+local Types = require("./types")
 type ReactRenderer = Types.ReactRenderer
 
 local exports = {}

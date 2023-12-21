@@ -9,12 +9,11 @@
 --  */
 
 -- !strict
-local Packages = script.Parent.Parent.Parent
 
 local React
 local ReactTestRenderer
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -25,8 +24,8 @@ describe("ReactTestRenderer", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		React = require(Packages.React)
-		ReactTestRenderer = require(Packages.ReactTestRenderer)
+		React = require("@pkg/@jsdotlua/react")
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 	end)
 	it("renders a component with React.Change, React.Event, React.Tag props", function()
 		local onTextChangedCallback = function() end

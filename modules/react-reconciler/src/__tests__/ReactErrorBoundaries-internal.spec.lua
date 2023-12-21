@@ -15,10 +15,10 @@ local React
 local ReactNoop
 -- local act
 local Scheduler
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
@@ -71,12 +71,12 @@ describe("ReactErrorBoundaries", function()
 		jest.useFakeTimers()
 
 		-- PropTypes = require('prop-types')
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
 		-- ReactDOM = require('react-dom')
-		React = require(Packages.React)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-		Scheduler = require(Packages.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- act = require('react-dom/test-utils').unstable_concurrentAct
 
 		BrokenConstructor = React.Component:extend("BrokenConstructor")

@@ -1,0 +1,23 @@
+{
+  "name": "@jsdotlua/react-shallow-renderer",
+  "version": "17.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/react-lua.git",
+    "directory": "modules/react-shallow-renderer"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/react": "workspace:^",
+    "@jsdotlua/react-is": "workspace:^",
+    "@jsdotlua/shared": "workspace:^"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.0"
+  }
+}

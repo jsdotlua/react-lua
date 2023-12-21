@@ -15,7 +15,7 @@
 
 local Packages = script.Parent.Parent.Parent
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local afterEach = JestGlobals.afterEach
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
@@ -30,12 +30,12 @@ describe("production mode", function()
 		prevMockScheduler = _G.__ROACT_17_MOCK_SCHEDULER__
 		_G.__ROACT_17_MOCK_SCHEDULER__ = nil
 		jest.resetModules()
-		RoactCompat = require(script.Parent.Parent)
+		RoactCompat = require(".")
 	end)
 
 	it("disallows use of 'act'", function()
 		jest.resetModules()
-		RoactCompat = require(script.Parent.Parent)
+		RoactCompat = require(".")
 
 		jestExpect(function()
 			RoactCompat.act(function()
@@ -59,12 +59,12 @@ describe("test mode", function()
 		prevMockScheduler = _G.__ROACT_17_MOCK_SCHEDULER__
 		_G.__ROACT_17_MOCK_SCHEDULER__ = true
 		jest.resetModules()
-		RoactCompat = require(script.Parent.Parent)
+		RoactCompat = require(".")
 	end)
 
 	it("allows use of 'act'", function()
 		jest.resetModules()
-		RoactCompat = require(script.Parent.Parent)
+		RoactCompat = require(".")
 
 		local parent = Instance.new("Folder")
 		local tree

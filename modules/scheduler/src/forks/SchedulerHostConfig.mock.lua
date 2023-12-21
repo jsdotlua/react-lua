@@ -20,9 +20,8 @@ local didStop: boolean = false
 local isFlushing: boolean = false
 local needsPaint: boolean = false
 local shouldYieldForPaint: boolean = false
-local Packages = script.Parent.Parent.Parent
-local console = require(Packages.Shared).console
-local ConsolePatchingDev = require(Packages.Shared).ConsolePatchingDev
+local console = require("@pkg/@jsdotlua/shared").console
+local ConsolePatchingDev = require("@pkg/@jsdotlua/shared").ConsolePatchingDev
 local disabledLog = ConsolePatchingDev.disabledLog
 
 exports.requestHostCallback = function(callback: (boolean) -> ())

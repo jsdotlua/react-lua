@@ -11,13 +11,13 @@
 --!nonstrict
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
-local Error = require(Packages.LuauPolyfill).Error
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local Error = require("@pkg/@jsdotlua/luau-polyfill").Error
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
 local React
@@ -27,12 +27,12 @@ local Scheduler
 
 beforeEach(function()
 	jest.resetModules()
-	ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+	ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 
 	ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
-	React = require(script.Parent.Parent)
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-	Scheduler = require(Packages.Dev.Scheduler)
+	React = require(".")
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 end)
 
 it("should work without a ref to be forwarded", function()

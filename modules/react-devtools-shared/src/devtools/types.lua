@@ -1,29 +1,27 @@
 --!strict
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Map<K, V> = LuauPolyfill.Map<K, V>
 type Object = LuauPolyfill.Object
 type Set<K> = LuauPolyfill.Set<K>
 
-local ComponentsTypes = require(script.Parent.Parent.devtools.views.Components.types)
+local ComponentsTypes = require("./views/Components/types")
 type Element = ComponentsTypes.Element
 
-local Types = require(script.Parent.Parent.types)
+local Types = require("../types")
 type ComponentFilter = Types.ComponentFilter
 type ElementType = Types.ElementType
 
-local EventEmitter = require(script.Parent.Parent.events)
+local EventEmitter = require("../events")
 type EventEmitter<T> = EventEmitter.EventEmitter<T>
 
-local Bridge = require(script.Parent.Parent.bridge)
+local Bridge = require("../bridge")
 type FrontendBridge = Bridge.FrontendBridge
 
-local backendTypes = require(script.Parent.Parent.backend.types)
+local backendTypes = require("../backend/types")
 type ProfilingDataBackend = backendTypes.ProfilingDataBackend
 
-local profilerTypes = require(script.Parent.views.Profiler.types)
+local profilerTypes = require("./views/Profiler/types")
 type CommitDataFrontend = profilerTypes.CommitDataFrontend
 type ProfilingDataForRootFrontend = profilerTypes.ProfilingDataForRootFrontend
 type ProfilingDataFrontend = profilerTypes.ProfilingDataFrontend

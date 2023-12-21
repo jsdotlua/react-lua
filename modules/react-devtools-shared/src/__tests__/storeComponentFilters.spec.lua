@@ -11,7 +11,7 @@
 
 type Function = (...any) -> ...any
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
 local it = JestGlobals.it
@@ -20,9 +20,9 @@ local jestExpect = JestGlobals.expect
 
 local global = _G
 
-local bridgeModule = require(script.Parent.Parent.bridge)
+local bridgeModule = require("./bridge")
 type FrontendBridge = bridgeModule.FrontendBridge
-local devtoolsTypes = require(script.Parent.Parent.devtools.types)
+local devtoolsTypes = require("./devtools/types")
 type Store = devtoolsTypes.Store
 
 describe("Store component filters", function()
@@ -50,14 +50,14 @@ describe("Store component filters", function()
 		store:setComponentFilters({})
 		store:setRecordChangeDescriptions(true)
 
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = true
 
-		React = require(Packages.React)
-		ReactRoblox = require(Packages.ReactRoblox)
-		Types = require(script.Parent.Parent.types)
-		utils = require(script.Parent.utils)
-		devtoolsUtils = require(script.Parent.Parent.devtools.utils)
+		React = require("@pkg/@jsdotlua/react")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		Types = require("./types")
+		utils = require("./utils")
+		devtoolsUtils = require("./devtools/utils")
 	end)
 
 	it("should throw if filters are updated while profiling", function()

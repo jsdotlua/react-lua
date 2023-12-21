@@ -9,17 +9,16 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactCurrentFiber = require(script.Parent.ReactCurrentFiber)
+local ReactCurrentFiber = require("./ReactCurrentFiber")
 local resetCurrentDebugFiberInDEV = ReactCurrentFiber.resetCurrentFiber
 local setCurrentDebugFiberInDEV = ReactCurrentFiber.setCurrentFiber
-local getComponentName = require(Packages.Shared).getComponentName
-local StrictMode = require(script.Parent.ReactTypeOfMode).StrictMode
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local StrictMode = require("./ReactTypeOfMode").StrictMode
 
 type Set<T> = { [T]: boolean }
 type Array<T> = { [number]: T }

@@ -9,12 +9,12 @@
  * @jest-environment node
  ]]
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: not needed
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
 local Error = LuauPolyfill.Error
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 -- ROBLOX deviation START: add additional import
 local afterEach = JestGlobals.afterEach
 -- ROBLOX deviation END
@@ -53,10 +53,10 @@ describe("React hooks DevTools integration", function()
 		-- ReactDebugTools = require_("react-debug-tools")
 		-- ReactTestRenderer = require_("react-test-renderer")
 		-- Scheduler = require_("scheduler")
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
-		React = require(Packages.Dev.React)
-		ReactDebugTools = require(Packages.ReactDebugTools)
-		Scheduler = require(Packages.Dev.Scheduler)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		React = require("@pkg/@jsdotlua/react")
+		ReactDebugTools = require("@pkg/@jsdotlua/react-debug-tools")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- ROBLOX deviation END
 		act = ReactTestRenderer.act
 	end)

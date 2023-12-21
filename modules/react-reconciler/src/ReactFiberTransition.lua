@@ -9,9 +9,7 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
 
 local ReactCurrentBatchConfig = ReactSharedInternals.ReactCurrentBatchConfig
 

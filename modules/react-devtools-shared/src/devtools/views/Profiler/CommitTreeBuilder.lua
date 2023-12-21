@@ -7,8 +7,7 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Map = LuauPolyfill.Map
 local console = LuauPolyfill.console
@@ -25,7 +24,7 @@ local exports = {}
  *
  * @flow
  ]]
-local constantsModule = require(script.Parent.Parent.Parent.Parent.constants)
+local constantsModule = require("../../../constants")
 local __DEBUG__ = constantsModule.__DEBUG__
 local TREE_OPERATION_ADD = constantsModule.TREE_OPERATION_ADD
 local TREE_OPERATION_REMOVE = constantsModule.TREE_OPERATION_REMOVE
@@ -33,14 +32,14 @@ local TREE_OPERATION_REORDER_CHILDREN = constantsModule.TREE_OPERATION_REORDER_C
 local TREE_OPERATION_UPDATE_TREE_BASE_DURATION =
 	constantsModule.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
 
-local devtoolsTypes = require(script.Parent.Parent.Parent.types)
+local devtoolsTypes = require("../../types")
 type ProfilerStore = devtoolsTypes.ProfilerStore
 
-local ElementTypeRoot = require(script.Parent.Parent.Parent.Parent.types).ElementTypeRoot
-local typesModule = require(script.Parent.Parent.Parent.Parent.types)
+local ElementTypeRoot = require("../../../types").ElementTypeRoot
+local typesModule = require("../../../types")
 type ElementType = typesModule.ElementType
 
-local Profiler_typesModule = require(script.Parent.types)
+local Profiler_typesModule = require("./types")
 type CommitTree = Profiler_typesModule.CommitTree
 type CommitTreeNode = Profiler_typesModule.CommitTreeNode
 type ProfilingDataForRootFrontend = Profiler_typesModule.ProfilingDataForRootFrontend
@@ -71,6 +70,8 @@ local function __printTree(commitTree: CommitTree)
 					)
 				)
 			end
+
+			-- selene: allow(bad_string_escape)
 			console.log(
 				string.format(
 					"%s%s:%s %s (%s)",

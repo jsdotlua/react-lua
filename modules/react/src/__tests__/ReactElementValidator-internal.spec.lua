@@ -7,7 +7,7 @@
  * @emails react-core
 ]]
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
@@ -38,10 +38,10 @@ describe("ReactElementValidator", function()
 		jest.resetModules()
 
 		-- PropTypes = require("prop-types")
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
-		React = require(script.Parent.Parent)
-		ReactRoblox = require(Packages.Dev.ReactRoblox)
+		React = require(".")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 		-- ReactTestUtils = require("react-dom/test-utils")
 		ComponentClass = React.Component:extend("ComponentClass")
 		function ComponentClass:render()

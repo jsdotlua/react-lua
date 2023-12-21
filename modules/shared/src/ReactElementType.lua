@@ -7,11 +7,10 @@
  *
  * @flow
 ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
-local flowtypes = require(script.Parent["flowtypes.roblox"])
+local flowtypes = require("./flowtypes.roblox.lua")
 type React_Element<ElementType> = flowtypes.React_Element<ElementType>
 type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<
 	P

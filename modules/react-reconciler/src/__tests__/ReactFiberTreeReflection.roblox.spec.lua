@@ -1,26 +1,24 @@
-local Reconciler = script.Parent.Parent
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
-local setInstance = require(Packages.Shared).ReactInstanceMap.set
-local ReactWorkTags = require(Reconciler.ReactWorkTags)
+local setInstance = require("@pkg/@jsdotlua/shared").ReactInstanceMap.set
+local ReactWorkTags = require("../ReactWorkTags")
 local ClassComponent = ReactWorkTags.ClassComponent
 local HostRoot = ReactWorkTags.HostRoot
 local FunctionComponent = ReactWorkTags.FunctionComponent
 local SuspenseComponent = ReactWorkTags.SuspenseComponent
 
-local ReactFiberFlags = require(Reconciler.ReactFiberFlags)
+local ReactFiberFlags = require("../ReactFiberFlags")
 local NoFlags = ReactFiberFlags.NoFlags
 local Placement = ReactFiberFlags.Placement
 local Hydrating = ReactFiberFlags.Hydrating
-local ReactFiberLane = require(Reconciler.ReactFiberLane)
+local ReactFiberLane = require("../ReactFiberLane")
 
 local ReactFiberTreeReflection
 
@@ -28,7 +26,7 @@ describe("ReactFiberTreeReflection", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactFiberTreeReflection = require(Reconciler.ReactFiberTreeReflection)
+		ReactFiberTreeReflection = require("../ReactFiberTreeReflection")
 	end)
 
 	describe("getSuspenseInstanceFromFiber", function()

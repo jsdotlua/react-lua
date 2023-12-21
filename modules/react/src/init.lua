@@ -10,20 +10,19 @@
  *]]
 
 -- ROBLOX deviation: simulates `index.js` and exports React's public interface
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
-local React = require(script.React)
+local React = require("./React")
 -- ROBLOX deviation START: bindings support
 export type Binding<T> = React.ReactBinding<T>
 export type BindingUpdater<T> = React.ReactBindingUpdater<T>
 -- ROBLOX deviation END
 
-local ReactLazy = require(script.ReactLazy)
+local ReactLazy = require("./ReactLazy")
 export type LazyComponent<T, P> = ReactLazy.LazyComponent<T, P>
 
-local SharedModule = require(Packages.Shared)
+local SharedModule = require("@pkg/@jsdotlua/shared")
 export type StatelessFunctionalComponent<P> =
 	SharedModule.React_StatelessFunctionalComponent<P>
 -- ROBLOX deviation START: we use the definitely-typed version of this, which appears to work for flowtype in VirtualizedList, etc

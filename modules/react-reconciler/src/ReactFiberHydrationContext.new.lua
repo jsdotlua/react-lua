@@ -9,9 +9,8 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
 -- FIXME (roblox): remove this when our unimplemented
 local function unimplemented(message: string)
@@ -21,9 +20,9 @@ local function unimplemented(message: string)
 	error("FIXME (roblox): " .. message .. " is unimplemented", 2)
 end
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type Instance = ReactFiberHostConfig.Instance
 type TextInstance = ReactFiberHostConfig.TextInstance
 type HydratableInstance = ReactFiberHostConfig.HydratableInstance
@@ -31,23 +30,22 @@ type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
 type Container = ReactFiberHostConfig.Container
 type HostContext = ReactFiberHostConfig.HostContext
 
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local HostComponent = ReactWorkTags.HostComponent
 local HostText = ReactWorkTags.HostText
 local HostRoot = ReactWorkTags.HostRoot
 local SuspenseComponent = ReactWorkTags.SuspenseComponent
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local Placement = ReactFiberFlags.Placement
 local Hydrating = ReactFiberFlags.Hydrating
 -- local Deletion = ReactFiberFlags.Deletion
 
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 
-local ReactFiber = require(script.Parent["ReactFiber.new"])
+local ReactFiber = require("./ReactFiber.new.lua")
 -- local createFiberFromHostInstanceForDeletion = ReactFiber.createFiberFromHostInstanceForDeletion
 local createFiberFromDehydratedFragment = ReactFiber.createFiberFromDehydratedFragment
 
@@ -79,8 +77,8 @@ local shouldSetTextContent = ReactFiberHostConfig.shouldSetTextContent
 --   didNotFindHydratableSuspenseInstance,
 -- } = require(Packages../ReactFiberHostConfig'
 local enableSuspenseServerRenderer =
-	require(Packages.Shared).ReactFeatureFlags.enableSuspenseServerRenderer
-local OffscreenLane = require(script.Parent.ReactFiberLane).OffscreenLane
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableSuspenseServerRenderer
+local OffscreenLane = require("./ReactFiberLane").OffscreenLane
 
 -- The deepest Fiber on the stack involved in a hydration context.
 -- This may have been an insertion or a hydration.

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local xit = JestGlobals.xit
 local beforeEach = JestGlobals.beforeEach
@@ -30,7 +30,7 @@ local Console = {
 
 local React
 local ReactRoblox
-local utils = require(script.Parent.utils)
+local utils = require("./utils")
 
 describe("console", function()
 	local act
@@ -78,8 +78,8 @@ describe("console", function()
 			Console.registerRenderer(internals)
 		end
 
-		React = require(Packages.React)
-		ReactRoblox = require(Packages.ReactRoblox)
+		React = require("@pkg/@jsdotlua/react")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 
 		act = utils.act
 	end)

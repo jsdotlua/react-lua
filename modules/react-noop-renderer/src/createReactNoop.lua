@@ -16,8 +16,7 @@
  * environment.
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
@@ -25,20 +24,20 @@ local Object = LuauPolyfill.Object
 type Function = (...any) -> ...any
 local setTimeout = LuauPolyfill.setTimeout
 local clearTimeout = LuauPolyfill.clearTimeout
-local console = require(Packages.Shared).console
-local jest = require(Packages.JestGlobals).jest
+local console = require("@pkg/@jsdotlua/shared").console
+local jest = require("@pkg/@jsdotlua/jest-globals").jest
 
-local ReactReconciler = require(Packages.ReactReconciler)
+local ReactReconciler = require("@pkg/@jsdotlua/react-reconciler")
 type Fiber = ReactReconciler.Fiber
 type UpdateQueue<T> = ReactReconciler.UpdateQueue<T>
-local ReactShared = require(Packages.Shared)
+local ReactShared = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactShared.ReactNodeList
 type Thenable<T> = ReactShared.Thenable<T>
 type RootTag = ReactReconciler.RootTag
 
-local Scheduler = require(Packages.Scheduler)
+local Scheduler = require("@pkg/@jsdotlua/scheduler")
 -- deviation: These are only used for the JSX logic that's currently omitted
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_FRAGMENT_TYPE = ReactSymbols.REACT_FRAGMENT_TYPE
 local REACT_ELEMENT_TYPE = ReactSymbols.REACT_ELEMENT_TYPE
 
@@ -46,8 +45,8 @@ local REACT_ELEMENT_TYPE = ReactSymbols.REACT_ELEMENT_TYPE
 -- local BlockingRoot = ReactRootTags.BlockingRoot
 -- local LegacyRoot = ReactRootTags.LegacyRoot
 
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local enqueueTask = require(Packages.Shared).enqueueTask
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local enqueueTask = require("@pkg/@jsdotlua/shared").enqueueTask
 local IsSomeRendererActing = ReactSharedInternals.IsSomeRendererActing
 
 type Object = { [string]: any }

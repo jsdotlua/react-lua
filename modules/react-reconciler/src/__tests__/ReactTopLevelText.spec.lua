@@ -17,7 +17,7 @@ local Scheduler
 
 -- This is a new feature in Fiber so I put it in its own test file. It could
 -- probably move to one of the other test files once it is official.
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local it = JestGlobals.it
@@ -28,9 +28,9 @@ describe("ReactTopLevelText", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		React = require(Packages.React)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-		Scheduler = require(Packages.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 
 	it("should render a component returning strings directly from render", function()

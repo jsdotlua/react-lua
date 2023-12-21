@@ -1,6 +1,6 @@
 local Packages = script.Parent.Parent.Parent.Parent
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local expect = jestExpect
@@ -18,11 +18,11 @@ beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
 
-	React = require(Packages.React)
-	ReactRoblox = require(Packages.ReactRoblox)
+	React = require("@pkg/@jsdotlua/react")
+	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 	parent = Instance.new("Folder")
 	reactRobloxRoot = ReactRoblox.createRoot(parent)
-	Scheduler = require(Packages.Scheduler)
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 end)
 
 describe("mounting instances", function()

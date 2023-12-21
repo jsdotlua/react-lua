@@ -1,13 +1,13 @@
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
 local it = JestGlobals.it
 local jest = JestGlobals.jest
-local ReactInternalTypes = require(script.Parent.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 
 local ReactFiberComponentStack
@@ -15,7 +15,7 @@ local ReactFiberComponentStack
 describe("ReactFiberComponentStack", function()
 	beforeEach(function()
 		jest.resetModules()
-		ReactFiberComponentStack = require(script.Parent.Parent.ReactFiberComponentStack)
+		ReactFiberComponentStack = require("./ReactFiberComponentStack")
 	end)
 
 	it("given a nil fiber then it gives correct error message", function()

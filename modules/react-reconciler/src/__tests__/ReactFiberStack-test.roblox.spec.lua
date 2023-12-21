@@ -1,5 +1,5 @@
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
@@ -11,7 +11,7 @@ local ReactFiberStack
 describe("ReactFiberStack", function()
 	beforeEach(function()
 		jest.resetModules()
-		ReactFiberStack = require(script.Parent.Parent["ReactFiberStack.new"])
+		ReactFiberStack = require("./ReactFiberStack.new.lua")
 	end)
 
 	it("creates a cursor with the given default value", function()

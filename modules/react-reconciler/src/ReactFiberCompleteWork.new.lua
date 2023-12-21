@@ -15,20 +15,18 @@ local function unimplemented(message: string)
 	error("FIXME (roblox): " .. message .. " is unimplemented", 2)
 end
 
-local Packages = script.Parent.Parent
-
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
 type Lane = ReactFiberLane.Lane
 local OffscreenLane = ReactFiberLane.OffscreenLane
 -- local type {
 --   ReactFundamentalComponentInstance,
 --   ReactScopeInstance,
--- } = require(Packages.Shared).ReactTypes
--- local type {FiberRoot} = require(script.Parent.ReactInternalTypes)
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+-- } = require("@pkg/@jsdotlua/shared").ReactTypes
+-- local type {FiberRoot} = require("./ReactInternalTypes")
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type Instance = ReactFiberHostConfig.Instance
 type Type = ReactFiberHostConfig.Type
 type Props = ReactFiberHostConfig.Props
@@ -37,17 +35,17 @@ type ChildSet = ReactFiberHostConfig.ChildSet
 -- local type {
 --   SuspenseState,
 --   SuspenseListRenderState,
--- } = require(script.Parent.ReactFiberSuspenseComponent.new)
-local ReactFiberOffscreenComponent = require(script.Parent.ReactFiberOffscreenComponent)
+-- } = require("./ReactFiberSuspenseComponent/new")
+local ReactFiberOffscreenComponent = require("./ReactFiberOffscreenComponent")
 type OffscreenState = ReactFiberOffscreenComponent.OffscreenState
 
-local ReactMutableSource = require(script.Parent["ReactMutableSource.new"])
+local ReactMutableSource = require("./ReactMutableSource.new.lua")
 local resetMutableSourceWorkInProgressVersions =
 	ReactMutableSource.resetWorkInProgressVersions
 
--- local {now} = require(script.Parent.SchedulerWithReactIntegration.new)
+-- local {now} = require("./SchedulerWithReactIntegration/new")
 
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local IndeterminateComponent = ReactWorkTags.IndeterminateComponent
 local FunctionComponent = ReactWorkTags.FunctionComponent
 local ClassComponent = ReactWorkTags.ClassComponent
@@ -72,18 +70,17 @@ local ScopeComponent = ReactWorkTags.ScopeComponent
 local Block = ReactWorkTags.Block
 local OffscreenComponent = ReactWorkTags.OffscreenComponent
 local LegacyHiddenComponent = ReactWorkTags.LegacyHiddenComponent
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 type SuspenseListRenderState = ReactFiberSuspenseComponent.SuspenseState
 
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 local NoMode = ReactTypeOfMode.NoMode
 local ConcurrentMode = ReactTypeOfMode.ConcurrentMode
 local BlockingMode = ReactTypeOfMode.BlockingMode
 local ProfileMode = ReactTypeOfMode.ProfileMode
 
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local Ref = ReactFiberFlags.Ref
 local Update = ReactFiberFlags.Update
 local Callback = ReactFiberFlags.Callback
@@ -98,7 +95,7 @@ local PassiveMask = ReactFiberFlags.PassiveMask
 local StaticMask = ReactFiberFlags.StaticMask
 local PerformedWork = ReactFiberFlags.PerformedWork
 
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 
 local createInstance = ReactFiberHostConfig.createInstance
 local createTextInstance = ReactFiberHostConfig.createTextInstance
@@ -119,13 +116,13 @@ local finalizeContainerChildren = ReactFiberHostConfig.finalizeContainerChildren
 -- local shouldUpdateFundamentalComponent = ReactFiberHostConfig.shouldUpdateFundamentalComponent
 local preparePortalMount = ReactFiberHostConfig.preparePortalMount
 -- local prepareScopeUpdate = ReactFiberHostConfig.prepareScopeUpdate
-local ReactFiberHostContext = require(script.Parent["ReactFiberHostContext.new"])
+local ReactFiberHostContext = require("./ReactFiberHostContext.new.lua")
 local getRootHostContainer = ReactFiberHostContext.getRootHostContainer
 local popHostContext = ReactFiberHostContext.popHostContext
 local getHostContext = ReactFiberHostContext.getHostContext
 local popHostContainer = ReactFiberHostContext.popHostContainer
 
-local ReactFiberSuspenseContext = require(script.Parent["ReactFiberSuspenseContext.new"])
+local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
 local popSuspenseContext = ReactFiberSuspenseContext.popSuspenseContext
 local suspenseStackCursor = ReactFiberSuspenseContext.suspenseStackCursor
 local InvisibleParentSuspenseContext =
@@ -137,15 +134,14 @@ type SuspenseContext = ReactFiberSuspenseContext.SuspenseContext
 -- local ForceSuspenseFallback = ReactFiberSuspenseContext.ForceSuspenseFallback
 -- local setDefaultShallowSuspenseContext = ReactFiberSuspenseContext.setDefaultShallowSuspenseContext
 
--- local {findFirstSuspended} = require(script.Parent.ReactFiberSuspenseComponent.new)
-local ReactFiberContext = require(script.Parent["ReactFiberContext.new"])
+-- local {findFirstSuspended} = require("./ReactFiberSuspenseComponent/new")
+local ReactFiberContext = require("./ReactFiberContext.new.lua")
 local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local popLegacyContext = ReactFiberContext.popContext
 local popTopLevelLegacyContextObject = ReactFiberContext.popTopLevelContextObject
-local popProvider = require(script.Parent["ReactFiberNewContext.new"]).popProvider
+local popProvider = require("./ReactFiberNewContext.new.lua").popProvider
 
-local ReactFiberHydrationContext =
-	require(script.Parent["ReactFiberHydrationContext.new"])
+local ReactFiberHydrationContext = require("./ReactFiberHydrationContext.new.lua")
 local prepareToHydrateHostSuspenseInstance =
 	ReactFiberHydrationContext.prepareToHydrateHostSuspenseInstance
 local popHydrationState = ReactFiberHydrationContext.popHydrationState
@@ -155,7 +151,7 @@ local prepareToHydrateHostInstance =
 	ReactFiberHydrationContext.prepareToHydrateHostInstance
 local prepareToHydrateHostTextInstance =
 	ReactFiberHydrationContext.prepareToHydrateHostTextInstance
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 local enableSuspenseCallback = ReactFeatureFlags.enableSuspenseCallback
 local enableSuspenseServerRenderer = ReactFeatureFlags.enableSuspenseServerRenderer
@@ -163,7 +159,7 @@ local enableFundamentalAPI = ReactFeatureFlags.enableFundamentalAPI
 -- local enableScopeAPI = ReactFeatureFlags.enableScopeAPI
 local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 
-local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
+local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
 
 local popRenderLanes = ReactFiberWorkLoop.popRenderLanes
 -- ROBLOX deviation: this is a live value in WorkLoop's module state, so it must be accessed directly and not 'cached'
@@ -174,16 +170,16 @@ local renderDidSuspendDelayIfPossible = ReactFiberWorkLoop.renderDidSuspendDelay
 -- local renderHasNotSuspendedYet = ReactFiberWorkLoop.renderHasNotSuspendedYet
 -- local getRenderTargetTime = ReactFiberWorkLoop.getRenderTargetTime
 
--- local {createFundamentalStateInstance} = require(script.Parent.ReactFiberFundamental.new)
+-- local {createFundamentalStateInstance} = require("./ReactFiberFundamental/new")
 
 -- local OffscreenLane = ReactFiberLane.OffscreenLane
 -- local SomeRetryLane = ReactFiberLane.SomeRetryLane
 local NoLanes = ReactFiberLane.NoLanes
 local includesSomeLane = ReactFiberLane.includesSomeLane
 local mergeLanes = ReactFiberLane.mergeLanes
--- local {resetChildFibers} = require(script.Parent.ReactChildFiber.new)
--- local {createScopeInstance} = require(script.Parent.ReactFiberScope.new)
-local ReactProfilerTimer = require(script.Parent["ReactProfilerTimer.new"])
+-- local {resetChildFibers} = require("./ReactChildFiber/new")
+-- local {createScopeInstance} = require("./ReactFiberScope/new")
+local ReactProfilerTimer = require("./ReactProfilerTimer.new.lua")
 local transferActualDuration = ReactProfilerTimer.transferActualDuration
 
 local function markUpdate(workInProgress: Fiber)

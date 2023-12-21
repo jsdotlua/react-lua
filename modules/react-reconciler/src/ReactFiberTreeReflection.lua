@@ -9,25 +9,23 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type Container = ReactFiberHostConfig.Container
 type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 
-local getInstance = require(Packages.Shared).ReactInstanceMap.get
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local getComponentName = require(Packages.Shared).getComponentName
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local getInstance = require("@pkg/@jsdotlua/shared").ReactInstanceMap.get
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local ReactWorkTags = require("./ReactWorkTags")
 local ClassComponent = ReactWorkTags.ClassComponent
 local HostComponent = ReactWorkTags.HostComponent
 local HostRoot = ReactWorkTags.HostRoot
@@ -35,12 +33,12 @@ local HostPortal = ReactWorkTags.HostPortal
 local HostText = ReactWorkTags.HostText
 local FundamentalComponent = ReactWorkTags.FundamentalComponent
 local SuspenseComponent = ReactWorkTags.SuspenseComponent
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local NoFlags = ReactFiberFlags.NoFlags
 local Placement = ReactFiberFlags.Placement
 local Hydrating = ReactFiberFlags.Hydrating
 local enableFundamentalAPI =
-	require(Packages.Shared).ReactFeatureFlags.enableFundamentalAPI
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableFundamentalAPI
 
 local ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner
 

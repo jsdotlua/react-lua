@@ -9,15 +9,14 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Function = (...any) -> ...any
 type Error = LuauPolyfill.Error
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local HostComponent = ReactWorkTags.HostComponent
 local LazyComponent = ReactWorkTags.LazyComponent
 local SuspenseComponent = ReactWorkTags.SuspenseComponent
@@ -28,7 +27,7 @@ local ForwardRef = ReactWorkTags.ForwardRef
 local SimpleMemoComponent = ReactWorkTags.SimpleMemoComponent
 local ClassComponent = ReactWorkTags.ClassComponent
 
-local ReactComponentStackFrame = require(Packages.Shared).ReactComponentStackFrame
+local ReactComponentStackFrame = require("@pkg/@jsdotlua/shared").ReactComponentStackFrame
 local describeBuiltInComponentFrame =
 	ReactComponentStackFrame.describeBuiltInComponentFrame
 local describeFunctionComponentFrame =

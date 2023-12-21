@@ -18,8 +18,7 @@
  * The invariant message will be stripped in production, but the invariant
  * will remain to ensure logic does not differ in production.
 ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
 local function invariant(condition, format, ...)

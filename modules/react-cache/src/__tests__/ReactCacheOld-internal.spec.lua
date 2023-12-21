@@ -7,8 +7,7 @@
  *
  * @emails react-core
  ]]
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: unused imports
 -- local Array = LuauPolyfill.Array
 -- local Boolean = LuauPolyfill.Boolean
@@ -18,11 +17,8 @@ local LuauPolyfill = require(Packages.LuauPolyfill)
 type Error = LuauPolyfill.Error
 -- ROBLOX deviation END
 local setTimeout = LuauPolyfill.setTimeout
--- ROBLOX deviation START: import promise from dev dependencies
--- local Promise = require(Packages.Promise)
-local Promise = require(Packages.Dev.Promise)
--- ROBLOX deviation END
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local Promise = require("@pkg/@jsdotlua/promise")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -46,24 +42,24 @@ describe("ReactCache", function()
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: fix require
 		-- ReactFeatureFlags = require_("shared/ReactFeatureFlags")
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		-- ROBLOX deviation END
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
 		-- ROBLOX deviation START: fix require
 		-- React = require_("react")
-		React = require(Packages.React)
+		React = require("@pkg/@jsdotlua/react")
 		-- ROBLOX deviation END
 		Suspense = React.Suspense
 		-- ROBLOX deviation START: fix require
 		-- ReactCache = require_("react-cache")
-		ReactCache = require(script.Parent.Parent)
+		ReactCache = require(".")
 		-- ROBLOX deviation END
 		createResource = ReactCache.unstable_createResource
 		-- ROBLOX deviation START: fix requires
 		-- ReactTestRenderer = require_("react-test-renderer")
 		-- Scheduler = require_("scheduler")
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
-		Scheduler = require(Packages.Scheduler)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: explicit type
 		-- TextResource = createResource(function(ref0)

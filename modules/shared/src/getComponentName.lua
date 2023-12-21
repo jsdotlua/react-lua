@@ -9,7 +9,7 @@
 * @flow
 ]]
 type Function = (...any) -> ...any
-local console = require(script.Parent.console)
+local console = require("./console")
 
 -- ROBLOX deviation: inline this typedef to avoid upstream's circular dependency
 type LazyComponent<T, P> = {
@@ -18,7 +18,7 @@ type LazyComponent<T, P> = {
 	_init: (payload: P) -> T,
 }
 
-local ReactSymbols = require(script.Parent.ReactSymbols)
+local ReactSymbols = require("./ReactSymbols")
 local REACT_CONTEXT_TYPE = ReactSymbols.REACT_CONTEXT_TYPE
 local REACT_FORWARD_REF_TYPE = ReactSymbols.REACT_FORWARD_REF_TYPE
 local REACT_FRAGMENT_TYPE = ReactSymbols.REACT_FRAGMENT_TYPE
@@ -31,11 +31,11 @@ local REACT_SUSPENSE_TYPE = ReactSymbols.REACT_SUSPENSE_TYPE
 local REACT_SUSPENSE_LIST_TYPE = ReactSymbols.REACT_SUSPENSE_LIST_TYPE
 local REACT_LAZY_TYPE = ReactSymbols.REACT_LAZY_TYPE
 local REACT_BLOCK_TYPE = ReactSymbols.REACT_BLOCK_TYPE
-local ReactTypes = require(script.Parent.ReactTypes)
+local ReactTypes = require("./ReactTypes")
 type ReactContext<T> = ReactTypes.ReactContext<T>
 type ReactProviderType<T> = ReactTypes.ReactProviderType<T>
 
-local describeError = require(script.Parent["ErrorHandling.roblox"]).describeError
+local describeError = require("./ErrorHandling.roblox.lua").describeError
 
 local function getWrappedName(outerType: any, innerType: any, wrapperName: string): string
 	-- deviation: Account for indexing into function

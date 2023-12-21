@@ -7,9 +7,7 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 -- ROBLOX deviation: Use HttpService for JSON
@@ -17,9 +15,9 @@ local JSON = game:GetService("HttpService")
 
 local exports = {}
 
-local ViewsComponentsTypes = require(script.Parent.views.Components.types)
+local ViewsComponentsTypes = require("./views/Components/types")
 type Element = ViewsComponentsTypes.Element
-local devtoolsTypes = require(script.Parent.types)
+local devtoolsTypes = require("./types")
 type Store = devtoolsTypes.Store
 
 exports.printElement = function(element: Element, includeWeight: boolean?)

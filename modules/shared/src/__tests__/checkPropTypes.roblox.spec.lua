@@ -3,22 +3,22 @@ local React
 
 local ReactNoop
 local Scheduler
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local afterEach = JestGlobals.afterEach
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local jest = JestGlobals.jest
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
 describe("tests propTypes and validateProps behavior", function()
 	beforeEach(function()
 		jest.resetModules()
-		ReactNoop = require(Packages.Dev.ReactNoop)
-		Scheduler = require(Packages.Dev.Scheduler)
-		React = require(Packages.Dev.React)
+		ReactNoop = require("@dev-packages/ReactNoop")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
+		React = require("@pkg/@jsdotlua/react")
 	end)
 	it("propTypes defined, returns error", function()
 		local Foo = React.Component:extend("div")

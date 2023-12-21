@@ -10,17 +10,17 @@
 --  */
 
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local React
 local ReactNoop
 local Scheduler
 local PropTypes
 local HttpService = game:GetService("HttpService")
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
@@ -53,9 +53,9 @@ describe("ReactIncremental", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		React = require(Packages.React)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-		Scheduler = require(Packages.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 
 	-- Note: This is based on a similar component we use in www. We can delete

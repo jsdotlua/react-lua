@@ -16,7 +16,7 @@
 
 local Packages = script.Parent.Parent.Parent
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -29,10 +29,10 @@ local Scheduler
 
 beforeEach(function()
 	jest.resetModules()
-	RoactCompat = require(script.Parent.Parent)
-	ReactRoblox = require(Packages.ReactRoblox)
-	Scheduler = require(Packages.Dev.Scheduler)
-	React = require(Packages.React)
+	RoactCompat = require(".")
+	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
+	React = require("@pkg/@jsdotlua/react")
 end)
 
 describe("pcall depth", function()

@@ -9,11 +9,11 @@ local HttpService = game:GetService("HttpService")
 ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Number = LuauPolyfill.Number
 local Object = LuauPolyfill.Object
@@ -21,13 +21,13 @@ type Function = (...any) -> any?
 local global = _G
 local exports = {}
 
-local Bridge = require(script.Parent.Parent.bridge)
+local Bridge = require("./bridge")
 type FrontendBridge = Bridge.FrontendBridge
-local devtoolsTypes = require(script.Parent.Parent.devtools.types)
+local devtoolsTypes = require("./devtools/types")
 type Store = devtoolsTypes.Store
-local ProfilerTypes = require(script.Parent.Parent.devtools.views.Profiler.types)
+local ProfilerTypes = require("./devtools/views/Profiler/types")
 type ProfilingDataFrontend = ProfilerTypes.ProfilingDataFrontend
-local Types = require(script.Parent.Parent.types)
+local Types = require("./types")
 type ElementType = Types.ElementType
 
 exports.act = function(callback: () -> ()): ()
@@ -35,9 +35,9 @@ exports.act = function(callback: () -> ()): ()
 	-- one another right now. All of the ported tests in this package are
 	-- using only the ReactRoblox renderer, so we only wrap with it directly
 
-	-- local actTestRenderer = require(Packages.Dev.ReactTestRenderer).act
+	-- local actTestRenderer = require("@pkg/@jsdotlua/react-test-renderer").act
 
-	local actDOM = require(Packages.ReactRoblox).act
+	local actDOM = require("@pkg/@jsdotlua/react-roblox").act
 
 	actDOM(function()
 		-- actTestRenderer(function()
@@ -62,9 +62,9 @@ exports.actAsync = function(cb: () -> any, recursivelyFlush: boolean?)
 	-- ROBLOX deviation: TestRenderer and RobloxRenderer do not play nice with
 	-- one another right now. All of the ported tests in this package are
 	-- using only the ReactRoblox renderer, so we only wrap with it directly
-	-- local actTestRenderer = require(Packages.Dev.ReactTestRenderer).act
+	-- local actTestRenderer = require("@pkg/@jsdotlua/react-test-renderer").act
 
-	local actDOM = require(Packages.ReactRoblox).act
+	local actDOM = require("@pkg/@jsdotlua/react-roblox").act
 
 	if recursivelyFlush then
 		while jest.getTimerCount() > 0 do
@@ -96,7 +96,7 @@ exports.beforeEachProfiling = function(): ()
 	-- ROBLOX deviation: os.clock not performance
 	-- ROBLOX TODO: Can you actually spy on os.clock?
 	-- ROBLOX deviation BEGIN: We need to do slightly more targeted mocking until
-	local Scheduler = require(Packages.Dev.Scheduler)
+	local Scheduler = require("@pkg/@jsdotlua/scheduler")
 	jest.mockOsClock(Scheduler.unstable_now)
 	-- jest.spyOn(os, "clock").mockImplementation(
 	-- 	jest.requireActual("scheduler/unstable_mock").unstable_now
@@ -184,7 +184,7 @@ exports.requireTestRenderer = function(): any
 	global.__REACT_DEVTOOLS_GLOBAL_HOOK__ = nil
 
 	local success, module = pcall(function()
-		return require(Packages.Dev.ReactTestRenderer)
+		return require("@pkg/@jsdotlua/react-test-renderer")
 	end)
 
 	global.__REACT_DEVTOOLS_GLOBAL_HOOK__ = hook
@@ -198,7 +198,7 @@ exports.requireTestRenderer = function(): any
 end
 
 exports.exportImportHelper = function(bridge: FrontendBridge, store: Store): ()
-	local utils = require(script.Parent.Parent.devtools.views.Profiler.utils)
+	local utils = require("./devtools/views/Profiler/utils")
 	local prepareProfilingDataExport = utils.prepareProfilingDataExport
 	local prepareProfilingDataFrontendFromExport =
 		utils.prepareProfilingDataFrontendFromExport

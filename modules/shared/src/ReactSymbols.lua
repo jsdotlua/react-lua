@@ -13,8 +13,7 @@
 -- When adding new symbols to this file,
 -- Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
 
--- local Packages = script.Parent.Parent
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Symbol = LuauPolyfill.Symbol
 
 local exports: { [string]: any } = {}

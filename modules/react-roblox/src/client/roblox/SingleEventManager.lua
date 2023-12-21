@@ -18,9 +18,7 @@
 	A manager for a single host virtual node's connected events.
 ]]
 
-local Packages = script.Parent.Parent.Parent.Parent
-
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 type Function = (...any) -> ...any
 
 local CHANGE_PREFIX = "Change."

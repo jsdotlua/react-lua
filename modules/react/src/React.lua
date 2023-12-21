@@ -9,35 +9,33 @@
  * @flow
  *]]
 
-local React = script.Parent
-local Packages = React.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
-local createMutableSource = require(React.ReactMutableSource)
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local ReactBaseClasses = require(React.ReactBaseClasses)
-local ReactChildren = require(React.ReactChildren)
-local ReactElementValidator = require(React.ReactElementValidator)
-local ReactElement = require(React.ReactElement)
-local ReactCreateRef = require(React.ReactCreateRef)
-local ReactForwardRef = require(React.ReactForwardRef)
-local ReactHooks = require(React.ReactHooks)
-local ReactMemo = require(React.ReactMemo)
-local ReactContext = require(React.ReactContext)
-local ReactLazy = require(React.ReactLazy)
+local createMutableSource = require("./ReactMutableSource")
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local ReactBaseClasses = require("./ReactBaseClasses")
+local ReactChildren = require("./ReactChildren")
+local ReactElementValidator = require("./ReactElementValidator")
+local ReactElement = require("./ReactElement")
+local ReactCreateRef = require("./ReactCreateRef")
+local ReactForwardRef = require("./ReactForwardRef")
+local ReactHooks = require("./ReactHooks")
+local ReactMemo = require("./ReactMemo")
+local ReactContext = require("./ReactContext")
+local ReactLazy = require("./ReactLazy")
 type LazyComponent<T, P> = ReactLazy.LazyComponent<T, P>
 
 -- ROBLOX DEVIATION: Bindings
-local ReactBinding = require(React["ReactBinding.roblox"])
+local ReactBinding = require("./ReactBinding.roblox.lua")
 -- ROBLOX DEVIATION: Re-export `None` marker
-local ReactNone = require(React["None.roblox"])
+local ReactNone = require("./None.roblox.lua")
 
-local SharedModule = require(Packages.Shared)
+local SharedModule = require("@pkg/@jsdotlua/shared")
 local ReactSymbols = SharedModule.ReactSymbols
 
 local shouldValidate = _G.__DEV__ or _G.__DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 export type React_StatelessFunctionalComponent<P> =
 	ReactTypes.React_StatelessFunctionalComponent<P>
 export type React_ComponentType<P> = ReactTypes.React_ComponentType<P>
@@ -144,12 +142,12 @@ return {
 	__subscribeToBinding = ReactBinding.subscribe,
 
 	-- ROBLOX DEVIATION: export Change, Event, and Tag from React
-	Event = require(Packages.Shared).Event,
-	Change = require(Packages.Shared).Change,
-	Tag = require(Packages.Shared).Tag,
+	Event = require("@pkg/@jsdotlua/shared").Event,
+	Change = require("@pkg/@jsdotlua/shared").Change,
+	Tag = require("@pkg/@jsdotlua/shared").Tag,
 
 	-- ROBLOX DEVIATION: used by error reporters to parse caught errors. React
 	-- stringifies at its boundaries to maintain compatibility with
 	-- ScriptContext signals that may ultimately catch them
-	unstable_parseReactError = require(Packages.Shared).parseReactError,
+	unstable_parseReactError = require("@pkg/@jsdotlua/shared").parseReactError,
 }

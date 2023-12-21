@@ -7,13 +7,12 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 local exports = {}
 -- ROBLOX deviation START: fix import
--- local Scheduler = require(Packages.scheduler) -- Intentionally not named imports because Rollup would
-local Scheduler = require(Packages.Scheduler)
+-- local Scheduler = require("@pkg/@jsdotlua/scheduler") -- Intentionally not named imports because Rollup would
+local Scheduler = require("@pkg/@jsdotlua/scheduler")
 -- ROBLOX deviation END
 -- use dynamic dispatch for CommonJS interop named imports.
 local scheduleCallback, IdlePriority =

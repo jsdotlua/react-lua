@@ -1,14 +1,12 @@
-local Packages = script.Parent.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local inspect = LuauPolyfill.util.inspect
-local ErrorHandling = require(script.Parent.Parent["ErrorHandling.roblox"])
+local ErrorHandling = require("../ErrorHandling.roblox.lua")
 local describeError = ErrorHandling.describeError
 local errorToString = ErrorHandling.errorToString
 local parseReactError = ErrorHandling.parseReactError
@@ -97,6 +95,7 @@ describe("errorToString", function()
 		jestExpect(errorString).toContain("31337")
 	end)
 	it("prints arrays", function()
+		-- selene: allow(mixed_table)
 		local errorString = errorToString({ foo = 1, 2, 3 })
 
 		jestExpect(errorString).toContain("foo: 1")

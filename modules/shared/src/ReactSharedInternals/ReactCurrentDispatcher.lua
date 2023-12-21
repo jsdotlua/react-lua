@@ -12,14 +12,13 @@
 --[[*
  * Keeps track of the current dispatcher.
 ]]
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 
 -- ROBLOX deviation: we duplicate the Dispatcher type here because upstream has a circular dependency between Shared and Reconciler
-local ReactElementType = require(script.Parent.Parent.ReactElementType)
+local ReactElementType = require("../ReactElementType")
 type Source = ReactElementType.Source
-local ReactTypes = require(script.Parent.Parent.ReactTypes)
+local ReactTypes = require("../ReactTypes")
 type RefObject = ReactTypes.RefObject
 type ReactContext<T> = ReactTypes.ReactContext<T>
 -- ROBLOX deviation START: binding support

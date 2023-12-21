@@ -9,34 +9,33 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Number = LuauPolyfill.Number
 local Error = LuauPolyfill.Error
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactContext<T> = ReactTypes.ReactContext<T>
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type ContextDependency<T> = ReactInternalTypes.ContextDependency<T>
 
-local ReactFiberStack = require(script.Parent["ReactFiberStack.new"])
+local ReactFiberStack = require("./ReactFiberStack.new.lua")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
-local ReactUpdateQueue = require(script.Parent["ReactUpdateQueue.new"])
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
 type SharedQueue<T> = ReactUpdateQueue.SharedQueue<T>
 
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 local isPrimaryRenderer = ReactFiberHostConfig.isPrimaryRenderer
 local createCursor = ReactFiberStack.createCursor
 local push = ReactFiberStack.push
 local pop = ReactFiberStack.pop
-local MAX_SIGNED_31_BIT_INT = require(script.Parent.MaxInts).MAX_SIGNED_31_BIT_INT
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local MAX_SIGNED_31_BIT_INT = require("./MaxInts").MAX_SIGNED_31_BIT_INT
+local ReactWorkTags = require("./ReactWorkTags")
 local ContextProvider = ReactWorkTags.ContextProvider
 local ClassComponent = ReactWorkTags.ClassComponent
 -- local DehydratedFragment = ReactWorkTags.DehydratedFragment
@@ -47,12 +46,12 @@ local includesSomeLane = ReactFiberLane.includesSomeLane
 local mergeLanes = ReactFiberLane.mergeLanes
 local pickArbitraryLane = ReactFiberLane.pickArbitraryLane
 
-local is = require(Packages.Shared).objectIs
+local is = require("@pkg/@jsdotlua/shared").objectIs
 local createUpdate = ReactUpdateQueue.createUpdate
 local ForceUpdate = ReactUpdateQueue.ForceUpdate
 -- deviation: passed in as an arg to eliminate cycle
--- local markWorkInProgressReceivedUpdate = require(script.Parent["ReactFiberBeginWork.new"]).markWorkInProgressReceivedUpdate
--- local enableSuspenseServerRenderer = require(Packages.Shared).ReactFeatureFlags.enableSuspenseServerRenderer
+-- local markWorkInProgressReceivedUpdate = require("./ReactFiberBeginWork.new.lua").markWorkInProgressReceivedUpdate
+-- local enableSuspenseServerRenderer = require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableSuspenseServerRenderer
 
 local exports = {}
 

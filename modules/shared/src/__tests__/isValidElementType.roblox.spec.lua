@@ -1,11 +1,11 @@
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local isValidElementType = require(Packages.Shared).isValidElementType
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local isValidElementType = require("@pkg/@jsdotlua/shared").isValidElementType
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local element
 
 describe("accept element primitives", function()

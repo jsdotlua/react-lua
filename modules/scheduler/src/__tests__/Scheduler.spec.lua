@@ -9,9 +9,9 @@
 ]]
 
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -53,7 +53,7 @@ beforeEach(function()
 	-- unstable_mock depends on the real Scheduler, and our mock
 	-- functionality isn't smart enough to prevent self-requires, we simply
 	-- require the mock entry point directly for use in tests
-	Scheduler = require(script.Parent.Parent.unstable_mock)
+	Scheduler = require("./unstable_mock")
 
 	runWithPriority = Scheduler.unstable_runWithPriority
 	ImmediatePriority = Scheduler.unstable_ImmediatePriority

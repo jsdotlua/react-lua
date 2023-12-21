@@ -9,76 +9,74 @@
 ]]
 
 local __DEV__ = _G.__DEV__ :: boolean
-local Packages = script.Parent.Parent
-local flowtypes = require(Packages.Shared)
+local flowtypes = require("@pkg/@jsdotlua/shared")
 type React_Component<Props, State> = flowtypes.React_Component<Props, State>
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 type Function = (...any) -> ...any
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
 type Object = { [string]: any }
 type Array<T> = { [number]: T }
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type SuspenseHydrationCallbacks = ReactInternalTypes.SuspenseHydrationCallbacks
 type FiberRoot = ReactInternalTypes.FiberRoot
 
-local ReactRootTags = require(script.Parent.ReactRootTags)
+local ReactRootTags = require("./ReactRootTags")
 type RootTag = ReactRootTags.RootTag
 
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type Instance = ReactFiberHostConfig.Instance
 type TextInstance = ReactFiberHostConfig.TextInstance
 type Container = ReactFiberHostConfig.Container
 type PublicInstance = ReactFiberHostConfig.PublicInstance
 type RendererInspectionConfig = ReactFiberHostConfig.RendererInspectionConfig
 
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local FundamentalComponent = ReactWorkTags.FundamentalComponent
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
 
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lane = ReactFiberLane.Lane
 type LanePriority = ReactFiberLane.LanePriority
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
-local ReactFiberTreeReflection = require(script.Parent.ReactFiberTreeReflection)
+local ReactFiberTreeReflection = require("./ReactFiberTreeReflection")
 local findCurrentHostFiber = ReactFiberTreeReflection.findCurrentHostFiber
 local findCurrentHostFiberWithNoPortals =
 	ReactFiberTreeReflection.findCurrentHostFiberWithNoPortals
-local getInstance = require(Packages.Shared).ReactInstanceMap.get
+local getInstance = require("@pkg/@jsdotlua/shared").ReactInstanceMap.get
 local HostComponent = ReactWorkTags.HostComponent
 local ClassComponent = ReactWorkTags.ClassComponent
 local HostRoot = ReactWorkTags.HostRoot
 local SuspenseComponent = ReactWorkTags.SuspenseComponent
-local getComponentName = require(Packages.Shared).getComponentName
-local invariant = require(Packages.Shared).invariant
-local describeError = require(Packages.Shared).describeError
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local describeError = require("@pkg/@jsdotlua/shared").describeError
 local enableSchedulingProfiler =
-	require(Packages.Shared).ReactFeatureFlags.enableSchedulingProfiler
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local getPublicInstance = require(script.Parent.ReactFiberHostConfig).getPublicInstance
-local ReactFiberContext = require(script.Parent["ReactFiberContext.new"])
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableSchedulingProfiler
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local getPublicInstance = require("./ReactFiberHostConfig").getPublicInstance
+local ReactFiberContext = require("./ReactFiberContext.new.lua")
 local findCurrentUnmaskedContext = ReactFiberContext.findCurrentUnmaskedContext
 local processChildContext = ReactFiberContext.processChildContext
 local emptyContextObject = ReactFiberContext.emptyContextObject
 local isLegacyContextProvider = ReactFiberContext.isContextProvider
-local ReactFiberRoot = require(script.Parent["ReactFiberRoot.new"])
+local ReactFiberRoot = require("./ReactFiberRoot.new.lua")
 local createFiberRoot = ReactFiberRoot.createFiberRoot
-local ReactFiberDevToolsHook = require(script.Parent["ReactFiberDevToolsHook.new"])
+local ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.lua")
 local injectInternals = ReactFiberDevToolsHook.injectInternals
 local onScheduleRoot = ReactFiberDevToolsHook.onScheduleRoot
-local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
+local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
 local requestEventTime = ReactFiberWorkLoop.requestEventTime
 local requestUpdateLane = ReactFiberWorkLoop.requestUpdateLane
 local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber
@@ -96,16 +94,16 @@ local warnIfNotScopedWithMatchingAct = ReactFiberWorkLoop.warnIfNotScopedWithMat
 local warnIfUnmockedScheduler = ReactFiberWorkLoop.warnIfUnmockedScheduler
 local IsThisRendererActing = ReactFiberWorkLoop.IsThisRendererActing
 local act = ReactFiberWorkLoop.act :: (() -> ()) -> ()
-local ReactUpdateQueue = require(script.Parent["ReactUpdateQueue.new"])
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
 local createUpdate = ReactUpdateQueue.createUpdate
 local enqueueUpdate = ReactUpdateQueue.enqueueUpdate
-local ReactCurrentFiber = require(script.Parent.ReactCurrentFiber)
+local ReactCurrentFiber = require("./ReactCurrentFiber")
 local ReactCurrentFiberIsRendering = ReactCurrentFiber.isRendering
 -- deviation: this property would be captured as values instead of bound
 -- local ReactCurrentFiber.current = ReactCurrentFiber.current
 local resetCurrentDebugFiberInDEV = ReactCurrentFiber.resetCurrentFiber
 local setCurrentDebugFiberInDEV = ReactCurrentFiber.setCurrentFiber
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 local StrictMode = ReactTypeOfMode.StrictMode
 local SyncLane = ReactFiberLane.SyncLane
 local InputDiscreteHydrationLane = ReactFiberLane.InputDiscreteHydrationLane
@@ -115,12 +113,12 @@ local getHighestPriorityPendingLanes = ReactFiberLane.getHighestPriorityPendingL
 local higherPriorityLane = ReactFiberLane.higherPriorityLane
 local getCurrentUpdateLanePriority = ReactFiberLane.getCurrentUpdateLanePriority
 local setCurrentUpdateLanePriority = ReactFiberLane.setCurrentUpdateLanePriority
--- local ReactFiberHotReloading = require(script.Parent["ReactFiberHotReloading.new"])
+-- local ReactFiberHotReloading = require("./ReactFiberHotReloading.new.lua")
 -- local scheduleRefresh = ReactFiberHotReloading.scheduleRefresh
 -- local scheduleRoot = ReactFiberHotReloading.scheduleRoot
 -- local setRefreshHandler = ReactFiberHotReloading.setRefreshHandler
 -- local findHostInstancesForRefresh = ReactFiberHotReloading.findHostInstancesForRefresh
-local markRenderScheduled = require(script.Parent.SchedulingProfiler).markRenderScheduled
+local markRenderScheduled = require("./SchedulingProfiler").markRenderScheduled
 
 local exports = {}
 
@@ -136,9 +134,9 @@ exports.getNearestMountedFiber = ReactFiberTreeReflection.getNearestMountedFiber
 exports.findCurrentFiberUsingSlowPath =
 	ReactFiberTreeReflection.findCurrentFiberUsingSlowPath
 
--- exports.registerMutableSourceForHydration = require(script.Parent["ReactMutableSource.new"]).registerMutableSourceForHydration
-exports.createPortal = require(script.Parent.ReactPortal).createPortal
--- local ReactTestSelectors = require(script.Parent.ReactTestSelectors)
+-- exports.registerMutableSourceForHydration = require("./ReactMutableSource.new.lua").registerMutableSourceForHydration
+exports.createPortal = require("./ReactPortal").createPortal
+-- local ReactTestSelectors = require("./ReactTestSelectors")
 -- exports.createComponentSelector = ReactTestSelectors.createComponentSelector
 -- ROBLOX FIXME: Should we deviate and fix this typo?
 -- exports.createHasPsuedoClassSelector = ReactTestSelectors.createHasPsuedoClassSelector

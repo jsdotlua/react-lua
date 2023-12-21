@@ -8,11 +8,11 @@ local lazy
 
 local Packages = script.Parent.Parent.Parent
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local setTimeout = LuauPolyfill.setTimeout
-local Promise = require(Packages.Promise)
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local Promise = require("@pkg/@jsdotlua/promise")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
@@ -38,14 +38,14 @@ describe("ReactLazy", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
 		-- PropTypes = require('prop-types');
-		React = require(Packages.React)
+		React = require("@pkg/@jsdotlua/react")
 		Suspense = React.Suspense
 		lazy = React.lazy
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
-		Scheduler = require(Packages.Scheduler)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 
 	-- local verifyInnerPropTypesAreChecked = _async(function(Add)

@@ -1,0 +1,26 @@
+{
+  "name": "@jsdotlua/react-devtools-shared",
+  "version": "17.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/react-lua.git",
+    "directory": "modules/react-devtools-shared"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/luau-polyfill": "^1.2.6",
+    "@jsdotlua/react": "workspace:^",
+    "@jsdotlua/react-debug-tools": "workspace:^",
+    "@jsdotlua/react-is": "workspace:^",
+    "@jsdotlua/react-reconciler": "workspace:^",
+    "@jsdotlua/react-roblox": "workspace:^",
+    "@jsdotlua/shared": "workspace:^"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.0"
+  }
+}

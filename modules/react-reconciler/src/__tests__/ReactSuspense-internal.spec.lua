@@ -20,7 +20,7 @@ local TextResource
 local textResourceShouldFail
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
@@ -29,9 +29,9 @@ local xit = JestGlobals.xit
 local describe = JestGlobals.describe
 local jest = JestGlobals.jest
 
-local jestMock = require(Packages.Dev.JestGlobals).jest
-local Promise = require(Packages.Promise)
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local jestMock = require("@pkg/@jsdotlua/jest-globals").jest
+local Promise = require("@pkg/@jsdotlua/promise")
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local setTimeout = LuauPolyfill.setTimeout
 local Error = LuauPolyfill.Error
 -- Additional tests can be found in ReactSuspenseWithNoopRenderer. Plan is
@@ -46,15 +46,15 @@ describe("ReactSuspense", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
 		ReactFeatureFlags.enableSchedulerTracing = true
-		React = require(Packages.React)
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
+		React = require("@pkg/@jsdotlua/react")
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 		_act = ReactTestRenderer.unstable_concurrentAct
-		Scheduler = require(Packages.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		SchedulerTracing = Scheduler.tracing
-		ReactCache = require(Packages.Dev.ReactCache)
+		ReactCache = require("@pkg/@jsdotlua/react-cache")
 		Suspense = React.Suspense
 		TextResource = ReactCache.unstable_createResource(function(input)
 			local text, ms = input[1], (input[2] or 0)

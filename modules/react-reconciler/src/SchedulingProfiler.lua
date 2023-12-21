@@ -10,25 +10,24 @@
 --  */
 
 local exports = {}
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local WeakMap = LuauPolyfill.WeakMap
 type WeakMap<K, V> = LuauPolyfill.WeakMap<K, V>
 
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lane = ReactFiberLane.Lane
 type Lanes = ReactFiberLane.Lanes
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Wakeable = ReactTypes.Wakeable
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSchedulingProfiler = ReactFeatureFlags.enableSchedulingProfiler
-local ReactVersion = require(Packages.Shared).ReactVersion
-local getComponentName = require(Packages.Shared).getComponentName
+local ReactVersion = require("@pkg/@jsdotlua/shared").ReactVersion
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 
 -- /**
 --  * If performance exists and supports the subset of the User Timing API that we

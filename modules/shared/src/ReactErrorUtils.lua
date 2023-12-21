@@ -8,8 +8,8 @@
  *
  * @flow
 ]]
-local invariant = require(script.Parent.invariant)
-local invokeGuardedCallbackImpl = require(script.Parent.invokeGuardedCallbackImpl)
+local invariant = require("./invariant")
+local invokeGuardedCallbackImpl = require("./invokeGuardedCallbackImpl")
 
 -- deviation: preemptively declare function
 local clearCaughtError

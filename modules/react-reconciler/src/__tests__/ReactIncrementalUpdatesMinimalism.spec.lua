@@ -12,7 +12,7 @@
 local React
 local ReactNoop
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -22,8 +22,8 @@ local it = JestGlobals.it
 describe("ReactIncrementalUpdatesMinimalism", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(Packages.React)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		React = require("@pkg/@jsdotlua/react")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 	end)
 	it("should render a simple component", function()
 		local function Child()

@@ -1,9 +1,9 @@
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local Heap = require(script.Parent.Parent.SchedulerMinHeap)
+local Heap = require("./SchedulerMinHeap")
 
 local function verifyOrder(heap)
 	for pos = 2, #heap do

@@ -10,14 +10,13 @@
 -- ROBLOX deviation: return an initializer function instead of the module itself
 -- for easier dependency injection with unstable_mock
 return function(hostConfig)
-	local Packages = script.Parent.Parent
-	local describeError = require(Packages.Shared).describeError
+	local describeError = require("@pkg/@jsdotlua/shared").describeError
 
-	local SchedulerFeatureFlags = require(script.Parent.SchedulerFeatureFlags)
+	local SchedulerFeatureFlags = require("./SchedulerFeatureFlags")
 	local enableSchedulerDebugging = SchedulerFeatureFlags.enableSchedulerDebugging
 	local enableProfiling = SchedulerFeatureFlags.enableProfiling
 
-	local SchedulerHostConfig = hostConfig or require(script.Parent.SchedulerHostConfig)
+	local SchedulerHostConfig = hostConfig or require("./SchedulerHostConfig")
 	local requestHostCallback = SchedulerHostConfig.requestHostCallback
 	local requestHostTimeout = SchedulerHostConfig.requestHostTimeout
 	local cancelHostTimeout = SchedulerHostConfig.cancelHostTimeout
@@ -27,7 +26,7 @@ return function(hostConfig)
 	local requestPaint = SchedulerHostConfig.requestPaint
 
 	-- ROBLOX deviation? inline the MinHeap to see if the module-level visibility lets Luau optimize better
-	-- local SchedulerMinHeap = require(script.Parent.SchedulerMinHeap)
+	-- local SchedulerMinHeap = require("./SchedulerMinHeap")
 	-- local push = SchedulerMinHeap.push
 	-- local peek = SchedulerMinHeap.peek
 	-- local pop = SchedulerMinHeap.pop
@@ -125,14 +124,14 @@ return function(hostConfig)
 	end
 
 	-- TODO: Use symbols?
-	local SchedulerPriorities = require(script.Parent.SchedulerPriorities)
+	local SchedulerPriorities = require("./SchedulerPriorities")
 	local ImmediatePriority = SchedulerPriorities.ImmediatePriority
 	local UserBlockingPriority = SchedulerPriorities.UserBlockingPriority
 	local NormalPriority = SchedulerPriorities.NormalPriority
 	local LowPriority = SchedulerPriorities.LowPriority
 	local IdlePriority = SchedulerPriorities.IdlePriority
 
-	local SchedulerProfiling = require(script.Parent.SchedulerProfiling)
+	local SchedulerProfiling = require("./SchedulerProfiling")
 	local markTaskRun = SchedulerProfiling.markTaskRun
 	local markTaskYield = SchedulerProfiling.markTaskYield
 	local markTaskCompleted = SchedulerProfiling.markTaskCompleted

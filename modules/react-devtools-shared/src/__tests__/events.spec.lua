@@ -9,8 +9,8 @@
 --  */
 
 local Packages = script.Parent.Parent.Parent
-local Error = require(Packages.LuauPolyfill).Error
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local Error = require("@pkg/@jsdotlua/luau-polyfill").Error
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -21,7 +21,7 @@ describe("events", function()
 	local dispatcher
 	beforeEach(function()
 		jest.resetModules()
-		local EventEmitter = require(script.Parent.Parent.events)
+		local EventEmitter = require("./events")
 		dispatcher = EventEmitter.new()
 	end)
 

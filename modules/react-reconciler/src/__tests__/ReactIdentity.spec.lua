@@ -13,7 +13,7 @@ local React, Scheduler
 local ReactRoblox, reactRobloxRoot
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local it = JestGlobals.it
@@ -23,9 +23,9 @@ local jest = JestGlobals.jest
 beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
-	React = require(Packages.React)
-	ReactRoblox = require(Packages.Dev.ReactRoblox)
-	Scheduler = require(Packages.Scheduler)
+	React = require("@pkg/@jsdotlua/react")
+	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 	local parent = Instance.new("Folder")
 	reactRobloxRoot = ReactRoblox.createRoot(parent)
 end)

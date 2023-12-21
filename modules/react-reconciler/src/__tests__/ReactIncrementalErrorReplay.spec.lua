@@ -15,7 +15,7 @@ local React
 local ReactNoop
 local Scheduler
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local jest = JestGlobals.jest
@@ -24,9 +24,9 @@ local it = JestGlobals.it
 beforeEach(function()
 	jest.resetModules()
 
-	React = require(Packages.React)
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-	Scheduler = require(Packages.Scheduler)
+	React = require("@pkg/@jsdotlua/react")
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 end)
 
 -- ROBLOX deviation: this test doesn't make sense in not JSX

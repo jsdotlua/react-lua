@@ -9,17 +9,16 @@
  * @flow
  *]]
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local console = Shared.console
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local inspect = LuauPolyfill.util.inspect
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Wakeable = ReactTypes.Wakeable
 type Thenable<R> = ReactTypes.Thenable<R>
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 
 local REACT_LAZY_TYPE = ReactSymbols.REACT_LAZY_TYPE
 

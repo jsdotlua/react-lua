@@ -3,8 +3,7 @@
 ]]
 type Function = (...any) -> any?
 
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
@@ -19,11 +18,11 @@ describe("Devtools Integration", function()
 	local React
 
 	beforeEach(function()
-		React = require(Packages.React)
+		React = require("@pkg/@jsdotlua/react")
 		jest.resetModules()
 		jest.useFakeTimers()
-		local DeveloperTools = require(Packages.Dev.DeveloperTools)
-		ReactDevtoolsExtensions = require(Packages.ReactDevtoolsExtensions)
+		local DeveloperTools = require("@pkg//@jsdotlua/developer-tools")
+		ReactDevtoolsExtensions = require("@pkg/@jsdotlua/react-devtools-extensions")
 
 		inspector = DeveloperTools.forLibrary("UniversalApp", {})
 		inspector:initRoact(ReactDevtoolsExtensions)
@@ -46,10 +45,10 @@ describe("Devtools Integration", function()
 	itSkipIfNonDEV(
 		"can connect to a Roact tree and inspect its children and child branch nodes",
 		function()
-			local ReactRoblox = require(Packages.ReactRoblox)
+			local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 
 			local function act(callback: Function): ()
-				local actTestRenderer = require(Packages.Dev.ReactTestRenderer).act
+				local actTestRenderer = require("@pkg/@jsdotlua/react-test-renderer").act
 
 				actTestRenderer(function()
 					callback()

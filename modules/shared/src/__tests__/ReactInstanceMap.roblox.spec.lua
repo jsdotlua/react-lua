@@ -2,12 +2,12 @@
 -- ROBLOX TODO: make this only pass in __DEV__
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local ReactInstanceMap = require(Packages.Shared).ReactInstanceMap
+local ReactInstanceMap = require("@pkg/@jsdotlua/shared").ReactInstanceMap
 
 describe("get", function()
 	it("with invalid fiber", function()

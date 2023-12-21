@@ -9,11 +9,11 @@
  * @flow
  ]]
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 
 local getStackByFiberInDevAndProd =
-	require(script.Parent.ReactFiberComponentStack).getStackByFiberInDevAndProd
+	require("./ReactFiberComponentStack").getStackByFiberInDevAndProd
 
 export type CapturedValue<T> = {
 	value: T,

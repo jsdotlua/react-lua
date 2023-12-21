@@ -8,15 +8,13 @@
  *
  * @flow
 ]]
-local Packages = script.Parent.Parent.Parent
-
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
-local ReactRobloxHostTypes = require(script.Parent["ReactRobloxHostTypes.roblox"])
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
 type Container = ReactRobloxHostTypes.Container
 
 -- local '../shared/checkReact'
--- local ReactRobloxLegacy = require(script.Parent.ReactRobloxLegacy)
+-- local ReactRobloxLegacy = require("./ReactRobloxLegacy")
 -- local findDOMNode = ReactRobloxLegacy.findDOMNode
 -- local render = ReactRobloxLegacy.render
 -- local hydrate = ReactRobloxLegacy.hydrate
@@ -24,15 +22,15 @@ type Container = ReactRobloxHostTypes.Container
 -- local unmountComponentAtNode = ReactRobloxLegacy.unmountComponentAtNode
 
 local ReactRobloxRoot
-ReactRobloxRoot = require(script.Parent.ReactRobloxRoot)
+ReactRobloxRoot = require("./ReactRobloxRoot")
 local createRoot = ReactRobloxRoot.createRoot
 local createBlockingRoot = ReactRobloxRoot.createBlockingRoot
 local createLegacyRoot = ReactRobloxRoot.createLegacyRoot
 local isValidContainer = ReactRobloxRoot.isValidContainer
--- local createEventHandle = require(script.Parent.ReactDOMEventHandle).createEventHandle
+-- local createEventHandle = require("./ReactDOMEventHandle").createEventHandle
 
 -- ROBLOX deviation: Use the config-injecting entry point for the reconciler
-local ReactReconciler = require(script.Parent.Parent["ReactReconciler.roblox"])
+local ReactReconciler = require("../ReactReconciler.roblox.lua")
 -- local batchedEventUpdates = ReactReconciler.batchedEventUpdates
 local batchedUpdates = ReactReconciler.batchedUpdates
 -- local discreteUpdates = ReactReconciler.discreteUpdates
@@ -50,19 +48,19 @@ local IsThisRendererActing = ReactReconciler.IsThisRendererActing
 -- local getCurrentUpdateLanePriority = ReactReconciler.getCurrentUpdateLanePriority
 
 local createPortalImpl = ReactReconciler.createPortal
--- local canUseDOM = require(Packages.Shared).ExecutionEnvironment.canUseDOM
-local ReactVersion = require(Packages.Shared).ReactVersion
-local invariant = require(Packages.Shared).invariant
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+-- local canUseDOM = require("@pkg/@jsdotlua/shared").ExecutionEnvironment.canUseDOM
+local ReactVersion = require("@pkg/@jsdotlua/shared").ReactVersion
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 -- local warnUnstableRenderSubtreeIntoContainer = ReactFeatureFlags.warnUnstableRenderSubtreeIntoContainer
 local enableNewReconciler = ReactFeatureFlags.enableNewReconciler
 
-local ReactRobloxComponentTree = require(script.Parent.ReactRobloxComponentTree)
+local ReactRobloxComponentTree = require("./ReactRobloxComponentTree")
 local getInstanceFromNode = ReactRobloxComponentTree.getInstanceFromNode
 local getNodeFromInstance = ReactRobloxComponentTree.getNodeFromInstance
 local getFiberCurrentPropsFromNode = ReactRobloxComponentTree.getFiberCurrentPropsFromNode
 local getClosestInstanceFromNode = ReactRobloxComponentTree.getClosestInstanceFromNode
--- local restoreControlledState = require(script.Parent.ReactRobloxComponent).restoreControlledState
+-- local restoreControlledState = require("./ReactRobloxComponent").restoreControlledState
 
 -- local ReactDOMEventReplaying = require(Packages.Parent.Parent.events.ReactDOMEventReplaying)
 -- local setAttemptSynchronousHydration = ReactDOMEventReplaying.setAttemptSynchronousHydration
@@ -74,14 +72,14 @@ local getClosestInstanceFromNode = ReactRobloxComponentTree.getClosestInstanceFr
 -- local setAttemptHydrationAtPriority = ReactDOMEventReplaying.setAttemptHydrationAtPriority
 
 -- local setBatchingImplementation = require(Packages.Parent.Parent.events.ReactDOMUpdateBatching).setBatchingImplementation
--- local ReactDOMControlledComponent = require(script.Parent.Parent.events.ReactDOMControlledComponent)
+-- local ReactDOMControlledComponent = require("./events/ReactDOMControlledComponent")
 -- local setRestoreImplementation = ReactDOMControlledComponent.setRestoreImplementation
 -- local enqueueStateRestore = ReactDOMControlledComponent.enqueueStateRestore
 -- local restoreStateIfNeeded = ReactDOMControlledComponent.restoreStateIfNeeded
 
-local Event = require(Packages.Shared).Event
-local Change = require(Packages.Shared).Change
-local Tag = require(Packages.Shared).Tag
+local Event = require("@pkg/@jsdotlua/shared").Event
+local Change = require("@pkg/@jsdotlua/shared").Change
+local Tag = require("@pkg/@jsdotlua/shared").Tag
 
 -- setAttemptSynchronousHydration(attemptSynchronousHydration)
 -- setAttemptUserBlockingHydration(attemptUserBlockingHydration)

@@ -5,18 +5,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
 ]]
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Set = LuauPolyfill.Set
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 
-local hydration = require(script.Parent.Parent.hydration)
+local hydration = require("../hydration")
 local dehydrate = hydration.dehydrate
 
-local ComponentsTypes = require(script.Parent.Parent.devtools.views.Components.types)
+local ComponentsTypes = require("../devtools/views/Components/types")
 type DehydratedData = ComponentsTypes.DehydratedData
 
 -- ROBLOX deviation: Use HttpService for JSON

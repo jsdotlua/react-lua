@@ -8,14 +8,13 @@
  *
  * @flow
 ]]
-local Packages = script.Parent.Parent
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type FiberRoot = ReactInternalTypes.FiberRoot
 type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
 local ReactFiberSchedulerPriorities =
-	require(script.Parent["ReactFiberSchedulerPriorities.roblox"])
+	require("./ReactFiberSchedulerPriorities.roblox.lua")
 
 -- deviation: Instead of defining these here, and and re-exporting in
 -- `ReactInternalTypes`, we depend on and re-export them here to avoid cyclical
@@ -25,7 +24,7 @@ export type Lane = ReactInternalTypes.Lane
 export type Lanes = ReactInternalTypes.Lanes
 export type LaneMap<T> = ReactInternalTypes.LaneMap<T>
 
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 
 local ImmediateSchedulerPriority = ReactFiberSchedulerPriorities.ImmediatePriority
 local UserBlockingSchedulerPriority = ReactFiberSchedulerPriorities.UserBlockingPriority

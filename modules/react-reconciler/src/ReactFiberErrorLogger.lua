@@ -9,24 +9,23 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Error = LuauPolyfill.Error
 local inspect = LuauPolyfill.util.inspect
 local setTimeout = LuauPolyfill.setTimeout
 
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local console = Shared.console
 local errorToString = Shared.errorToString
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactCapturedValue = require(script.Parent.ReactCapturedValue)
+local ReactCapturedValue = require("./ReactCapturedValue")
 type CapturedValue<T> = ReactCapturedValue.CapturedValue<T>
 
-local showErrorDialog = require(script.Parent.ReactFiberErrorDialog).showErrorDialog
-local ClassComponent = require(script.Parent.ReactWorkTags).ClassComponent
-local getComponentName = require(Packages.Shared).getComponentName
+local showErrorDialog = require("./ReactFiberErrorDialog").showErrorDialog
+local ClassComponent = require("./ReactWorkTags").ClassComponent
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 
 local exports = {}
 

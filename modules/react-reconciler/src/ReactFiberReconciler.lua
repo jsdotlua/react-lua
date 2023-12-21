@@ -10,4 +10,4 @@
  ]]
 
 -- deviation: old version of reconciler not ported
-return require(script.Parent["ReactFiberReconciler.new"])
+return require("./ReactFiberReconciler.new.lua")

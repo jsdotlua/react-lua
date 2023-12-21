@@ -9,11 +9,11 @@
  ]]
 -- ROBLOX deviation START: simplify
 -- local Packages --[[ ROBLOX comment: must define Packages module ]]
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Object = LuauPolyfill.Object
 -- local exports = {}
 --
 -- Object.assign(exports, require(script.src.ReactCacheOld))
 -- return exports
-return require(script.ReactCacheOld)
+return require("./ReactCacheOld")
 -- ROBLOX deviation END

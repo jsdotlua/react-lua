@@ -10,8 +10,7 @@
 --!strict
 
 -- ROBLOX deviation: prompted by selene to add a type
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 type ComparisonTestsProps = {
 	a: number?,
@@ -19,7 +18,7 @@ type ComparisonTestsProps = {
 	c: number?,
 }
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
@@ -37,9 +36,9 @@ describe("forwardRef", function()
 		jest.resetModules()
 
 		-- PropTypes = require('prop-types')
-		React = require(Packages.React)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-		Scheduler = require(Packages.Dev.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 
 	it("should update refs when switching between children", function()

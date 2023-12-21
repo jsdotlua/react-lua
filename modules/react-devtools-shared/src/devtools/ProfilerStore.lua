@@ -8,8 +8,7 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Map = LuauPolyfill.Map
 local Set = LuauPolyfill.Set
@@ -19,25 +18,24 @@ type Map<K, V> = LuauPolyfill.Map<K, V>
 type Object = LuauPolyfill.Object
 type Set<K> = LuauPolyfill.Set<K>
 
-local EventEmitter = require(script.Parent.Parent.events)
+local EventEmitter = require("../events")
 type EventEmitter<T> = EventEmitter.EventEmitter<T>
 
-local prepareProfilingDataFrontendFromBackendAndStore = require(
-	script.Parent.views.Profiler.utils
-).prepareProfilingDataFrontendFromBackendAndStore
+local prepareProfilingDataFrontendFromBackendAndStore =
+	require("./views/Profiler/utils").prepareProfilingDataFrontendFromBackendAndStore
 
-local devtoolsTypes = require(script.Parent.types)
+local devtoolsTypes = require("./types")
 type ProfilingCache = devtoolsTypes.ProfilingCache
 export type ProfilerStore = devtoolsTypes.ProfilerStore
 type Store = devtoolsTypes.Store
 
-local Bridge = require(script.Parent.Parent.bridge)
+local Bridge = require("../bridge")
 type FrontendBridge = Bridge.FrontendBridge
 
-local backendTypes = require(script.Parent.Parent.backend.types)
+local backendTypes = require("../backend/types")
 type ProfilingDataBackend = backendTypes.ProfilingDataBackend
 
-local profilerTypes = require(script.Parent.views.Profiler.types)
+local profilerTypes = require("./views/Profiler/types")
 type CommitDataFrontend = profilerTypes.CommitDataFrontend
 type ProfilingDataForRootFrontend = profilerTypes.ProfilingDataForRootFrontend
 type ProfilingDataFrontend = profilerTypes.ProfilingDataFrontend
@@ -52,7 +50,7 @@ type ProfilerStore_statics = {
 	__index: {},
 }
 
-local ProfilingCache = require(script.Parent.ProfilingCache)
+local ProfilingCache = require("./ProfilingCache")
 
 local ProfilerStore: ProfilerStore & ProfilerStore_statics = (
 	setmetatable({}, { __index = EventEmitter }) :: any
@@ -274,7 +272,7 @@ function ProfilerStore:profilingCache(): ProfilingCache
 end
 function ProfilerStore:profilingData(
 	value: ProfilingDataFrontend | nil
-): (...ProfilingDataFrontend?)
+): ...ProfilingDataFrontend?
 	if value == nil then
 		return self._dataFrontend
 	end
@@ -292,7 +290,7 @@ function ProfilerStore:profilingData(
 	self:emit("profilingData")
 	return
 end
-function ProfilerStore:clear(): (...any?)
+function ProfilerStore:clear(): ...any?
 	Array.splice(self._dataBackends, 0)
 	self._dataFrontend = nil
 	self._initialRendererIDs:clear()
@@ -303,13 +301,13 @@ function ProfilerStore:clear(): (...any?)
 	self._cache:invalidate()
 	self:emit("profilingData")
 end
-function ProfilerStore:startProfiling(): (...any?)
+function ProfilerStore:startProfiling(): ...any?
 	self._bridge:send("startProfiling", self._store:getRecordChangeDescriptions()) -- Don't actually update the local profiling boolean yet!
 	-- Wait for onProfilingStatus() to confirm the status has changed.
 	-- This ensures the frontend and backend are in sync wrt which commits were profiled.
 	-- We do this to avoid mismatches on e.g. CommitTreeBuilder that would cause errors.
 end
-function ProfilerStore:stopProfiling(): (...any?)
+function ProfilerStore:stopProfiling(): ...any?
 	self._bridge:send("stopProfiling") -- Don't actually update the local profiling boolean yet!
 	-- Wait for onProfilingStatus() to confirm the status has changed.
 	-- This ensures the frontend and backend are in sync wrt which commits were profiled.

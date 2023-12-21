@@ -9,7 +9,7 @@
 ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local it = JestGlobals.it
@@ -23,7 +23,7 @@ local NormalPriority
 beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
-	local Scheduler = require(script.Parent.Parent.Scheduler)()
+	local Scheduler = require("./Scheduler")()
 
 	scheduleCallback = Scheduler.unstable_scheduleCallback
 	ImmediatePriority = Scheduler.unstable_ImmediatePriority

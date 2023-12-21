@@ -13,13 +13,12 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local inspect = LuauPolyfill.util.inspect
-local ReactRoblox = require(Packages.ReactRoblox)
+local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 type RootType = ReactRoblox.RootType
 
-local warnOnce = require(script.Parent.warnOnce)
+local warnOnce = require("./warnOnce")
 
 type RoactHandle = {
 	root: RootType,

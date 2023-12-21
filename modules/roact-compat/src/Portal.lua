@@ -14,10 +14,9 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent
-local ReactRoblox = require(Packages.ReactRoblox)
+local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 
-local warnOnce = require(script.Parent.warnOnce)
+local warnOnce = require("./warnOnce")
 
 local function PortalComponent(props)
 	if _G.__DEV__ and _G.__COMPAT_WARNINGS__ then

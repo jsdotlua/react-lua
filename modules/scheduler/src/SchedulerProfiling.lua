@@ -8,15 +8,14 @@
 *
 ]]
 -- ROBLOX NOTE: this file is synced against a post-17.0.1 version that doesn't use SharedArrayBuffer
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 local exports = {}
 
-local SchedulerPriorities = require(script.Parent.SchedulerPriorities)
+local SchedulerPriorities = require("./SchedulerPriorities")
 type PriorityLevel = SchedulerPriorities.PriorityLevel
 
-local ScheduleFeatureFlags = require(script.Parent.SchedulerFeatureFlags)
+local ScheduleFeatureFlags = require("./SchedulerFeatureFlags")
 local enableProfiling = ScheduleFeatureFlags.enableProfiling
 
 local runIdCounter: number = 0

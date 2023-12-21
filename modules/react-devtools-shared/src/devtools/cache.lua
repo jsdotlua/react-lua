@@ -7,18 +7,17 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local Map = LuauPolyfill.Map
 type Map<K, V> = LuauPolyfill.Map<K, V>
 local WeakMap = LuauPolyfill.WeakMap
 type WeakMap<K, V> = LuauPolyfill.WeakMap<K, V>
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 export type Thenable<R> = ReactTypes.Thenable<R>
 
-local React = require(Packages.React)
+local React = require("@pkg/@jsdotlua/react")
 local createContext = React.createContext
 
 -- Cache implementation was forked from the React repo:

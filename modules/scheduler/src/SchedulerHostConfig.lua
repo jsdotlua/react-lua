@@ -12,4 +12,4 @@
 -- deviation: In React, this module throws an error and is expected to be
 -- replaced via a bundler. In our case, we mock it explicitly when we need to
 -- mock it, and return the "default" here
-return require(script.Parent.forks["SchedulerHostConfig.default"])
+return require("./forks/SchedulerHostConfig.default.lua")

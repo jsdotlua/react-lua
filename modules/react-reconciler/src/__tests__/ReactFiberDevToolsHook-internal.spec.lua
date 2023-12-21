@@ -10,7 +10,7 @@
 ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local jest = JestGlobals.jest
@@ -19,15 +19,15 @@ local beforeAll = JestGlobals.beforeAll
 local afterAll = JestGlobals.afterAll
 local it = JestGlobals.it
 
-local Map = require(Packages.LuauPolyfill).Map
+local Map = require("@pkg/@jsdotlua/luau-polyfill").Map
 
 local ReactFiberDevToolsHook, ReactDevtoolsShared
 
 beforeEach(function()
 	jest.resetModules()
 
-	ReactFiberDevToolsHook = require(script.Parent.Parent["ReactFiberDevToolsHook.new"])
-	ReactDevtoolsShared = require(Packages.Dev.ReactDevtoolsShared)
+	ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.lua")
+	ReactDevtoolsShared = require("@dev-packages/ReactDevtoolsShared")
 end)
 
 describe("DevTools hook detection", function()

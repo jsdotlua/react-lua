@@ -17,7 +17,7 @@ local fill = function(count, value)
 end
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -25,8 +25,8 @@ local it = JestGlobals.it
 local xit = JestGlobals.xit
 local beforeEach = JestGlobals.beforeEach
 
-local Promise = require(Packages.Dev.Promise)
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local Promise = require("@pkg/@jsdotlua/promise")
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 
@@ -36,7 +36,7 @@ type Array<T> = { [number]: T }
 local ReactRoblox
 local React
 -- ROBLOX deviation: bring in the Agent type
-local Agent = require(script.Parent.Parent.backend.agent)
+local Agent = require("./backend/agent")
 type Agent = Agent.Agent
 
 describe("Store", function()
@@ -51,15 +51,15 @@ describe("Store", function()
 		agent = global.agent
 		store = global.store
 
-		React = require(Packages.React)
+		React = require("@pkg/@jsdotlua/react")
 		jest.resetModules()
-		ReactRoblox = require(Packages.ReactRoblox)
-		devtoolsUtils = require(script.Parent.Parent.devtools.utils)
-		constants = require(script.Parent.Parent.constants)
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		devtoolsUtils = require("./devtools/utils")
+		constants = require("./constants")
 
 		jest.useFakeTimers()
 
-		local utils = require(script.Parent.utils)
+		local utils = require("./utils")
 		act = utils.act
 		getRendererID = utils.getRendererID
 	end)

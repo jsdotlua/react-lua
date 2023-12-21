@@ -23,12 +23,10 @@
  * supported we can rename it.
  ]]
 
-local Shared = script.Parent
-local Packages = Shared.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local inspect = LuauPolyfill.util.inspect
-local getComponentName = require(script.Parent.getComponentName)
+local getComponentName = require("./getComponentName")
 
 local exports = {}
 

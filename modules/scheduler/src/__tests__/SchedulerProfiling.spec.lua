@@ -9,7 +9,7 @@
  *]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -42,24 +42,24 @@ local function priorityLevelToString(priorityLevel)
 end
 describe("Scheduler", function()
 	it("profiling APIs are not available", function()
-		local SchedulerFeatureFlags = require(script.Parent.Parent.SchedulerFeatureFlags)
+		local SchedulerFeatureFlags = require("./SchedulerFeatureFlags")
 		SchedulerFeatureFlags.enableProfiling = false
 
-		Scheduler = require(script.Parent.Parent.Scheduler)()
+		Scheduler = require("./Scheduler")()
 		jestExpect(Scheduler.unstable_Profiling).toBe(nil)
 	end)
 	beforeEach(function()
 		jest.resetModules()
 
 		jest.useFakeTimers()
-		local SchedulerFeatureFlags = require(script.Parent.Parent.SchedulerFeatureFlags)
+		local SchedulerFeatureFlags = require("./SchedulerFeatureFlags")
 		SchedulerFeatureFlags.enableProfiling = true
 
 		-- ROBLOX deviation: In react, jest mocks Scheduler -> unstable_mock since
 		-- unstable_mock depends on the real Scheduler, and our mock
 		-- functionality isn't smart enough to prevent self-requires, we simply
 		-- require the mock entry point directly for use in tests
-		Scheduler = require(script.Parent.Parent.unstable_mock)
+		Scheduler = require("./unstable_mock")
 		ImmediatePriority = Scheduler.unstable_ImmediatePriority
 		UserBlockingPriority = Scheduler.unstable_UserBlockingPriority
 		NormalPriority = Scheduler.unstable_NormalPriority

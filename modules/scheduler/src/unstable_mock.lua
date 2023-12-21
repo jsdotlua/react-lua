@@ -5,13 +5,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
 *]]
-local Tracing = require(script.Parent.Tracing)
-local TracingSubscriptions = require(script.Parent.TracingSubscriptions)
+local Tracing = require("./Tracing")
+local TracingSubscriptions = require("./TracingSubscriptions")
 -- ROBLOX deviation: export Tracing type from the package exports to avoid direct file access
 export type Interaction = Tracing.Interaction
 
-local initializeScheduler = require(script.Parent.Scheduler)
-local HostConfig = require(script.Parent.forks["SchedulerHostConfig.mock"])
+local initializeScheduler = require("./Scheduler")
+local HostConfig = require("./forks/SchedulerHostConfig.mock.lua")
 
 local Scheduler = initializeScheduler(HostConfig)
 

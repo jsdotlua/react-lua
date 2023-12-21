@@ -2,13 +2,13 @@
 -- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react/src/__tests__/ReactElement-test.js
 
 local Packages = script.Parent.Parent.Parent
-local ReactElement = require(script.Parent.Parent.ReactElement)
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local ReactElement = require("./ReactElement")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local isValidElementType = require(Packages.Shared).isValidElementType
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local isValidElementType = require("@pkg/@jsdotlua/shared").isValidElementType
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local element
 
 describe("creates valid React elements", function()

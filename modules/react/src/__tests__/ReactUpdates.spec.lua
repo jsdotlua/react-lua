@@ -8,7 +8,7 @@
 --  * @emails react-core
 
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -18,7 +18,7 @@ local ReactTestRenderer
 -- local ReactDOMServer
 local Scheduler
 -- local PropTypes
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
@@ -36,16 +36,16 @@ describe("ReactUpdates", function()
 		jest.resetModules()
 
 		-- ROBLOX deviation: workaround because our flag is currently always set to false
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = true
-		React = require(script.Parent.Parent)
+		React = require(".")
 
 		-- ROBLOX deviation: using React Test Renderer in place of ReactDOM
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
-		Scheduler = require(Packages.Dev.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 
 	it("should batch state when updating state twice", function()

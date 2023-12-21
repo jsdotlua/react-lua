@@ -13,13 +13,11 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
-local Packages = script.Parent
+local React = require("@pkg/@jsdotlua/react")
+local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+local Shared = require("@pkg/@jsdotlua/shared")
 
-local React = require(Packages.React)
-local ReactRoblox = require(Packages.ReactRoblox)
-local Shared = require(Packages.Shared)
-
-local RoactTree = require(script.RoactTree)
+local RoactTree = require("./RoactTree")
 
 return {
 	-- Overlapping contents of public `React` interface
@@ -40,10 +38,10 @@ return {
 	unmount = RoactTree.unmount,
 
 	-- API compatibility layers to accommodate old interfaces
-	createFragment = require(script.createFragment),
-	oneChild = require(script.oneChild),
-	setGlobalConfig = require(script.setGlobalConfig),
-	Portal = require(script.Portal),
+	createFragment = require("./createFragment"),
+	oneChild = require("./oneChild"),
+	setGlobalConfig = require("./setGlobalConfig"),
+	Portal = require("./Portal"),
 
 	-- Compatibility layer for special symbol keys which will be replaced with
 	-- reserved prop names in Roact 17

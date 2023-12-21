@@ -1,11 +1,11 @@
 --!strict
 
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local String = LuauPolyfill.String
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -26,7 +26,7 @@ describe("describeNativeComponentFrame", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactComponentStackFrame = require(script.Parent.Parent.ReactComponentStackFrame)
+		ReactComponentStackFrame = require("./ReactComponentStackFrame")
 		describeNativeComponentFrame =
 			ReactComponentStackFrame.describeNativeComponentFrame
 	end)
@@ -51,7 +51,7 @@ describe("with enableComponentStackLocations to false", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		local ReactFeatureFlags = require(script.Parent.Parent.ReactFeatureFlags)
+		local ReactFeatureFlags = require("./ReactFeatureFlags")
 
 		-- ROBLOX FIXME: Calling mock after require won't work
 		jest.mock(script.Parent.Parent.ReactFeatureFlags :: any, function()
@@ -60,7 +60,7 @@ describe("with enableComponentStackLocations to false", function()
 			})
 		end)
 
-		ReactComponentStackFrame = require(script.Parent.Parent.ReactComponentStackFrame)
+		ReactComponentStackFrame = require("./ReactComponentStackFrame")
 	end)
 
 	describe("describeBuiltInComponentFrame", function()
@@ -164,7 +164,7 @@ describe("with enableComponentStackLocations to true", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		local ReactFeatureFlags = require(script.Parent.Parent.ReactFeatureFlags)
+		local ReactFeatureFlags = require("./ReactFeatureFlags")
 
 		-- ROBLOX FIXME: Calling mock after require won't work
 		jest.mock(script.Parent.Parent.ReactFeatureFlags :: any, function()
@@ -173,7 +173,7 @@ describe("with enableComponentStackLocations to true", function()
 			})
 		end)
 
-		ReactComponentStackFrame = require(script.Parent.Parent.ReactComponentStackFrame)
+		ReactComponentStackFrame = require("./ReactComponentStackFrame")
 		describeBuiltInComponentFrame =
 			ReactComponentStackFrame.describeBuiltInComponentFrame
 	end)
@@ -197,7 +197,7 @@ describe("DEV warning stack trace", function()
 
 	beforeEach(function()
 		jest.resetModules()
-		React = require(Packages.Dev.React)
+		React = require("@pkg/@jsdotlua/react")
 		describeUnknownElementTypeFrameInDev = require(
 			script.Parent.Parent.ReactComponentStackFrame
 		).describeUnknownElementTypeFrameInDEV

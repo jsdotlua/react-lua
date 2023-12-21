@@ -7,7 +7,7 @@
  *
  *
  ]]
-local ReactSymbols = require(script.Parent.ReactSymbols)
+local ReactSymbols = require("./ReactSymbols")
 local REACT_CONTEXT_TYPE = ReactSymbols.REACT_CONTEXT_TYPE
 local REACT_FORWARD_REF_TYPE = ReactSymbols.REACT_FORWARD_REF_TYPE
 local REACT_FRAGMENT_TYPE = ReactSymbols.REACT_FRAGMENT_TYPE
@@ -25,7 +25,7 @@ local REACT_BLOCK_TYPE = ReactSymbols.REACT_BLOCK_TYPE
 local REACT_SERVER_BLOCK_TYPE = ReactSymbols.REACT_SERVER_BLOCK_TYPE
 local REACT_LEGACY_HIDDEN_TYPE = ReactSymbols.REACT_LEGACY_HIDDEN_TYPE
 
--- local ReactFeatureFlags = require(script.Parent.ReactFeatureFlags)
+-- local ReactFeatureFlags = require("./ReactFeatureFlags")
 -- local enableScopeAPI = ReactFeatureFlags.enableScopeAPI
 
 return function(type)

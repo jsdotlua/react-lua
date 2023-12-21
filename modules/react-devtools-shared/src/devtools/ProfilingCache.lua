@@ -7,40 +7,38 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Map = LuauPolyfill.Map
 
 type Map<K, V> = LuauPolyfill.Map<K, V>
 type Array<T> = LuauPolyfill.Array<T>
 
-local ProfilerViews = script.Parent.views.Profiler
-
-local CommitTreeBuilderModule = require(ProfilerViews.CommitTreeBuilder)
+local CommitTreeBuilderModule = require("./views/Profiler/CommitTreeBuilder")
 local getCommitTree = CommitTreeBuilderModule.getCommitTree
 local invalidateCommitTrees = CommitTreeBuilderModule.invalidateCommitTrees
 
-local FlamegraphChartBuilderModule = require(ProfilerViews.FlamegraphChartBuilder)
+local FlamegraphChartBuilderModule = require("./views/Profiler/FlamegraphChartBuilder")
 local getFlamegraphChartData = FlamegraphChartBuilderModule.getChartData
 local invalidateFlamegraphChartData = FlamegraphChartBuilderModule.invalidateChartData
 
-local InteractionsChartBuilderModule = require(ProfilerViews.InteractionsChartBuilder)
+local InteractionsChartBuilderModule =
+	require("./views/Profiler/InteractionsChartBuilder")
 local getInteractionsChartData = InteractionsChartBuilderModule.getChartData
 local invalidateInteractionsChartData = InteractionsChartBuilderModule.invalidateChartData
 
-local RankedChartBuilderModule = require(ProfilerViews.RankedChartBuilder)
+local RankedChartBuilderModule = require("./views/Profiler/RankedChartBuilder")
 local getRankedChartData = RankedChartBuilderModule.getChartData
 local invalidateRankedChartData = RankedChartBuilderModule.invalidateChartData
 
-local typesModule = require(ProfilerViews.types)
+local typesModule = require("./views/Profiler/types")
 type CommitTree = typesModule.CommitTree
 
 type FlamegraphChartData = FlamegraphChartBuilderModule.ChartData
 type InteractionsChartData = InteractionsChartBuilderModule.ChartData
 type RankedChartData = RankedChartBuilderModule.ChartData
 
-local devtoolsTypes = require(script.Parent.types)
+local devtoolsTypes = require("./types")
 type ProfilingCache = devtoolsTypes.ProfilingCache
 type ProfilerStore = devtoolsTypes.ProfilerStore
 

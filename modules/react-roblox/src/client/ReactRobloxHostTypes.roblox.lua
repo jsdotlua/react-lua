@@ -9,12 +9,10 @@
  *
  * @flow
 ]]
-local Packages = script.Parent.Parent.Parent
-
-local ReactReconciler = require(Packages.ReactReconciler)
+local ReactReconciler = require("@pkg/@jsdotlua/react-reconciler")
 type FiberRoot = ReactReconciler.FiberRoot
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type MutableSource<T> = ReactTypes.MutableSource<T>
 type ReactNodeList = ReactTypes.ReactNodeList
 

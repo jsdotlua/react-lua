@@ -1,6 +1,5 @@
 -- ROBLOX note: no upstream
 -- ROBLOX note: The setup function adds the glue required for DeveloperTools to initialize the Roact devtools correctly
-local Packages = script.Parent
 
 return {
 	setup = function(debugMode: boolean)
@@ -13,8 +12,8 @@ return {
 		-- direct mapping between the Inspector tree and the Explorer tree as requested by design.
 		_G.__REACT_DEVTOOLS_COMPONENT_FILTERS__ = {}
 
-		local ReactDevtoolsShared = require(Packages.ReactDevtoolsShared)
-		local setup = require(Packages.ReactDevtoolsExtensions.backend).setup
+		local ReactDevtoolsShared = require("@pkg/@jsdotlua/react-devtools-shared")
+		local setup = require("./backend").setup
 		local installHook = ReactDevtoolsShared.hook.installHook
 		local Store = ReactDevtoolsShared.devtools.store
 
@@ -22,14 +21,14 @@ return {
 		installHook(_G)
 
 		-- ROBLOX note: Ensure that ReactRoblox is loaded after injection so that the ReactHostConfig is populated correctly
-		require(Packages.React)
-		require(Packages.ReactRoblox)
+		require("@pkg/@jsdotlua/react")
+		require("@pkg/@jsdotlua/react-roblox")
 
 		local hook = _G.__REACT_DEVTOOLS_GLOBAL_HOOK__
 
 		-- ROBLOX note: Make sure that this method was called before ReactRoblox was first required,
 		-- otherwise the profiler will not be enabled for the session.
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		if not ReactFeatureFlags.enableSchedulingProfiler then
 			warn(
 				"[DeveloperTools] React was initialized before DeveloperTools. Call inspector.setupReactDevtools before requiring React to enable profiling."

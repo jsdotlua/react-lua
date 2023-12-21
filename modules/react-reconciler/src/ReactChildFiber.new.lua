@@ -9,8 +9,7 @@
  * @flow
 ]]
 local __DEV__ = _G.__DEV__ :: boolean
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 type Array<T> = { [number]: T }
@@ -18,36 +17,36 @@ type Set<T> = { [T]: boolean }
 type Object = { [any]: any }
 type Map<K, V> = { [K]: V }
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
-local describeError = require(Packages.Shared).describeError
+local console = require("@pkg/@jsdotlua/shared").console
+local describeError = require("@pkg/@jsdotlua/shared").describeError
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation: ReactElement is defined at the top level of Shared along
 -- with the rest of the ReactTypes
 type ReactElement = ReactTypes.ReactElement<any, any>
 type ReactPortal = ReactTypes.ReactPortal
 
-local React = require(Packages.React)
+local React = require("@pkg/@jsdotlua/react")
 type LazyComponent<T, P> = React.LazyComponent<T, P>
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type RoactStableKey = ReactInternalTypes.RoactStableKey
-local ReactFiberLanes = require(script.Parent.ReactFiberLane)
+local ReactFiberLanes = require("./ReactFiberLane")
 type Lanes = ReactFiberLanes.Lanes
 
-local getComponentName = require(Packages.Shared).getComponentName
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local ReactFiberFlags = require("./ReactFiberFlags")
 local Placement = ReactFiberFlags.Placement
 local Deletion = ReactFiberFlags.Deletion
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local getIteratorFn = ReactSymbols.getIteratorFn
 local REACT_ELEMENT_TYPE = ReactSymbols.REACT_ELEMENT_TYPE
 local REACT_FRAGMENT_TYPE = ReactSymbols.REACT_FRAGMENT_TYPE
 local REACT_PORTAL_TYPE = ReactSymbols.REACT_PORTAL_TYPE
 local REACT_LAZY_TYPE = ReactSymbols.REACT_LAZY_TYPE
 local REACT_BLOCK_TYPE = ReactSymbols.REACT_BLOCK_TYPE
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local FunctionComponent = ReactWorkTags.FunctionComponent
 local ClassComponent = ReactWorkTags.ClassComponent
 local HostText = ReactWorkTags.HostText
@@ -56,14 +55,14 @@ local ForwardRef = ReactWorkTags.ForwardRef
 local Fragment = ReactWorkTags.Fragment
 local SimpleMemoComponent = ReactWorkTags.SimpleMemoComponent
 local Block = ReactWorkTags.Block
-local invariant = require(Packages.Shared).invariant
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 -- ROBLOX deviation: we do not support string refs
 -- local warnAboutStringRefs = ReactFeatureFlags.warnAboutStringRefs
 local enableLazyElements = ReactFeatureFlags.enableLazyElements
 local enableBlocksAPI = ReactFeatureFlags.enableBlocksAPI
 
-local ReactFiber = require(script.Parent["ReactFiber.new"])
+local ReactFiber = require("./ReactFiber.new.lua")
 local createWorkInProgress = ReactFiber.createWorkInProgress
 local resetWorkInProgress = ReactFiber.resetWorkInProgress
 local createFiberFromElement = ReactFiber.createFiberFromElement
@@ -72,12 +71,12 @@ local createFiberFromText = ReactFiber.createFiberFromText
 local createFiberFromPortal = ReactFiber.createFiberFromPortal
 -- ROBLOX deviation: we do not support string refs
 -- local emptyRefsObject =
--- 	require(script.Parent["ReactFiberClassComponent.new"]).emptyRefsObject
--- local ReactFiberHotReloading = require(script.Parent["ReactFiberHotReloading.new"])
+-- 	require("./ReactFiberClassComponent.new.lua").emptyRefsObject
+-- local ReactFiberHotReloading = require("./ReactFiberHotReloading.new.lua")
 -- local isCompatibleFamilyForHotReloading =
 -- 	ReactFiberHotReloading.isCompatibleFamilyForHotReloading
 -- ROBLOX deviation: we do not support string refs, which removes our use of StrictMode
--- local StrictMode = require(script.Parent.ReactTypeOfMode).StrictMode
+-- local StrictMode = require("./ReactTypeOfMode").StrictMode
 
 local exports = {}
 

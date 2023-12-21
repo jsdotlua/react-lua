@@ -9,8 +9,7 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Map<K, V> = LuauPolyfill.Map<K, V>
 type Object = { [string]: any }
@@ -18,7 +17,7 @@ type SimpleSet<T> = { [T]: boolean }
 type SimpleMap<K, V> = { [K]: V }
 type Set<T> = LuauPolyfill.Set<T>
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation: ReactElement is defined at the top level of Shared along
 -- with the rest of the ReactTypes
 type Source = ReactTypes.Source
@@ -36,15 +35,15 @@ type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetS
 >
 
 -- ROBLOX deviation START: These are 'mixed' by default, and specialized by the renderer, need complicated dynamic resolution to do this properly
--- local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+-- local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 -- type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
 type SuspenseInstance = any
 -- ROBLOX deviation END
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 type WorkTag = ReactWorkTags.WorkTag
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 type TypeOfMode = ReactTypeOfMode.TypeOfMode
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 type Flags = ReactFiberFlags.Flags
 -- deviation: FiberLane types are defined and exported from here to avoid
 -- cyclical requires
@@ -98,7 +97,7 @@ export type HookType =
 	| "useTransition"
 	| "useMutableSource"
 	| "useOpaqueIdentifier"
-local ReactRootTags = require(script.Parent.ReactRootTags)
+local ReactRootTags = require("./ReactRootTags")
 type RootTag = ReactRootTags.RootTag
 -- ROBLOX deviation: we can't import types for dynamic imports like HostConfig files
 -- type TimeoutHandle = ReactFiberHostConfig.TimeoutHandle;
@@ -106,10 +105,10 @@ type RootTag = ReactRootTags.RootTag
 type TimeoutHandle = any
 type NoTimeout = any
 -- ROBLOX deviation: type forwarded to top-level export
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 type Wakeable = Shared.Wakeable
 -- ROBLOX deviation: Interaction type forwarded to top-level export
-local Scheduler = require(Packages.Scheduler)
+local Scheduler = require("@pkg/@jsdotlua/scheduler")
 type Interaction = Scheduler.Interaction
 
 -- ROBLOX deciation: Luau doesn't support type literals:  99 | 98 | 97 | 96 | 95 | 90

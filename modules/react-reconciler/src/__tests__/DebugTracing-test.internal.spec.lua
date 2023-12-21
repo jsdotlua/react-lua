@@ -30,15 +30,15 @@
 -- end
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
 local jest = JestGlobals.jest
 local it = JestGlobals.it
 local xit = JestGlobals.xit
 local jestExpect = JestGlobals.expect
-local console = require(Packages.Shared).console
-local Promise = require(Packages.Promise)
+local console = require("@pkg/@jsdotlua/shared").console
+local Promise = require("@pkg/@jsdotlua/promise")
 
 -- ROBLOX Test Noise: jest capabilities needed to spy on console
 describe("DebugTracing", function()
@@ -49,16 +49,16 @@ describe("DebugTracing", function()
 		jest.resetModules()
 
 		-- ROBLOX deviation: upstream uses special comments to know which flags to flip. we do it manually.
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.enableDebugTracing = true
 		ReactFeatureFlags.enableSchedulingProfiler = true
 		ReactFeatureFlags.enableProfilerTimer = true
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = true
 		ReactFeatureFlags.enableSuspenseServerRenderer = true
 		ReactFeatureFlags.decoupleUpdatePriorityFromScheduler = true
-		React = require(Packages.React)
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
-		Scheduler = require(Packages.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 
 		-- local groups = {}
 

@@ -8,7 +8,7 @@
  * @flow
  ]]
 local exports = {}
-local reactDebugHooksModule = require(script.Parent.ReactDebugHooks)
+local reactDebugHooksModule = require("./ReactDebugHooks")
 -- ROBLOX deviation START: add re-exporting of types
 export type HooksNode = reactDebugHooksModule.HooksNode
 export type HooksTree = reactDebugHooksModule.HooksTree

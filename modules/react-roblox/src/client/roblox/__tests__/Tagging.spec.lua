@@ -21,10 +21,10 @@ local Tag
 
 local CollectionService = game:GetService("CollectionService")
 local Packages = script.Parent.Parent.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
-local waitForEvents = require(script.Parent.waitForEvents)
+local waitForEvents = require("./waitForEvents")
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
 local it = JestGlobals.it
@@ -32,10 +32,10 @@ local describe = JestGlobals.describe
 
 beforeEach(function()
 	jest.resetModules()
-	React = require(Packages.React)
-	ReactRoblox = require(Packages.ReactRoblox)
-	Scheduler = require(Packages.Scheduler)
-	Tag = require(Packages.React).Tag
+	React = require("@pkg/@jsdotlua/react")
+	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
+	Tag = require("@pkg/@jsdotlua/react").Tag
 end)
 
 describe("adding tags", function()

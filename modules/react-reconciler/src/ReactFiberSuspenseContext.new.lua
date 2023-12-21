@@ -10,10 +10,10 @@
  * @flow
 ]]
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 
-local ReactFiberStack = require(script.Parent["ReactFiberStack.new"])
+local ReactFiberStack = require("./ReactFiberStack.new.lua")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
 
 local createCursor = ReactFiberStack.createCursor

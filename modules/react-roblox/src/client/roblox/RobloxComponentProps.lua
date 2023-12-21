@@ -14,24 +14,23 @@
 ]]
 local __DEV__ = _G.__DEV__ :: boolean
 local CollectionService = game:GetService("CollectionService")
-local Packages = script.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local Set = LuauPolyfill.Set
 local String = LuauPolyfill.String
 local inspect = LuauPolyfill.util.inspect
 
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local React = require(Packages.React)
-local ReactSymbols = require(Packages.Shared).ReactSymbols
-local SingleEventManager = require(script.Parent.SingleEventManager)
+local React = require("@pkg/@jsdotlua/react")
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
+local SingleEventManager = require("./SingleEventManager")
 type EventManager = SingleEventManager.EventManager
-local Type = require(Packages.Shared).Type
-local getDefaultInstanceProperty = require(script.Parent.getDefaultInstanceProperty)
-local ReactRobloxHostTypes = require(script.Parent.Parent["ReactRobloxHostTypes.roblox"])
+local Type = require("@pkg/@jsdotlua/shared").Type
+local getDefaultInstanceProperty = require("./getDefaultInstanceProperty")
+local ReactRobloxHostTypes = require("../ReactRobloxHostTypes.roblox.lua")
 type HostInstance = ReactRobloxHostTypes.HostInstance
-local Tag = require(Packages.React).Tag
+local Tag = require("@pkg/@jsdotlua/react").Tag
 
 -- ROBLOX deviation: Essentially a placeholder for dom-specific logic, taking the place
 -- of ReactDOMComponent. Most of the logic will differ pretty dramatically

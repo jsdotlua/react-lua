@@ -7,28 +7,27 @@
  *
  ]]
 
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local Error = LuauPolyfill.Error
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 
-local React = require(Packages.React)
+local React = require("@pkg/@jsdotlua/react")
 
-local ReactIs = require(Packages.ReactIs)
+local ReactIs = require("@pkg/@jsdotlua/react-is")
 local isForwardRef = ReactIs.isForwardRef
 local isMemo = ReactIs.isMemo
 local ForwardRef = ReactIs.ForwardRef
 
-local ReactComponentStackFrame = require(Packages.Shared).ReactComponentStackFrame
+local ReactComponentStackFrame = require("@pkg/@jsdotlua/shared").ReactComponentStackFrame
 local describeComponentFrame = ReactComponentStackFrame.describeComponentFrame
-local getComponentName = require(Packages.Shared).getComponentName
-local shallowEqual = require(Packages.Shared).shallowEqual
-local checkPropTypes = require(Packages.Shared).checkPropTypes
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local consoleWithStackDev = require(Packages.Shared).consoleWithStackDev
-local is = require(Packages.Shared).objectIs
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local shallowEqual = require("@pkg/@jsdotlua/shared").shallowEqual
+local checkPropTypes = require("@pkg/@jsdotlua/shared").checkPropTypes
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local consoleWithStackDev = require("@pkg/@jsdotlua/shared").consoleWithStackDev
+local is = require("@pkg/@jsdotlua/shared").objectIs
 
 local ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher
 local ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame

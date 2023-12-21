@@ -7,8 +7,7 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Map = LuauPolyfill.Map
 
@@ -17,9 +16,9 @@ type Array<K> = LuauPolyfill.Array<K>
 
 local exports = {}
 
-local devtoolsTypes = require(script.Parent.Parent.Parent.types)
+local devtoolsTypes = require("./types")
 type ProfilerStore = devtoolsTypes.ProfilerStore
-local typesModule = require(script.Parent.types)
+local typesModule = require("./types")
 type Interaction = typesModule.Interaction
 export type ChartData = {
 	interactions: Array<Interaction>,

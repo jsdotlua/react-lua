@@ -10,14 +10,13 @@
 type Set<T> = { [T]: boolean? }
 type Array<T> = { [number]: T }
 local exports = {}
-local Packages = script.Parent.Parent
-local Object = require(Packages.LuauPolyfill).Object
+local Object = require("@pkg/@jsdotlua/luau-polyfill").Object
 
-local Tracing = require(script.Parent.Tracing)
+local Tracing = require("./Tracing")
 type Interaction = Tracing.Interaction
 type Subscriber = Tracing.Subscriber
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 local __subscriberRef = Tracing.__subscriberRef

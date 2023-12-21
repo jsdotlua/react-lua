@@ -23,46 +23,44 @@ local __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ =
 	_G.__DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ :: boolean
 local __COMPAT_WARNINGS__ = _G.__COMPAT_WARNINGS__ :: boolean
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from Shared
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local console = Shared.console
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local inspect = LuauPolyfill.util.inspect
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactProviderType<T> = ReactTypes.ReactProviderType<T>
 type ReactContext<T> = ReactTypes.ReactContext<T>
 type React_Component<Props, State> = ReactTypes.React_Component<Props, State>
 
-local React = require(Packages.React)
+local React = require("@pkg/@jsdotlua/react")
 type LazyComponentType<T, P> = React.LazyComponent<T, P>
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
 -- type Lane = ReactFiberLane.Lane;
 -- local type {MutableSource} = require(Packages.Shared.ReactTypes)
 
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 type SuspenseListRenderState = ReactFiberSuspenseComponent.SuspenseListRenderState
 type SuspenseListTailMode = ReactFiberSuspenseComponent.SuspenseListTailMode
-local ReactFiberSuspenseContext = require(script.Parent["ReactFiberSuspenseContext.new"])
+local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
 type SuspenseContext = ReactFiberSuspenseContext.SuspenseContext
 
-local ReactFiberOffscreenComponent = require(script.Parent.ReactFiberOffscreenComponent)
+local ReactFiberOffscreenComponent = require("./ReactFiberOffscreenComponent")
 type OffscreenProps = ReactFiberOffscreenComponent.OffscreenProps
 type OffscreenState = ReactFiberOffscreenComponent.OffscreenState
 
-local checkPropTypes = require(Packages.Shared).checkPropTypes
+local checkPropTypes = require("@pkg/@jsdotlua/shared").checkPropTypes
 
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 -- local IndeterminateComponent = ReactWorkTags.IndeterminateComponent
 local FunctionComponent = ReactWorkTags.FunctionComponent
 local ClassComponent = ReactWorkTags.ClassComponent
@@ -86,7 +84,7 @@ local IncompleteClassComponent = ReactWorkTags.IncompleteClassComponent
 -- local ScopeComponent = ReactWorkTags.ScopeComponent
 local OffscreenComponent = ReactWorkTags.OffscreenComponent
 local LegacyHiddenComponent = ReactWorkTags.LegacyHiddenComponent
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local NoFlags = ReactFiberFlags.NoFlags
 local StaticMask = ReactFiberFlags.StaticMask
 local PerformedWork = ReactFiberFlags.PerformedWork
@@ -98,8 +96,8 @@ local DidCapture = ReactFiberFlags.DidCapture
 local Ref = ReactFiberFlags.Ref
 local Deletion = ReactFiberFlags.Deletion
 local ForceUpdateForLegacySuspense = ReactFiberFlags.ForceUpdateForLegacySuspense
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local debugRenderPhaseSideEffectsForStrictMode =
 	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode
 local disableLegacyContext = ReactFeatureFlags.disableLegacyContext
@@ -111,19 +109,19 @@ local enableSuspenseServerRenderer = ReactFeatureFlags.enableSuspenseServerRende
 local warnAboutDefaultPropsOnFunctionComponents =
 	ReactFeatureFlags.warnAboutDefaultPropsOnFunctionComponents
 -- local enableScopeAPI = ReactFeatureFlags.enableScopeAPI
-local invariant = require(Packages.Shared).invariant
-local describeError = require(Packages.Shared).describeError
-local shallowEqual = require(Packages.Shared).shallowEqual
-local getComponentName = require(Packages.Shared).getComponentName
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local describeError = require("@pkg/@jsdotlua/shared").describeError
+local shallowEqual = require("@pkg/@jsdotlua/shared").shallowEqual
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_LAZY_TYPE = ReactSymbols.REACT_LAZY_TYPE
 local _getIteratorFn = ReactSymbols.getIteratorFn
-local ReactStrictModeWarnings = require(script.Parent["ReactStrictModeWarnings.new"])
-local ReactCurrentFiber = require(script.Parent.ReactCurrentFiber)
+local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.lua")
+local ReactCurrentFiber = require("./ReactCurrentFiber")
 local getCurrentFiberOwnerNameInDevOrNull =
 	ReactCurrentFiber.getCurrentFiberOwnerNameInDevOrNull
 local setIsRendering = ReactCurrentFiber.setIsRendering
-local ReactFiberHotReloadingModule = require(script.Parent["ReactFiberHotReloading.new"])
+local ReactFiberHotReloadingModule = require("./ReactFiberHotReloading.new.lua")
 local resolveFunctionForHotReloading =
 	ReactFiberHotReloadingModule.resolveFunctionForHotReloading
 local resolveForwardRefForHotReloading =
@@ -131,21 +129,21 @@ local resolveForwardRefForHotReloading =
 local resolveClassForHotReloading =
 	ReactFiberHotReloadingModule.resolveClassForHotReloading
 
-local ReactChildFiber = require(script.Parent["ReactChildFiber.new"]) :: any
+local ReactChildFiber = require("./ReactChildFiber.new.lua") :: any
 local mountChildFibers = ReactChildFiber.mountChildFibers
 local reconcileChildFibers = ReactChildFiber.reconcileChildFibers
 local cloneChildFibers = ReactChildFiber.cloneChildFibers
-local ReactUpdateQueue = require(script.Parent["ReactUpdateQueue.new"])
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
 local processUpdateQueue = ReactUpdateQueue.processUpdateQueue
 local cloneUpdateQueue = ReactUpdateQueue.cloneUpdateQueue
 local initializeUpdateQueue = ReactUpdateQueue.initializeUpdateQueue
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 local ConcurrentMode = ReactTypeOfMode.ConcurrentMode
 local NoMode = ReactTypeOfMode.NoMode
 local ProfileMode = ReactTypeOfMode.ProfileMode
 local StrictMode = ReactTypeOfMode.StrictMode
 local BlockingMode = ReactTypeOfMode.BlockingMode
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 local shouldSetTextContent = ReactFiberHostConfig.shouldSetTextContent
 local isSuspenseInstancePending = ReactFiberHostConfig.isSuspenseInstancePending
 local isSuspenseInstanceFallback = ReactFiberHostConfig.isSuspenseInstanceFallback
@@ -153,7 +151,7 @@ local registerSuspenseInstanceRetry = ReactFiberHostConfig.registerSuspenseInsta
 local supportsHydration = ReactFiberHostConfig.supportsHydration
 type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
 
-local ReactFiberHostContext = require(script.Parent["ReactFiberHostContext.new"])
+local ReactFiberHostContext = require("./ReactFiberHostContext.new.lua")
 local pushHostContext = ReactFiberHostContext.pushHostContext
 local pushHostContainer = ReactFiberHostContext.pushHostContainer
 local suspenseStackCursor = ReactFiberSuspenseContext.suspenseStackCursor
@@ -166,10 +164,10 @@ local pushSuspenseContext = ReactFiberSuspenseContext.pushSuspenseContext
 -- local setShallowSuspenseContext = ReactFiberSuspenseContext.setShallowSuspenseContext
 local setDefaultShallowSuspenseContext =
 	ReactFiberSuspenseContext.setDefaultShallowSuspenseContext
--- local {findFirstSuspended} = require(script.Parent.ReactFiberSuspenseComponent.new)
+-- local {findFirstSuspended} = require("./ReactFiberSuspenseComponent/new")
 -- local {
 --   ,
-local ReactFiberNewContext = require(script.Parent["ReactFiberNewContext.new"])
+local ReactFiberNewContext = require("./ReactFiberNewContext.new.lua")
 local propagateContextChange = ReactFiberNewContext.propagateContextChange
 local readContext = ReactFiberNewContext.readContext
 local calculateChangedBits = ReactFiberNewContext.calculateChangedBits
@@ -186,15 +184,14 @@ local lazyRefs = {
 
 local function shouldSuspend(fiber: Fiber): boolean
 	if not lazyRefs.shouldSuspendRef then
-		lazyRefs.shouldSuspendRef =
-			require(script.Parent.ReactFiberReconciler).shouldSuspend
+		lazyRefs.shouldSuspendRef = require("./ReactFiberReconciler").shouldSuspend
 	end
 	return lazyRefs.shouldSuspendRef(fiber)
 end
 
 -- ROBLOX deviation: collective lazy init methods from ReactFiberHooks
 local function initReactFiberHooks()
-	local ReactFiberHooks = require(script.Parent["ReactFiberHooks.new"])
+	local ReactFiberHooks = require("./ReactFiberHooks.new.lua")
 	lazyRefs.renderWithHooksRef = ReactFiberHooks.renderWithHooks
 	lazyRefs.bailoutHooksRef = ReactFiberHooks.bailoutHooks
 end
@@ -216,8 +213,8 @@ local function bailoutHooks(...)
 end
 
 local stopProfilerTimerIfRunning =
-	require(script.Parent["ReactProfilerTimer.new"]).stopProfilerTimerIfRunning
-local ReactFiberContext = require(script.Parent["ReactFiberContext.new"])
+	require("./ReactProfilerTimer.new.lua").stopProfilerTimerIfRunning
+local ReactFiberContext = require("./ReactFiberContext.new.lua")
 local getMaskedContext = ReactFiberContext.getMaskedContext
 local getUnmaskedContext = ReactFiberContext.getUnmaskedContext
 local hasLegacyContextChanged = ReactFiberContext.hasContextChanged
@@ -226,8 +223,7 @@ local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local pushTopLevelContextObject = ReactFiberContext.pushTopLevelContextObject
 local invalidateContextProvider = ReactFiberContext.invalidateContextProvider
 
-local ReactFiberHydrationContext =
-	require(script.Parent["ReactFiberHydrationContext.new"])
+local ReactFiberHydrationContext = require("./ReactFiberHydrationContext.new.lua")
 local resetHydrationState = ReactFiberHydrationContext.resetHydrationState
 local enterHydrationState = ReactFiberHydrationContext.enterHydrationState
 local reenterHydrationStateFromDehydratedSuspenseInstance =
@@ -235,8 +231,7 @@ local reenterHydrationStateFromDehydratedSuspenseInstance =
 local tryToClaimNextHydratableInstance =
 	ReactFiberHydrationContext.tryToClaimNextHydratableInstance
 local warnIfHydrating = ReactFiberHydrationContext.warnIfHydrating
-local ReactFiberClassComponent =
-	require(script.Parent["ReactFiberClassComponent.new"]) :: any
+local ReactFiberClassComponent = require("./ReactFiberClassComponent.new.lua") :: any
 local adoptClassInstance = ReactFiberClassComponent.adoptClassInstance
 local applyDerivedStateFromProps = ReactFiberClassComponent.applyDerivedStateFromProps
 local constructClassInstance = ReactFiberClassComponent.constructClassInstance
@@ -245,8 +240,8 @@ local resumeMountClassInstance = ReactFiberClassComponent.resumeMountClassInstan
 local updateClassInstance = ReactFiberClassComponent.updateClassInstance
 
 local resolveDefaultProps =
-	require(script.Parent["ReactFiberLazyComponent.new"]).resolveDefaultProps
-local ReactFiber = require(script.Parent["ReactFiber.new"])
+	require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
+local ReactFiber = require("./ReactFiber.new.lua")
 local resolveLazyComponentTag = ReactFiber.resolveLazyComponentTag
 local createFiberFromFragment = ReactFiber.createFiberFromFragment
 local createFiberFromOffscreen = ReactFiber.createFiberFromOffscreen
@@ -254,7 +249,7 @@ local createFiberFromOffscreen = ReactFiber.createFiberFromOffscreen
 local createFiberFromTypeAndProps = ReactFiber.createFiberFromTypeAndProps
 local isSimpleFunctionComponent = ReactFiber.isSimpleFunctionComponent
 local createWorkInProgress = ReactFiber.createWorkInProgress
-local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
+local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
 local pushRenderLanes = ReactFiberWorkLoop.pushRenderLanes
 local markSpawnedWork = ReactFiberWorkLoop.markSpawnedWork
 local retryDehydratedSuspenseBoundary = ReactFiberWorkLoop.retryDehydratedSuspenseBoundary
@@ -267,10 +262,10 @@ local NoContext = ReactFiberWorkLoop.NoContext
 
 local Schedule_tracing_wrap
 local setWorkInProgressVersion =
-	require(script.Parent["ReactMutableSource.new"]).setWorkInProgressVersion
+	require("./ReactMutableSource.new.lua").setWorkInProgressVersion
 local markSkippedUpdateLanes =
-	require(script.Parent.ReactFiberWorkInProgress).markSkippedUpdateLanes
-local ConsolePatchingDev = require(Packages.Shared).ConsolePatchingDev
+	require("./ReactFiberWorkInProgress").markSkippedUpdateLanes
+local ConsolePatchingDev = require("@pkg/@jsdotlua/shared").ConsolePatchingDev
 local disableLogs = ConsolePatchingDev.disableLogs
 local reenableLogs = ConsolePatchingDev.reenableLogs
 
@@ -2552,7 +2547,8 @@ function updateDehydratedSuspenseComponent(
 
 		if enableSchedulerTracing then
 			if Schedule_tracing_wrap == nil then
-				Schedule_tracing_wrap = require(Packages.Scheduler).tracing.unstable_wrap
+				Schedule_tracing_wrap =
+					require("@pkg/@jsdotlua/scheduler").tracing.unstable_wrap
 			end
 			retry = Schedule_tracing_wrap(retry)
 		end

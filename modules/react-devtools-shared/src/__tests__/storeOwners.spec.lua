@@ -10,7 +10,7 @@
  ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
@@ -34,14 +34,14 @@ describeIfDev("Store owners list", function()
 		store = global.store
 		store:setCollapseNodesByDefault(false)
 
-		LuauPolyfill = require(Packages.LuauPolyfill)
+		LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 		Boolean = LuauPolyfill.Boolean
-		React = require(Packages.React)
-		ReactRoblox = require(Packages.ReactRoblox)
-		devtoolsUtils = require(script.Parent.Parent.devtools.utils)
+		React = require("@pkg/@jsdotlua/react")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		devtoolsUtils = require("./devtools/utils")
 		printOwnersList = devtoolsUtils.printOwnersList
 
-		local utils = require(script.Parent.utils)
+		local utils = require("./utils")
 		act = utils.act
 	end)
 

@@ -9,7 +9,6 @@
 --  */
 
 -- !strict
-local Packages = script.Parent.Parent.Parent
 local ReactFeatureFlags
 
 local React
@@ -17,10 +16,10 @@ local ReactTestRenderer
 -- local prettyFormat = require('pretty-format')
 
 -- Isolate noop renderer
--- local ReactNoop = require(Packages.ReactNoopRenderer)
--- local Scheduler = require(Packages.Scheduler)
+-- local ReactNoop = require("@pkg/ReactNoopRenderer")
+-- local Scheduler = require("@pkg/@jsdotlua/scheduler")
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Symbol = LuauPolyfill.Symbol
 
@@ -56,7 +55,7 @@ local function cleanNodeOrArray(node)
 	end
 end
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -67,11 +66,11 @@ describe("ReactTestRenderer", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
 
-		React = require(Packages.React)
-		ReactTestRenderer = require(Packages.ReactTestRenderer)
+		React = require("@pkg/@jsdotlua/react")
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 		-- local prettyFormat = require('pretty-format')
 	end)
 	it("renders a simple component", function()

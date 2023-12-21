@@ -7,8 +7,7 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Map = LuauPolyfill.Map
@@ -19,14 +18,14 @@ type Set<T> = LuauPolyfill.Set<T>
 
 local exports = {}
 
-local devtoolsTypes = require(script.Parent.Parent.Parent.types)
+local devtoolsTypes = require("./types")
 type ProfilerStore = devtoolsTypes.ProfilerStore
 
-local typesModule = require(script.Parent.Parent.Parent.Parent.types)
+local typesModule = require("./types")
 local ElementTypeForwardRef = typesModule.ElementTypeForwardRef
 local ElementTypeMemo = typesModule.ElementTypeMemo
-local formatDuration = require(script.Parent.utils).formatDuration
-local Profiler_typesModule = require(script.Parent.types)
+local formatDuration = require("./utils").formatDuration
+local Profiler_typesModule = require("./types")
 type CommitTree = Profiler_typesModule.CommitTree
 type CommitTreeNode = Profiler_typesModule.CommitTreeNode
 

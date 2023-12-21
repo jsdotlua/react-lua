@@ -18,14 +18,14 @@ local Set
 
 local Packages = script.Parent.Parent.Parent
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
 local it = JestGlobals.it
 
-local Promise = require(Packages.Dev.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 local function loadModules(config)
 	local enableProfilerTimer = (function()
@@ -58,7 +58,7 @@ local function loadModules(config)
 		end
 		return false
 	end)()
-	ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+	ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 
 	ReactFeatureFlags.enableProfilerTimer = enableProfilerTimer
 	ReactFeatureFlags.enableProfilerCommitHooks = enableProfilerCommitHooks
@@ -66,22 +66,22 @@ local function loadModules(config)
 	ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback =
 		replayFailedUnitOfWorkWithInvokeGuardedCallback
 
-	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 	setTimeout = LuauPolyfill.setTimeout
 	Set = LuauPolyfill.Set
 
-	React = require(script.Parent.Parent)
-	Scheduler = require(Packages.Dev.Scheduler)
+	React = require("../init")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 	_SchedulerTracing = Scheduler.tracing
-	ReactCache = require(Packages.Dev.ReactCache)
+	ReactCache = require("@pkg/@jsdotlua/react-cache")
 
 	if useNoopRenderer then
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		ReactTestRenderer = nil
 		ReactTestRendererAct = nil
 	else
 		ReactNoop = nil
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 		ReactTestRendererAct = ReactTestRenderer.unstable_concurrentAct
 	end
 

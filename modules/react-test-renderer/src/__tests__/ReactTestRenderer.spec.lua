@@ -9,10 +9,9 @@
 
 -- 'use strict'
 
-local Packages = script.Parent.Parent.Parent
 local ReactRoblox
 local ReactTestRenderer
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -23,11 +22,11 @@ describe("ReactTestRenderer", function()
 	beforeEach(function()
 		jest.resetModules()
 		jest.useRealTimers()
-		ReactRoblox = require(Packages.Dev.ReactRoblox)
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 
 		-- Isolate test renderer.
 		jest.resetModules()
-		ReactTestRenderer = require(Packages.ReactTestRenderer)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 	end)
 
 	it("should warn if used to render a ReactRoblox portal", function()

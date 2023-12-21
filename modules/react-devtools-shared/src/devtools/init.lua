@@ -1,11 +1,11 @@
 return {
-	utils = require(script.utils),
-	store = require(script.store),
-	cache = require(script.cache),
+	utils = require("./utils"),
+	store = require("./store"),
+	cache = require("./cache"),
 	devtools = {
 		Components = {
 			views = {
-				types = require(script.views.Components.types),
+				types = require("./views/Components/types"),
 			},
 		},
 	},

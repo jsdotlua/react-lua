@@ -8,16 +8,14 @@
  *
  * @emails react-core
  ]]
-local Packages = script.Parent.Parent.Parent
 -- ROBLOX deviation START: fix import
--- local LuauPolyfill = require(Packages.LuauPolyfill)
-local LuauPolyfill = require(Packages.Dev.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation END
 -- ROBLOX deviation START: not used
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
 local Object = LuauPolyfill.Object
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -25,8 +23,8 @@ local it = JestGlobals.it
 local jest = JestGlobals.jest
 
 -- ROBLOX deviation START: add imports
-local Promise = require(Packages.Dev.Promise)
-local ReactTypes = require(Packages.Shared)
+local Promise = require("@pkg/@jsdotlua/promise")
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type React_Component<Props, State> = ReactTypes.React_Component<Props, State>
 -- ROBLOX deviation END
 local React
@@ -36,16 +34,16 @@ describe("ReactIs", function()
 	beforeEach(function()
 		jest.resetModules()
 		-- ROBLOX deviation START: additional flag to switch for tests
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: fix imports
 		-- React = require_("react")
 		-- ReactDOM = require_("react-dom")
 		-- ReactIs = require_("react-is")
-		React = require(Packages.Dev.React)
-		ReactIs = require(Packages.ReactIs)
-		ReactDOM = require(Packages.Dev.ReactRoblox)
+		React = require("@pkg/@jsdotlua/react")
+		ReactIs = require("@pkg/@jsdotlua/react-is")
+		ReactDOM = require("@pkg/@jsdotlua/react-roblox")
 		-- ROBLOX deviation END
 	end)
 	it("should return undefined for unknown/invalid types", function()

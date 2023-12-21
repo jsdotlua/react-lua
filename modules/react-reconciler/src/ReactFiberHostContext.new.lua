@@ -9,17 +9,15 @@
  * @flow
 ]]
 
--- local Packages = script.Parent.Parent
-
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberStack = require(script.Parent["ReactFiberStack.new"])
+local ReactFiberStack = require("./ReactFiberStack.new.lua")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type Container = ReactFiberHostConfig.Container
 type HostContext = ReactFiberHostConfig.HostContext
 
--- local invariant = require(Packages.Shared).invariant
+-- local invariant = require("@pkg/@jsdotlua/shared").invariant
 
 local getChildHostContext = ReactFiberHostConfig.getChildHostContext
 local getRootHostContext = ReactFiberHostConfig.getRootHostContext

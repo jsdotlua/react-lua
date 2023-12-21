@@ -1,16 +1,15 @@
 --!strict
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Binding<T> = ReactTypes.ReactBinding<T>
 
-local Binding = require(script.Parent.Parent["ReactBinding.roblox"])
-local ReactCreateRef = require(script.Parent.Parent.ReactCreateRef)
+local Binding = require("../ReactBinding.roblox.lua")
+local ReactCreateRef = require("../ReactCreateRef")
 
 describe("Binding.create", function()
 	it("should return a Binding object and an update function", function()
@@ -193,6 +192,7 @@ describe("Binding.join", function()
 		local binding2 = Binding.create(2)
 		local binding3 = Binding.create(3)
 
+		-- selene: allow(mixed_table)
 		local joinedBinding = Binding.join({
 			binding1,
 			binding2,
@@ -212,6 +212,7 @@ describe("Binding.join", function()
 		local binding2, update2 = Binding.create(2)
 		local binding3, update3 = Binding.create(3)
 
+		-- selene: allow(mixed_table)
 		local joinedBinding = Binding.join({
 			binding1,
 			binding2,

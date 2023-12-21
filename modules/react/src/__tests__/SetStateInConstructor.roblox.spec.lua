@@ -2,7 +2,7 @@
 
 local Packages = script.Parent.Parent.Parent
 local React, Shared, ReactNoop
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -11,9 +11,9 @@ local beforeEach = JestGlobals.beforeEach
 
 beforeEach(function()
 	jest.resetModules()
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-	React = require(script.Parent.Parent)
-	Shared = require(Packages.Shared)
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+	React = require(".")
+	Shared = require("@pkg/@jsdotlua/shared")
 end)
 
 local function initTests(defineInitMethod: (any, string | number, any) -> (), name)
