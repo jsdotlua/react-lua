@@ -213,7 +213,7 @@ Equivalent behavior for `TextBox` would be nice to have, but will need careful i
 
 ## Roact.Change and Roact.Event
 The Change and Event logic from Roact has been lifted into ReactRoblox. This logic should still behave exactly as it did in Roact. There are a couple things to address:
-* This logic needs to be documented as part of Roact 17's deviation documents
+* This logic needs to be documented as part of React Lua's deviation documents
 * Exposing these as `ReactRoblox.Change` and `ReactRoblox.Event` means that component definitions need to depend upon the ReactRoblox library to provide them
 	* This leaks the renderer abstraction into component definitions, which could otherwise be renderer-agnostic
 	* While we don't currently have non-roblox targets, is there a possibility that this abstraction leak causes issues?

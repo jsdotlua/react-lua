@@ -41,4 +41,4 @@ Debug Tracing is enabled with the enableDebugTracing ReactFeatureFlag. The curre
 src/__tests__/ReactSuspenseList-test.js
 ```
 
-The initial release of Roact 17 includes support for Suspense, but not the unstable SuspenseList API. This was purely to pull in the delivery schedule and narrow the support surface for the initial release.
+The initial release of React Lua includes support for Suspense, but not the unstable SuspenseList API. This was purely to pull in the delivery schedule and narrow the support surface for the initial release.
