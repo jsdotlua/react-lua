@@ -9,9 +9,7 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
@@ -20,18 +18,18 @@ local setTimeout = LuauPolyfill.setTimeout
 local clearTimeout = LuauPolyfill.clearTimeout
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactFundamentalComponentInstance<T, U> = ReactTypes.ReactFundamentalComponentInstance<
 	T,
 	U
 >
 
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_OPAQUE_ID_TYPE = ReactSymbols.REACT_OPAQUE_ID_TYPE
 
-local RobloxComponentProps = require(script.Parent.roblox.RobloxComponentProps)
+local RobloxComponentProps = require("./roblox/RobloxComponentProps")
 
 type Array<T> = { [number]: T }
 type Function = (any) -> any
@@ -78,7 +76,7 @@ export type OpaqueIDType = string | Object
 
 export type RendererInspectionConfig = {}
 
-local ReactFiberHostConfig = require(Packages.Shared).ReactFiberHostConfig
+local ReactFiberHostConfig = require("@pkg/@jsdotlua/shared").ReactFiberHostConfig
 local exports = Object.assign(
 	{},
 	ReactFiberHostConfig.WithNoPersistence,

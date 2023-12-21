@@ -1,7 +1,5 @@
-local Packages = script.Parent.Parent.Parent
-
-local Shared = require(Packages.Shared)
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local Shared = require("@pkg/@jsdotlua/shared")
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 
 type Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>

@@ -4,27 +4,25 @@ local Scheduler
 local act
 local useState, useEffect, useReducer
 
-local Packages = script.Parent.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local jest = JestGlobals.jest
 
-local Promise = require(Packages.Dev.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 describe("ReactTestRenderer.act()", function()
 	beforeEach(function()
 		jest.resetModules()
 		jest.useRealTimers()
 
-		React = require(Packages.React)
+		React = require("@pkg/@jsdotlua/react")
 		useState, useEffect, useReducer =
 			React.useState, React.useEffect, React.useReducer
-		ReactTestRenderer = require(Packages.ReactTestRenderer)
-		Scheduler = require(Packages.Scheduler)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		act = ReactTestRenderer.act
 	end)
 	it("can use .act() to flush effects", function()

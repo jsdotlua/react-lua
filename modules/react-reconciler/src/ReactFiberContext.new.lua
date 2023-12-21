@@ -12,27 +12,26 @@ local __DEV__ = _G.__DEV__ :: boolean
 local __DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ =
 	_G.__DISABLE_ALL_WARNINGS_EXCEPT_PROP_VALIDATION__ :: boolean
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local Error = LuauPolyfill.Error
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberStack = require(script.Parent["ReactFiberStack.new"])
+local ReactFiberStack = require("./ReactFiberStack.new.lua")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
 
-local isFiberMounted = require(script.Parent.ReactFiberTreeReflection).isFiberMounted
+local isFiberMounted = require("./ReactFiberTreeReflection").isFiberMounted
 local disableLegacyContext =
-	require(Packages.Shared).ReactFeatureFlags.disableLegacyContext
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.disableLegacyContext
+local ReactWorkTags = require("./ReactWorkTags")
 local ClassComponent = ReactWorkTags.ClassComponent
 local HostRoot = ReactWorkTags.HostRoot
-local getComponentName = require(Packages.Shared).getComponentName
-local checkPropTypes = require(Packages.Shared).checkPropTypes
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local checkPropTypes = require("@pkg/@jsdotlua/shared").checkPropTypes
 
 local createCursor = ReactFiberStack.createCursor
 local push = ReactFiberStack.push

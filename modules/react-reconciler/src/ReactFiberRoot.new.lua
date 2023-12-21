@@ -9,35 +9,34 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Set = LuauPolyfill.Set
 local Map = LuauPolyfill.Map
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
 type SuspenseHydrationCallbacks = ReactInternalTypes.SuspenseHydrationCallbacks
-local ReactRootTags = require(script.Parent.ReactRootTags)
+local ReactRootTags = require("./ReactRootTags")
 type RootTag = ReactRootTags.RootTag
 
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 local noTimeout = ReactFiberHostConfig.noTimeout
 local supportsHydration = ReactFiberHostConfig.supportsHydration
-local ReactFiber = require(script.Parent["ReactFiber.new"])
+local ReactFiber = require("./ReactFiber.new.lua")
 local createHostRootFiber = ReactFiber.createHostRootFiber
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 local NoLanes = ReactFiberLane.NoLanes
 local NoLanePriority = ReactFiberLane.NoLanePriority
 local NoTimestamp = ReactFiberLane.NoTimestamp
 local createLaneMap = ReactFiberLane.createLaneMap
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 local enableSuspenseCallback = ReactFeatureFlags.enableSuspenseCallback
 -- ROBLOX deviation: import from tracing from Scheduler export to avoid direct file access
-local Scheduler = require(Packages.Scheduler).tracing
+local Scheduler = require("@pkg/@jsdotlua/scheduler").tracing
 local unstable_getThreadID = Scheduler.unstable_getThreadID
-local ReactUpdateQueue = require(script.Parent["ReactUpdateQueue.new"])
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
 local initializeUpdateQueue = ReactUpdateQueue.initializeUpdateQueue
 local LegacyRoot = ReactRootTags.LegacyRoot
 local BlockingRoot = ReactRootTags.BlockingRoot

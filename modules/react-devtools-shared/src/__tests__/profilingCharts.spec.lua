@@ -10,7 +10,7 @@
  ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local xdescribe = JestGlobals.xdescribe
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
@@ -18,7 +18,7 @@ local describe = JestGlobals.describe
 local it = JestGlobals.it
 local jestExpect = JestGlobals.expect
 
-local devtoolsTypes = require(script.Parent.Parent.devtools.types)
+local devtoolsTypes = require("./devtools/types")
 type Store = devtoolsTypes.Store
 
 xdescribe("profiling charts", function()
@@ -31,15 +31,15 @@ xdescribe("profiling charts", function()
 	local utils
 	beforeEach(function()
 		_G.__PROFILE__ = true
-		utils = require(script.Parent.utils)
+		utils = require("./utils")
 		utils.beforeEachProfiling()
 
 		store = _G.store
 		store:setCollapseNodesByDefault(false)
 		store:setRecordChangeDescriptions(true)
-		React = require(Packages.React)
-		ReactRoblox = require(Packages.ReactRoblox)
-		Scheduler = require(Packages.Dev.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		SchedulerTracing = Scheduler.tracing
 	end)
 	afterEach(function()

@@ -10,7 +10,7 @@
 ]]
 
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 
@@ -20,7 +20,7 @@ local ReactNoop
 local Scheduler
 -- local gen
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local jest = JestGlobals.jest
@@ -31,10 +31,10 @@ beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
 
-	React = require(Packages.React)
+	React = require("@pkg/@jsdotlua/react")
 	useContext = React.useContext
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-	Scheduler = require(Packages.Scheduler)
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 	-- gen = nil -- require('random-seed')
 end)
 
@@ -1128,9 +1128,9 @@ describe("Context.Provider", function()
 		-- Get a new copy of ReactNoop
 		jest.resetModules()
 
-		React = require(Packages.React)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-		Scheduler = require(Packages.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 
 		-- Render the provider again using a different renderer
 		ReactNoop.render(React.createElement(App, { value = 1 }))

@@ -14,7 +14,7 @@
 	* limitations under the License.
 ]]
 
-local warnOnce = require(script.Parent.warnOnce)
+local warnOnce = require("./warnOnce")
 
 return function(_config)
 	if _G.__DEV__ and _G.__COMPAT_WARNINGS__ then

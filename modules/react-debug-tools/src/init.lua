@@ -7,12 +7,12 @@
  ]]
 -- ROBLOX deviation START: simplify and re-export types
 -- local Packages --[[ ROBLOX comment: must define Packages module ]]
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Object = LuauPolyfill.Object
 -- local exports = {}
 -- Object.assign(exports, require(script.src.ReactDebugTools))
 -- return exports
-local reactDebugToolsModule = require(script.ReactDebugTools)
+local reactDebugToolsModule = require("./ReactDebugTools")
 export type HooksNode = reactDebugToolsModule.HooksNode
 export type HooksTree = reactDebugToolsModule.HooksTree
 return reactDebugToolsModule

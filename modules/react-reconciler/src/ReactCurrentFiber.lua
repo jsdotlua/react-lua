@@ -9,15 +9,14 @@
  * @flow
 ]]
 local __DEV__ = _G.__DEV__ :: boolean
-local Packages = script.Parent.Parent
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local ReactFiberComponentStack = require(script.Parent.ReactFiberComponentStack)
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local ReactFiberComponentStack = require("./ReactFiberComponentStack")
 local getStackByFiberInDevAndProd = ReactFiberComponentStack.getStackByFiberInDevAndProd
-local getComponentName = require(Packages.Shared).getComponentName
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 
 local ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame
 

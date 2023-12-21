@@ -1,7 +1,7 @@
 --!strict
 local Packages = script.Parent.Parent.Parent
-local ReactBaseClasses = require(script.Parent.Parent.ReactBaseClasses)
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local ReactBaseClasses = require("./ReactBaseClasses")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it

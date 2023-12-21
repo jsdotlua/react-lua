@@ -16,16 +16,15 @@
 
 -- ROBLOX deviation: Promote `shared` to an actual unpublished package with a
 -- real interface instead of just a bag of loose source code
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
-local ReactTypes = require(script.ReactTypes)
-local flowtypes = require(script["flowtypes.roblox"])
-local ReactElementType = require(script.ReactElementType)
-local ReactFiberHostConfig = require(script.ReactFiberHostConfig)
-local ReactSharedInternals = require(script.ReactSharedInternals)
-local ErrorHandling = require(script["ErrorHandling.roblox"])
+local ReactTypes = require("./ReactTypes")
+local flowtypes = require("./flowtypes.roblox.lua")
+local ReactElementType = require("./ReactElementType")
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
+local ReactSharedInternals = require("./ReactSharedInternals")
+local ErrorHandling = require("./ErrorHandling.roblox.lua")
 
 -- Re-export all top-level public types
 export type ReactEmpty = ReactTypes.ReactEmpty
@@ -90,23 +89,23 @@ export type React_Portal = flowtypes.React_Portal
 export type React_Key = flowtypes.React_Key
 
 return {
-	checkPropTypes = require(script.checkPropTypes),
-	console = require(script.console),
-	ConsolePatchingDev = require(script["ConsolePatchingDev.roblox"]),
-	consoleWithStackDev = require(script.consoleWithStackDev),
-	enqueueTask = require(script["enqueueTask.roblox"]),
-	ExecutionEnvironment = require(script.ExecutionEnvironment),
-	formatProdErrorMessage = require(script.formatProdErrorMessage),
-	getComponentName = require(script.getComponentName),
-	invariant = require(script.invariant),
-	invokeGuardedCallbackImpl = require(script.invokeGuardedCallbackImpl),
-	isValidElementType = require(script.isValidElementType),
-	objectIs = require(script.objectIs),
-	ReactComponentStackFrame = require(script.ReactComponentStackFrame),
-	ReactElementType = require(script.ReactElementType),
-	ReactErrorUtils = require(script.ReactErrorUtils),
-	ReactFeatureFlags = require(script.ReactFeatureFlags),
-	ReactInstanceMap = require(script.ReactInstanceMap),
+	checkPropTypes = require("./checkPropTypes"),
+	console = require("./console"),
+	ConsolePatchingDev = require("./ConsolePatchingDev.roblox.lua"),
+	consoleWithStackDev = require("./consoleWithStackDev"),
+	enqueueTask = require("./enqueueTask.roblox.lua"),
+	ExecutionEnvironment = require("./ExecutionEnvironment"),
+	formatProdErrorMessage = require("./formatProdErrorMessage"),
+	getComponentName = require("./getComponentName"),
+	invariant = require("./invariant"),
+	invokeGuardedCallbackImpl = require("./invokeGuardedCallbackImpl"),
+	isValidElementType = require("./isValidElementType"),
+	objectIs = require("./objectIs"),
+	ReactComponentStackFrame = require("./ReactComponentStackFrame"),
+	ReactElementType = require("./ReactElementType"),
+	ReactErrorUtils = require("./ReactErrorUtils"),
+	ReactFeatureFlags = require("./ReactFeatureFlags"),
+	ReactInstanceMap = require("./ReactInstanceMap"),
 	-- ROBLOX deviation: Instead of re-exporting from here, Shared actually owns
 	-- these files itself
 	ReactSharedInternals = ReactSharedInternals,
@@ -115,10 +114,10 @@ return {
 	-- from shared for easier reuse
 	ReactFiberHostConfig = ReactFiberHostConfig,
 
-	ReactSymbols = require(script.ReactSymbols),
-	ReactVersion = require(script.ReactVersion),
-	shallowEqual = require(script.shallowEqual),
-	UninitializedState = require(script["UninitializedState.roblox"]),
+	ReactSymbols = require("./ReactSymbols"),
+	ReactVersion = require("./ReactVersion"),
+	shallowEqual = require("./shallowEqual"),
+	UninitializedState = require("./UninitializedState.roblox.lua"),
 	ReactTypes = ReactTypes,
 
 	-- ROBLOX DEVIATION: export error-stack-preserving utilities for use in
@@ -128,11 +127,11 @@ return {
 	parseReactError = ErrorHandling.parseReactError,
 
 	-- ROBLOX DEVIATION: export Symbol and Type from Shared
-	Symbol = require(script["Symbol.roblox"]),
-	Type = require(script["Type.roblox"]),
+	Symbol = require("./Symbol.roblox.lua"),
+	Type = require("./Type.roblox.lua"),
 
 	-- ROBLOX DEVIATION: export propmarkers from Shared
-	Change = require(script.PropMarkers.Change),
-	Event = require(script.PropMarkers.Event),
-	Tag = require(script.PropMarkers.Tag),
+	Change = require("./PropMarkers/Change"),
+	Event = require("./PropMarkers/Event"),
+	Tag = require("./PropMarkers/Tag"),
 }

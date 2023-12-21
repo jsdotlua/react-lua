@@ -10,23 +10,23 @@
 
 -- local Dependencies = script.Parent.Parent.Parent.Parent.Packages
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local it = JestGlobals.it
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local UninitializedState
--- local PropTypes = require(Dependencies.PropTypes)
+-- local PropTypes = require("./Packages/PropTypes")
 local React
 local ReactShallowRenderer
 local createRenderer
 
 beforeEach(function()
-	UninitializedState = require(Packages.Shared).UninitializedState
-	React = require(Packages.React)
-	ReactShallowRenderer = require(script.Parent.Parent)
+	UninitializedState = require("@pkg/@jsdotlua/shared").UninitializedState
+	React = require("@pkg/@jsdotlua/react")
+	ReactShallowRenderer = require(".")
 	createRenderer = ReactShallowRenderer.createRenderer
 end)
 

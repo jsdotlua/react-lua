@@ -8,24 +8,23 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 type Object = LuauPolyfill.Object
 type Function = (...any) -> ...any
 
 -- ROBLOX: use patched console from shared
-local console = require(script.Parent.console)
+local console = require("./console")
 
 local loggedTypeFailures = {}
 
-local ReactComponentStackFrame = require(script.Parent.ReactComponentStackFrame)
+local ReactComponentStackFrame = require("./ReactComponentStackFrame")
 local describeUnknownElementTypeFrameInDEV =
 	ReactComponentStackFrame.describeUnknownElementTypeFrameInDEV
 
-local ReactSharedInternals = require(script.Parent.ReactSharedInternals)
+local ReactSharedInternals = require("./ReactSharedInternals")
 
-local describeError = require(script.Parent["ErrorHandling.roblox"]).describeError
+local describeError = require("./ErrorHandling.roblox.lua").describeError
 
 local ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame
 

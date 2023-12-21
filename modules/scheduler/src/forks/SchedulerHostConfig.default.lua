@@ -7,11 +7,10 @@
 * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local console = Shared.console
 local errorToString = Shared.errorToString
 local describeError = Shared.describeError

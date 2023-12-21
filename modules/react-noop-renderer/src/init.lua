@@ -9,4 +9,4 @@
  *]]
 
 --!strict
-return require(script.ReactNoop)
+return require("./ReactNoop")

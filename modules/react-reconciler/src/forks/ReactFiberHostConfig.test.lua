@@ -8,6 +8,4 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
-return require(Packages.Dev.ReactTestRenderer)
+return require("@pkg/@jsdotlua/react-test-renderer")

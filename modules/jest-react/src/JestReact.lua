@@ -5,8 +5,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 -- ROBLOX deviation START: not used
 -- local Boolean = LuauPolyfill.Boolean
@@ -14,19 +13,19 @@ local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local exports = {}
 -- ROBLOX deviation START: fix import
--- local JestGlobals = require(Packages.Dev.JestGlobals)
-local JestGlobals = require(Packages.JestGlobals)
+-- local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local expect = JestGlobals.expect
 -- ROBLOX deviation END
 -- ROBLOX deviation START: fix import
 -- local sharedReactSymbolsModule = require(Packages.shared.ReactSymbols)
-local sharedReactSymbolsModule = require(Packages.Shared).ReactSymbols
+local sharedReactSymbolsModule = require("@pkg/@jsdotlua/shared").ReactSymbols
 -- ROBLOX deviation END
 local REACT_ELEMENT_TYPE = sharedReactSymbolsModule.REACT_ELEMENT_TYPE
 local REACT_FRAGMENT_TYPE = sharedReactSymbolsModule.REACT_FRAGMENT_TYPE
 -- ROBLOX deviation START: fix import
--- local invariant = require(Packages.shared.invariant).default
-local invariant = require(Packages.Shared).invariant
+-- local invariant = require("@pkg/@jsdotlua/shared").default
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 -- ROBLOX deviation END
 -- ROBLOX deviation START: predeclare variables
 local jsonChildToJSXChild, jsonChildrenToJSXChildren

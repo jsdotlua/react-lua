@@ -9,45 +9,44 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 type Error = LuauPolyfill.Error
 type Map<K, V> = { [K]: V }
 type Object = { [string]: any }
 type Set<T> = { [T]: boolean }
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
 type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
 type Lane = ReactFiberLane.Lane
-local ReactCapturedValue = require(script.Parent.ReactCapturedValue)
+local ReactCapturedValue = require("./ReactCapturedValue")
 type CapturedValue<T> = ReactCapturedValue.CapturedValue<T>
-local ReactUpdateQueue = require(script.Parent["ReactUpdateQueue.new"])
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
 type Update<T> = ReactInternalTypes.Update<T>
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type React_Component<Props, State> = ReactTypes.React_Component<Props, State>
 type Thenable<T> = ReactTypes.Thenable<T>
 type Wakeable = ReactTypes.Wakeable
 
-local ReactFiberSuspenseContext = require(script.Parent["ReactFiberSuspenseContext.new"])
+local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
 type SuspenseContext = ReactFiberSuspenseContext.SuspenseContext
 
-local getComponentName = require(Packages.Shared).getComponentName
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local ClassComponent = ReactWorkTags.ClassComponent
 local HostRoot = ReactWorkTags.HostRoot
 local SuspenseComponent = ReactWorkTags.SuspenseComponent
 local IncompleteClassComponent = ReactWorkTags.IncompleteClassComponent
 
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local DidCapture = ReactFiberFlags.DidCapture
 local Incomplete = ReactFiberFlags.Incomplete
 local NoFlags = ReactFiberFlags.NoFlags
@@ -55,15 +54,15 @@ local ShouldCapture = ReactFiberFlags.ShouldCapture
 local LifecycleEffectMask = ReactFiberFlags.LifecycleEffectMask
 local ForceUpdateForLegacySuspense = ReactFiberFlags.ForceUpdateForLegacySuspense
 local shouldCaptureSuspense =
-	require(script.Parent["ReactFiberSuspenseComponent.new"]).shouldCaptureSuspense
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+	require("./ReactFiberSuspenseComponent.new.lua").shouldCaptureSuspense
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 local NoMode = ReactTypeOfMode.NoMode
 local BlockingMode = ReactTypeOfMode.BlockingMode
 local DebugTracingMode = ReactTypeOfMode.DebugTracingMode
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableDebugTracing = ReactFeatureFlags.enableDebugTracing
 local enableSchedulingProfiler = ReactFeatureFlags.enableSchedulingProfiler
-local createCapturedValue = require(script.Parent.ReactCapturedValue).createCapturedValue
+local createCapturedValue = require("./ReactCapturedValue").createCapturedValue
 
 local enqueueCapturedUpdate = ReactUpdateQueue.enqueueCapturedUpdate
 local createUpdate = ReactUpdateQueue.createUpdate
@@ -87,7 +86,7 @@ local markLegacyErrorBoundaryAsFailedRef, isAlreadyFailedLegacyErrorBoundaryRef,
 -- ROBLOX deviation: lazy initialize ReactFiberWorkLoop to prevent cyclic module dependency
 local markLegacyErrorBoundaryAsFailed = function(...)
 	if not markLegacyErrorBoundaryAsFailedRef then
-		ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
 		markLegacyErrorBoundaryAsFailedRef =
 			ReactFiberWorkLoop.markLegacyErrorBoundaryAsFailed
 	end
@@ -102,24 +101,23 @@ end
 -- } = require(Packages../ReactFiberWorkLoop.new'
 local pingSuspendedRoot = function(...)
 	if ReactFiberWorkLoop == nil then
-		ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
 	end
 	pingSuspendedRootRef = ReactFiberWorkLoop.pingSuspendedRoot
 	return pingSuspendedRootRef(...)
 end
 local isAlreadyFailedLegacyErrorBoundary = function(...)
 	if ReactFiberWorkLoop == nil then
-		ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
 	end
 	isAlreadyFailedLegacyErrorBoundaryRef =
 		ReactFiberWorkLoop.isAlreadyFailedLegacyErrorBoundary
 	return isAlreadyFailedLegacyErrorBoundaryRef(...)
 end
 
-local logCapturedError = require(script.Parent.ReactFiberErrorLogger).logCapturedError
-local logComponentSuspended = require(script.Parent.DebugTracing).logComponentSuspended
-local markComponentSuspended =
-	require(script.Parent.SchedulingProfiler).markComponentSuspended
+local logCapturedError = require("./ReactFiberErrorLogger").logCapturedError
+local logComponentSuspended = require("./DebugTracing").logComponentSuspended
+local markComponentSuspended = require("./SchedulingProfiler").markComponentSuspended
 
 local SyncLane = ReactFiberLane.SyncLane
 local NoTimestamp = ReactFiberLane.NoTimestamp

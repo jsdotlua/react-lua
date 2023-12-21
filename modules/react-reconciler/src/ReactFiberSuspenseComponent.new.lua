@@ -9,22 +9,20 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
 type Wakeable = ReactTypes.Wakeable
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lane = ReactFiberLane.Lane
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local SuspenseComponent = ReactWorkTags.SuspenseComponent
 local SuspenseListComponent = ReactWorkTags.SuspenseListComponent
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local NoFlags = ReactFiberFlags.NoFlags
 local DidCapture = ReactFiberFlags.DidCapture
 local isSuspenseInstancePending = ReactFiberHostConfig.isSuspenseInstancePending

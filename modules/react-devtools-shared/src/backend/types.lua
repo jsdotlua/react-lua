@@ -8,8 +8,7 @@
 --  * @flow
 --  */
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>
 type Function = (...any) -> any
@@ -19,17 +18,16 @@ type Symbol = Object
 local exports = {}
 
 -- ROBLOX deviation: rotriever re-exports types to the top-level export
-local ReactShared = require(Packages.Shared)
+local ReactShared = require("@pkg/@jsdotlua/shared")
 type ReactContext<T> = ReactShared.ReactContext<T>
 type Source = ReactShared.Source
-local ReactInternalTypes = require(Packages.ReactReconciler)
+local ReactInternalTypes = require("@pkg/@jsdotlua/react-reconciler")
 type Fiber = ReactInternalTypes.Fiber
-local Types = require(script.Parent.Parent.types)
+local Types = require("../types")
 type ComponentFilter = Types.ComponentFilter
 type ElementType = Types.ElementType
 
-local DevToolsViewsProfilerTypes =
-	require(script.Parent.Parent.devtools.views.Profiler.types)
+local DevToolsViewsProfilerTypes = require("../devtools/views/Profiler/types")
 type Interaction = DevToolsViewsProfilerTypes.Interaction
 
 type ResolveNativeStyle = (any) -> Object?

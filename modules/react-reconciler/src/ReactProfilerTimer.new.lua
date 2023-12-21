@@ -8,21 +8,19 @@
 --  * @flow
 --  */
 
-local Packages = script.Parent.Parent
-
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 local enableProfilerCommitHooks = ReactFeatureFlags.enableProfilerCommitHooks
 
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local Profiler = ReactWorkTags.Profiler
 
 -- Intentionally not named imports because Rollup would use dynamic dispatch for
 -- CommonJS interop named imports.
-local Scheduler = require(Packages.Scheduler)
+local Scheduler = require("@pkg/@jsdotlua/scheduler")
 
 local now = Scheduler.unstable_now
 

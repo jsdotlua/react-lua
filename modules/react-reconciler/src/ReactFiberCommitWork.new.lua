@@ -40,15 +40,14 @@ local function isCallable(value)
 	return false
 end
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local console = require("@pkg/@jsdotlua/shared").console
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local Set = LuauPolyfill.Set
 type Array<T> = { [number]: T }
 
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type Instance = ReactFiberHostConfig.Instance
 type Container = ReactFiberHostConfig.Container
 type TextInstance = ReactFiberHostConfig.TextInstance
@@ -58,19 +57,18 @@ type TextInstance = ReactFiberHostConfig.TextInstance
 --   ChildSet,
 --   UpdatePayload,
 type UpdatePayload = Array<any>
--- } = require(script.Parent.ReactFiberHostConfig)
+-- } = require("./ReactFiberHostConfig")
 -- ROBLOX deviation END
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
-local ReactUpdateQueueModule = require(script.Parent["ReactUpdateQueue.new"])
+local ReactUpdateQueueModule = require("./ReactUpdateQueue.new.lua")
 type UpdateQueue<T> = ReactInternalTypes.UpdateQueue<T>
 
--- local ReactFiberHooks = require(script.Parent["ReactFiberHooks.new"])
+-- local ReactFiberHooks = require("./ReactFiberHooks.new.lua")
 -- type FunctionComponentUpdateQueue = ReactFiberHooks.FunctionComponentUpdateQueue
 -- ROBLOX deviation: inline the typedef here to avoid circular dependency
 type Effect = {
@@ -84,18 +82,18 @@ type FunctionComponentUpdateQueue = {
 	lastEffect: Effect?,
 }
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Wakeable = ReactTypes.Wakeable
 
 type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
-local ReactFiberOffscreenComponent = require(script.Parent.ReactFiberOffscreenComponent)
+local ReactFiberOffscreenComponent = require("./ReactFiberOffscreenComponent")
 type OffscreenState = ReactFiberOffscreenComponent.OffscreenState
-local ReactHookEffectTags = require(script.Parent.ReactHookEffectTags)
+local ReactHookEffectTags = require("./ReactHookEffectTags")
 type HookFlags = ReactHookEffectTags.HookFlags
 
 -- ROBLOX deviation: import tracing as a top-level export to avoid direct file access
-local Schedule_tracing_wrap = require(Packages.Scheduler).tracing.unstable_wrap
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local Schedule_tracing_wrap = require("@pkg/@jsdotlua/scheduler").tracing.unstable_wrap
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 local enableProfilerCommitHooks = ReactFeatureFlags.enableProfilerCommitHooks
@@ -104,7 +102,7 @@ local enableProfilerCommitHooks = ReactFeatureFlags.enableProfilerCommitHooks
 local enableSuspenseCallback = ReactFeatureFlags.enableSuspenseCallback
 -- local enableScopeAPI = ReactFeatureFlags.enableScopeAPI
 local enableDoubleInvokingEffects = ReactFeatureFlags.enableDoubleInvokingEffects
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 local FunctionComponent = ReactWorkTags.FunctionComponent
 local ForwardRef = ReactWorkTags.ForwardRef
 local ClassComponent = ReactWorkTags.ClassComponent
@@ -124,11 +122,11 @@ local ScopeComponent = ReactWorkTags.ScopeComponent
 local Block = ReactWorkTags.Block
 local OffscreenComponent = ReactWorkTags.OffscreenComponent
 local LegacyHiddenComponent = ReactWorkTags.LegacyHiddenComponent
-local ReactErrorUtils = require(Packages.Shared).ReactErrorUtils
+local ReactErrorUtils = require("@pkg/@jsdotlua/shared").ReactErrorUtils
 local invokeGuardedCallback = ReactErrorUtils.invokeGuardedCallback
 local hasCaughtError = ReactErrorUtils.hasCaughtError
 local clearCaughtError = ReactErrorUtils.clearCaughtError
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local NoFlags = ReactFiberFlags.NoFlags
 local ContentReset = ReactFiberFlags.ContentReset
 local Placement = ReactFiberFlags.Placement
@@ -138,25 +136,24 @@ local Callback = ReactFiberFlags.Callback
 local LayoutMask = ReactFiberFlags.LayoutMask
 local PassiveMask = ReactFiberFlags.PassiveMask
 local Ref = ReactFiberFlags.Ref
-local getComponentName = require(Packages.Shared).getComponentName
-local invariant = require(Packages.Shared).invariant
-local describeError = require(Packages.Shared).describeError
-local ReactCurrentFiber = require(script.Parent.ReactCurrentFiber)
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local describeError = require("@pkg/@jsdotlua/shared").describeError
+local ReactCurrentFiber = require("./ReactCurrentFiber")
 --  ROBLOX deviation: this property would be captured as values instead of bound
 local currentDebugFiberInDEV = ReactCurrentFiber.current
 local resetCurrentDebugFiberInDEV = ReactCurrentFiber.resetCurrentFiber
 local setCurrentDebugFiberInDEV = ReactCurrentFiber.setCurrentFiber
-local onCommitUnmount =
-	require(script.Parent["ReactFiberDevToolsHook.new"]).onCommitUnmount
+local onCommitUnmount = require("./ReactFiberDevToolsHook.new.lua").onCommitUnmount
 local resolveDefaultProps =
-	require(script.Parent["ReactFiberLazyComponent.new"]).resolveDefaultProps
-local ReactProfilerTimer = require(script.Parent["ReactProfilerTimer.new"])
+	require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
+local ReactProfilerTimer = require("./ReactProfilerTimer.new.lua")
 local startLayoutEffectTimer = ReactProfilerTimer.startLayoutEffectTimer
 local recordPassiveEffectDuration = ReactProfilerTimer.recordPassiveEffectDuration
 local recordLayoutEffectDuration = ReactProfilerTimer.recordLayoutEffectDuration
 local startPassiveEffectTimer = ReactProfilerTimer.startPassiveEffectTimer
 local getCommitTime = ReactProfilerTimer.getCommitTime
-local ProfileMode = require(script.Parent.ReactTypeOfMode).ProfileMode
+local ProfileMode = require("./ReactTypeOfMode").ProfileMode
 local commitUpdateQueue = ReactUpdateQueueModule.commitUpdateQueue
 local getPublicInstance = ReactFiberHostConfig.getPublicInstance
 local supportsMutation = ReactFiberHostConfig.supportsMutation
@@ -192,14 +189,14 @@ local ReactFiberWorkLoop
 
 local function resolveRetryWakeable(boundaryFiber: Fiber, wakeable: Wakeable): ()
 	if not ReactFiberWorkLoop then
-		ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
 	end
 	ReactFiberWorkLoop.resolveRetryWakeable(boundaryFiber, wakeable)
 end
 
 local function markCommitTimeOfFallback(): ()
 	if not ReactFiberWorkLoop then
-		ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
 	end
 	ReactFiberWorkLoop.markCommitTimeOfFallback()
 end
@@ -234,7 +231,7 @@ local didWarnAboutReassigningPropsRef
 local didWarnAboutReassigningProps = function()
 	if not didWarnAboutReassigningPropsRef then
 		didWarnAboutReassigningPropsRef =
-			require(script.Parent["ReactFiberBeginWork.new"]).didWarnAboutReassigningProps
+			require("./ReactFiberBeginWork.new.lua").didWarnAboutReassigningProps
 	end
 	return didWarnAboutReassigningPropsRef
 end

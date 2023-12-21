@@ -8,14 +8,14 @@
  * @flow
  *]]
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local beforeAll = JestGlobals.beforeAll
-local jest = require(Packages.Dev.JestGlobals).jest
+local jest = require("@pkg/@jsdotlua/jest-globals").jest
 local afterEach = JestGlobals.afterEach
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 
 local global = _G
@@ -37,12 +37,12 @@ beforeEach(function()
 	-- rather than imported at the head of the module.
 	-- That's because we reset modules between tests,
 	-- which disconnects the DevTool's cache from the current dispatcher ref.
-	local Agent = require(script.Parent.Parent.backend.agent)
-	local initBackend = require(script.Parent.Parent.backend).initBackend
-	local Bridge = require(script.Parent.Parent.bridge)
-	local Store = require(script.Parent.Parent.devtools.store)
-	local installHook = require(script.Parent.Parent.hook).installHook
-	local utils = require(script.Parent.Parent.utils)
+	local Agent = require("./backend/agent")
+	local initBackend = require("./backend").initBackend
+	local Bridge = require("./bridge")
+	local Store = require("./devtools/store")
+	local installHook = require("./hook").installHook
+	local utils = require("./utils")
 	local getDefaultComponentFilters = utils.getDefaultComponentFilters
 	local saveComponentFilters = utils.saveComponentFilters
 
@@ -81,7 +81,7 @@ beforeEach(function()
 	global.bridge = bridge
 	global.store = store
 
-	local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+	local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 	ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = true
 end)
 

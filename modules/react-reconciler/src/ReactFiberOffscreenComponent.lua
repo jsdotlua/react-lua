@@ -9,11 +9,10 @@
 --  * @flow
 --  */
 
-local Packages = script.Parent.Parent
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
 
-local ReactFiberLanes = require(script.Parent.ReactFiberLane)
+local ReactFiberLanes = require("./ReactFiberLane")
 type Lanes = ReactFiberLanes.Lanes
 
 export type OffscreenProps = {

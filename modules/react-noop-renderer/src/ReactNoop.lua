@@ -16,9 +16,8 @@
  * environment.
 ]]
 
-local Packages = script.Parent.Parent
-local ReactFiberReconciler = require(Packages.ReactReconciler)
-local createReactNoop = require(script.Parent.createReactNoop)
+local ReactFiberReconciler = require("@pkg/@jsdotlua/react-reconciler")
+local createReactNoop = require("./createReactNoop")
 
 local NoopRenderer = createReactNoop(
 	ReactFiberReconciler, -- reconciler

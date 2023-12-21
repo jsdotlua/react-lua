@@ -7,14 +7,13 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 
-local Agent = require(script.agent)
+local Agent = require("./agent")
 type Agent = Agent.Agent
 
-local types = require(script.types)
+local types = require("./types")
 export type DevToolsHook = types.DevToolsHook
 export type ReactRenderer = types.ReactRenderer
 export type RendererInterface = types.RendererInterface
@@ -57,7 +56,7 @@ local function initBackend(hook: DevToolsHook, agent: Agent, global: Object): ()
 
 	local attachRenderer = function(id: number, renderer: ReactRenderer)
 		-- ROBLOX deviation: require attach lazily to avoid the require of renderer causing Roact to initialize prematurely.
-		local attach = require(script.renderer).attach
+		local attach = require("./renderer").attach
 
 		local rendererInterface = hook.rendererInterfaces:get(id)
 
@@ -131,8 +130,8 @@ end
 
 return {
 	initBackend = initBackend,
-	agent = require(script.agent),
+	agent = require("./agent"),
 	NativeStyleEditor = {
-		types = require(script.NativeStyleEditor.types),
+		types = require("./NativeStyleEditor/types"),
 	},
 }

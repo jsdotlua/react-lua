@@ -9,13 +9,12 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
-local RobloxComponentProps = require(script.Parent.roblox.RobloxComponentProps)
+local RobloxComponentProps = require("./roblox/RobloxComponentProps")
 
-local ReactRobloxHostTypes = require(script.Parent["ReactRobloxHostTypes.roblox"])
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 
 -- deviation: Essentially a placeholder for dom-specific logic, taking the place

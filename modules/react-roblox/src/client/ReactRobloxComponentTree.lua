@@ -10,18 +10,16 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local ReactRobloxHostTypes = require(script.Parent["ReactRobloxHostTypes.roblox"])
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 type TextInstance = ReactRobloxHostTypes.TextInstance
 type SuspenseInstance = ReactRobloxHostTypes.SuspenseInstance
 type Container = ReactRobloxHostTypes.Container
 type Props = ReactRobloxHostTypes.Props
 
-local ReactInternalTypes = require(Packages.ReactReconciler)
+local ReactInternalTypes = require("@pkg/@jsdotlua/react-reconciler")
 type Fiber = ReactInternalTypes.Fiber
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 type ReactScopeInstance = Shared.ReactScopeInstance
 -- local type {
 --   ReactDOMEventHandle,
@@ -187,8 +185,7 @@ end
 exports.getInstanceFromNode = function(node): Fiber?
 	-- ROBLOX deviation: lazy initialize to avoid circular dependency
 	if ReactWorkTags == nil then
-		local ReactReconciler =
-			require(script.Parent.Parent["ReactReconciler.roblox"]) :: any
+		local ReactReconciler = require("../ReactReconciler.roblox.lua") :: any
 		ReactWorkTags = ReactReconciler.ReactWorkTags
 
 		HostComponent = ReactWorkTags.HostComponent

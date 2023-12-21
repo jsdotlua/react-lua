@@ -10,16 +10,14 @@
 --  * @jest-environment node
 --  */
 
-local Packages = script.Parent.Parent.Parent
-
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local jest = JestGlobals.jest
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
 local React
@@ -38,11 +36,11 @@ describe("ReactTestRendererTraversal", function()
 
 	beforeEach(function()
 		jest.resetModules()
-		React = require(Packages.React)
+		React = require("@pkg/@jsdotlua/react")
 		View = function(props)
 			return React.createElement(RCTView, props)
 		end
-		ReactTestRenderer = require(Packages.ReactTestRenderer)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 		ExampleSpread = React.Component:extend("ExampleSpread")
 		Context = React.createContext(nil)
 

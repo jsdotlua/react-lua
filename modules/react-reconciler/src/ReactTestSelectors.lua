@@ -7,21 +7,20 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Set<T> = { [T]: boolean }
 type Array<T> = LuauPolyfill.Array<T>
 type Function = (...any) -> ...any
 type Object = LuauPolyfill.Object
 
--- local type {Fiber} = require(Packages.react-reconciler/src/ReactInternalTypes'
--- local type {Instance} = require(Packages../ReactFiberHostConfig'
+-- local type {Fiber} = require(Packages.react-reconciler/src/ReactInternalTypes')
+-- local type {Instance} = require(Packages../ReactFiberHostConfig')
 
--- local invariant = require(Packages.shared/invariant'
--- local {HostComponent, HostText} = require(Packages.react-reconciler/src/ReactWorkTags'
--- local getComponentName = require(Packages.shared/getComponentName'
+-- local invariant = require(Packages.shared/invariant')
+-- local {HostComponent, HostText} = require(Packages.react-reconciler/src/ReactWorkTags')
+-- local getComponentName = require(Packages.shared/getComponentName')
 
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 local supportsTestSelectors = ReactFiberHostConfig.supportsTestSelectors
 -- local {
 --   findFiberRoot,
@@ -33,7 +32,7 @@ local supportsTestSelectors = ReactFiberHostConfig.supportsTestSelectors
 --   setFocusIfFocusable,
 --   setupIntersectionObserver,
 --   ,
--- } = require(Packages../ReactFiberHostConfig'
+-- } = require(Packages../ReactFiberHostConfig')
 
 -- local COMPONENT_TYPE = 0b000
 -- local HAS_PSEUDO_CLASS_TYPE = 0b001

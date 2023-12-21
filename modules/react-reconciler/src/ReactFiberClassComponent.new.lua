@@ -10,30 +10,29 @@
 ]]
 
 local __DEV__ = _G.__DEV__ :: boolean
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local console = require("@pkg/@jsdotlua/shared").console
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
-local ReactUpdateQueue = require(script.Parent["ReactUpdateQueue.new"])
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
 type UpdateQueue<State> = ReactInternalTypes.UpdateQueue<State>
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type React_Component<Props, State> = ReactTypes.React_Component<Props, State>
 
-local React = require(Packages.React)
+local React = require("@pkg/@jsdotlua/react")
 
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local Update = ReactFiberFlags.Update
 local Snapshot = ReactFiberFlags.Snapshot
 local MountLayoutDev = ReactFiberFlags.MountLayoutDev
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local debugRenderPhaseSideEffectsForStrictMode =
 	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode
 local disableLegacyContext = ReactFeatureFlags.disableLegacyContext
@@ -42,23 +41,23 @@ local enableSchedulingProfiler = ReactFeatureFlags.enableSchedulingProfiler
 local warnAboutDeprecatedLifecycles = ReactFeatureFlags.warnAboutDeprecatedLifecycles
 local enableDoubleInvokingEffects = ReactFeatureFlags.enableDoubleInvokingEffects
 
-local ReactStrictModeWarnings = require(script.Parent["ReactStrictModeWarnings.new"])
-local isMounted = require(script.Parent.ReactFiberTreeReflection).isMounted
-local ReactInstanceMap = require(Packages.Shared).ReactInstanceMap
+local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.lua")
+local isMounted = require("./ReactFiberTreeReflection").isMounted
+local ReactInstanceMap = require("@pkg/@jsdotlua/shared").ReactInstanceMap
 local getInstance = ReactInstanceMap.get
 local setInstance = ReactInstanceMap.set
-local shallowEqual = require(Packages.Shared).shallowEqual
-local getComponentName = require(Packages.Shared).getComponentName
-local UninitializedState = require(Packages.Shared).UninitializedState
-local describeError = require(Packages.Shared).describeError
--- local invariant = require(Packages.Shared).invariant
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local shallowEqual = require("@pkg/@jsdotlua/shared").shallowEqual
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local UninitializedState = require("@pkg/@jsdotlua/shared").UninitializedState
+local describeError = require("@pkg/@jsdotlua/shared").describeError
+-- local invariant = require("@pkg/@jsdotlua/shared").invariant
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_CONTEXT_TYPE = ReactSymbols.REACT_CONTEXT_TYPE
 local REACT_PROVIDER_TYPE = ReactSymbols.REACT_PROVIDER_TYPE
 
 local resolveDefaultProps =
-	require(script.Parent["ReactFiberLazyComponent.new"]).resolveDefaultProps
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+	require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 local DebugTracingMode = ReactTypeOfMode.DebugTracingMode
 local StrictMode = ReactTypeOfMode.StrictMode
 
@@ -75,29 +74,29 @@ local initializeUpdateQueue = ReactUpdateQueue.initializeUpdateQueue
 local cloneUpdateQueue = ReactUpdateQueue.cloneUpdateQueue
 local NoLanes = ReactFiberLane.NoLanes
 
-local ReactFiberContext = require(script.Parent["ReactFiberContext.new"])
+local ReactFiberContext = require("./ReactFiberContext.new.lua")
 local cacheContext = ReactFiberContext.cacheContext
 local getMaskedContext = ReactFiberContext.getMaskedContext
 local getUnmaskedContext = ReactFiberContext.getUnmaskedContext
 local hasContextChanged = ReactFiberContext.hasContextChanged
 local emptyContextObject = ReactFiberContext.emptyContextObject
 
-local ReactFiberNewContext = require(script.Parent["ReactFiberNewContext.new"])
+local ReactFiberNewContext = require("./ReactFiberNewContext.new.lua")
 local readContext = ReactFiberNewContext.readContext
 
--- local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
+-- local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
 -- local requestEventTime = ReactFiberWorkLoop.requestEventTime
 -- local requestUpdateLane = ReactFiberWorkLoop.requestUpdateLane
 -- local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber
-local DebugTracing = require(script.Parent.DebugTracing)
+local DebugTracing = require("./DebugTracing")
 local logForceUpdateScheduled = DebugTracing.logForceUpdateScheduled
 local logStateUpdateScheduled = DebugTracing.logStateUpdateScheduled
 
-local ConsolePatchingDev = require(Packages.Shared).ConsolePatchingDev
+local ConsolePatchingDev = require("@pkg/@jsdotlua/shared").ConsolePatchingDev
 local disableLogs = ConsolePatchingDev.disableLogs
 local reenableLogs = ConsolePatchingDev.reenableLogs
 
-local SchedulingProfiler = require(script.Parent.SchedulingProfiler)
+local SchedulingProfiler = require("./SchedulingProfiler")
 local markForceUpdateScheduled = SchedulingProfiler.markForceUpdateScheduled
 local markStateUpdateScheduled = SchedulingProfiler.markStateUpdateScheduled
 
@@ -243,7 +242,7 @@ end
 -- deviation: lazy initialize this to avoid cycles
 local classComponentUpdater = nil
 local function initializeClassComponentUpdater()
-	local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
+	local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
 	local requestEventTime = ReactFiberWorkLoop.requestEventTime
 	local requestUpdateLane = ReactFiberWorkLoop.requestUpdateLane
 	local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber

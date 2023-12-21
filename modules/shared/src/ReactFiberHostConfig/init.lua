@@ -33,7 +33,7 @@ type Object = { [string]: any }
 export type OpaqueIDType = string | Object
 
 return {
-	WithNoHydration = require(script.WithNoHydration),
-	WithNoPersistence = require(script.WithNoPersistence),
-	WithNoTestSelectors = require(script.WithNoTestSelectors),
+	WithNoHydration = require("./WithNoHydration"),
+	WithNoPersistence = require("./WithNoPersistence"),
+	WithNoTestSelectors = require("./WithNoTestSelectors"),
 }

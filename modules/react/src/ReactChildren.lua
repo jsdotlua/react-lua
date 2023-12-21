@@ -8,27 +8,25 @@
  *
  * @flow
 ]]
-
-local Packages = script.Parent.Parent
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
 type React_Node = ReactTypes.React_Node
 type ReactElement<P, T> = ReactTypes.ReactElement<P, T>
 
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local getIteratorFn = ReactSymbols.getIteratorFn
 local REACT_ELEMENT_TYPE = ReactSymbols.REACT_ELEMENT_TYPE
 local REACT_PORTAL_TYPE = ReactSymbols.REACT_PORTAL_TYPE
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 -- local console = LuauPolyfill.console
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 
-local ReactElement = require(script.Parent.ReactElement)
+local ReactElement = require("./ReactElement")
 local isValidElement = ReactElement.isValidElement
 local cloneAndReplaceKey = ReactElement.cloneAndReplaceKey
 

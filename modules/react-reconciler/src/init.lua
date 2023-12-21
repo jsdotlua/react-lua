@@ -9,8 +9,8 @@
  ]]
 
 --!strict
-local ReactInternalTypes = require(script.ReactInternalTypes)
-local ReactRootTags = require(script.ReactRootTags)
+local ReactInternalTypes = require("./ReactInternalTypes")
+local ReactRootTags = require("./ReactRootTags")
 
 export type Dispatcher = ReactInternalTypes.Dispatcher
 export type Fiber = ReactInternalTypes.Fiber
@@ -26,12 +26,12 @@ export type RootTag = ReactRootTags.RootTag
 -- reconciler module
 -- ROBLOX TODO: this effectively disconnects type checking from above to reconciler to below
 local function initialize(config): { [string]: any }
-	local ReactFiberHostConfig = require(script.ReactFiberHostConfig)
+	local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 	for name, implementation in config do
 		ReactFiberHostConfig[name] = implementation
 	end
 
-	return require(script.ReactFiberReconciler)
+	return require("./ReactFiberReconciler")
 end
 
 return initialize

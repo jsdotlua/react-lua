@@ -1,0 +1,20 @@
+{
+  "name": "@jsdotlua/shared",
+  "version": "17.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdotlua/react-lua.git",
+    "directory": "modules/shared"
+  },
+  "license": "MIT",
+  "main": "src/init.lua",
+  "scripts": {
+    "prepare": "npmluau"
+  },
+  "dependencies": {
+    "@jsdotlua/luau-polyfill": "^1.2.6"
+  },
+  "devDependencies": {
+    "npmluau": "^0.1.0"
+  }
+}

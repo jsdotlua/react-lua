@@ -6,19 +6,18 @@
 --  * This source code is licensed under the MIT license found in the
 --  * LICENSE file in the root directory of this source tree.
 --  */
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local console = require(Packages.Shared).console
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+local console = require("@pkg/@jsdotlua/shared").console
 type Array<T> = { [number]: T }
 type Function = (...any) -> ...any
 
-local EventEmitter = require(script.Parent.events)
+local EventEmitter = require("./events")
 type EventEmitter<T> = EventEmitter.EventEmitter<T>
 
-local Types = require(script.Parent.types)
+local Types = require("./types")
 type ComponentFilter = Types.ComponentFilter
 type Wall = Types.Wall
-local BackendTypes = require(script.Parent.backend.types)
+local BackendTypes = require("./backend/types")
 type InspectedElementPayload = BackendTypes.InspectedElementPayload
 type OwnersList = BackendTypes.OwnersList
 type ProfilingDataBackend = BackendTypes.ProfilingDataBackend

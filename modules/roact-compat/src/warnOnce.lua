@@ -14,8 +14,7 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
 local warnedAbout = {}
 

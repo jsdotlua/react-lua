@@ -9,14 +9,14 @@
 --  */
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local jest = JestGlobals.jest
 
 describe("Tracing", function()
-	local JestGlobals = require(Packages.Dev.JestGlobals)
+	local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 	local jestExpect = JestGlobals.expect
 
 	local SchedulerTracing
@@ -24,7 +24,7 @@ describe("Tracing", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		SchedulerTracing = require(Packages.Scheduler).tracing
+		SchedulerTracing = require("@pkg/@jsdotlua/scheduler").tracing
 	end)
 
 	it("should return the value of a traced function", function()

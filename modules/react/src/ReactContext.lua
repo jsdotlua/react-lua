@@ -8,12 +8,11 @@
  *
  *
 ]]
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local console = Shared.console
 
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_PROVIDER_TYPE = ReactSymbols.REACT_PROVIDER_TYPE
 local REACT_CONTEXT_TYPE = ReactSymbols.REACT_CONTEXT_TYPE
 type ReactContext<T> = Shared.ReactContext<T>

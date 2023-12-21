@@ -10,10 +10,10 @@
  ]]
 local Packages = script.Parent.Parent.Parent
 -- ROBLOX deviation START: not needed
--- local LuauPolyfill = require(Packages.LuauPolyfill)
+-- local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -28,8 +28,8 @@ describe("ReactHooksInspection", function()
 		-- ROBLOX deviation START: fix requires
 		-- React = require_("react")
 		-- ReactDebugTools = require_("react-debug-tools")
-		React = require(Packages.Dev.React)
-		ReactDebugTools = require(Packages.ReactDebugTools)
+		React = require("@pkg/@jsdotlua/react")
+		ReactDebugTools = require("@pkg/@jsdotlua/react-debug-tools")
 		-- ROBLOX deviation END
 	end)
 	it("should inspect a simple useState hook", function()

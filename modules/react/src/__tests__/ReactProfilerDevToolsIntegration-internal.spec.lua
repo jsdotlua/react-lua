@@ -2,9 +2,9 @@
 local Packages = script.Parent.Parent.Parent
 local React
 local Scheduler
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Set = LuauPolyfill.Set
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 
 describe("ReactProfiler DevTools integration", function()
@@ -32,14 +32,14 @@ describe("ReactProfiler DevTools integration", function()
 
 		jest.resetModules()
 
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.enableProfilerTimer = true
 		ReactFeatureFlags.enableSchedulerTracing = true
-		Scheduler = require(Packages.Dev.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- ROBLOX deviation: import tracing from top-level Scheduler export to avoid direct file access
 		SchedulerTracing = Scheduler.tracing
-		React = require(Packages.React)
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
+		React = require("@pkg/@jsdotlua/react")
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 
 		AdvanceTime = React.Component:extend("AdvanceTime")
 		AdvanceTime.defaultProps = {

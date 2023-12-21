@@ -16,14 +16,14 @@
  ]]
 local HttpService = game:GetService("HttpService")
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
 local it = JestGlobals.it
 local xit = JestGlobals.xit
 local beforeEach = JestGlobals.beforeEach
 
-local Error = require(Packages.LuauPolyfill).Error
+local Error = require("@pkg/@jsdotlua/luau-polyfill").Error
 
 -- deviation: Move all of the following into the test function body to match
 -- convention
@@ -97,15 +97,15 @@ beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
 
-	React = require(Packages.React)
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+	React = require("@pkg/@jsdotlua/react")
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 	-- ReactDOM = require('react-dom')
 	-- ReactTestUtils = require('react-dom/test-utils')
 	-- PropTypes = require('prop-types')
 
 	-- ROBLOX deviation: these tests are failing with debugRenderPhaseSideEffectsForStrictMode on.
 	-- https://github.com/Roblox/roact-alignment/issues/105
-	local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+	local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = false
 end)
 

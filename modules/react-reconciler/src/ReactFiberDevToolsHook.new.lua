@@ -8,10 +8,9 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local console = require("@pkg/@jsdotlua/shared").console
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 local exports = {}
 
@@ -41,16 +40,17 @@ local function isCallable(value)
 	return false
 end
 
-local enableProfilerTimer = require(Packages.Shared).ReactFeatureFlags.enableProfilerTimer
+local enableProfilerTimer =
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableProfilerTimer
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
 type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
 
-local DidCapture = require(script.Parent.ReactFiberFlags).DidCapture
+local DidCapture = require("./ReactFiberFlags").DidCapture
 
 -- ROBLOX deviation: we'll inject this a different way
 -- declare var __REACT_DEVTOOLS_GLOBAL_HOOK__: Object | void

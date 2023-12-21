@@ -10,7 +10,7 @@
 
 local Packages = script.Parent.Parent.Parent.Parent
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
@@ -26,13 +26,13 @@ local parent
 beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
-	local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+	local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = false
 
-	React = require(Packages.React)
-	ReactRoblox = require(Packages.ReactRoblox)
-	Scheduler = require(Packages.Scheduler)
-	ReactRobloxComponentTree = require(script.Parent.Parent.ReactRobloxComponentTree)
+	React = require("@pkg/@jsdotlua/react")
+	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
+	ReactRobloxComponentTree = require("./ReactRobloxComponentTree")
 	parent = Instance.new("Folder")
 	reactRobloxRoot = ReactRoblox.createRoot(parent)
 end)

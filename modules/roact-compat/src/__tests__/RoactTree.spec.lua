@@ -14,7 +14,7 @@
 ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local afterEach = JestGlobals.afterEach
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
@@ -43,8 +43,8 @@ describe("Concurrent root (default behavior)", function()
 		_G.__ROACT_17_INLINE_ACT__ = true
 		_G.__ROACT_17_MOCK_SCHEDULER__ = true
 		jest.resetModules()
-		Roact = require(Packages.Dev.Roact)
-		RoactCompat = require(script.Parent.Parent)
+		Roact = require("@dev-packages/Roact")
+		RoactCompat = require(".")
 	end)
 
 	afterEach(function()
@@ -147,8 +147,8 @@ describe("Legacy root", function()
 		previousGlobalValue = _G.__ROACT_17_COMPAT_LEGACY_ROOT__
 		_G.__ROACT_17_COMPAT_LEGACY_ROOT__ = true
 		jest.resetModules()
-		Roact = require(Packages.Dev.Roact)
-		RoactCompat = require(script.Parent.Parent)
+		Roact = require("@dev-packages/Roact")
+		RoactCompat = require(".")
 	end)
 
 	afterEach(function()

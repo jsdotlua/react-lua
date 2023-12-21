@@ -14,17 +14,15 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local ReactSymbols = require(Packages.Shared).ReactSymbols
-
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Binding<T> = ReactTypes.ReactBinding<T>
 type BindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
 
 local Symbol = LuauPolyfill.Symbol
-local createSignal = require(script.Parent["createSignal.roblox"])
+local createSignal = require("./createSignal.roblox.lua")
 
 local BindingImpl = Symbol("BindingImpl")
 

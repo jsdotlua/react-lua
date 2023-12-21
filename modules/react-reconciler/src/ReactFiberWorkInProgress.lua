@@ -12,7 +12,7 @@
  * @flow
 ]]
 
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 local _workInProgressRootSkippedLanes: Lanes = ReactFiberLane.NoLanes
 local mergeLanes = ReactFiberLane.mergeLanes
 type Lanes = ReactFiberLane.Lanes

@@ -9,13 +9,13 @@
 --  */
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local jest = JestGlobals.jest
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Set = LuauPolyfill.Set
 
 describe("TracingSubscriptions", function()
@@ -53,10 +53,10 @@ describe("TracingSubscriptions", function()
 
 		currentTime = 0
 
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.enableSchedulerTracing = enableSchedulerTracing
 
-		SchedulerTracing = require(Packages.Scheduler).tracing
+		SchedulerTracing = require("@pkg/@jsdotlua/scheduler").tracing
 
 		throwInOnInteractionScheduledWorkCompleted = false
 		throwInOnInteractionTraced = false

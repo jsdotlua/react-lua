@@ -4,7 +4,7 @@
 ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local it = JestGlobals.it
@@ -23,10 +23,10 @@ local updatePayload = { myVariable = 90210 }
 beforeEach(function()
 	jest.resetModules()
 
-	React = require(Packages.React)
-	ReactUpdateQueue = require(script.Parent.Parent["ReactUpdateQueue.new"])
-	Fiber = require(script.Parent.Parent["ReactFiber.new"])
-	FiberLane = require(script.Parent.Parent.ReactFiberLane)
+	React = require("@pkg/@jsdotlua/react")
+	ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
+	Fiber = require("./ReactFiber.new.lua")
+	FiberLane = require("./ReactFiberLane")
 
 	component = React.Component:extend("fundamental")
 	fundamentalFiber = Fiber.createFiberFromFundamental(component)
@@ -159,7 +159,7 @@ describe("enqueueCapturedUpdate", function()
 		update.lane = lane
 		ReactUpdateQueue.initializeUpdateQueue(fundamentalFiber)
 		workInProgress = Fiber.createWorkInProgress(fundamentalFiber, nextProps)
-		local ReactFiberFlags = require(script.Parent.Parent.ReactFiberFlags)
+		local ReactFiberFlags = require("./ReactFiberFlags")
 		workInProgress.flags = bit32.bor(0, ReactFiberFlags.ShouldCapture)
 	end)
 

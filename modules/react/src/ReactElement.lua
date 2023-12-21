@@ -7,14 +7,13 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 local __DEV__ = _G.__DEV__ :: boolean
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 type Object = LuauPolyfill.Object
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
-local ReactTypes = require(Packages.Shared)
+local console = require("@pkg/@jsdotlua/shared").console
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type React_StatelessFunctionalComponent<P> = ReactTypes.React_StatelessFunctionalComponent<
 	P
 >
@@ -27,15 +26,17 @@ type ReactElement<P = Object, T = any> = ReactTypes.ReactElement<P, T>
 type ReactContext<T> = ReactTypes.ReactContext<T>
 type Source = ReactTypes.Source
 
-local ReactLazy = require(script.Parent.ReactLazy)
+local ReactLazy = require("./ReactLazy")
 type LazyComponent<T, P> = ReactLazy.LazyComponent<T, P>
 
-local getComponentName = require(Packages.Shared).getComponentName
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 -- ROBLOX deviation START: we eliminate invariant like in React 18 to avoid string formatting and function call overhead
--- local invariant = require(Packages.Shared).invariant
+-- local invariant = require("@pkg/@jsdotlua/shared").invariant
 -- ROBLOX deviation END
-local REACT_ELEMENT_TYPE = require(Packages.Shared).ReactSymbols.REACT_ELEMENT_TYPE
-local ReactCurrentOwner = require(Packages.Shared).ReactSharedInternals.ReactCurrentOwner
+local REACT_ELEMENT_TYPE =
+	require("@pkg/@jsdotlua/shared").ReactSymbols.REACT_ELEMENT_TYPE
+local ReactCurrentOwner =
+	require("@pkg/@jsdotlua/shared").ReactSharedInternals.ReactCurrentOwner
 --local hasOwnProperty = Object.prototype.hasOwnProperty
 -- ROBLOX deviation START: upstream iterates over this table, but we manually unroll those loops for hot path performance
 -- IF THIS TABLE UPDATES, YOU MUST UPDATE THE UNROLLED LOOPS AS WELL

@@ -16,11 +16,11 @@ local act
 local createMutableSource
 local useMutableSource
 
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Promise = require(Packages.Promise)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+local Promise = require("@pkg/@jsdotlua/promise")
 local Array = LuauPolyfill.Array
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
@@ -31,12 +31,12 @@ local describe = JestGlobals.describe
 local function loadModules()
 	jest.resetModules()
 	jest.useFakeTimers()
-	local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+	local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 	ReactFeatureFlags.enableSchedulerTracing = true
 	ReactFeatureFlags.enableProfilerTimer = true
-	React = require(Packages.React)
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-	Scheduler = require(Packages.Scheduler)
+	React = require("@pkg/@jsdotlua/react")
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 	act = ReactNoop.act
 	createMutableSource = React.createMutableSource
 	useMutableSource = React.useMutableSource

@@ -9,27 +9,25 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-
-local ReactElementType = require(Packages.Shared)
+local ReactElementType = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation: ReactElement is defined at the top level of Shared along
 -- with the rest of the ReactTypes
 type ReactElement = ReactElementType.ReactElement<any, any>
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
--- local type {FiberRoot} = require(script.Parent.ReactInternalTypes)
--- local type {Instance} = require(script.Parent.ReactFiberHostConfig)
--- local type {ReactNodeList} = require(Packages.Shared).ReactTypes
+-- local type {FiberRoot} = require("./ReactInternalTypes")
+-- local type {Instance} = require("./ReactFiberHostConfig")
+-- local type {ReactNodeList} = require("@pkg/@jsdotlua/shared").ReactTypes
 
 -- local {
 -- 	flushSync,
 -- 	scheduleUpdateOnFiber,
 -- 	flushPassiveEffects,
--- } = require(script.Parent.ReactFiberWorkLoop.new)
--- local {updateContainer} = require(script.Parent.ReactFiberReconciler.new)
--- local {emptyContextObject} = require(script.Parent.ReactFiberContext.new)
--- local {SyncLane, NoTimestamp} = require(script.Parent.ReactFiberLane)
+-- } = require("./ReactFiberWorkLoop/new")
+-- local {updateContainer} = require("./ReactFiberReconciler/new")
+-- local {emptyContextObject} = require("./ReactFiberContext/new")
+-- local {SyncLane, NoTimestamp} = require("./ReactFiberLane")
 -- local {
 -- 	ClassComponent,
 -- 	FunctionComponent,
@@ -39,8 +37,8 @@ type Fiber = ReactInternalTypes.Fiber
 -- 	HostRoot,
 -- 	MemoComponent,
 -- 	SimpleMemoComponent,
--- } = require(script.Parent.ReactWorkTags)
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+-- } = require("./ReactWorkTags")
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_FORWARD_REF_TYPE = ReactSymbols.REACT_FORWARD_REF_TYPE
 -- 	REACT_MEMO_TYPE,
 -- 	REACT_LAZY_TYPE,

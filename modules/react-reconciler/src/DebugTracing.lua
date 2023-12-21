@@ -8,12 +8,11 @@
 --  * @flow
 --  */
 
-local Packages = script.Parent.Parent
 type Array<T> = { [number]: T }
 type Map<K, V> = { [K]: V }
 type Object = { [string]: any }
 type Function = (any) -> any?
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local console = Shared.console
 local exports = {}
 
@@ -21,12 +20,13 @@ local exports = {}
 local log
 -- ROBLOX deviation: the nucelus emoji `(%c\u{269B}\u{FE0F}%c)` has been replaced with `*`
 
-local ReactFiberLaneModule = require(script.Parent.ReactFiberLane)
+local ReactFiberLaneModule = require("./ReactFiberLane")
 type Lane = ReactFiberLaneModule.Lane
 type Lanes = ReactFiberLaneModule.Lanes
 type Wakeable = Shared.Wakeable
 
-local enableDebugTracing = require(Packages.Shared).ReactFeatureFlags.enableDebugTracing
+local enableDebugTracing =
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableDebugTracing
 
 local nativeConsole: Object = console
 local nativeConsoleLog: nil | Function = nil

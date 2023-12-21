@@ -7,10 +7,8 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Shared = require(Packages.Shared)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+local Shared = require("@pkg/@jsdotlua/shared")
 local console = Shared.console
 local Map = LuauPolyfill.Map
 local Set = LuauPolyfill.Set
@@ -31,12 +29,12 @@ type Object = LuauPolyfill.Object
 local window = _G
 local exports = {}
 
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 
 -- ROBLOX deviation: we don't currently need semver, as we only support one version of React
 -- local semver = require(semver)
 -- local gte = semver.gte
-local types = require(script.Parent.Parent.types)
+local types = require("./types")
 local ComponentFilterDisplayName = types.ComponentFilterDisplayName
 local ComponentFilterElementType = types.ComponentFilterElementType
 local ComponentFilterHOC = types.ComponentFilterHOC
@@ -52,7 +50,7 @@ local ElementTypeProfiler = types.ElementTypeProfiler
 local ElementTypeRoot = types.ElementTypeRoot
 local ElementTypeSuspense = types.ElementTypeSuspense
 local ElementTypeSuspenseList = types.ElementTypeSuspenseList
-local utils = require(script.Parent.Parent.utils)
+local utils = require("./utils")
 local deletePathInObject = utils.deletePathInObject
 local getDisplayName = utils.getDisplayName
 local getDefaultComponentFilters = utils.getDefaultComponentFilters
@@ -62,15 +60,15 @@ local renamePathInObject = utils.renamePathInObject
 local setInObject = utils.setInObject
 -- ROBLOX deviation: Don't encode strings
 -- local utfEncodeString = utils.utfEncodeString
-local storage = require(script.Parent.Parent.storage)
+local storage = require("../storage")
 local sessionStorageGetItem = storage.sessionStorageGetItem
-local backendUtils = require(script.Parent.utils)
+local backendUtils = require("./utils")
 local cleanForBridge = backendUtils.cleanForBridge
 local copyToClipboard = backendUtils.copyToClipboard
 local copyWithDelete = backendUtils.copyWithDelete
 local copyWithRename = backendUtils.copyWithRename
 local copyWithSet = backendUtils.copyWithSet
-local constants = require(script.Parent.Parent.constants)
+local constants = require("../constants")
 local __DEBUG__ = constants.__DEBUG__
 local SESSION_STORAGE_RELOAD_AND_PROFILE_KEY =
 	constants.SESSION_STORAGE_RELOAD_AND_PROFILE_KEY
@@ -81,12 +79,12 @@ local TREE_OPERATION_REMOVE = constants.TREE_OPERATION_REMOVE
 local TREE_OPERATION_REORDER_CHILDREN = constants.TREE_OPERATION_REORDER_CHILDREN
 local TREE_OPERATION_UPDATE_TREE_BASE_DURATION =
 	constants.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
-local ReactDebugTools = require(Packages.ReactDebugTools)
+local ReactDebugTools = require("@pkg/@jsdotlua/react-debug-tools")
 local inspectHooksOfFiber = ReactDebugTools.inspectHooksOfFiber
-local Console = require(script.Parent.console)
+local Console = require("./console")
 local patchConsole = Console.patch
 local registerRendererWithConsole = Console.registerRenderer
-local ReactSymbols = require(script.Parent.ReactSymbols)
+local ReactSymbols = require("./ReactSymbols")
 local CONCURRENT_MODE_NUMBER = ReactSymbols.CONCURRENT_MODE_NUMBER
 local CONCURRENT_MODE_SYMBOL_STRING = ReactSymbols.CONCURRENT_MODE_SYMBOL_STRING
 local DEPRECATED_ASYNC_MODE_SYMBOL_STRING =
@@ -107,15 +105,15 @@ local MEMO_NUMBER = ReactSymbols.MEMO_NUMBER
 local MEMO_SYMBOL_STRING = ReactSymbols.MEMO_SYMBOL_STRING
 local is = Shared.objectIs
 -- ROBLOX FIXME: pass in a real host config, or make this able to use basic enums without initializing
-local ReactReconciler = require(Packages.ReactReconciler)({})
+local ReactReconciler = require("@pkg/@jsdotlua/react-reconciler")({})
 
 -- ROBLOX deviation: Require shared functionality rather than copying and pasting it inline
 local getNearestMountedFiber = ReactReconciler.getNearestMountedFiber
 
 -- ROBLOX deviation: ReactInternalTypes is re-exported from top-level reconciler to respect the module encapsulation boundary
-local ReactInternalTypes = require(Packages.ReactReconciler)
+local ReactInternalTypes = require("@pkg/@jsdotlua/react-reconciler")
 type Fiber = ReactInternalTypes.Fiber
-local BackendTypes = require(script.Parent.types)
+local BackendTypes = require("./types")
 type ChangeDescription = BackendTypes.ChangeDescription
 type CommitDataBackend = BackendTypes.CommitDataBackend
 type DevToolsHook = BackendTypes.DevToolsHook
@@ -132,9 +130,9 @@ type ReactRenderer = BackendTypes.ReactRenderer
 type RendererInterface = BackendTypes.RendererInterface
 type WorkTagMap = BackendTypes.WorkTagMap
 
-local ProfilerTypes = require(script.Parent.Parent.devtools.views.Profiler.types)
+local ProfilerTypes = require("../devtools/views/Profiler/types")
 type Interaction = ProfilerTypes.Interaction
-local TypesModules = require(script.Parent.Parent.types)
+local TypesModules = require("../types")
 type ComponentFilter = TypesModules.ComponentFilter
 type ElementType = TypesModules.ElementType
 

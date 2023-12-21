@@ -13,10 +13,9 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 ]]
-local Packages = script.Parent.Parent
-local React = require(Packages.React)
+local React = require("@pkg/@jsdotlua/react")
 
-local warnOnce = require(script.Parent.warnOnce)
+local warnOnce = require("./warnOnce")
 
 local function oneChild(children)
 	if _G.__DEV__ and _G.__COMPAT_WARNINGS__ then

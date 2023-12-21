@@ -9,24 +9,23 @@
 * @flow
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 export type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
 
 -- Intentionally not named imports because Rollup would use dynamic dispatch for
 -- CommonJS interop named imports.
-local Scheduler = require(Packages.Scheduler)
+local Scheduler = require("@pkg/@jsdotlua/scheduler")
 -- local __interactionsRef = require(Packages.Scheduler.tracing).__interactionsRef
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 -- local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 local decoupleUpdatePriorityFromScheduler =
 	ReactFeatureFlags.decoupleUpdatePriorityFromScheduler
-local invariant = require(Packages.Shared).invariant
-local describeError = require(Packages.Shared).describeError
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local describeError = require("@pkg/@jsdotlua/shared").describeError
+local ReactFiberLane = require("./ReactFiberLane")
 local SyncLanePriority = ReactFiberLane.SyncLanePriority
 local getCurrentUpdateLanePriority = ReactFiberLane.getCurrentUpdateLanePriority
 local setCurrentUpdateLanePriority = ReactFiberLane.setCurrentUpdateLanePriority
@@ -48,7 +47,7 @@ local Scheduler_IdlePriority = Scheduler.unstable_IdlePriority
 -- with _just_ these constant definitions; it helps us avoid a circular require
 -- issue with `ReactFiberLanes`
 local ReactFiberSchedulerPriorities =
-	require(script.Parent["ReactFiberSchedulerPriorities.roblox"])
+	require("./ReactFiberSchedulerPriorities.roblox.lua")
 local ImmediatePriority = ReactFiberSchedulerPriorities.ImmediatePriority
 local UserBlockingPriority = ReactFiberSchedulerPriorities.UserBlockingPriority
 local NormalPriority = ReactFiberSchedulerPriorities.NormalPriority

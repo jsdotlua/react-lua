@@ -10,13 +10,12 @@
 --  */
 
 type Function = (any) -> any
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Set<T> = LuauPolyfill.Set<T>
 local Set = LuauPolyfill.Set
 local exports = {}
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 
 export type Interaction = {

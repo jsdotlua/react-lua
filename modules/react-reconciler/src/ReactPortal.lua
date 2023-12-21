@@ -8,11 +8,9 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
+local REACT_PORTAL_TYPE = require("@pkg/@jsdotlua/shared").ReactSymbols.REACT_PORTAL_TYPE
 
-local REACT_PORTAL_TYPE = require(Packages.Shared).ReactSymbols.REACT_PORTAL_TYPE
-
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
 type ReactPortal = ReactTypes.ReactPortal
 

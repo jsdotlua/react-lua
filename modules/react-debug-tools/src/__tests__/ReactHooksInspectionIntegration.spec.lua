@@ -8,16 +8,15 @@
  * @emails react-core
  * @jest-environment node
  ]]
-local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: not needed
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
 -- ROBLOX deviation START: import from dev dependencies
--- local Promise = require(Packages.Promise)
-local Promise = require(Packages.Dev.Promise)
+-- local Promise = require("@pkg/@jsdotlua/promise")
+local Promise = require("@pkg/@jsdotlua/promise")
 -- ROBLOX deviation END
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
@@ -39,14 +38,14 @@ describe("ReactHooksInspectionIntegration", function()
 		-- React = require_("react")
 		-- ReactTestRenderer = require_("react-test-renderer")
 		-- Scheduler = require_("scheduler")
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
-		Scheduler = require(Packages.Dev.Scheduler)
-		React = require(Packages.Dev.React)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
+		React = require("@pkg/@jsdotlua/react")
 		-- ROBLOX deviation END
 		act = ReactTestRenderer.unstable_concurrentAct
 		-- ROBLOX deviation START: fix requires
 		-- ReactDebugTools = require_("react-debug-tools")
-		ReactDebugTools = require(Packages.ReactDebugTools)
+		ReactDebugTools = require("@pkg/@jsdotlua/react-debug-tools")
 		-- ROBLOX deviation END
 	end)
 	it("should inspect the current state of useState hooks", function()

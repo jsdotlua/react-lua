@@ -15,8 +15,7 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 
 -- Roact uses `Object.assign` internally to assign new state values; the same
 -- None value should give us the proper semantics. We can re-export this value

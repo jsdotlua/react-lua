@@ -15,16 +15,16 @@
 ]]
 
 local Packages = script.Parent.Parent.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local it = JestGlobals.it
 local describe = JestGlobals.describe
 -- ROBLOX FIXME
--- local Logging = require(script.Parent.Parent.Logging)
+-- local Logging = require("./Logging")
 
-local SingleEventManager = require(script.Parent.Parent.SingleEventManager)
-local waitForEvents = require(script.Parent.waitForEvents)
+local SingleEventManager = require("./SingleEventManager")
+local waitForEvents = require("./waitForEvents")
 
 describe("new", function()
 	it("should create a SingleEventManager", function()

@@ -11,40 +11,38 @@
 local __DEV__ = _G.__DEV__
 local __YOLO__ = _G.__YOLO__
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local console = require("@pkg/@jsdotlua/shared").console
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Set = LuauPolyfill.Set
 type Set<T> = LuauPolyfill.Set<T>
 type Array<T> = LuauPolyfill.Array<T>
 
 local exports: any = {}
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Thenable<T> = ReactTypes.Thenable<T>
 type Wakeable = ReactTypes.Wakeable
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
 type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
 type Lane = ReactFiberLane.Lane
 -- The scheduler is imported here *only* to detect whether it's been mocked
-local Scheduler = require(Packages.Scheduler)
+local Scheduler = require("@pkg/@jsdotlua/scheduler")
 -- ROBLOX deviation: we import from top-level Scheduler exports to avoid direct file access
 
 type Interaction = Scheduler.Interaction
 
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
-local ReactFiberStack = require(script.Parent["ReactFiberStack.new"])
+local ReactFiberStack = require("./ReactFiberStack.new.lua")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 -- deviation: Use some properties directly instead of localizing to avoid 200 limit
 -- local enableSuspenseServerRenderer = ReactFeatureFlags.enableSuspenseServerRenderer
 -- local replayFailedUnitOfWorkWithInvokeGuardedCallback = ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback
@@ -55,15 +53,14 @@ local enableDebugTracing = ReactFeatureFlags.enableDebugTracing
 local enableSchedulingProfiler = ReactFeatureFlags.enableSchedulingProfiler
 local skipUnmountedBoundaries = ReactFeatureFlags.skipUnmountedBoundaries
 local enableDoubleInvokingEffects = ReactFeatureFlags.enableDoubleInvokingEffects
-local ReactShared = require(Packages.Shared)
+local ReactShared = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation: we pull in Dispatcher type because we need it for our lazy loading deviations to typecheck
 type Dispatcher = ReactShared.Dispatcher
-local describeError = require(Packages.Shared).describeError
+local describeError = require("@pkg/@jsdotlua/shared").describeError
 local ReactSharedInternals = ReactShared.ReactSharedInternals
 local invariant = ReactShared.invariant
 
-local SchedulerWithReactIntegration =
-	require(script.Parent["SchedulerWithReactIntegration.new"])
+local SchedulerWithReactIntegration = require("./SchedulerWithReactIntegration.new.lua")
 local scheduleCallback = SchedulerWithReactIntegration.scheduleCallback
 local cancelCallback = SchedulerWithReactIntegration.cancelCallback
 local getCurrentPriorityLevel = SchedulerWithReactIntegration.getCurrentPriorityLevel
@@ -87,7 +84,7 @@ local scheduleSyncCallback = SchedulerWithReactIntegration.scheduleSyncCallback
 --   DebugTracing.logPassiveEffectsStopped,
 --   DebugTracing.logRenderStarted,
 --   DebugTracing.logRenderStopped,
-local DebugTracing = require(script.Parent.DebugTracing)
+local DebugTracing = require("./DebugTracing")
 -- local {
 --   SchedulingProfiler.markCommitStarted,
 --   SchedulingProfiler.markCommitStopped,
@@ -98,13 +95,13 @@ local DebugTracing = require(script.Parent.DebugTracing)
 --   SchedulingProfiler.markRenderStarted,
 --   SchedulingProfiler.markRenderYielded,
 --   SchedulingProfiler.markRenderStopped,
-local SchedulingProfiler = require(script.Parent.SchedulingProfiler)
+local SchedulingProfiler = require("./SchedulingProfiler")
 
-local SchedulerTracing = require(Packages.Scheduler).tracing
+local SchedulerTracing = require("@pkg/@jsdotlua/scheduler").tracing
 local __interactionsRef, __subscriberRef =
 	SchedulerTracing.__interactionsRef, SchedulerTracing.__subscriberRef
 
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 -- deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local prepareForCommit = ReactFiberHostConfig.prepareForCommit
 -- local resetAfterCommit = ReactFiberHostConfig.resetAfterCommit
@@ -116,18 +113,18 @@ local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
 -- local afterActiveInstanceBlur = ReactFiberHostConfig.afterActiveInstanceBlur
 -- local clearContainer = ReactFiberHostConfig.clearContainer
 
-local ReactFiber = require(script.Parent["ReactFiber.new"])
+local ReactFiber = require("./ReactFiber.new.lua")
 -- deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local createWorkInProgress = ReactFiber.createWorkInProgress
 -- local assignFiberPropertiesInDEV = ReactFiber.assignFiberPropertiesInDEV
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 -- deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local NoMode = ReactTypeOfMode.NoMode
 -- local StrictMode = ReactTypeOfMode.StrictMode
 -- local ProfileMode = ReactTypeOfMode.ProfileMode
 -- local BlockingMode = ReactTypeOfMode.BlockingMode
 -- local ConcurrentMode = ReactTypeOfMode.ConcurrentMode
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 -- deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local HostRoot = ReactWorkTags.HostRoot
 -- local IndeterminateComponent = ReactWorkTags.IndeterminateComponent
@@ -138,8 +135,8 @@ local ReactWorkTags = require(script.Parent.ReactWorkTags)
 -- local ForwardRef = ReactWorkTags.ForwardRef
 -- local MemoComponent = ReactWorkTags.MemoComponent
 -- local SimpleMemoComponent = ReactWorkTags.SimpleMemoComponent
-local LegacyRoot = require(script.Parent.ReactRootTags).LegacyRoot
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local LegacyRoot = require("./ReactRootTags").LegacyRoot
+local ReactFiberFlags = require("./ReactFiberFlags")
 type Flags = ReactFiberFlags.Flags
 -- ROBLOX deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local NoFlags = ReactFiberFlags.NoFlags
@@ -183,19 +180,19 @@ local markDiscreteUpdatesExpired = ReactFiberLane.markDiscreteUpdatesExpired
 local markRootFinished = ReactFiberLane.markRootFinished
 local schedulerPriorityToLanePriority = ReactFiberLane.schedulerPriorityToLanePriority
 local lanePriorityToSchedulerPriority = ReactFiberLane.lanePriorityToSchedulerPriority
-local ReactFiberTransition = require(script.Parent.ReactFiberTransition)
+local ReactFiberTransition = require("./ReactFiberTransition")
 -- deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local requestCurrentTransition = ReactFiberTransition.requestCurrentTransition
 -- local NoTransition = ReactFiberTransition.NoTransition
 
-local ReactFiberUnwindWork = require(script.Parent["ReactFiberUnwindWork.new"]) :: any
+local ReactFiberUnwindWork = require("./ReactFiberUnwindWork.new.lua") :: any
 local unwindWork = ReactFiberUnwindWork.unwindWork
 local unwindInterruptedWork = ReactFiberUnwindWork.unwindInterruptedWork
-local ReactFiberThrow = require(script.Parent["ReactFiberThrow.new"]) :: any
+local ReactFiberThrow = require("./ReactFiberThrow.new.lua") :: any
 local throwException = ReactFiberThrow.throwException
 local createRootErrorUpdate = ReactFiberThrow.createRootErrorUpdate
 local createClassErrorUpdate = ReactFiberThrow.createClassErrorUpdate
-local ReactFiberCommitWork = require(script.Parent["ReactFiberCommitWork.new"])
+local ReactFiberCommitWork = require("./ReactFiberCommitWork.new.lua")
 local commitBeforeMutationEffectOnFiber =
 	ReactFiberCommitWork.commitBeforeMutationLifeCycles
 local commitPlacement = ReactFiberCommitWork.commitPlacement
@@ -216,12 +213,12 @@ local invokePassiveEffectUnmountInDEV =
 	ReactFiberCommitWork.invokePassiveEffectUnmountInDEV
 local recursivelyCommitLayoutEffects = ReactFiberCommitWork.recursivelyCommitLayoutEffects
 
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
-local enqueueUpdate = require(script.Parent["ReactUpdateQueue.new"]).enqueueUpdate
+local enqueueUpdate = require("./ReactUpdateQueue.new.lua").enqueueUpdate
 
 local resetContextDependencies =
-	require(script.Parent["ReactFiberNewContext.new"]).resetContextDependencies
+	require("./ReactFiberNewContext.new.lua").resetContextDependencies
 
 -- ROBLOX deviation: Pre-declare function
 local ensureRootIsScheduled
@@ -240,7 +237,7 @@ local originalBeginWork =
 	function(current: Fiber | nil, workInProgress: Fiber, renderLanes: Lanes): Fiber | nil
 		if not lazyInitRefs.originalBeginWorkRef then
 			lazyInitRefs.originalBeginWorkRef =
-				require(script.Parent["ReactFiberBeginWork.new"]).beginWork
+				require("./ReactFiberBeginWork.new.lua").beginWork
 		end
 		return lazyInitRefs.originalBeginWorkRef(current, workInProgress, renderLanes)
 	end
@@ -249,7 +246,7 @@ local completeWork =
 	function(current: Fiber | nil, workInProgress: Fiber, renderLanes: Lanes): Fiber | nil
 		if not lazyInitRefs.completeWorkRef then
 			lazyInitRefs.completeWorkRef =
-				require(script.Parent["ReactFiberCompleteWork.new"]).completeWork
+				require("./ReactFiberCompleteWork.new.lua").completeWork
 		end
 		return (lazyInitRefs.completeWorkRef :: any)(current, workInProgress, renderLanes)
 	end
@@ -257,7 +254,7 @@ local completeWork =
 local ReactFiberHooks
 -- ROBLOX deviation: lazy init for functions from ReactFiberHooks
 local function initReactFiberHooks()
-	ReactFiberHooks = require(script.Parent["ReactFiberHooks.new"])
+	ReactFiberHooks = require("./ReactFiberHooks.new.lua")
 	lazyInitRefs.resetHooksAfterThrowRef = ReactFiberHooks.resetHooksAfterThrow
 	lazyInitRefs.ContextOnlyDispatcherRef = ReactFiberHooks.ContextOnlyDispatcher
 	lazyInitRefs.getIsUpdatingOpaqueValueInRenderPhaseInDEVRef =
@@ -288,33 +285,32 @@ local getIsUpdatingOpaqueValueInRenderPhaseInDEV = function(): boolean?
 	return lazyInitRefs.getIsUpdatingOpaqueValueInRenderPhaseInDEVRef()
 end
 
-local createCapturedValue = require(script.Parent.ReactCapturedValue).createCapturedValue
+local createCapturedValue = require("./ReactCapturedValue").createCapturedValue
 local pushToStack = ReactFiberStack.push
 local popFromStack = ReactFiberStack.pop
 local createCursor = ReactFiberStack.createCursor
 
-local ReactProfilerTimer = require(script.Parent["ReactProfilerTimer.new"])
+local ReactProfilerTimer = require("./ReactProfilerTimer.new.lua")
 
 -- DEV stuff
-local getComponentName = require(Packages.Shared).getComponentName
-local ReactStrictModeWarnings = require(script.Parent["ReactStrictModeWarnings.new"])
-local ReactCurrentFiber = require(script.Parent.ReactCurrentFiber)
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.lua")
+local ReactCurrentFiber = require("./ReactCurrentFiber")
 -- deviation: these two properties would be captured as values instead of bound
 -- local ReactCurrentDebugFiberIsRenderingInDEV = ReactCurrentFiber.isRendering
 local ReactCurrentFiberCurrent = ReactCurrentFiber.current
 local resetCurrentDebugFiberInDEV = ReactCurrentFiber.resetCurrentFiber
 local setCurrentDebugFiberInDEV = ReactCurrentFiber.setCurrentFiber
-local ReactErrorUtils = require(Packages.Shared).ReactErrorUtils
+local ReactErrorUtils = require("@pkg/@jsdotlua/shared").ReactErrorUtils
 local invokeGuardedCallback = ReactErrorUtils.invokeGuardedCallback
 local hasCaughtError = ReactErrorUtils.hasCaughtError
 local clearCaughtError = ReactErrorUtils.clearCaughtError
-local onCommitRootDevTools =
-	require(script.Parent["ReactFiberDevToolsHook.new"]).onCommitRoot
-local onCommitRootTestSelector = require(script.Parent.ReactTestSelectors).onCommitRoot
+local onCommitRootDevTools = require("./ReactFiberDevToolsHook.new.lua").onCommitRoot
+local onCommitRootTestSelector = require("./ReactTestSelectors").onCommitRoot
 
 -- Used by `act`
-local enqueueTask = require(Packages.Shared).enqueueTask
-local doesFiberContain = require(script.Parent.ReactFiberTreeReflection).doesFiberContain
+local enqueueTask = require("@pkg/@jsdotlua/shared").enqueueTask
+local doesFiberContain = require("./ReactFiberTreeReflection").doesFiberContain
 
 local ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher
 local ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner
@@ -392,7 +388,7 @@ local workInProgressRootFatalError: any = nil
 local workInProgressRootIncludedLanes: Lanes = ReactFiberLane.NoLanes
 -- The work left over by components that were visited during this render. Only
 -- includes unprocessed updates, not work in bailed out children.
-local ReactFiberWorkInProgress = require(script.Parent.ReactFiberWorkInProgress)
+local ReactFiberWorkInProgress = require("./ReactFiberWorkInProgress")
 local workInProgressRootSkippedLanes: (value: Lanes?) -> Lanes =
 	ReactFiberWorkInProgress.workInProgressRootSkippedLanes --: Lanes = ReactFiberLane.NoLanes
 -- Lanes that were updated (in an interleaved event) during this render.
@@ -3631,7 +3627,7 @@ exports.warnIfUnmockedScheduler = function(fiber: Fiber)
 						.. "to guarantee consistent behaviour across tests and client application. "
 						.. "For example, with Jest: \n"
 						-- Break up requires to avoid accidentally parsing them as dependencies.
-						.. "jest.mock('scheduler', function() return require(Packages.Scheduler).unstable_mock end)\n\n"
+						.. "jest.mock('scheduler', function() return require(@pkg/scheduler).unstable_mock end)\n\n"
 						.. "For more info, visit https://reactjs.org/link/mock-scheduler"
 				)
 			elseif ReactFeatureFlags.warnAboutUnmockedScheduler == true then
@@ -3646,7 +3642,7 @@ exports.warnIfUnmockedScheduler = function(fiber: Fiber)
 						.. "to guarantee consistent behaviour across tests and client applications. "
 						.. "For example, with Jest: \n"
 						-- Break up requires to avoid accidentally parsing them as dependencies.
-						.. "jest.mock('scheduler', function() return require(Packages.Scheduler).unstable_mock end)\n\n"
+						.. "jest.mock('scheduler', function() return require(@pkg/scheduler).unstable_mock end)\n\n"
 						.. "For more info, visit https://reactjs.org/link/mock-scheduler"
 				)
 			end

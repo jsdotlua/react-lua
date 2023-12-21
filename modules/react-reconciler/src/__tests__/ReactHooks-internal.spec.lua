@@ -16,7 +16,7 @@ local Scheduler
 -- local ReactDOMServer
 local act
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local jest = JestGlobals.jest
@@ -24,8 +24,8 @@ local it = JestGlobals.it
 local xit = JestGlobals.xit
 local describe = JestGlobals.describe
 describe("ReactHooks", function()
-	local Promise = require(Packages.Promise)
-	local LuauPolyfill = require(Packages.LuauPolyfill)
+	local Promise = require("@pkg/@jsdotlua/promise")
+	local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 	local Array = LuauPolyfill.Array
 	type Array<T> = LuauPolyfill.Array<T>
 	type Function = (...any) -> ...any
@@ -33,10 +33,10 @@ describe("ReactHooks", function()
 
 	beforeEach(function()
 		jest.resetModules()
-		ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
-		React = require(Packages.React)
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
-		Scheduler = require(Packages.Scheduler)
+		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
+		React = require("@pkg/@jsdotlua/react")
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- ReactDOMServer = require("react-dom/server")
 		act = ReactTestRenderer.unstable_concurrentAct
 	end)

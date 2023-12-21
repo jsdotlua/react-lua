@@ -9,45 +9,43 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local ReactRobloxHostTypes = require(script.Parent["ReactRobloxHostTypes.roblox"])
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
 type Container = ReactRobloxHostTypes.Container
 type RootType = ReactRobloxHostTypes.RootType
 type RootOptions = ReactRobloxHostTypes.RootOptions
 
-local ReconcilerTypes = require(Packages.ReactReconciler)
+local ReconcilerTypes = require("@pkg/@jsdotlua/react-reconciler")
 type RootTag = ReconcilerTypes.RootTag
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type MutableSource<T> = ReactTypes.MutableSource<T>
 type ReactNodeList = ReactTypes.ReactNodeList
-local ReactInternalTypes = require(Packages.ReactReconciler)
+local ReactInternalTypes = require("@pkg/@jsdotlua/react-reconciler")
 type FiberRoot = ReactInternalTypes.FiberRoot
 
 type Array<T> = { [number]: T }
 
-local ReactRobloxComponentTree = require(script.Parent.ReactRobloxComponentTree)
+local ReactRobloxComponentTree = require("./ReactRobloxComponentTree")
 -- local isContainerMarkedAsRoot = ReactRobloxComponentTree.isContainerMarkedAsRoot
 local markContainerAsRoot = ReactRobloxComponentTree.markContainerAsRoot
 local unmarkContainerAsRoot = ReactRobloxComponentTree.unmarkContainerAsRoot
--- local listenToAllSupportedEvents = require(script.Parent.Parent.events.DOMPluginEventSystem).listenToAllSupportedEvents
--- local eagerlyTrapReplayableEvents = require(script.Parent.Parent.events.ReactDOMEventReplaying).eagerlyTrapReplayableEvents
--- local HTMLNodeType = require(script.Parent.Parent.shared.HTMLNodeType)
+-- local listenToAllSupportedEvents = require("./events/DOMPluginEventSystem").listenToAllSupportedEvents
+-- local eagerlyTrapReplayableEvents = require("./events/ReactDOMEventReplaying").eagerlyTrapReplayableEvents
+-- local HTMLNodeType = require("./shared/HTMLNodeType")
 -- local ELEMENT_NODE = HTMLNodeType.ELEMENT_NODE
 -- local COMMENT_NODE = HTMLNodeType.COMMENT_NODE
 -- local DOCUMENT_NODE = HTMLNodeType.DOCUMENT_NODE
 -- local DOCUMENT_FRAGMENT_NODE = HTMLNodeType.DOCUMENT_FRAGMENT_NODE
--- local ensureListeningTo = require(Packages.ReactDOMComponent).ensureListeningTo
+-- local ensureListeningTo = require("@pkg/ReactDOMComponent").ensureListeningTo
 
 -- ROBLOX deviation: Use the config-injecting entry point for the reconciler
-local ReactFiberReconciler = require(script.Parent.Parent["ReactReconciler.roblox"])
+local ReactFiberReconciler = require("../ReactReconciler.roblox.lua")
 local createContainer = ReactFiberReconciler.createContainer
 local updateContainer = ReactFiberReconciler.updateContainer
 -- local findHostInstanceWithNoPortals = ReactFiberReconciler.findHostInstanceWithNoPortals
 -- local registerMutableSourceForHydration = ReactFiberReconciler.registerMutableSourceForHydration
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 local enableEagerRootListeners =
-	require(Packages.Shared).ReactFeatureFlags.enableEagerRootListeners
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableEagerRootListeners
 
 local BlockingRoot = ReactFiberReconciler.ReactRootTags.BlockingRoot
 local ConcurrentRoot = ReactFiberReconciler.ReactRootTags.ConcurrentRoot

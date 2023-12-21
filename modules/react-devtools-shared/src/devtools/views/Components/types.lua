@@ -8,18 +8,17 @@
 --  * @flow
 --  */
 
-local Packages = script.Parent.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
 
-local ReactShared = require(Packages.Shared)
+local ReactShared = require("@pkg/@jsdotlua/shared")
 type Source = ReactShared.Source
-local Hydration = require(script.Parent.Parent.Parent.Parent.hydration)
+local Hydration = require("../../../hydration")
 type Dehydrated = Hydration.Dehydrated
 type Unserializable = Hydration.Unserializable
 
-local ReactDevtoolsSharedTypes = require(script.Parent.Parent.Parent.Parent.types)
+local ReactDevtoolsSharedTypes = require("../../../types")
 type ElementType = ReactDevtoolsSharedTypes.ElementType
 
 -- Each element on the frontend corresponds to a Fiber on the backend.

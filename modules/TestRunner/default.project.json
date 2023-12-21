@@ -1,5 +1,5 @@
 {
-    "name": "TestRunner",
+    "name": "test-runner",
     "tree": {
         "Src": {
             "$path": "src"

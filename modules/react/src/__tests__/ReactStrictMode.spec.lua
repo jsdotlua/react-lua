@@ -14,7 +14,7 @@ local ReactNoop
 -- local ReactDOMServer
 local Scheduler
 -- local PropTypes
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
@@ -30,15 +30,15 @@ describe("ReactStrictMode", function()
 		jest.resetModules()
 
 		-- ROBLOX deviation: workaround because our flag is currently always set to false
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = true
-		React = require(script.Parent.Parent)
+		React = require(".")
 
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
-		Scheduler = require(Packages.Dev.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 	-- ROBLOX TODO: Untranslated ReactDOMInvalidARIAHook file throws the error this test checks
 	-- xit('should appear in the client component stack', function()
@@ -405,12 +405,12 @@ end)
 describe("Concurrent Mode", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(script.Parent.Parent)
+		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
-		Scheduler = require(Packages.Dev.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 	it(
 		"should warn about unsafe legacy lifecycle methods anywhere in the tree",
@@ -663,12 +663,12 @@ end)
 describe("symbol checks", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(script.Parent.Parent)
+		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
-		Scheduler = require(Packages.Dev.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 	it("should switch from StrictMode to a Fragment and reset state", function()
 		local Fragment, StrictMode = React.Fragment, React.StrictMode
@@ -821,12 +821,12 @@ end)
 describe("string refs", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(script.Parent.Parent)
+		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
-		Scheduler = require(Packages.Dev.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 
 	xit("should warn within a strict tree", function()
@@ -914,12 +914,12 @@ end)
 describe("context legacy", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(script.Parent.Parent)
+		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
-		Scheduler = require(Packages.Dev.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- PropTypes = require('prop-types')
 	end)
 	-- ROBLOX TODO: Proptypes

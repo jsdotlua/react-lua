@@ -7,12 +7,11 @@
  * LICENSE file in the root directory of this source tree.
 *]]
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactSymbols = require(Packages.Shared).ReactSymbols
-local ReactTypes = require(Packages.Shared)
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type React_Node = ReactTypes.React_Node
 type React_Ref<ElementType> = ReactTypes.React_Ref<ElementType>
 type React_AbstractComponent<Config, Instance> = ReactTypes.React_AbstractComponent<

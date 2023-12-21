@@ -9,7 +9,7 @@
  * @flow
 ]]
 
-local initializeScheduler = require(script.Scheduler)
+local initializeScheduler = require("./Scheduler")
 
 local function onlyInTestError(functionName: string)
 	return function()
@@ -18,8 +18,8 @@ local function onlyInTestError(functionName: string)
 end
 
 local Scheduler = initializeScheduler(nil --[[ no host config, use default ]])
-local Tracing = require(script.Tracing)
-local TracingSubscriptions = require(script.TracingSubscriptions)
+local Tracing = require("./Tracing")
+local TracingSubscriptions = require("./TracingSubscriptions")
 -- ROBLOX deviation export Tracing type from the package exports to avoid direct file access
 export type Interaction = Tracing.Interaction
 
@@ -28,7 +28,7 @@ export type Interaction = Tracing.Interaction
 -- library _before_ we bootstrap tests, we expose an additional global to toggle
 -- this explicilty
 if _G.__ROACT_17_MOCK_SCHEDULER__ then
-	return require(script.unstable_mock)
+	return require("./unstable_mock")
 end
 
 local exports = {

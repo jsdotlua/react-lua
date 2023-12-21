@@ -14,8 +14,7 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Error = LuauPolyfill.Error
 type Object = LuauPolyfill.Object
 type Array<T> = LuauPolyfill.Array<T>

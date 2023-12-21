@@ -6,9 +6,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
 ]]
-local Packages = script.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Map = LuauPolyfill.Map
 local Set = LuauPolyfill.Set
@@ -17,11 +15,11 @@ type Map<K, V> = LuauPolyfill.Map<K, V>
 type Function = (...any) -> any
 local exports = {}
 
-local console = require(script.Parent.backend.console)
+local console = require("./backend/console")
 local patchConsole = console.patch
 local registerRendererWithConsole = console.registerRenderer
 
-local BackendTypes = require(script.Parent.backend.types)
+local BackendTypes = require("./backend/types")
 type DevToolsHook = BackendTypes.DevToolsHook
 
 local window = _G

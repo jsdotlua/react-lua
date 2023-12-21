@@ -8,30 +8,28 @@
 --  * @flow
 --  */
 
-local Packages = script.Parent.Parent
-local Scheduler = require(Packages.Scheduler)
-local console = require(Packages.Shared).console
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local Scheduler = require("@pkg/@jsdotlua/scheduler")
+local console = require("@pkg/@jsdotlua/shared").console
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 local Array = LuauPolyfill.Array
 local Object = LuauPolyfill.Object
 local setTimeout = LuauPolyfill.setTimeout
-local ReactTypes = require(Packages.Shared)
-local getInstancesForTag =
-	require(script.Parent.roblox.RobloxComponentProps).getInstancesForTag
+local ReactTypes = require("@pkg/@jsdotlua/shared")
+local getInstancesForTag = require("./roblox/RobloxComponentProps").getInstancesForTag
 type ReactElement<P, T> = ReactTypes.ReactElement<P, T>
 
-local ReactInternalTypes = require(Packages.ReactReconciler)
+local ReactInternalTypes = require("@pkg/@jsdotlua/react-reconciler")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
 
 type Thenable<R> = ReactTypes.Thenable<R>
 
 -- ROBLOX TODO: split below to silence analyze, but why is analyze throwing in first place?
-local ReactTestHostConfig = require(script.Parent.ReactTestHostConfig)
+local ReactTestHostConfig = require("./ReactTestHostConfig")
 -- ROBLOX deviation: For all tests, we mock the reconciler into a configurable
 -- function interface that allows injection of HostConfig
-local ReactReconciler = require(Packages.ReactReconciler)
+local ReactReconciler = require("@pkg/@jsdotlua/react-reconciler")
 local ReactFiberReconciler = ReactReconciler(ReactTestHostConfig)
 
 local getPublicRootInstance = ReactFiberReconciler.getPublicRootInstance
@@ -61,12 +59,12 @@ local SimpleMemoComponent = ReactWorkTags.SimpleMemoComponent
 local Block = ReactWorkTags.Block
 local IncompleteClassComponent = ReactWorkTags.IncompleteClassComponent
 local ScopeComponent = ReactWorkTags.ScopeComponent
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local invariant = Shared.invariant
 
 local getComponentName = Shared.getComponentName
 local ReactVersion = Shared.ReactVersion
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
 local enqueueTask = Shared.enqueueTask
 local getPublicInstance = ReactTestHostConfig.getPublicInstance
 local ReactRootTags = ReactFiberReconciler.ReactRootTags

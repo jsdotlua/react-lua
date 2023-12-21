@@ -10,14 +10,14 @@
  ]]
 
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
 local xdescribe = JestGlobals.xdescribe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local devtoolsTypes = require(script.Parent.Parent.devtools.types)
+local devtoolsTypes = require("./devtools/types")
 type Store = devtoolsTypes.Store
 
 local global = _G
@@ -31,16 +31,16 @@ xdescribe("ProfilerStore", function()
 	local act
 
 	beforeEach(function()
-		utils = require(script.Parent.utils)
+		utils = require("./utils")
 		act = utils.act
 
 		store = global.store
 		store:setCollapseNodesByDefault(false)
 		store:setRecordChangeDescriptions(true)
 
-		React = require(Packages.React)
-		ReactRoblox = require(Packages.ReactRoblox)
-		LuauPolyfill = require(Packages.LuauPolyfill)
+		React = require("@pkg/@jsdotlua/react")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 
 		utils.beforeEachProfiling()
 	end)

@@ -7,8 +7,7 @@
  *
  * @flow
  ]]
-local Packages = script.Parent.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
 local Error = LuauPolyfill.Error
@@ -20,11 +19,10 @@ type Array<K> = LuauPolyfill.Array<K>
 
 local exports = {}
 
-local PROFILER_EXPORT_VERSION =
-	require(script.Parent.Parent.Parent.Parent.constants).PROFILER_EXPORT_VERSION
-local backendTypes = require(script.Parent.Parent.Parent.Parent.backend.types)
+local PROFILER_EXPORT_VERSION = require("../../../constants").PROFILER_EXPORT_VERSION
+local backendTypes = require("../../../backend/types")
 type ProfilingDataBackend = backendTypes.ProfilingDataBackend
-local profilerTypes = require(script.Parent.types)
+local profilerTypes = require("./types")
 type ProfilingDataExport = profilerTypes.ProfilingDataExport
 type ProfilingDataForRootExport = profilerTypes.ProfilingDataForRootExport
 type ProfilingDataForRootFrontend = profilerTypes.ProfilingDataForRootFrontend

@@ -1,5 +1,5 @@
 {
-  "name": "ReactDevtoolsExtensions",
+  "name": "react-devtools-extensions",
   "tree": {
     "$path": "src"
   }

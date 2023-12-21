@@ -1,5 +1,5 @@
 {
-  "name": "ReactNoopRenderer",
+  "name": "react-noop-renderer",
   "tree": {
     "$path": "src"
   }

@@ -13,13 +13,12 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local it = JestGlobals.it
 
-local Type = require(script.Parent.Parent.Parent["Type.roblox"])
-local Event = require(script.Parent.Parent.Event)
+local Type = require("../../Type.roblox.lua")
+local Event = require("../Event")
 
 it("should yield event objects when indexed", function()
 	jestExpect(Type.of(Event.MouseButton1Click)).toBe(Type.HostEvent)

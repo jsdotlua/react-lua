@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
@@ -19,7 +19,7 @@ describe("bridge", function()
 	beforeEach(function()
 		jest.resetModules()
 		jest.useFakeTimers()
-		Bridge = require(script.Parent.Parent.bridge)
+		Bridge = require("./bridge")
 	end)
 
 	it("should shutdown properly", function()

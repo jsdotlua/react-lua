@@ -19,7 +19,7 @@ local parent
 -- local PropTypes = require('prop-types')
 
 -- local container
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
@@ -32,11 +32,11 @@ beforeEach(function()
 	-- document.body.appendChild(container)
 	jest.resetModules()
 	jest.useFakeTimers()
-	React = require(Packages.React)
-	ReactRoblox = require(Packages.ReactRoblox)
+	React = require("@pkg/@jsdotlua/react")
+	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 	parent = Instance.new("Folder")
 	reactRobloxRoot = ReactRoblox.createRoot(parent)
-	Scheduler = require(Packages.Scheduler)
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 end)
 
 -- ROBLOX DEVIATION: Document logic does not apply to Roblox

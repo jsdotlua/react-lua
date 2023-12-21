@@ -12,11 +12,11 @@
 type Object = { [string]: any }
 type Function = (...any) -> ...any
 
-local ReactElementType = require(script.Parent.ReactElementType)
+local ReactElementType = require("./ReactElementType")
 type Source = ReactElementType.Source
 
 -- ROBLOX deviation: Needed to properly type class components
-local flowtypes = require(script.Parent["flowtypes.roblox"])
+local flowtypes = require("./flowtypes.roblox.lua")
 type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<
 	P
 >
@@ -24,10 +24,10 @@ type React_ComponentType<P> = flowtypes.React_ComponentType<P>
 type ReactComponent<P> = React_StatelessFunctionalComponent<P> | React_ComponentType<P>
 
 -- ROBLOX DEVIATION: Ignore enableComponentStackLocations
--- local ReactFeatureFlags = require(script.Parent.ReactFeatureFlags)
+-- local ReactFeatureFlags = require("./ReactFeatureFlags")
 -- local enableComponentStackLocations = ReactFeatureFlags.enableComponentStackLocations
 
-local ReactSymbols = require(script.Parent.ReactSymbols)
+local ReactSymbols = require("./ReactSymbols")
 local REACT_SUSPENSE_TYPE = ReactSymbols.REACT_SUSPENSE_TYPE
 local REACT_SUSPENSE_LIST_TYPE = ReactSymbols.REACT_SUSPENSE_LIST_TYPE
 local REACT_FORWARD_REF_TYPE = ReactSymbols.REACT_FORWARD_REF_TYPE
@@ -35,11 +35,11 @@ local REACT_MEMO_TYPE = ReactSymbols.REACT_MEMO_TYPE
 local REACT_BLOCK_TYPE = ReactSymbols.REACT_BLOCK_TYPE
 local REACT_LAZY_TYPE = ReactSymbols.REACT_LAZY_TYPE
 
-local ConsolePatchingDev = require(script.Parent["ConsolePatchingDev.roblox"])
+local ConsolePatchingDev = require("./ConsolePatchingDev.roblox.lua")
 local disableLogs = ConsolePatchingDev.disableLogs
 local reenableLogs = ConsolePatchingDev.reenableLogs
 
-local ReactSharedInternals = require(script.Parent.ReactSharedInternals)
+local ReactSharedInternals = require("./ReactSharedInternals")
 local ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher
 
 -- ROBLOX deviation: the prefix is constant because the console prints the stack

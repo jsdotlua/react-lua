@@ -1,6 +1,4 @@
-local Reconciler = script.Parent.Parent
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
@@ -13,8 +11,7 @@ describe("ReactFiberSuspenseComponent", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactFiberSuspenseComponent =
-			require(Reconciler["ReactFiberSuspenseComponent.new"])
+		ReactFiberSuspenseComponent = require("../ReactFiberSuspenseComponent.new.lua")
 	end)
 
 	describe("shouldCaptureSuspense", function()

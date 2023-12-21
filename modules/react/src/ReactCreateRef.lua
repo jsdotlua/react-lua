@@ -8,8 +8,7 @@
  * @flow
 *]]
 
-local Packages = script.Parent.Parent
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type RefObject = ReactTypes.RefObject
 
 -- ROBLOX DEVIATION: In Roact, refs are implemented in terms of bindings
@@ -17,7 +16,7 @@ type RefObject = ReactTypes.RefObject
   A ref is nothing more than a binding with a special field 'current'
   that maps to the getValue method of the binding
 ]]
-local Binding = require(script.Parent["ReactBinding.roblox"])
+local Binding = require("./ReactBinding.roblox.lua")
 
 local exports = {}
 

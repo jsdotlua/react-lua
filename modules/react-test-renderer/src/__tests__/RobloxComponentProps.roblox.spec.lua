@@ -1,5 +1,3 @@
-local Packages = script.Parent.Parent.Parent
-
 local RobloxComponentProps
 local setInitialTags
 local updateTags
@@ -7,7 +5,7 @@ local removeTags
 local getInstancesForTag
 local Tag
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -17,12 +15,12 @@ local jest = JestGlobals.jest
 describe("TestRenderer Tag Support", function()
 	beforeEach(function()
 		jest.resetModules()
-		RobloxComponentProps = require(script.Parent.Parent.roblox.RobloxComponentProps)
+		RobloxComponentProps = require("./roblox/RobloxComponentProps")
 		setInitialTags = RobloxComponentProps.setInitialTags
 		updateTags = RobloxComponentProps.updateTags
 		removeTags = RobloxComponentProps.removeTags
 		getInstancesForTag = RobloxComponentProps.getInstancesForTag
-		Tag = require(Packages.Shared).Tag
+		Tag = require("@pkg/@jsdotlua/shared").Tag
 	end)
 
 	it("should set initial tags for an instance", function()

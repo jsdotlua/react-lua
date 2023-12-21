@@ -8,21 +8,20 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
 type Array<T> = { [number]: T }
 local exports = {}
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type MutableSource<T> = ReactTypes.MutableSource<T>
 type MutableSourceVersion = ReactTypes.MutableSourceVersion
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type FiberRoot = ReactInternalTypes.FiberRoot
 
-local isPrimaryRenderer = require(script.Parent.ReactFiberHostConfig).isPrimaryRenderer
+local isPrimaryRenderer = require("./ReactFiberHostConfig").isPrimaryRenderer
 
 -- Work in progress version_ numbers only apply to a single render,
 -- and should be reset before starting a new render.

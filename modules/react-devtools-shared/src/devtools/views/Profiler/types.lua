@@ -9,13 +9,12 @@
 --  * @flow
 --  */
 
-local Packages = script.Parent.Parent.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Map<K, V> = LuauPolyfill.Map<K, V>
 type Array<K> = LuauPolyfill.Array<K>
 local exports = {}
 
-local ReactDevtoolsSharedTypes = require(script.Parent.Parent.Parent.Parent.types)
+local ReactDevtoolsSharedTypes = require("../../../types")
 
 type ElementType = ReactDevtoolsSharedTypes.ElementType
 

@@ -6,9 +6,7 @@
 --  * LICENSE file in the root directory of this source tree.
 --  */
 
-local Packages = script.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 type Array<T> = { [number]: T }
 type Object = { [string]: any }
@@ -23,7 +21,7 @@ end
 local exports = {}
 
 --ROBLOX TODO: circular dependency, inline for now and submit PR to fix upstream
---local ComponentsTypes = require(script.Parent.devtools.views.Components.types)
+--local ComponentsTypes = require("./devtools/views/Components/types")
 export type DehydratedData = {
 	cleaned: Array<Array<string | number>>,
 	data: string

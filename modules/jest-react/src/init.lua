@@ -5,12 +5,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-local Packages = script.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local exports = {}
 -- ROBLOX deviation START: extract to variable, fix import and export type
 --  Object.assign(exports, require(script.src.JestReact))
-local jestReactModule = Object.assign(exports, require(script.JestReact))
+local jestReactModule = Object.assign(exports, require("./JestReact"))
 return exports :: typeof(exports) & typeof(jestReactModule)
 -- ROBLOX deviation END

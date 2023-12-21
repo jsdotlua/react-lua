@@ -4,7 +4,7 @@ local ReactRoblox
 local Scheduler
 
 --ROBLOX NOTE: Tests for the Bindings-based useRef approach
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local it = JestGlobals.it
@@ -16,9 +16,9 @@ describe("useRef", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		React = require(Packages.React)
-		ReactRoblox = require(Packages.Dev.ReactRoblox)
-		Scheduler = require(Packages.Scheduler)
+		React = require("@pkg/@jsdotlua/react")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		useRef = React.useRef
 	end)
 

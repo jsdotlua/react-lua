@@ -15,7 +15,7 @@ local Packages = script.Parent.Parent.Parent
 local React
 
 local Promise
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local clearTimeout = LuauPolyfill.clearTimeout
 local setTimeout = LuauPolyfill.setTimeout
 local Array = LuauPolyfill.Array
@@ -44,7 +44,7 @@ local forwardRef
 local memo
 local act
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
@@ -55,15 +55,15 @@ local xit = JestGlobals.xit
 beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
-	Promise = require(Packages.Promise)
+	Promise = require("@pkg/@jsdotlua/promise")
 
-	LuauPolyfill = require(Packages.LuauPolyfill)
+	LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 	clearTimeout = LuauPolyfill.clearTimeout
 	setTimeout = LuauPolyfill.setTimeout
 
-	React = require(Packages.React)
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-	Scheduler = require(Packages.Scheduler)
+	React = require("@pkg/@jsdotlua/react")
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+	Scheduler = require("@pkg/@jsdotlua/scheduler")
 	-- SchedulerTracing = require(Scheduler.tracing)
 	useState = React.useState
 	useReducer = React.useReducer

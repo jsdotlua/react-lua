@@ -18,11 +18,9 @@
 -- console.warn and console.error into the code
 -- Instead of using `LuauPolyfill.console`, React internals should use this
 -- wrapper to be able to use consoleWithStackDev in dev mode
-local Shared = script.Parent
-local Packages = Shared.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local console = LuauPolyfill.console
-local consoleWithStackDev = require(Shared.consoleWithStackDev)
+local consoleWithStackDev = require("./consoleWithStackDev")
 
 if _G.__DEV__ then
 	local newConsole = setmetatable({

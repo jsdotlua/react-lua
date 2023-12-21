@@ -10,16 +10,15 @@
 ]]
 
 local __DEV__ = _G.__DEV__
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local Array = LuauPolyfill.Array
 local inspect = LuauPolyfill.util.inspect
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation: ReactElement is defined at the top level of Shared along
 -- with the rest of the ReactTypes
 type ReactElement = ReactTypes.ReactElement<any, any>
@@ -27,30 +26,30 @@ type ReactFragment = ReactTypes.ReactFragment
 type ReactPortal = ReactTypes.ReactPortal
 type ReactFundamentalComponent<T, U> = ReactTypes.ReactFundamentalComponent<T, U>
 type ReactScope = ReactTypes.ReactScope
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 export type Fiber = ReactInternalTypes.Fiber
 
 -- ROBLOX deviation: Allow number keys for sparse arrays
 type RoactStableKey = ReactInternalTypes.RoactStableKey
-local ReactRootTags = require(script.Parent.ReactRootTags)
+local ReactRootTags = require("./ReactRootTags")
 type RootTag = ReactRootTags.RootTag
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local ReactWorkTags = require("./ReactWorkTags")
 type WorkTag = ReactWorkTags.WorkTag
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 type TypeOfMode = ReactTypeOfMode.TypeOfMode
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
-local ReactFiberOffscreenComponent = require(script.Parent.ReactFiberOffscreenComponent)
+local ReactFiberOffscreenComponent = require("./ReactFiberOffscreenComponent")
 type OffscreenProps = ReactFiberOffscreenComponent.OffscreenProps
 
-local invariant = require(Packages.Shared).invariant
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 -- local enableFundamentalAPI = ReactFeatureFlags.enableFundamentalAPI
 -- local enableScopeAPI = ReactFeatureFlags.enableScopeAPI
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local NoFlags = ReactFiberFlags.NoFlags
 local Placement = ReactFiberFlags.Placement
 local StaticMask = ReactFiberFlags.StaticMask
@@ -79,11 +78,11 @@ local FundamentalComponent = ReactWorkTags.FundamentalComponent
 local ScopeComponent = ReactWorkTags.ScopeComponent
 local OffscreenComponent = ReactWorkTags.OffscreenComponent
 local LegacyHiddenComponent = ReactWorkTags.LegacyHiddenComponent
-local getComponentName = require(Packages.Shared).getComponentName
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 
-local ReactFiberDevToolsHook = require(script.Parent["ReactFiberDevToolsHook.new"])
+local ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.lua")
 local isDevToolsPresent = ReactFiberDevToolsHook.isDevToolsPresent
-local ReactFiberHotReloading = require(script.Parent["ReactFiberHotReloading.new"])
+local ReactFiberHotReloading = require("./ReactFiberHotReloading.new.lua")
 local resolveClassForHotReloading = ReactFiberHotReloading.resolveClassForHotReloading
 local resolveFunctionForHotReloading =
 	ReactFiberHotReloading.resolveFunctionForHotReloading
@@ -96,7 +95,7 @@ local DebugTracingMode = ReactTypeOfMode.DebugTracingMode
 local ProfileMode = ReactTypeOfMode.ProfileMode
 local StrictMode = ReactTypeOfMode.StrictMode
 local BlockingMode = ReactTypeOfMode.BlockingMode
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_FORWARD_REF_TYPE = ReactSymbols.REACT_FORWARD_REF_TYPE
 local REACT_FRAGMENT_TYPE = ReactSymbols.REACT_FRAGMENT_TYPE
 local REACT_ELEMENT_TYPE = ReactSymbols.REACT_ELEMENT_TYPE

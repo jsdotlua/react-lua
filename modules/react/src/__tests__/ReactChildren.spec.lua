@@ -10,7 +10,7 @@
 	* @emails react-core
 ]]
 local Packages = script.Parent.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
@@ -18,7 +18,7 @@ type Object = LuauPolyfill.Object
 local React
 local ReactTestUtils
 local ReactRoblox
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local expect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -29,8 +29,8 @@ local xit = JestGlobals.xit
 describe("ReactChildren", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(script.Parent.Parent)
-		ReactRoblox = require(Packages.Dev.ReactRoblox)
+		React = require(".")
+		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 		ReactTestUtils = {
 			renderIntoDocument = function(element)
 				local instance = Instance.new("Folder")

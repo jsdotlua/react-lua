@@ -9,8 +9,8 @@
 --  * @jest-environment node
 --  */
 local Packages = script.Parent.Parent.Parent
-local ReactVersion = require(Packages.Shared).ReactVersion
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local ReactVersion = require("@pkg/@jsdotlua/shared").ReactVersion
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
 local afterEach = JestGlobals.afterEach
@@ -18,10 +18,10 @@ local it = JestGlobals.it
 local xit = JestGlobals.xit
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
-local Promise = require(Packages.Promise)
+local Promise = require("@pkg/@jsdotlua/promise")
 
 describe("SchedulingProfiler", function()
 	local React
@@ -46,7 +46,7 @@ describe("SchedulingProfiler", function()
 		_G.performance = createUserTimingPolyfill()
 		marks = {}
 
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.enableSchedulingProfiler = true
 		ReactFeatureFlags.enableProfilerTimer = true
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = true
@@ -89,13 +89,13 @@ describe("SchedulingProfiler", function()
 
 		ReactFeatureFlags.enableDoubleInvokingEffects = false
 
-		React = require(Packages.React)
+		React = require("@pkg/@jsdotlua/react")
 
 		-- ReactNoop must be imported after ReactTestRenderer!
-		ReactTestRenderer = require(Packages.Dev.ReactTestRenderer)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 
-		Scheduler = require(Packages.Scheduler)
+		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)
 
 	afterEach(function()

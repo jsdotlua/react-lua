@@ -18,7 +18,7 @@
 
 local HttpService = game:GetService("HttpService")
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach
@@ -102,15 +102,15 @@ beforeEach(function()
 	prevCompatWarnings = _G.__COMPAT_WARNINGS__
 	_G.__COMPAT_WARNINGS__ = false
 
-	React = require(Packages.React)
-	ReactNoop = require(Packages.Dev.ReactNoopRenderer)
+	React = require("@pkg/@jsdotlua/react")
+	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 	-- ReactDOM = require('react-dom')
 	-- ReactTestUtils = require('react-dom/test-utils')
 	-- PropTypes = require('prop-types')
 
 	-- ROBLOX deviation: these tests are failing with debugRenderPhaseSideEffectsForStrictMode on.
 	-- https://github.com/Roblox/roact-alignment/issues/105
-	local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+	local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = false
 end)
 
@@ -716,9 +716,9 @@ describe("Naming conventions", function()
 		_G.__COMPAT_WARNINGS__ = true
 		jest.resetModules()
 		jest.useFakeTimers()
-		React = require(Packages.React)
-		ReactNoop = require(Packages.Dev.ReactNoopRenderer)
-		local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+		React = require("@pkg/@jsdotlua/react")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
+		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = false
 	end)
 

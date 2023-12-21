@@ -8,7 +8,7 @@
  * @flow
 ]]
 
-local invariant = require(script.Parent.Parent.invariant)
+local invariant = require("../invariant")
 
 -- Renderers that don't support hydration
 -- can re-export everything from this module.

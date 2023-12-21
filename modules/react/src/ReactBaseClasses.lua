@@ -8,19 +8,18 @@
  ]]
 local __DEV__ = _G.__DEV__ :: boolean
 local __COMPAT_WARNINGS__ = _G.__COMPAT_WARNINGS__ :: boolean
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local SharedModule = require(Packages.Shared)
+local SharedModule = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation START: we do boolean checks and error() like React 18 does to save functional call in hot path
 -- local invariant = SharedModule.invariant
 -- ROBLOX deviation END
 type React_Component<Props, State = nil> = SharedModule.React_Component<Props, State>
-local ReactNoopUpdateQueue = require(script.Parent.ReactNoopUpdateQueue)
+local ReactNoopUpdateQueue = require("./ReactNoopUpdateQueue")
 local emptyObject = {}
 
 if __DEV__ then
@@ -29,7 +28,7 @@ end
 
 -- ROBLOX DEVIATION: Initialize state to a singleton that warns on access and
 -- errors on assignment
-local UninitializedState = require(Packages.Shared).UninitializedState
+local UninitializedState = require("@pkg/@jsdotlua/shared").UninitializedState
 
 --[[*
  * Base class helpers for the updating state of a component.

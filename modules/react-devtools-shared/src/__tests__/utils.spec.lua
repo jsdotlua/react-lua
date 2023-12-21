@@ -8,26 +8,26 @@
 --  * @flow
 --  */
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
 local it = JestGlobals.it
 local xit = JestGlobals.xit
 local beforeEach = JestGlobals.beforeEach
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Symbol = LuauPolyfill.Symbol
 
-local utils = require(script.Parent.Parent.utils)
+local utils = require("./utils")
 local getDisplayName = utils.getDisplayName
 local getDisplayNameForReactElement = utils.getDisplayNameForReactElement
 local SuspenseList, StrictMode
 local createElement
 
 beforeEach(function()
-	local ReactSymbols = require(Packages.Shared).ReactSymbols
+	local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 	SuspenseList = ReactSymbols.REACT_SUSPENSE_LIST_TYPE
 	StrictMode = ReactSymbols.REACT_STRICT_MODE_TYPE
-	local React = require(Packages.React)
+	local React = require("@pkg/@jsdotlua/react")
 	createElement = React.createElement
 end)
 

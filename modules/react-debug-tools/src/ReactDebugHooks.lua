@@ -8,8 +8,7 @@
  * @flow
  ]]
 type void = nil --[[ ROBLOX FIXME: adding `void` type alias to make it easier to use Luau `void` equivalent when supported ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 -- ROBLOX deviation START: not needed
 -- local Boolean = LuauPolyfill.Boolean
@@ -31,7 +30,7 @@ local exports = {}
 -- type MutableSourceSubscribeFn = sharedReactTypesModule.MutableSourceSubscribeFn
 -- type ReactContext = sharedReactTypesModule.ReactContext
 -- type ReactProviderType = sharedReactTypesModule.ReactProviderType
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type MutableSource<T> = ReactTypes.MutableSource<T>
 type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<
 	Source,
@@ -56,23 +55,24 @@ type ReactBindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
 -- ROBLOX deviation START: fix import
 -- local reactReconcilerSrcReactInternalTypesModule =
 -- 	require(Packages["react-reconciler"].src.ReactInternalTypes)
-local reactReconcilerSrcReactInternalTypesModule = require(Packages.ReactReconciler)
+local reactReconcilerSrcReactInternalTypesModule =
+	require("@pkg/@jsdotlua/react-reconciler")
 -- ROBLOX deviation END
 type Fiber = reactReconcilerSrcReactInternalTypesModule.Fiber
 type DispatcherType = reactReconcilerSrcReactInternalTypesModule.Dispatcher
 -- ROBLOX deviation START: fix import - import from Shared
 -- local reactReconcilerSrcReactFiberHostConfigModule =
 -- 	require(Packages["react-reconciler"].src.ReactFiberHostConfig)
-local reactReconcilerSrcReactFiberHostConfigModule = require(Packages.Shared)
+local reactReconcilerSrcReactFiberHostConfigModule = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation END
 type OpaqueIDType = reactReconcilerSrcReactFiberHostConfigModule.OpaqueIDType
 -- ROBLOX deviation START: fix import
 -- local NoMode = require(Packages["react-reconciler"].src.ReactTypeOfMode).NoMode
-local ReconcilerModule = require(Packages.ReactReconciler)({})
+local ReconcilerModule = require("@pkg/@jsdotlua/react-reconciler")({})
 local NoMode = ReconcilerModule.ReactTypeOfMode.NoMode
 -- ROBLOX deviation END
 -- ROBLOX deviation START: add inline ErrorStackParser implementation
--- local ErrorStackParser = require(Packages["error-stack-parser"]).default
+-- local ErrorStackParser = require("@pkg/error-stack-parser").default
 type StackFrame = {
 	source: string?,
 	functionName: string?,
@@ -99,7 +99,7 @@ local ErrorStackParser = {
 -- ROBLOX deviation START: import from Shared
 -- local ReactSharedInternals = require(Packages.shared.ReactSharedInternals).default
 -- local REACT_OPAQUE_ID_TYPE = require(Packages.shared.ReactSymbols).REACT_OPAQUE_ID_TYPE
-local SharedModule = require(Packages.Shared)
+local SharedModule = require("@pkg/@jsdotlua/shared")
 local ReactSharedInternals = SharedModule.ReactSharedInternals
 local ReactSymbols = SharedModule.ReactSymbols
 local REACT_OPAQUE_ID_TYPE = ReactSymbols.REACT_OPAQUE_ID_TYPE

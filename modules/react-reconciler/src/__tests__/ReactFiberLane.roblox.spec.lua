@@ -9,18 +9,17 @@
  * @jest-environment node
 ]]
 
-local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
 local ReactFiberSchedulerPriorities =
-	require(script.Parent.Parent["ReactFiberSchedulerPriorities.roblox"])
+	require("../ReactFiberSchedulerPriorities.roblox.lua")
 local ImmediatePriority = ReactFiberSchedulerPriorities.ImmediatePriority
 local NormalPriority = ReactFiberSchedulerPriorities.NormalPriority
 local NoPriority = ReactFiberSchedulerPriorities.NoPriority
@@ -30,7 +29,7 @@ local ReactFiberLane
 
 beforeEach(function()
 	jest.resetModules()
-	ReactFiberLane = require(script.Parent.Parent.ReactFiberLane)
+	ReactFiberLane = require("../ReactFiberLane")
 end)
 
 describe("lanePriorityToSchedulerPriority", function()

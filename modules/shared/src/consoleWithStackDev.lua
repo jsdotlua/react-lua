@@ -5,12 +5,11 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 ]]
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local console = LuauPolyfill.console
 local Array = LuauPolyfill.Array
 
-local ReactSharedInternals = require(script.Parent.ReactSharedInternals)
+local ReactSharedInternals = require("./ReactSharedInternals")
 -- In DEV, calls to console.warn and console.error get replaced
 -- by calls to these methods by a Babel plugin.
 --

@@ -9,52 +9,48 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent
-
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
-local ReactFiberSuspenseComponent =
-	require(script.Parent["ReactFiberSuspenseComponent.new"])
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
 local resetMutableSourceWorkInProgressVersions =
-	require(script.Parent["ReactMutableSource.new"]).resetWorkInProgressVersions
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
--- local {ReactFiberFlags.DidCapture, ReactFiberFlags.NoFlags, ReactFiberFlags.ShouldCapture} = require(script.Parent.ReactFiberFlags)
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+	require("./ReactMutableSource.new.lua").resetWorkInProgressVersions
+local ReactWorkTags = require("./ReactWorkTags")
+-- local {ReactFiberFlags.DidCapture, ReactFiberFlags.NoFlags, ReactFiberFlags.ShouldCapture} = require("./ReactFiberFlags")
+local ReactFiberFlags = require("./ReactFiberFlags")
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSuspenseServerRenderer = ReactFeatureFlags.enableSuspenseServerRenderer
 local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 
-local ReactFiberHostContext = require(script.Parent["ReactFiberHostContext.new"])
+local ReactFiberHostContext = require("./ReactFiberHostContext.new.lua")
 local popHostContainer = ReactFiberHostContext.popHostContainer
 local popHostContext = ReactFiberHostContext.popHostContext
 local popSuspenseContext =
-	require(script.Parent["ReactFiberSuspenseContext.new"]).popSuspenseContext
+	require("./ReactFiberSuspenseContext.new.lua").popSuspenseContext
 local resetHydrationState =
-	require(script.Parent["ReactFiberHydrationContext.new"]).resetHydrationState
-local ReactFiberContext = require(script.Parent["ReactFiberContext.new"])
+	require("./ReactFiberHydrationContext.new.lua").resetHydrationState
+local ReactFiberContext = require("./ReactFiberContext.new.lua")
 local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local popLegacyContext = ReactFiberContext.popContext
 local popTopLevelLegacyContextObject = ReactFiberContext.popTopLevelContextObject
-local popProvider = require(script.Parent["ReactFiberNewContext.new"]).popProvider
+local popProvider = require("./ReactFiberNewContext.new.lua").popProvider
 -- ROBLOX FIXME: this causes a circular require
 local popRenderLanesRef
 local popRenderLanes = function(...)
 	if not popRenderLanesRef then
-		popRenderLanesRef =
-			require(script.Parent["ReactFiberWorkLoop.new"]).popRenderLanes
+		popRenderLanesRef = require("./ReactFiberWorkLoop.new.lua").popRenderLanes
 	end
 	return popRenderLanesRef(...)
 end
 local transferActualDuration =
-	require(script.Parent["ReactProfilerTimer.new"]).transferActualDuration
+	require("./ReactProfilerTimer.new.lua").transferActualDuration
 
-local invariant = require(Packages.Shared).invariant
+local invariant = require("@pkg/@jsdotlua/shared").invariant
 
 local function unwindWork(workInProgress: Fiber, renderLanes: Lanes): Fiber?
 	if workInProgress.tag == ReactWorkTags.ClassComponent then

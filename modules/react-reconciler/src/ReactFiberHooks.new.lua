@@ -16,20 +16,19 @@ local function unimplemented(message: string)
 	error("FIXME (roblox): " .. message .. " is unimplemented")
 end
 local __DEV__ = _G.__DEV__ :: boolean
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 
 -- ROBLOX: use Bindings to implement useRef
-local createRef = require(Packages.React).createRef
-local createBinding = require(Packages.React).createBinding
+local createRef = require("@pkg/@jsdotlua/react").createRef
+local createBinding = require("@pkg/@jsdotlua/react").createBinding
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactContext<T> = ReactTypes.ReactContext<T>
 type ReactBinding<T> = ReactTypes.ReactBinding<T>
 type ReactBindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
@@ -43,31 +42,31 @@ type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscr
 	Snapshot
 >
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type Dispatcher = ReactInternalTypes.Dispatcher
 type HookType = ReactInternalTypes.HookType
 type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
 type Lane = ReactFiberLane.Lane
-local ReactHookEffectTags = require(script.Parent.ReactHookEffectTags)
+local ReactHookEffectTags = require("./ReactHookEffectTags")
 type HookFlags = ReactHookEffectTags.HookFlags
 type FiberRoot = ReactInternalTypes.FiberRoot
 -- ROBLOX TODO: figure out how to expose types through dynamic exports
--- local type {OpaqueIDType} = require(script.Parent.ReactFiberHostConfig)
+-- local type {OpaqueIDType} = require("./ReactFiberHostConfig")
 type OpaqueIDType = any
 
-local ReactSharedInternals = require(Packages.Shared).ReactSharedInternals
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactSharedInternals = require("@pkg/@jsdotlua/shared").ReactSharedInternals
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableDebugTracing: boolean? = ReactFeatureFlags.enableDebugTracing
 local enableSchedulingProfiler: boolean? = ReactFeatureFlags.enableSchedulingProfiler
 local enableNewReconciler: boolean? = ReactFeatureFlags.enableNewReconciler
 -- local decoupleUpdatePriorityFromScheduler = ReactFeatureFlags.decoupleUpdatePriorityFromScheduler
 local enableDoubleInvokingEffects = ReactFeatureFlags.enableDoubleInvokingEffects
 
--- local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
-local DebugTracingMode = require(script.Parent.ReactTypeOfMode).DebugTracingMode
+-- local ReactTypeOfMode = require("./ReactTypeOfMode")
+local DebugTracingMode = require("./ReactTypeOfMode").DebugTracingMode
 local NoLane = ReactFiberLane.NoLane
 local NoLanes = ReactFiberLane.NoLanes
 -- local InputContinuousLanePriority = ReactFiberLane.InputContinuousLanePriority
@@ -80,9 +79,9 @@ local markRootMutableRead = ReactFiberLane.markRootMutableRead
 -- local setCurrentUpdateLanePriority = ReactFiberLane.setCurrentUpdateLanePriority
 -- local higherLanePriority = ReactFiberLane.higherLanePriority
 -- local DefaultLanePriority = ReactFiberLane.DefaultLanePriority
-local ReactFiberNewContext = require(script.Parent["ReactFiberNewContext.new"])
+local ReactFiberNewContext = require("./ReactFiberNewContext.new.lua")
 local readContext = ReactFiberNewContext.readContext
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local UpdateEffect = ReactFiberFlags.Update
 local PassiveEffect = ReactFiberFlags.Passive
 local PassiveStaticEffect = ReactFiberFlags.PassiveStatic
@@ -91,7 +90,7 @@ local MountPassiveDevEffect = ReactFiberFlags.MountPassiveDev
 local HookHasEffect = ReactHookEffectTags.HasEffect
 local HookLayout = ReactHookEffectTags.Layout
 local HookPassive = ReactHookEffectTags.Passive
-local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"]) :: any
+local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
 local warnIfNotCurrentlyActingUpdatesInDEV =
 	ReactFiberWorkLoop.warnIfNotCurrentlyActingUpdatesInDEV
 local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber
@@ -107,44 +106,41 @@ local warnIfNotCurrentlyActingEffectsInDEV =
 --   requestUpdateLane,
 --   requestEventTime,
 --   warnIfNotCurrentlyActingEffectsInDEV,
--- } = require(script.Parent.ReactFiberWorkLoop.new)
+-- } = require("./ReactFiberWorkLoop/new")
 
-local invariant = require(Packages.Shared).invariant
-local getComponentName = require(Packages.Shared).getComponentName
--- local is = require(Packages.Shared).objectIs
+local invariant = require("@pkg/@jsdotlua/shared").invariant
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+-- local is = require("@pkg/@jsdotlua/shared").objectIs
 local function is(x: any, y: any)
 	return x == y and (x ~= 0 or 1 / x == 1 / y) or x ~= x and y ~= y -- eslint-disable-line no-self-compare
 end
 local markWorkInProgressReceivedUpdate =
-	require(script.Parent["ReactFiberBeginWork.new"]).markWorkInProgressReceivedUpdate :: any
+	require("./ReactFiberBeginWork.new.lua").markWorkInProgressReceivedUpdate :: any
 -- local {
 --   UserBlockingPriority,
 --   NormalPriority,
 --   runWithPriority,
 --   getCurrentPriorityLevel,
--- } = require(script.Parent.SchedulerWithReactIntegration.new)
-local getIsHydrating =
-	require(script.Parent["ReactFiberHydrationContext.new"]).getIsHydrating
+-- } = require("./SchedulerWithReactIntegration/new")
+local getIsHydrating = require("./ReactFiberHydrationContext.new.lua").getIsHydrating
 -- local {
 --   makeClientId,
 --   makeClientIdInDEV,
 --   makeOpaqueHydratingObject,
-local ReactFiberHostConfig = require(script.Parent.ReactFiberHostConfig)
+local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 local makeClientId = ReactFiberHostConfig.makeClientId
 -- local makeOpaqueHydratingObject = ReactFiberHostConfig.makeOpaqueHydratingObject
 -- local makeClientIdInDEV = ReactFiberHostConfig.makeClientIdInDEV
 
-local ReactMutableSource = require(script.Parent["ReactMutableSource.new"])
+local ReactMutableSource = require("./ReactMutableSource.new.lua")
 local warnAboutMultipleRenderersDEV = ReactMutableSource.warnAboutMultipleRenderersDEV
 local getWorkInProgressVersion = ReactMutableSource.getWorkInProgressVersion
 local setWorkInProgressVersion = ReactMutableSource.setWorkInProgressVersion
 local markSourceAsDirty = ReactMutableSource.markSourceAsDirty
 
--- local getIsRendering = require(script.Parent.ReactCurrentFiber).getIsRendering
-local logStateUpdateScheduled =
-	require(script.Parent.DebugTracing).logStateUpdateScheduled
-local markStateUpdateScheduled =
-	require(script.Parent.SchedulingProfiler).markStateUpdateScheduled
+-- local getIsRendering = require("./ReactCurrentFiber").getIsRendering
+local logStateUpdateScheduled = require("./DebugTracing").logStateUpdateScheduled
+local markStateUpdateScheduled = require("./SchedulingProfiler").markStateUpdateScheduled
 
 local ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher
 -- local ReactCurrentBatchConfig = ReactSharedInternals.ReactCurrentBatchConfig

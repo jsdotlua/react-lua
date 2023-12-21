@@ -7,9 +7,7 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local inspect = LuauPolyfill.util.inspect
 local Array = LuauPolyfill.Array
 local Error = LuauPolyfill.Error
@@ -21,42 +19,42 @@ type Array<T> = LuauPolyfill.Array<T>
 type Map<K, V> = LuauPolyfill.Map<K, V>
 type Object = LuauPolyfill.Object
 type Set<K> = LuauPolyfill.Set<K>
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local EventEmitter = require(script.Parent.Parent.events)
+local EventEmitter = require("../events")
 type EventEmitter<T> = EventEmitter.EventEmitter<T>
-local constants = require(script.Parent.Parent.constants)
+local constants = require("../constants")
 local TREE_OPERATION_ADD = constants.TREE_OPERATION_ADD
 local TREE_OPERATION_REMOVE = constants.TREE_OPERATION_REMOVE
 local TREE_OPERATION_REORDER_CHILDREN = constants.TREE_OPERATION_REORDER_CHILDREN
 local TREE_OPERATION_UPDATE_TREE_BASE_DURATION =
 	constants.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
-local types = require(script.Parent.Parent.types)
+local types = require("../types")
 local ElementTypeRoot = types.ElementTypeRoot
-local utils = require(script.Parent.Parent.utils)
+local utils = require("../utils")
 local getSavedComponentFilters = utils.getSavedComponentFilters
 local saveComponentFilters = utils.saveComponentFilters
 local separateDisplayNameAndHOCs = utils.separateDisplayNameAndHOCs
 local shallowDiffers = utils.shallowDiffers
 -- ROBLOX deviation: don't use string encoding
 -- local utfDecodeString = utils.utfDecodeString
-local storage = require(script.Parent.Parent.storage)
+local storage = require("../storage")
 local localStorageGetItem = storage.localStorageGetItem
 local localStorageSetItem = storage.localStorageSetItem
 local __DEBUG__ = constants.__DEBUG__
 
-local ProfilerStore = require(script.Parent.ProfilerStore)
+local ProfilerStore = require("./ProfilerStore")
 type ProfilerStore = ProfilerStore.ProfilerStore
 
-local ComponentsTypes = require(script.Parent.Parent.devtools.views.Components.types)
+local ComponentsTypes = require("./views/Components/types")
 type Element = ComponentsTypes.Element
-local Types = require(script.Parent.Parent.types)
+local Types = require("../types")
 type ComponentFilter = Types.ComponentFilter
 type ElementType = Types.ElementType
-local Bridge = require(script.Parent.Parent.bridge)
+local Bridge = require("../bridge")
 type FrontendBridge = Bridge.FrontendBridge
 
-local devtoolsTypes = require(script.Parent.types)
+local devtoolsTypes = require("./types")
 type Store = devtoolsTypes.Store
 type Capabilities = devtoolsTypes.Capabilities
 
@@ -1105,7 +1103,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 	end
 	if __DEBUG__ then
 		-- ROBLOX deviation: inline require here to work around circular dependency
-		local devtoolsUtils = require(script.Parent.utils) :: any
+		local devtoolsUtils = require("./utils") :: any
 		local printStore = devtoolsUtils.printStore
 		console.log(printStore(self, true))
 		console.groupEnd()

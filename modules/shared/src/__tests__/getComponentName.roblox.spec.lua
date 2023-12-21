@@ -1,5 +1,5 @@
 local Packages = script.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -11,9 +11,9 @@ local function MyComponent() end
 local anonymous = function() end
 
 beforeEach(function()
-	React = require(Packages.Dev.React)
+	React = require("@pkg/@jsdotlua/react")
 
-	getComponentName = require(Packages.Shared).getComponentName
+	getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 end)
 
 describe("function components", function()

@@ -15,7 +15,7 @@
 
 local Packages = script.Parent.Parent.Parent
 
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -34,8 +34,8 @@ local UNSUPPORTED = {
 }
 beforeEach(function()
 	jest.resetModules()
-	Roact = require(Packages.Dev.Roact)
-	RoactCompat = require(script.Parent.Parent)
+	Roact = require("@dev-packages/Roact")
+	RoactCompat = require(".")
 end)
 
 it("has all interface members that old Roact exposes", function()
@@ -103,7 +103,7 @@ describe("warns about deprecated Roact API features", function()
 	end)
 
 	it("warns about Roact.Portal", function()
-		local ReactRoblox = require(Packages.ReactRoblox)
+		local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 		local target = Instance.new("Folder")
 		local function withPortal(_props)
 			return RoactCompat.createElement(RoactCompat.Portal, {
@@ -198,8 +198,8 @@ end)
 
 describe("handles uninitialized state", function()
 	it("errors if uninitialized state is assigned", function()
-		local ReactRoblox = require(Packages.ReactRoblox)
-		local Scheduler = require(Packages.Dev.Scheduler)
+		local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
+		local Scheduler = require("@pkg/@jsdotlua/scheduler")
 		local parent = Instance.new("Folder")
 		local Component = RoactCompat.Component:extend("Component")
 
@@ -219,9 +219,9 @@ describe("handles uninitialized state", function()
 	end)
 
 	it("warns if uninitialized state is accessed", function()
-		local ReactRoblox = require(Packages.ReactRoblox)
+		local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 		local parent = Instance.new("Folder")
-		local Scheduler = require(Packages.Dev.Scheduler)
+		local Scheduler = require("@pkg/@jsdotlua/scheduler")
 		local Component = RoactCompat.Component:extend("Component")
 
 		local capturedBool = false
@@ -248,9 +248,9 @@ end)
 
 describe("ChildArray Keys", function()
 	it("Shozuld assign keys to children in an array", function()
-		local ReactRoblox = require(Packages.ReactRoblox)
+		local ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 		local parent = Instance.new("Folder")
-		local Scheduler = require(Packages.Dev.Scheduler)
+		local Scheduler = require("@pkg/@jsdotlua/scheduler")
 		local Component = RoactCompat.Component:extend("Component")
 
 		function Component:render()

@@ -1,5 +1,5 @@
 {
-  "name": "ReactShallowRenderer",
+  "name": "react-shallow-renderer",
   "tree": {
     "$path": "src"
   }

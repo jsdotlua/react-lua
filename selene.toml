@@ -1,4 +1,4 @@
-std = "roblox"
+std = "selene_definitions"
 
 [config]
 empty_if = { comments_count = true }
@@ -8,6 +8,7 @@ shadowing = { ignore_pattern = "result|ok|^_" }
 global_usage = { ignore_pattern = "^__" }
 
 [rules]
+global_usage = "allow"
 unused_variable = "allow"
 # remove when the Luau type narrowing issues (and the workarounds) are resolved
 shadowing = "allow"

@@ -8,19 +8,18 @@
  * @flow
 *]]
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 local Boolean = LuauPolyfill.Boolean
 local Object = LuauPolyfill.Object
 type Object = LuauPolyfill.Object
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 local inspect = LuauPolyfill.util.inspect
 type Function = (...any) -> ...any
 
 -- ROBLOX deviation START: import extra types
-local ReactTypes = require(Packages.Shared)
+local ReactTypes = require("@pkg/@jsdotlua/shared")
 type React_StatelessFunctionalComponent<P> = ReactTypes.React_StatelessFunctionalComponent<
 	P
 >
@@ -32,9 +31,9 @@ type React_Node = ReactTypes.React_Node
 type Source = ReactTypes.Source
 -- ROBLOX deviation END
 
-local isValidElementType = require(Packages.Shared).isValidElementType
-local getComponentName = require(Packages.Shared).getComponentName
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local isValidElementType = require("@pkg/@jsdotlua/shared").isValidElementType
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local getIteratorFn = ReactSymbols.getIteratorFn
 local _REACT_FORWARD_REF_TYPE = ReactSymbols.REACT_FORWARD_REF_TYPE
 local _REACT_MEMO_TYPE = ReactSymbols.REACT_MEMO_TYPE
@@ -42,20 +41,21 @@ local REACT_FRAGMENT_TYPE = ReactSymbols.REACT_FRAGMENT_TYPE
 local REACT_ELEMENT_TYPE = ReactSymbols.REACT_ELEMENT_TYPE
 
 local warnAboutSpreadingKeyToJSX =
-	require(Packages.Shared).ReactFeatureFlags.warnAboutSpreadingKeyToJSX
-local checkPropTypes = require(Packages.Shared).checkPropTypes
-local ReactCurrentOwner = require(Packages.Shared).ReactSharedInternals.ReactCurrentOwner
+	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.warnAboutSpreadingKeyToJSX
+local checkPropTypes = require("@pkg/@jsdotlua/shared").checkPropTypes
+local ReactCurrentOwner =
+	require("@pkg/@jsdotlua/shared").ReactSharedInternals.ReactCurrentOwner
 
-local ReactElement = require(script.Parent.ReactElement)
+local ReactElement = require("./ReactElement")
 local isValidElement = ReactElement.isValidElement
 local createElement = ReactElement.createElement
 local cloneElement = ReactElement.cloneElement
 local jsxDEV = ReactElement.jsxDEV
 
 local setExtraStackFrame =
-	require(Packages.Shared).ReactSharedInternals.ReactDebugCurrentFrame.setExtraStackFrame
+	require("@pkg/@jsdotlua/shared").ReactSharedInternals.ReactDebugCurrentFrame.setExtraStackFrame
 local describeUnknownElementTypeFrameInDEV =
-	require(Packages.Shared).ReactComponentStackFrame.describeUnknownElementTypeFrameInDEV
+	require("@pkg/@jsdotlua/shared").ReactComponentStackFrame.describeUnknownElementTypeFrameInDEV
 
 local exports = {}
 

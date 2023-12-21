@@ -7,9 +7,7 @@
 --  */
 --  * LICENSE file in the root directory of this source tree.
 
-local Packages = script.Parent.Parent
-
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local WeakMap = LuauPolyfill.WeakMap
 local Number = LuauPolyfill.Number
@@ -25,10 +23,10 @@ local exports = {}
 -- ROBLOX TODO: pull in smarter cache when there's a performance reason to do so
 -- local LRU = require()
 -- ROBLOX deviation: pull in getComponentName for Lua-specific logic to extract component names
-local Shared = require(Packages.Shared)
+local Shared = require("@pkg/@jsdotlua/shared")
 local getComponentName = Shared.getComponentName
 
-local ReactIs = require(Packages.ReactIs)
+local ReactIs = require("@pkg/@jsdotlua/react-is")
 local isElement = ReactIs.isElement
 local typeOf = ReactIs.typeOf
 local ContextConsumer = ReactIs.ContextConsumer
@@ -41,15 +39,15 @@ local Portal = ReactIs.Portal
 local Profiler = ReactIs.Profiler
 local StrictMode = ReactIs.StrictMode
 local Suspense = ReactIs.Suspense
-local ReactSymbols = require(Packages.Shared).ReactSymbols
+local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local SuspenseList = ReactSymbols.REACT_SUSPENSE_LIST_TYPE
-local constants = require(script.Parent.constants)
+local constants = require("./constants")
 local TREE_OPERATION_ADD = constants.TREE_OPERATION_ADD
 local TREE_OPERATION_REMOVE = constants.TREE_OPERATION_REMOVE
 local TREE_OPERATION_REORDER_CHILDREN = constants.TREE_OPERATION_REORDER_CHILDREN
 local TREE_OPERATION_UPDATE_TREE_BASE_DURATION =
 	constants.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
-local types = require(script.Parent.types)
+local types = require("./types")
 local ElementTypeRoot = types.ElementTypeRoot
 local LOCAL_STORAGE_FILTER_PREFERENCES_KEY =
 	constants.LOCAL_STORAGE_FILTER_PREFERENCES_KEY
@@ -63,10 +61,10 @@ local ElementTypeClass = types.ElementTypeClass
 local ElementTypeForwardRef = types.ElementTypeForwardRef
 local ElementTypeFunction = types.ElementTypeFunction
 local ElementTypeMemo = types.ElementTypeMemo
-local storage = require(script.Parent.storage)
+local storage = require("./storage")
 local localStorageGetItem = storage.localStorageGetItem
 local localStorageSetItem = storage.localStorageSetItem
-local hydration = require(script.Parent.hydration)
+local hydration = require("./hydration")
 local meta = hydration.meta
 type ComponentFilter = types.ComponentFilter
 type ElementType = types.ElementType

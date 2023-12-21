@@ -24,8 +24,7 @@
 	of an object without constructing an instance of it.
 ]]
 
-local Packages = script.Parent.Parent.Parent.Parent
-local Symbol = require(Packages.Shared).Symbol
+local Symbol = require("@pkg/@jsdotlua/shared").Symbol
 
 local Nil = Symbol.named("Nil")
 local _cachedPropertyValues = {}

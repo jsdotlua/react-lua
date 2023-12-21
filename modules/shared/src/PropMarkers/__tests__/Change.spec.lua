@@ -13,13 +13,12 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent.Parent.Parent
-local JestGlobals = require(Packages.Dev.JestGlobals)
+local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local it = JestGlobals.it
 
-local Type = require(script.Parent.Parent.Parent["Type.roblox"])
-local Change = require(script.Parent.Parent.Change)
+local Type = require("../../Type.roblox.lua")
+local Change = require("../Change")
 
 it("should yield change listener objects when indexed", function()
 	jestExpect(Type.of(Change.Text)).toBe(Type.HostChangeEvent)

@@ -1,6 +1,5 @@
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-devtools-extensions/src/backend.js
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: not needed
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
@@ -44,7 +43,7 @@ local function setup(hook)
 	-- local Agent = require_("react-devtools-shared/src/backend/agent").default
 	-- local Bridge = require_("react-devtools-shared/src/bridge").default
 	-- local initBackend = require_("react-devtools-shared/src/backend").initBackend
-	local ReactDevtoolsShared = require(Packages.ReactDevtoolsShared)
+	local ReactDevtoolsShared = require("@pkg/@jsdotlua/react-devtools-shared")
 	local backend = ReactDevtoolsShared.backend
 	local Agent = backend.agent
 	local Bridge = ReactDevtoolsShared.bridge

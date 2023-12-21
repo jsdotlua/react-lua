@@ -89,61 +89,60 @@
 local __DEV__ = _G.__DEV__
 local __YOLO__ = _G.__YOLO__
 
-local Packages = script.Parent.Parent
-local LuauPolyfill = require(Packages.LuauPolyfill)
+local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
 -- ROBLOX: use patched console from shared
-local console = require(Packages.Shared).console
+local console = require("@pkg/@jsdotlua/shared").console
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type Lane = ReactInternalTypes.Lane
 type Lanes = ReactInternalTypes.Lanes
 
-local ReactFiberLane = require(script.Parent.ReactFiberLane)
+local ReactFiberLane = require("./ReactFiberLane")
 local NoLane = ReactFiberLane.NoLane
 local NoLanes = ReactFiberLane.NoLanes
 local isSubsetOfLanes = ReactFiberLane.isSubsetOfLanes
 local mergeLanes = ReactFiberLane.mergeLanes
 
 -- ROBLOX deviation: lazy instantiate to avoid circular require
-local ReactFiberNewContext --= require(script.Parent["ReactFiberNewContext.new"])
+local ReactFiberNewContext --= require("./ReactFiberNewContext.new.lua")
 -- local enterDisallowedContextReadInDEV = ReactFiberNewContext.enterDisallowedContextReadInDEV
 -- local exitDisallowedContextReadInDEV = ReactFiberNewContext.exitDisallowedContextReadInDEV
 local function enterDisallowedContextReadInDEV()
 	if not ReactFiberNewContext then
-		ReactFiberNewContext = require(script.Parent["ReactFiberNewContext.new"]) :: any
+		ReactFiberNewContext = require("./ReactFiberNewContext.new.lua") :: any
 	end
 	ReactFiberNewContext.enterDisallowedContextReadInDEV()
 end
 local function exitDisallowedContextReadInDEV()
 	if not ReactFiberNewContext then
-		ReactFiberNewContext = require(script.Parent["ReactFiberNewContext.new"]) :: any
+		ReactFiberNewContext = require("./ReactFiberNewContext.new.lua") :: any
 	end
 	ReactFiberNewContext.exitDisallowedContextReadInDEV()
 end
-local ReactFiberFlags = require(script.Parent.ReactFiberFlags)
+local ReactFiberFlags = require("./ReactFiberFlags")
 local Callback = ReactFiberFlags.Callback
 local ShouldCapture = ReactFiberFlags.ShouldCapture
 local DidCapture = ReactFiberFlags.DidCapture
 
-local ReactFeatureFlags = require(Packages.Shared).ReactFeatureFlags
+local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local debugRenderPhaseSideEffectsForStrictMode =
 	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode
 
-local ReactTypeOfMode = require(script.Parent.ReactTypeOfMode)
+local ReactTypeOfMode = require("./ReactTypeOfMode")
 local StrictMode = ReactTypeOfMode.StrictMode
--- local ReactFiberWorkLoop = require(script.Parent["ReactFiberWorkLoop.new"])
+-- local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
 local markSkippedUpdateLanes =
-	require(script.Parent.ReactFiberWorkInProgress).markSkippedUpdateLanes
+	require("./ReactFiberWorkInProgress").markSkippedUpdateLanes
 
 -- ROBLOX deviation START: use if-then-error, which avoid string format and function call overhead, as in React 18
--- local invariant = require(Packages.Shared).invariant
+-- local invariant = require("@pkg/@jsdotlua/shared").invariant
 -- ROBLOX deviation END
-local describeError = require(Packages.Shared).describeError
+local describeError = require("@pkg/@jsdotlua/shared").describeError
 
-local ConsolePatchingDev = require(Packages.Shared).ConsolePatchingDev
+local ConsolePatchingDev = require("@pkg/@jsdotlua/shared").ConsolePatchingDev
 local disableLogs = ConsolePatchingDev.disableLogs
 local reenableLogs = ConsolePatchingDev.reenableLogs
 
