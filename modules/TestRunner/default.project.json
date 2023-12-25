@@ -1,6 +1,7 @@
 {
     "name": "test-runner",
     "tree": {
+        "$className": "DataModel",
         "Src": {
             "$path": "src"
         }
