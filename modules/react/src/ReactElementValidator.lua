@@ -1,15 +1,10 @@
-<<<<<<< HEAD
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/bc6b7b6b16f771bfc8048fe15e211ac777253b64/packages/react/src/ReactElementValidator.js
-=======
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/ReactElementValidator.js
->>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
-<<<<<<< HEAD
  * @flow
 *]]
 
@@ -68,46 +63,6 @@ local exports = {}
 local function setCurrentlyValidatingElement(element: ReactElement<any, any> | nil)
 	if _G.__DEV__ then
 		if element then
-=======
- ]]
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Boolean = LuauPolyfill.Boolean
-local Object = LuauPolyfill.Object
-local console = LuauPolyfill.console
-local RegExp = require(Packages.RegExp)
-local exports = {}
---[[*
- * ReactElementValidator provides a wrapper around a element factory
- * which validates the props passed to the element. This is intended to be
- * used only in DEV and could be replaced by a static type checker for languages
- * that support it.
- ]]
-local isValidElementType = require(Packages.shared.isValidElementType).default
-local getComponentNameFromType = require(Packages.shared.getComponentNameFromType).default
-local sharedReactSymbolsModule = require(Packages.shared.ReactSymbols)
-local getIteratorFn = sharedReactSymbolsModule.getIteratorFn
-local REACT_FORWARD_REF_TYPE = sharedReactSymbolsModule.REACT_FORWARD_REF_TYPE
-local REACT_MEMO_TYPE = sharedReactSymbolsModule.REACT_MEMO_TYPE
-local REACT_FRAGMENT_TYPE = sharedReactSymbolsModule.REACT_FRAGMENT_TYPE
-local REACT_ELEMENT_TYPE = sharedReactSymbolsModule.REACT_ELEMENT_TYPE
-local warnAboutSpreadingKeyToJSX = require(Packages.shared.ReactFeatureFlags).warnAboutSpreadingKeyToJSX
-local checkPropTypes = require(Packages.shared.checkPropTypes).default
-local isArray = require(Packages.shared.isArray).default
-local ReactCurrentOwner = require(script.Parent.ReactCurrentOwner).default
-local reactElementModule = require(script.Parent.ReactElement)
-local isValidElement = reactElementModule.isValidElement
-local createElement = reactElementModule.createElement
-local cloneElement = reactElementModule.cloneElement
-local jsxDEV = reactElementModule.jsxDEV
-local setExtraStackFrame = require(script.Parent.ReactDebugCurrentFrame).setExtraStackFrame
-local describeUnknownElementTypeFrameInDEV =
-	require(Packages.shared.ReactComponentStackFrame).describeUnknownElementTypeFrameInDEV
-local hasOwnProperty = require(Packages.shared.hasOwnProperty).default
-local function setCurrentlyValidatingElement(element)
-	if Boolean.toJSBoolean(__DEV__) then
-		if Boolean.toJSBoolean(element) then
->>>>>>> upstream-apply
 			local owner = element._owner
 			local ownerArgument = nil
 			if owner then
@@ -132,7 +87,6 @@ local propTypesMisspellWarningShown
 if _G.__DEV__ then
 	propTypesMisspellWarningShown = false
 end
-<<<<<<< HEAD
 
 local function hasOwnProperty(object, key)
 	return object[key] ~= nil
@@ -143,13 +97,6 @@ local function getDeclarationErrorAddendum(): string
 		local name = getComponentName(ReactCurrentOwner.current.type)
 		if name then
 			return "\n\nCheck the render method of `" .. name .. "`."
-=======
-local function getDeclarationErrorAddendum()
-	if Boolean.toJSBoolean(ReactCurrentOwner.current) then
-		local name = getComponentNameFromType(ReactCurrentOwner.current.type)
-		if Boolean.toJSBoolean(name) then
-			return "\n\nCheck the render method of `" .. tostring(name) .. "`."
->>>>>>> upstream-apply
 		end
 	end
 	return ""
@@ -251,30 +198,11 @@ local function validateExplicitKey<P>(
 	-- // property, it may be the creator of the child that's responsible for
 	-- // assigning it a key.
 	local childOwner = ""
-<<<<<<< HEAD
 	if element and element._owner and element._owner ~= ReactCurrentOwner.current then
 		-- // Give the component that originally created this child.
 		childOwner = string.format(
 			" It was passed a child from %s.",
 			tostring(getComponentName(element._owner.type))
-=======
-	if
-		Boolean.toJSBoolean((function()
-			local ref = if Boolean.toJSBoolean(element) then element._owner else element
-			return if Boolean.toJSBoolean(ref) then element._owner ~= ReactCurrentOwner.current else ref
-		end)())
-	then
-		-- Give the component that originally created this child.
-		childOwner = (" It was passed a child from %s."):format(tostring(getComponentNameFromType(element._owner.type)))
-	end
-	if Boolean.toJSBoolean(__DEV__) then
-		setCurrentlyValidatingElement(element)
-		console.error(
-			'Each child in a list should have a unique "key" prop.'
-				.. "%s%s See https://reactjs.org/link/warning-keys for more information.",
-			currentComponentErrorInfo,
-			childOwner
->>>>>>> upstream-apply
 		)
 	end
 
@@ -323,27 +251,12 @@ local function validateChildKeys(node, parentType)
 	if typeof(node) ~= "table" then
 		return
 	end
-<<<<<<< HEAD
 
 	if Array.isArray(node) then
 		for i = 1, #node do
 			local child = node[i]
 			if isValidElement(child) then
 				validateExplicitKey(child :: ReactElement<any, any>, parentType)
-=======
-	if Boolean.toJSBoolean(isArray(node)) then
-		do
-			local i = 0
-			while
-				i
-				< node.length --[[ ROBLOX CHECK: operator '<' works only if either both arguments are strings or both are a number ]]
-			do
-				local child = node[tostring(i)]
-				if Boolean.toJSBoolean(isValidElement(child)) then
-					validateExplicitKey(child, parentType)
-				end
-				i += 1
->>>>>>> upstream-apply
 			end
 		end
 	elseif isValidElement(node) then
@@ -399,7 +312,6 @@ local function validatePropTypes<P>(element: ReactElement<P, any>)
 
 		if propTypes or validateProps then
 			-- Intentionally inside to avoid triggering lazy initializers:
-<<<<<<< HEAD
 			local name = getComponentName(type)
 			-- ROBLOX deviation: adds support for legacy Roact's validateProps()
 			checkPropTypes(propTypes, validateProps, element.props, "prop", name, element)
@@ -408,13 +320,6 @@ local function validatePropTypes<P>(element: ReactElement<P, any>)
 			propTypesMisspellWarningShown = true
 			-- Intentionally inside to avoid triggering lazy initializers:
 			local name = getComponentName(type)
-=======
-			local name = getComponentNameFromType(type_)
-			checkPropTypes(propTypes, element.props, "prop", name, element)
-		elseif type_.PropTypes ~= nil and not Boolean.toJSBoolean(propTypesMisspellWarningShown) then
-			propTypesMisspellWarningShown = true -- Intentionally inside to avoid triggering lazy initializers:
-			local name = getComponentNameFromType(type_)
->>>>>>> upstream-apply
 			console.error(
 				"Component %s declared `PropTypes` instead of `propTypes`. Did you misspell the property assignment?",
 				name or "Unknown"
@@ -488,26 +393,13 @@ local function jsxWithValidation<P, T>(
 		end
 
 		local typeString
-<<<<<<< HEAD
 		if type == nil then
 			typeString = "nil"
 		elseif Array.isArray(type) then
 			typeString = "array"
-		elseif typeof(type) == "table" and type["$$typeof"] == REACT_ELEMENT_TYPE then
+		elseif typeof(type) == "table" and type["$typeof"] == REACT_ELEMENT_TYPE then
 			typeString = string.format("<%s />", getComponentName(type.type) or "Unknown")
 			info ..= " Did you accidentally export a JSX literal or Element instead of a component?"
-=======
-		if type_ == nil then
-			typeString = "null"
-		elseif Boolean.toJSBoolean(isArray(type_)) then
-			typeString = "array"
-		elseif type_ ~= nil and type_["$$typeof"] == REACT_ELEMENT_TYPE then
-			typeString = ("<%s />"):format(tostring((function()
-				local ref = getComponentNameFromType(type_.type)
-				return Boolean.toJSBoolean(ref) and ref or "Unknown"
-			end)()))
-			info = " Did you accidentally export a JSX literal instead of a component?"
->>>>>>> upstream-apply
 		else
 			typeString = typeof(type)
 			info ..= "\n" .. inspect(type)
@@ -541,28 +433,11 @@ local function jsxWithValidation<P, T>(
 	if validType then
 		local children = props.children
 		if children ~= nil then
-<<<<<<< HEAD
 			if isStaticChildren then
 				if Array.isArray(children) then
 					for i = 1, #children do
 						-- ROBLOX FIXME Luau: needs normalization
 						validateChildKeys(children[i], type :: any)
-=======
-			if Boolean.toJSBoolean(isStaticChildren) then
-				if Boolean.toJSBoolean(isArray(children)) then
-					do
-						local i = 0
-						while
-							i
-							< children.length --[[ ROBLOX CHECK: operator '<' works only if either both arguments are strings or both are a number ]]
-						do
-							validateChildKeys(children[tostring(i)], type_)
-							i += 1
-						end
-					end
-					if Boolean.toJSBoolean(Object.freeze) then
-						Object.freeze(children)
->>>>>>> upstream-apply
 					end
 
 					-- deviation: Object.freeze always exist
@@ -592,14 +467,7 @@ local function jsxWithValidation<P, T>(
 					"React.jsx: Spreading a key to JSX is a deprecated pattern. "
 						.. "Explicitly pass a key after spreading props in your JSX call. "
 						.. "E.g. <%s {...props} key={key} />",
-<<<<<<< HEAD
 					getComponentName(type) or "ComponentName"
-=======
-					(function()
-						local ref = getComponentNameFromType(type_)
-						return Boolean.toJSBoolean(ref) and ref or "ComponentName"
-					end)()
->>>>>>> upstream-apply
 				)
 			end
 		end
@@ -656,31 +524,19 @@ local function createElementWithValidation<P, T>(
 
 		local typeString
 		if type_ == nil then
-<<<<<<< HEAD
 			typeString = "nil"
 		elseif Array.isArray(type_) then
 			typeString = "array"
 		elseif
 			type_ ~= nil
 			and typeof(type_) == "table"
-			and type_["$$typeof"] == REACT_ELEMENT_TYPE
+			and type_["$typeof"] == REACT_ELEMENT_TYPE
 		then
 			typeString = string.format(
 				"<%s />",
 				getComponentName((type_ :: any).type) or "Unknown"
 			)
 			info ..= " Did you accidentally export a JSX literal or Element instead of a component?"
-=======
-			typeString = "null"
-		elseif Boolean.toJSBoolean(isArray(type_)) then
-			typeString = "array"
-		elseif type_ ~= nil and type_["$$typeof"] == REACT_ELEMENT_TYPE then
-			typeString = ("<%s />"):format(tostring((function()
-				local ref = getComponentNameFromType(type_.type)
-				return Boolean.toJSBoolean(ref) and ref or "Unknown"
-			end)()))
-			info = " Did you accidentally export a JSX literal instead of a component?"
->>>>>>> upstream-apply
 		else
 			typeString = typeof(type_)
 			if type_ ~= nil then

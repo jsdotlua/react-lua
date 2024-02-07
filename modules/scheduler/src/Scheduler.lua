@@ -243,8 +243,7 @@ return function(hostConfig)
 		if not _G.__YOLO__ then
 			-- ROBLOX performance: don't nest try/catch here, Lua can do better, and it eliminated an anon function creation
 			if enableProfiling then
-				ok, result =
-					xpcall(workLoop, describeError, hasTimeRemaining, initialTime)
+				ok, result = xpcall(workLoop, describeError, hasTimeRemaining, initialTime)
 
 				if not ok then
 					if currentTask ~= nil then
@@ -283,13 +282,8 @@ return function(hostConfig)
 		local currentTime = initialTime
 		advanceTimers(currentTime)
 		currentTask = peek(taskQueue)
-		while
-			currentTask ~= nil and not (enableSchedulerDebugging and isSchedulerPaused)
-		do
-			if
-				currentTask.expirationTime > currentTime
-				and (not hasTimeRemaining or shouldYieldToHost())
-			then
+		while currentTask ~= nil and not (enableSchedulerDebugging and isSchedulerPaused) do
+			if currentTask.expirationTime > currentTime and (not hasTimeRemaining or shouldYieldToHost()) then
 				-- This currentTask hasn't expired, and we've reached the deadline.
 				break
 			end

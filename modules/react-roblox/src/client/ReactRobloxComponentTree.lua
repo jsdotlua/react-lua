@@ -49,8 +49,7 @@ local exports: { [any]: any } = {}
 -- (which are Instances). We might consider using the Attributes feature for
 -- this when it releases
 local containerToRoot: { [Container]: Fiber } = {}
-local instanceToFiber: { [HostInstance | SuspenseInstance | ReactScopeInstance]: Fiber } =
-	{}
+local instanceToFiber: { [HostInstance | SuspenseInstance | ReactScopeInstance]: Fiber } = {}
 local instanceToProps: { [HostInstance | SuspenseInstance]: Props } = {}
 
 local randomKey = string.sub(tostring(math.random()), 3)
@@ -61,16 +60,14 @@ local internalContainerInstanceKey = "__reactContainer$" .. randomKey
 -- local internalEventHandlerListenersKey = '__reactListeners$' + randomKey
 -- local internalEventHandlesSetKey = '__reactHandles$' + randomKey
 
-exports.precacheFiberNode =
-	function(hostInst: Fiber, node: HostInstance | SuspenseInstance | ReactScopeInstance)
-		instanceToFiber[node] = hostInst
-	end
+exports.precacheFiberNode = function(hostInst: Fiber, node: HostInstance | SuspenseInstance | ReactScopeInstance)
+	instanceToFiber[node] = hostInst
+end
 
-exports.uncacheFiberNode =
-	function(node: HostInstance | SuspenseInstance | ReactScopeInstance)
-		instanceToFiber[node] = nil
-		instanceToProps[node] = nil
-	end
+exports.uncacheFiberNode = function(node: HostInstance | SuspenseInstance | ReactScopeInstance)
+	instanceToFiber[node] = nil
+	instanceToProps[node] = nil
+end
 
 exports.markContainerAsRoot = function(hostRoot: Fiber, node: Container)
 	-- deviation: Use our module-level map
@@ -133,15 +130,10 @@ exports.getClosestInstanceFromNode = function(targetNode: Instance): Fiber?
 			-- have one on the alternate so we need to check in case this was a
 			-- root.
 			local alternate = targetInst.alternate
-			if
-				targetInst.child ~= nil
-				or (alternate ~= nil and alternate.child ~= nil)
-			then
+			if targetInst.child ~= nil or (alternate ~= nil and alternate.child ~= nil) then
 				-- ROBLOX deviation: lazy initialize to work around circular dependency
 				if getParentSuspenseInstance == nil then
-					getParentSuspenseInstance = (require(
-						script.Parent.ReactRobloxHostConfig
-					) :: any).getParentSuspenseInstance
+					getParentSuspenseInstance = (require(script.Parent.ReactRobloxHostConfig) :: any).getParentSuspenseInstance
 				end
 
 				-- Next we need to figure out if the node that skipped past is
@@ -194,8 +186,7 @@ exports.getInstanceFromNode = function(node): Fiber?
 		SuspenseComponent = ReactWorkTags.HostComponent
 	end
 
-	local inst = (node :: any)[internalInstanceKey]
-		or (node :: any)[internalContainerInstanceKey]
+	local inst = (node :: any)[internalInstanceKey] or (node :: any)[internalContainerInstanceKey]
 	if inst then
 		if
 			inst.tag == HostComponent
@@ -229,10 +220,9 @@ exports.getNodeFromInstance = function(inst: Fiber): Instance | TextInstance
 	error("getNodeFromInstance: Invalid argument.")
 end
 
-exports.getFiberCurrentPropsFromNode =
-	function(node: Instance | TextInstance | SuspenseInstance): Props
-		return instanceToProps[node]
-	end
+exports.getFiberCurrentPropsFromNode = function(node: Instance | TextInstance | SuspenseInstance): Props
+	return instanceToProps[node]
+end
 
 exports.updateFiberProps = function(node: Instance | SuspenseInstance, props: Props)
 	instanceToProps[node] = props

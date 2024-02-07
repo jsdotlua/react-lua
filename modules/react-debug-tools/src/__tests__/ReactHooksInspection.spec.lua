@@ -394,7 +394,6 @@ describe("ReactHooksInspection", function()
 					return nil
 				end
 			end,
-<<<<<<< HEAD
 		}) :: any
 		-- ROBLOX deviation END
 		-- ROBLOX deviation START: aligned to React 18 so we get a hot path optimization in upstream
@@ -417,24 +416,6 @@ describe("ReactHooksInspection", function()
 				-- ROBLOX NOTE: Lua-specific error on nil deref
 				"attempt to index nil with 'useState'"
 			)
-=======
-		}
-		local didCatch = false
-		expect(function()
-			-- mock the Error constructor to check the internal of the error instance
-			do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-				local ok, result, hasReturned = xpcall(function()
-					ReactDebugTools:inspectHooks(Foo, {}, FakeDispatcherRef)
-				end, function(error_)
-					expect(error_.message).toBe("Error rendering inspected component") -- error.cause is the original error
-					expect(error_.cause).toBeInstanceOf(Error)
-					expect(error_.cause.message).toBe("Cannot read property 'useState' of null")
-				end)
-				if hasReturned then
-					return result
-				end
-			end
->>>>>>> upstream-apply
 			didCatch = true
 		end).toErrorDev(
 			"Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for"
@@ -444,15 +425,10 @@ describe("ReactHooksInspection", function()
 				.. "3. You might have more than one copy of React in the same app\n"
 				.. "See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.",
 			{ withoutStack = true }
-<<<<<<< HEAD
 		)
 		-- avoid false positive if no error was thrown at all
 		expect(didCatch).toBe(true)
 		-- ROBLOX deviation END
-=======
-		) -- avoid false positive if no error was thrown at all
-		expect(didCatch).toBe(true)
->>>>>>> upstream-apply
 		expect(getterCalls).toBe(1)
 		expect(setterCalls).toHaveLength(2)
 		expect(setterCalls[

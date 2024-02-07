@@ -1,10 +1,5 @@
-<<<<<<< HEAD
--- ROBLOX upstream: https://github.com/facebook/react/blob/8af27aeedbc6b00bc2ef49729fc84f116c70a27c/packages/scheduler/src/__tests__/SchedulerProfiling-test.js
---[[**
-=======
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/scheduler/src/__tests__/SchedulerProfiling-test.js
---[[*
->>>>>>> upstream-apply
+--[[**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the

@@ -157,8 +157,7 @@ it("should use table key to express identity when updating children type", funct
 	local function Component(props)
 		local children = {}
 		for i = 1, props.count do
-			children[tostring(i)] =
-				React.createElement("TextLabel", { Text = tostring(i) })
+			children[tostring(i)] = React.createElement("TextLabel", { Text = tostring(i) })
 		end
 
 		if props.count == 0 then
@@ -194,8 +193,7 @@ it("should defer to provided key if both are present", function()
 			local key = props.invert and tostring(51 - i) or tostring(i)
 			-- provide both explicit key and table key, where table-key does not
 			-- obey the `invert` prop and should not be the one that's used.
-			children[tostring(i)] =
-				React.createElement("TextLabel", { key = key, Text = i })
+			children[tostring(i)] = React.createElement("TextLabel", { key = key, Text = i })
 		end
 
 		return React.createElement("Frame", { ref = ref }, children)
@@ -242,20 +240,12 @@ it("should use composite identity", function()
 	local ref2 = React.createRef()
 
 	reactRobloxRoot:render(
-		React.createElement(
-			Wrapper,
-			{ key = "wrap1" },
-			React.createElement("Frame", { ref = ref1 })
-		)
+		React.createElement(Wrapper, { key = "wrap1" }, React.createElement("Frame", { ref = ref1 }))
 	)
 	Scheduler.unstable_flushAllWithoutAsserting()
 
 	reactRobloxRoot:render(
-		React.createElement(
-			Wrapper,
-			{ key = "wrap2" },
-			React.createElement("Frame", { ref = ref2 })
-		)
+		React.createElement(Wrapper, { key = "wrap2" }, React.createElement("Frame", { ref = ref2 }))
 	)
 	Scheduler.unstable_flushAllWithoutAsserting()
 
@@ -267,11 +257,7 @@ local function renderAComponentWithKeyIntoContainer(key, container)
 
 	local Wrapper = React.Component:extend("Wrapper")
 	function Wrapper:render()
-		return React.createElement(
-			"Frame",
-			nil,
-			React.createElement("Frame", { ref = ref, key = key })
-		)
+		return React.createElement("Frame", nil, React.createElement("Frame", { ref = ref, key = key }))
 	end
 
 	reactRobloxRoot:render(React.createElement(Wrapper), container)
@@ -320,13 +306,7 @@ it("should let restructured components retain their uniqueness", function()
 
 	local TestComponent = React.Component:extend("TestComponent")
 	function TestComponent:render()
-		return React.createElement(
-			"Frame",
-			nil,
-			instance2,
-			self.props.children[1],
-			self.props.children[2]
-		)
+		return React.createElement("Frame", nil, instance2, self.props.children[1], self.props.children[2])
 	end
 
 	local TestContainer = React.Component:extend("TestContainer")
@@ -347,22 +327,12 @@ it("should let nested restructures retain their uniqueness", function()
 
 	local TestComponent = React.Component:extend("TestComponent")
 	function TestComponent:render()
-		return React.createElement(
-			"Frame",
-			nil,
-			instance2,
-			self.props.children[1],
-			self.props.children[2]
-		)
+		return React.createElement("Frame", nil, instance2, self.props.children[1], self.props.children[2])
 	end
 
 	local TestContainer = React.Component:extend("TestContainer")
 	function TestContainer:render()
-		return React.createElement(
-			"Frame",
-			nil,
-			React.createElement(TestComponent, nil, instance0, instance1)
-		)
+		return React.createElement("Frame", nil, React.createElement(TestComponent, nil, instance0, instance1))
 	end
 
 	jestExpect(function()
@@ -375,23 +345,12 @@ end)
 xit("should let text nodes retain their uniqueness", function()
 	local TestComponent = React.Component:extend("TestComponent")
 	function TestComponent:render()
-		return React.createElement(
-			"Frame",
-			nil,
-			self.props.children,
-			React.createElement("Frame")
-		)
+		return React.createElement("Frame", nil, self.props.children, React.createElement("Frame"))
 	end
 
 	local TestContainer = React.Component:extend("TestContainer")
 	function TestContainer:render()
-		return React.createElement(
-			TestComponent,
-			nil,
-			React.createElement("Frame"),
-			nil,
-			{ "second" }
-		)
+		return React.createElement(TestComponent, nil, React.createElement("Frame"), nil, { "second" })
 	end
 
 	jestExpect(function()
@@ -438,9 +397,7 @@ it("should retain key during updates in composite components", function()
 		return byProp
 	end
 
-	reactRobloxRoot:render(
-		React.createElement(TestContainer, { first = instance0, second = instance1 })
-	)
+	reactRobloxRoot:render(React.createElement(TestContainer, { first = instance0, second = instance1 }))
 	Scheduler.unstable_flushAllWithoutAsserting()
 
 	local originalChildren = childrenByProp(ref.current:GetChildren())

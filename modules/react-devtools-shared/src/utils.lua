@@ -45,16 +45,12 @@ local constants = require("./constants")
 local TREE_OPERATION_ADD = constants.TREE_OPERATION_ADD
 local TREE_OPERATION_REMOVE = constants.TREE_OPERATION_REMOVE
 local TREE_OPERATION_REORDER_CHILDREN = constants.TREE_OPERATION_REORDER_CHILDREN
-local TREE_OPERATION_UPDATE_TREE_BASE_DURATION =
-	constants.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
+local TREE_OPERATION_UPDATE_TREE_BASE_DURATION = constants.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
 local types = require("./types")
 local ElementTypeRoot = types.ElementTypeRoot
-local LOCAL_STORAGE_FILTER_PREFERENCES_KEY =
-	constants.LOCAL_STORAGE_FILTER_PREFERENCES_KEY
-local LOCAL_STORAGE_SHOULD_BREAK_ON_CONSOLE_ERRORS =
-	constants.LOCAL_STORAGE_SHOULD_BREAK_ON_CONSOLE_ERRORS
-local LOCAL_STORAGE_SHOULD_PATCH_CONSOLE_KEY =
-	constants.LOCAL_STORAGE_SHOULD_PATCH_CONSOLE_KEY
+local LOCAL_STORAGE_FILTER_PREFERENCES_KEY = constants.LOCAL_STORAGE_FILTER_PREFERENCES_KEY
+local LOCAL_STORAGE_SHOULD_BREAK_ON_CONSOLE_ERRORS = constants.LOCAL_STORAGE_SHOULD_BREAK_ON_CONSOLE_ERRORS
+local LOCAL_STORAGE_SHOULD_PATCH_CONSOLE_KEY = constants.LOCAL_STORAGE_SHOULD_PATCH_CONSOLE_KEY
 local ComponentFilterElementType = types.ComponentFilterElementType
 local ElementTypeHostComponent = types.ElementTypeHostComponent
 local ElementTypeClass = types.ElementTypeClass
@@ -107,11 +103,7 @@ exports.getDisplayName = function(type_: any, fallbackName: string?): string
 	if typeof(type_) == "table" and typeof(type_.__componentName) == "string" then
 		displayName = type_.__componentName
 		-- ROBLOX deviation END
-	elseif
-		typeof(type_) == "table"
-		and typeof(type_.name) == "string"
-		and type_.name ~= ""
-	then
+	elseif typeof(type_) == "table" and typeof(type_.name) == "string" and type_.name ~= "" then
 		displayName = type_.name
 		-- ROBLOX deviation: use the Lua logic in getComponentName to extract names of function components
 	elseif typeof(type_) == "function" then
@@ -142,11 +134,7 @@ exports.printOperationsArray = function(operations: Array<number | string>)
 	local rendererID = operations[1] :: number
 	local rootID = operations[2] :: number
 	local logs = {
-		string.format(
-			"operations for renderer:%s and root:%s",
-			tostring(rendererID),
-			tostring(rootID)
-		),
+		string.format("operations for renderer:%s and root:%s", tostring(rendererID), tostring(rootID)),
 	}
 
 	-- ROBLOX deviation: 1-indexing so start at 3
@@ -204,12 +192,7 @@ exports.printOperationsArray = function(operations: Array<number | string>)
 
 				table.insert(
 					logs,
-					string.format(
-						"Add node %d (%s) as child of %d",
-						id,
-						displayName or "null",
-						parentID
-					)
+					string.format("Add node %d (%s) as child of %d", id, displayName or "null", parentID)
 				)
 			end
 		elseif operation == TREE_OPERATION_REMOVE then
@@ -229,14 +212,7 @@ exports.printOperationsArray = function(operations: Array<number | string>)
 			local children = Array.slice(operations, i, i + numChildren)
 			i += numChildren
 
-			table.insert(
-				logs,
-				string.format(
-					"Re-order node %d children %s",
-					id,
-					Array.join(children, ",")
-				)
-			)
+			table.insert(logs, string.format("Re-order node %d children %s", id, Array.join(children, ",")))
 		elseif operation == TREE_OPERATION_UPDATE_TREE_BASE_DURATION then
 			-- Base duration updates are only sent while profiling is in progress.
 			-- We can ignore them at this point.
@@ -274,10 +250,7 @@ exports.getSavedComponentFilters = function(): Array<ComponentFilter>
 	return result
 end
 exports.saveComponentFilters = function(componentFilters: Array<ComponentFilter>): ()
-	localStorageSetItem(
-		LOCAL_STORAGE_FILTER_PREFERENCES_KEY,
-		JSON:JSONEncode(componentFilters)
-	)
+	localStorageSetItem(LOCAL_STORAGE_FILTER_PREFERENCES_KEY, JSON:JSONEncode(componentFilters))
 end
 exports.getAppendComponentStack = function(): boolean
 	local ok, result = pcall(function()
@@ -311,10 +284,7 @@ exports.getBreakOnConsoleErrors = function(): boolean
 end
 
 exports.setBreakOnConsoleErrors = function(value: boolean): ()
-	localStorageSetItem(
-		LOCAL_STORAGE_SHOULD_BREAK_ON_CONSOLE_ERRORS,
-		JSON:JSONEncode(value)
-	)
+	localStorageSetItem(LOCAL_STORAGE_SHOULD_BREAK_ON_CONSOLE_ERRORS, JSON:JSONEncode(value))
 end
 exports.separateDisplayNameAndHOCs = function(
 	displayName: string | nil,
@@ -408,16 +378,11 @@ exports.deletePathInObject = function(object: Object?, path: Array<string | numb
 		end
 	end
 end
-exports.renamePathInObject = function(
-	object: Object?,
-	oldPath: Array<string | number>,
-	newPath: Array<string | number>
-)
+exports.renamePathInObject = function(object: Object?, oldPath: Array<string | number>, newPath: Array<string | number>)
 	local length = #oldPath
 
 	if object ~= nil then
-		local parent =
-			exports.getInObject(object :: Object, Array.slice(oldPath, 1, length))
+		local parent = exports.getInObject(object :: Object, Array.slice(oldPath, 1, length))
 
 		if parent then
 			local lastOld = oldPath[length] :: number
@@ -662,10 +627,7 @@ function exports.formatDataForPreview(data: Object, showFormattedValue: boolean)
 		-- elseif type_ == 'regexp' then
 		-- elseif type_ == 'symbol' then
 	elseif type_ == "react_element" then
-		return string.format(
-			"<%s />",
-			truncateForDisplay(exports.getDisplayNameForReactElement(data) or "Unknown")
-		)
+		return string.format("<%s />", truncateForDisplay(exports.getDisplayNameForReactElement(data) or "Unknown"))
 		-- elseif type_ == 'array_buffer' then
 		-- elseif type_ == 'data_view' then
 	elseif type_ == "array" then
@@ -710,11 +672,7 @@ function exports.formatDataForPreview(data: Object, showFormattedValue: boolean)
 					formatted = formatted .. ", "
 				end
 				formatted = formatted
-					.. string.format(
-						"%s: %s",
-						tostring(key),
-						exports.formatDataForPreview(data[key], false)
-					)
+					.. string.format("%s: %s", tostring(key), exports.formatDataForPreview(data[key], false))
 				if string.len(formatted) > MAX_PREVIEW_STRING_LENGTH then
 					-- Prevent doing a lot of unnecessary iteration...
 					break

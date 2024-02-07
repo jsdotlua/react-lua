@@ -32,11 +32,7 @@ local createContext = React.createContext
 
 -- ROBLOX deviation START: Suspender needs a generic param to be type compatible with Thenable
 export type Suspender<R = any> = {
-	andThen: <U>(
-		self: Thenable<R>,
-		onFulfill: (R) -> () | U,
-		onReject: (error: any) -> () | U
-	) -> (),
+	andThen: <U>(self: Thenable<R>, onFulfill: (R) -> () | U, onReject: (error: any) -> () | U) -> (),
 }
 -- ROBLOX deviation END
 
@@ -69,8 +65,7 @@ local Pending = 0
 local Resolved = 1
 local Rejected = 2
 
-local ReactCurrentDispatcher =
-	React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher
+local ReactCurrentDispatcher = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher
 
 local function readContext(Context, observedBits: boolean?)
 	local dispatcher = ReactCurrentDispatcher.current
@@ -110,12 +105,7 @@ local function getEntriesForResource(resource: any): WeakMap<any, any>
 end
 -- ROBLOX deviation END
 
-local function accessResult<Input, Key, Value>(
-	resource: any,
-	fetch: (Input) -> Thenable<Value>,
-	input: Input,
-	key: Key
-): Result<Value>
+local function accessResult<Input, Key, Value>(resource: any, fetch: (Input) -> Thenable<Value>, input: Input, key: Key): Result<Value>
 	local entriesForResource = getEntriesForResource(resource)
 	local entry = entriesForResource:get(key)
 

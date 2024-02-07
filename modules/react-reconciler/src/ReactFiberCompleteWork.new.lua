@@ -40,8 +40,7 @@ local ReactFiberOffscreenComponent = require("./ReactFiberOffscreenComponent")
 type OffscreenState = ReactFiberOffscreenComponent.OffscreenState
 
 local ReactMutableSource = require("./ReactMutableSource.new.lua")
-local resetMutableSourceWorkInProgressVersions =
-	ReactMutableSource.resetWorkInProgressVersions
+local resetMutableSourceWorkInProgressVersions = ReactMutableSource.resetWorkInProgressVersions
 
 -- local {now} = require("./SchedulerWithReactIntegration/new")
 
@@ -125,8 +124,7 @@ local popHostContainer = ReactFiberHostContext.popHostContainer
 local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
 local popSuspenseContext = ReactFiberSuspenseContext.popSuspenseContext
 local suspenseStackCursor = ReactFiberSuspenseContext.suspenseStackCursor
-local InvisibleParentSuspenseContext =
-	ReactFiberSuspenseContext.InvisibleParentSuspenseContext
+local InvisibleParentSuspenseContext = ReactFiberSuspenseContext.InvisibleParentSuspenseContext
 local hasSuspenseContext = ReactFiberSuspenseContext.hasSuspenseContext
 type SuspenseContext = ReactFiberSuspenseContext.SuspenseContext
 -- local pushSuspenseContext = ReactFiberSuspenseContext.pushSuspenseContext
@@ -142,15 +140,12 @@ local popTopLevelLegacyContextObject = ReactFiberContext.popTopLevelContextObjec
 local popProvider = require("./ReactFiberNewContext.new.lua").popProvider
 
 local ReactFiberHydrationContext = require("./ReactFiberHydrationContext.new.lua")
-local prepareToHydrateHostSuspenseInstance =
-	ReactFiberHydrationContext.prepareToHydrateHostSuspenseInstance
+local prepareToHydrateHostSuspenseInstance = ReactFiberHydrationContext.prepareToHydrateHostSuspenseInstance
 local popHydrationState = ReactFiberHydrationContext.popHydrationState
 local resetHydrationState = ReactFiberHydrationContext.resetHydrationState
 -- local getIsHydrating = ReactFiberHydrationContext.getIsHydrating
-local prepareToHydrateHostInstance =
-	ReactFiberHydrationContext.prepareToHydrateHostInstance
-local prepareToHydrateHostTextInstance =
-	ReactFiberHydrationContext.prepareToHydrateHostTextInstance
+local prepareToHydrateHostInstance = ReactFiberHydrationContext.prepareToHydrateHostInstance
+local prepareToHydrateHostTextInstance = ReactFiberHydrationContext.prepareToHydrateHostTextInstance
 local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
 local enableSuspenseCallback = ReactFeatureFlags.enableSuspenseCallback
@@ -286,14 +281,8 @@ if supportsMutation then
 		-- TODO: Experiencing an error where oldProps is nil. Suggests a host
 		-- component is hitting the resume path. Figure out why. Possibly
 		-- related to `hidden`.
-		local updatePayload = prepareUpdate(
-			instance,
-			type,
-			oldProps,
-			newProps,
-			rootContainerInstance,
-			currentHostContext
-		)
+		local updatePayload =
+			prepareUpdate(instance, type, oldProps, newProps, rootContainerInstance, currentHostContext)
 		-- TODO: Type this specific to this type of component.
 		workInProgress.updateQueue = updatePayload
 		-- If the update payload indicates that there is a change or if there
@@ -302,12 +291,7 @@ if supportsMutation then
 			markUpdate(workInProgress)
 		end
 	end
-	function updateHostText(
-		current: Fiber,
-		workInProgress: Fiber,
-		oldText: string,
-		newText: string
-	)
+	function updateHostText(current: Fiber, workInProgress: Fiber, oldText: string, newText: string)
 		-- If the text differs, mark it as an update. All the work in done in commitWork.
 		if oldText ~= newText then
 			markUpdate(workInProgress)
@@ -722,10 +706,7 @@ local function bubbleProperties(completedWork: Fiber)
 
 	if not didBailout then
 		-- Bubble up the earliest expiration time.
-		if
-			enableProfilerTimer
-			and bit32.band(completedWork.mode, ProfileMode) ~= NoMode
-		then
+		if enableProfilerTimer and bit32.band(completedWork.mode, ProfileMode) ~= NoMode then
 			-- In profiling mode, resetChildExpirationTime is also used to reset
 			-- profiler durations.
 			local actualDuration = completedWork.actualDuration
@@ -733,8 +714,7 @@ local function bubbleProperties(completedWork: Fiber)
 
 			local child = completedWork.child
 			while child ~= nil do
-				newChildLanes =
-					mergeLanes(newChildLanes, mergeLanes(child.lanes, child.childLanes))
+				newChildLanes = mergeLanes(newChildLanes, mergeLanes(child.lanes, child.childLanes))
 
 				subtreeFlags = bit32.bor(subtreeFlags, child.subtreeFlags)
 				subtreeFlags = bit32.bor(subtreeFlags, child.flags)
@@ -762,8 +742,7 @@ local function bubbleProperties(completedWork: Fiber)
 				--   newChildLanes,
 				--   mergeLanes(child.lanes, child.childLanes)
 				-- )
-				newChildLanes =
-					bit32.bor(newChildLanes, bit32.bor(child.lanes, child.childLanes))
+				newChildLanes = bit32.bor(newChildLanes, bit32.bor(child.lanes, child.childLanes))
 
 				subtreeFlags = bit32.bor(subtreeFlags, child.subtreeFlags)
 				subtreeFlags = bit32.bor(subtreeFlags, child.flags)
@@ -781,27 +760,21 @@ local function bubbleProperties(completedWork: Fiber)
 		completedWork.subtreeFlags = bit32.bor(completedWork.subtreeFlags, subtreeFlags)
 	else
 		-- Bubble up the earliest expiration time.
-		if
-			enableProfilerTimer
-			and bit32.band(completedWork.mode, ProfileMode) ~= NoMode
-		then
+		if enableProfilerTimer and bit32.band(completedWork.mode, ProfileMode) ~= NoMode then
 			-- In profiling mode, resetChildExpirationTime is also used to reset
 			-- profiler durations.
 			local treeBaseDuration = completedWork.selfBaseDuration
 
 			local child = completedWork.child
 			while child ~= nil do
-				newChildLanes =
-					mergeLanes(newChildLanes, mergeLanes(child.lanes, child.childLanes))
+				newChildLanes = mergeLanes(newChildLanes, mergeLanes(child.lanes, child.childLanes))
 
 				-- "Static" flags share the lifetime of the fiber/hook they belong to,
 				-- so we should bubble those up even during a bailout. All the other
 				-- flags have a lifetime only of a single render + commit, so we should
 				-- ignore them.
-				subtreeFlags =
-					bit32.bor(subtreeFlags, bit32.band(child.subtreeFlags, StaticMask))
-				subtreeFlags =
-					bit32.bor(subtreeFlags, bit32.band(child.flags, StaticMask))
+				subtreeFlags = bit32.bor(subtreeFlags, bit32.band(child.subtreeFlags, StaticMask))
+				subtreeFlags = bit32.bor(subtreeFlags, bit32.band(child.flags, StaticMask))
 
 				treeBaseDuration += child.treeBaseDuration
 				child = child.sibling
@@ -816,17 +789,14 @@ local function bubbleProperties(completedWork: Fiber)
 				--   newChildLanes,
 				--   mergeLanes(child.lanes, child.childLanes)
 				-- )
-				newChildLanes =
-					bit32.bor(newChildLanes, bit32.bor(child.lanes, child.childLanes))
+				newChildLanes = bit32.bor(newChildLanes, bit32.bor(child.lanes, child.childLanes))
 
 				-- "Static" flags share the lifetime of the fiber/hook they belong to,
 				-- so we should bubble those up even during a bailout. All the other
 				-- flags have a lifetime only of a single render + commit, so we should
 				-- ignore them.
-				subtreeFlags =
-					bit32.bor(subtreeFlags, bit32.band(child.subtreeFlags, StaticMask))
-				subtreeFlags =
-					bit32.bor(subtreeFlags, bit32.band(child.flags, StaticMask))
+				subtreeFlags = bit32.bor(subtreeFlags, bit32.band(child.subtreeFlags, StaticMask))
+				subtreeFlags = bit32.bor(subtreeFlags, bit32.band(child.flags, StaticMask))
 
 				-- ROBLOX note: this was missed in the "new" version of the file in React 17, but is fixed in React 18
 				-- Update the return pointer so the tree is consistent. This is a code
@@ -852,11 +822,7 @@ end
 --   workInProgress: Fiber,
 --   renderLanes: Lanes
 -- ): Fiber | nil
-local function completeWork(
-	current,
-	workInProgress: Fiber,
-	renderLanes: Lanes
-): Fiber | nil
+local function completeWork(current, workInProgress: Fiber, renderLanes: Lanes): Fiber | nil
 	local newProps = workInProgress.pendingProps
 
 	if
@@ -914,13 +880,7 @@ local function completeWork(
 		local rootContainerInstance = getRootHostContainer()
 		local type = workInProgress.type
 		if current ~= nil and workInProgress.stateNode ~= nil then
-			updateHostComponent(
-				current,
-				workInProgress,
-				type,
-				newProps,
-				rootContainerInstance
-			)
+			updateHostComponent(current, workInProgress, type, newProps, rootContainerInstance)
 
 			if current.ref ~= workInProgress.ref then
 				markRef(workInProgress)
@@ -946,25 +906,14 @@ local function completeWork(
 			if wasHydrated then
 				-- TODO: Move this and createInstance step into the beginPhase
 				-- to consolidate.
-				if
-					prepareToHydrateHostInstance(
-						workInProgress,
-						rootContainerInstance,
-						currentHostContext
-					)
-				then
+				if prepareToHydrateHostInstance(workInProgress, rootContainerInstance, currentHostContext) then
 					-- If changes to the hydrated node need to be applied at the
 					-- commit-phase we mark this as such.
 					markUpdate(workInProgress)
 				end
 			else
-				local instance = createInstance(
-					type,
-					newProps,
-					rootContainerInstance,
-					currentHostContext,
-					workInProgress
-				)
+				local instance =
+					createInstance(type, newProps, rootContainerInstance, currentHostContext, workInProgress)
 
 				appendAllChildren(instance, workInProgress, false, false)
 
@@ -973,15 +922,7 @@ local function completeWork(
 				-- Certain renderers require commit-time effects for initial mount.
 				-- (eg DOM renderer supports auto-focus for certain elements).
 				-- Make sure such renderers get scheduled for later work.
-				if
-					finalizeInitialChildren(
-						instance,
-						type,
-						newProps,
-						rootContainerInstance,
-						currentHostContext
-					)
-				then
+				if finalizeInitialChildren(instance, type, newProps, rootContainerInstance, currentHostContext) then
 					markUpdate(workInProgress)
 				end
 			end
@@ -1017,12 +958,8 @@ local function completeWork(
 					markUpdate(workInProgress)
 				end
 			else
-				workInProgress.stateNode = createTextInstance(
-					newText,
-					rootContainerInstance,
-					currentHostContext,
-					workInProgress
-				)
+				workInProgress.stateNode =
+					createTextInstance(newText, rootContainerInstance, currentHostContext, workInProgress)
 			end
 		end
 		bubbleProperties(workInProgress)
@@ -1043,10 +980,7 @@ local function completeWork(
 			local newFlags = flags
 
 			-- Call onRender any time this fiber or its subtree are worked on.
-			if
-				bit32.band(flags, PerformedWork) ~= NoFlags
-				or bit32.band(subtreeFlags, PerformedWork) ~= NoFlags
-			then
+			if bit32.band(flags, PerformedWork) ~= NoFlags or bit32.band(subtreeFlags, PerformedWork) ~= NoFlags then
 				newFlags = bit32.bor(newFlags, OnRenderFlag)
 			end
 
@@ -1057,8 +991,7 @@ local function completeWork(
 			-- contains layout effects, like we do for passive effects.
 			if
 				bit32.band(flags, bit32.bor(LayoutMask, Deletion)) ~= NoFlags
-				or bit32.band(subtreeFlags, bit32.bor(LayoutMask, Deletion))
-					~= NoFlags
+				or bit32.band(subtreeFlags, bit32.bor(LayoutMask, Deletion)) ~= NoFlags
 			then
 				newFlags = bit32.bor(newFlags, OnCommitFlag)
 			end
@@ -1066,10 +999,7 @@ local function completeWork(
 			-- Call onPostCommit only if the subtree contains passive work.
 			-- Don't have to check for deletions, because Deletion is already
 			-- a passive flag.
-			if
-				bit32.band(flags, PassiveMask) ~= NoFlags
-				or bit32.band(subtreeFlags, PassiveMask) ~= NoFlags
-			then
+			if bit32.band(flags, PassiveMask) ~= NoFlags or bit32.band(subtreeFlags, PassiveMask) ~= NoFlags then
 				newFlags = bit32.bor(newFlags, OnPostCommitFlag)
 			end
 			workInProgress.flags = newFlags
@@ -1152,10 +1082,7 @@ local function completeWork(
 			-- Something suspended. Re-render with the fallback children.
 			workInProgress.lanes = renderLanes
 			-- Do not reset the effect list.
-			if
-				enableProfilerTimer
-				and bit32.band(workInProgress.mode, ProfileMode) ~= NoMode
-			then
+			if enableProfilerTimer and bit32.band(workInProgress.mode, ProfileMode) ~= NoMode then
 				transferActualDuration(workInProgress)
 			end
 			-- Don't bubble properties in this case.
@@ -1188,8 +1115,7 @@ local function completeWork(
 				-- and this is the first time we know we're going to suspend we
 				-- should be able to immediately restart from within throwException.
 				local hasInvisibleChildContext = current == nil
-					and workInProgress.memoizedProps.unstable_avoidThisFallback
-						~= true
+					and workInProgress.memoizedProps.unstable_avoidThisFallback ~= true
 				if
 					hasInvisibleChildContext
 					or hasSuspenseContext(
@@ -1565,10 +1491,7 @@ local function completeWork(
 	--   bubbleProperties(workInProgress)
 	--   return nil
 	-- end
-	elseif
-		workInProgress.tag == OffscreenComponent
-		or workInProgress.tag == LegacyHiddenComponent
-	then
+	elseif workInProgress.tag == OffscreenComponent or workInProgress.tag == LegacyHiddenComponent then
 		popRenderLanes(workInProgress)
 		local nextState: OffscreenState | nil = workInProgress.memoizedState
 		local nextIsHidden = nextState ~= nil
@@ -1577,10 +1500,7 @@ local function completeWork(
 			local prevState: OffscreenState | nil = current.memoizedState
 
 			local prevIsHidden = prevState ~= nil
-			if
-				prevIsHidden ~= nextIsHidden
-				and newProps.mode ~= "unstable-defer-without-hiding"
-			then
+			if prevIsHidden ~= nextIsHidden and newProps.mode ~= "unstable-defer-without-hiding" then
 				workInProgress.flags = bit32.bor(workInProgress.flags, Update)
 			end
 		end
@@ -1588,10 +1508,7 @@ local function completeWork(
 		-- Don't bubble properties for hidden children.
 		if
 			not nextIsHidden
-			or includesSomeLane(
-				ReactFiberWorkLoop.subtreeRenderLanes,
-				OffscreenLane :: Lane
-			)
+			or includesSomeLane(ReactFiberWorkLoop.subtreeRenderLanes, OffscreenLane :: Lane)
 			or bit32.band(workInProgress.mode, ConcurrentMode) == NoMode
 		then
 			bubbleProperties(workInProgress)
@@ -1601,8 +1518,7 @@ local function completeWork(
 	end
 	invariant(
 		false,
-		"Unknown unit of work tag (%s). This error is likely caused by a bug in "
-			.. "React. Please file an issue.",
+		"Unknown unit of work tag (%s). This error is likely caused by a bug in " .. "React. Please file an issue.",
 		tostring(workInProgress.tag)
 	)
 	return nil

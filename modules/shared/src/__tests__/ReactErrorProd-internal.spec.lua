@@ -1,8 +1,4 @@
-<<<<<<< HEAD
--- ROBLOX upstream: https://github.com/facebook/react/blob/9a5576f4d263ac5d7a9462a287d1524fda3355b8/packages/shared/__tests__/ReactErrorProd-test.internal.js
-=======
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/shared/__tests__/ReactErrorProd-test.internal.js
->>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -10,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails react-core
-<<<<<<< HEAD
 ]]
 --!strict
 
@@ -48,34 +43,4 @@ it("should throw with the correct number of `%s`s in the URL", function()
 			.. " for the full message or use the non-minified dev environment"
 			.. " for full errors and additional helpful warnings."
 	)
-=======
- ]]
-
-local formatProdErrorMessage
-describe("ReactErrorProd", function()
-	beforeEach(function()
-		jest.resetModules()
-		formatProdErrorMessage = require_("shared/formatProdErrorMessage").default
-	end)
-	it("should throw with the correct number of `%s`s in the URL", function()
-		expect(formatProdErrorMessage(124, "foo", "bar")).toEqual(
-			"Minified React error #124; visit "
-				.. "https://reactjs.org/docs/error-decoder.html?invariant=124&args[]=foo&args[]=bar"
-				.. " for the full message or use the non-minified dev environment"
-				.. " for full errors and additional helpful warnings."
-		)
-		expect(formatProdErrorMessage(20)).toEqual(
-			"Minified React error #20; visit "
-				.. "https://reactjs.org/docs/error-decoder.html?invariant=20"
-				.. " for the full message or use the non-minified dev environment"
-				.. " for full errors and additional helpful warnings."
-		)
-		expect(formatProdErrorMessage(77, "<div>", "&?bar")).toEqual(
-			"Minified React error #77; visit "
-				.. "https://reactjs.org/docs/error-decoder.html?invariant=77&args[]=%3Cdiv%3E&args[]=%26%3Fbar"
-				.. " for the full message or use the non-minified dev environment"
-				.. " for full errors and additional helpful warnings."
-		)
-	end)
->>>>>>> upstream-apply
 end)

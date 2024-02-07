@@ -50,9 +50,7 @@ local exports = {
 	unstable_getFirstCallbackNode = Scheduler.unstable_getFirstCallbackNode,
 	unstable_now = Scheduler.unstable_now,
 	unstable_forceFrameRate = Scheduler.unstable_forceFrameRate,
-	unstable_flushAllWithoutAsserting = onlyInTestError(
-		"unstable_flushAllWithoutAsserting"
-	) :: any,
+	unstable_flushAllWithoutAsserting = onlyInTestError("unstable_flushAllWithoutAsserting") :: any,
 	unstable_flushAll = onlyInTestError("unstable_flushAll"),
 	unstable_flushNumberOfYields = onlyInTestError("unstable_flushNumberOfYields"),
 	unstable_clearYields = onlyInTestError("unstable_clearYields") :: any,

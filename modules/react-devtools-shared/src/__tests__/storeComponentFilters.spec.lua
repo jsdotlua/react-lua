@@ -80,9 +80,7 @@ describe("Store component filters", function()
 		end
 		act(function()
 			local root = ReactRoblox.createRoot(Instance.new("Frame"))
-			return root:render(
-				React.createElement(Root, {}, React.createElement(Component))
-			)
+			return root:render(React.createElement(Root, {}, React.createElement(Component)))
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
 		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("1: mount")
@@ -94,9 +92,7 @@ describe("Store component filters", function()
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
 		-- ROBLOX FIXME: still shows the Frame and TextLabel, upstream only has [root] ▾ <Root> <Component>
-		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot(
-			"2: hide host components"
-		)
+		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("2: hide host components")
 		act(function()
 			store:setComponentFilters({
 				utils.createElementTypeFilter(Types.ElementTypeClass),
@@ -105,9 +101,7 @@ describe("Store component filters", function()
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
 		-- ROBLOX FIXME: supposed to hide Root, but doesn't
-		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot(
-			"3: hide class components"
-		)
+		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("3: hide class components")
 		act(function()
 			store:setComponentFilters({
 				utils.createElementTypeFilter(Types.ElementTypeClass),
@@ -117,9 +111,7 @@ describe("Store component filters", function()
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
 		-- ROBLOX FIXME: should only show Frame and TextLabel
-		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot(
-			"4: hide class and function components"
-		)
+		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("4: hide class and function components")
 		act(function()
 			store:setComponentFilters({
 				utils.createElementTypeFilter(Types.ElementTypeClass, false),
@@ -128,9 +120,7 @@ describe("Store component filters", function()
 			return store:getComponentFilters()
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
-		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot(
-			"5: disable all filters"
-		)
+		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("5: disable all filters")
 	end)
 	it("should ignore invalid ElementTypeRoot filter", function()
 		local function Root(props)
@@ -148,9 +138,7 @@ describe("Store component filters", function()
 			})
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
-		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot(
-			"2: add invalid filter"
-		)
+		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("2: add invalid filter")
 	end)
 	it("should filter by display name", function()
 		local function Text(props)
@@ -229,9 +217,7 @@ describe("Store component filters", function()
 			return store:getComponentFilters()
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
-		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot(
-			"3: hide components in a made up fake path"
-		)
+		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("3: hide components in a made up fake path")
 	end)
 	it("should filter HOCs", function()
 		local function Component()
@@ -266,41 +252,36 @@ describe("Store component filters", function()
 			return store:getComponentFilters()
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
-		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot(
-			"3: disable HOC filter"
-		)
+		jestExpect(devtoolsUtils.printStore(store)).toMatchSnapshot("3: disable HOC filter")
 	end)
-	it(
-		"should not send a bridge update if the set of enabled filters has not changed",
-		function()
-			act(function()
-				store:setComponentFilters({ utils.createHOCFilter(true) })
-				return store:getComponentFilters()
-			end)
-			bridge:addListener("updateComponentFilters", function(componentFilters)
-				error("Unexpected component update")
-			end)
-			act(function()
-				store:setComponentFilters({
-					utils.createHOCFilter(false),
-					utils.createHOCFilter(true),
-				})
-				return store:getComponentFilters()
-			end)
-			act(function()
-				store:setComponentFilters({
-					utils.createHOCFilter(true),
-					utils.createLocationFilter("abc", false),
-				})
-				return store:getComponentFilters()
-			end)
-			act(function()
-				store:setComponentFilters({
-					utils.createHOCFilter(true),
-					utils.createElementTypeFilter(Types.ElementTypeHostComponent, false),
-				})
-				return store:getComponentFilters()
-			end)
-		end
-	)
+	it("should not send a bridge update if the set of enabled filters has not changed", function()
+		act(function()
+			store:setComponentFilters({ utils.createHOCFilter(true) })
+			return store:getComponentFilters()
+		end)
+		bridge:addListener("updateComponentFilters", function(componentFilters)
+			error("Unexpected component update")
+		end)
+		act(function()
+			store:setComponentFilters({
+				utils.createHOCFilter(false),
+				utils.createHOCFilter(true),
+			})
+			return store:getComponentFilters()
+		end)
+		act(function()
+			store:setComponentFilters({
+				utils.createHOCFilter(true),
+				utils.createLocationFilter("abc", false),
+			})
+			return store:getComponentFilters()
+		end)
+		act(function()
+			store:setComponentFilters({
+				utils.createHOCFilter(true),
+				utils.createElementTypeFilter(Types.ElementTypeHostComponent, false),
+			})
+			return store:getComponentFilters()
+		end)
+	end)
 end)

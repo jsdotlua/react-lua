@@ -7,7 +7,6 @@
  *
  * @jest-environment node
  ]]
-<<<<<<< HEAD
 
 -- sanity tests for ReactNoop.act()
 
@@ -69,62 +68,4 @@ it("should work with async/await", function()
 	jestExpect(Scheduler).toHaveYielded({ "stage 1", "stage 2" })
 	jestExpect(Scheduler).toFlushWithoutYielding()
 	jestExpect(ReactNoop.getChildren()).toEqual({ { text = "1", hidden = false } })
-=======
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local Promise = require(Packages.Promise)
--- sanity tests for act()
-local React = require_("react")
-local ReactNoop = require_("react-noop-renderer")
-local Scheduler = require_("scheduler")
-local act = require_("jest-react").act -- TODO: These tests are no longer specific to the noop renderer
--- implementation. They test the internal implementation we use in the React
--- test suite.
-describe("internal act()", function()
-	it("can use act to flush effects", function()
-		return Promise.resolve():andThen(function()
-			local function App(props)
-				React.useEffect(props.callback)
-				return nil
-			end
-			local calledLog = {}
-			act(function()
-				ReactNoop:render(React.createElement(App, {
-					callback = function()
-						table.insert(calledLog, calledLog.length) --[[ ROBLOX CHECK: check if 'calledLog' is an Array ]]
-					end,
-				}))
-			end)
-			expect(Scheduler).toFlushWithoutYielding()
-			expect(calledLog).toEqual({ 0 })
-		end)
-	end)
-	it("should work with async/await", function()
-		return Promise.resolve():andThen(function()
-			local function App()
-				local ctr, setCtr = table.unpack(React.useState(0), 1, 2)
-				local function someAsyncFunction()
-					return Promise.resolve():andThen(function()
-						Scheduler:unstable_yieldValue("stage 1");
-						(nil):expect()
-						Scheduler:unstable_yieldValue("stage 2");
-						(nil):expect()
-						setCtr(1)
-					end)
-				end
-				React.useEffect(function()
-					someAsyncFunction()
-				end, {})
-				return ctr
-			end
-			act(function()
-				return Promise.resolve():andThen(function()
-					ReactNoop:render(React.createElement(App, nil))
-				end)
-			end):expect()
-			expect(Scheduler).toHaveYielded({ "stage 1", "stage 2" })
-			expect(Scheduler).toFlushWithoutYielding()
-			expect(ReactNoop:getChildren()).toEqual({ { text = "1", hidden = false } })
-		end)
-	end)
->>>>>>> upstream-apply
 end)

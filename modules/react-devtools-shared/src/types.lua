@@ -80,9 +80,6 @@ export type BooleanComponentFilter = {
 	type: number,
 }
 
-export type ComponentFilter =
-	BooleanComponentFilter
-	| ElementTypeComponentFilter
-	| RegExpComponentFilter
+export type ComponentFilter = BooleanComponentFilter | ElementTypeComponentFilter | RegExpComponentFilter
 
 return exports

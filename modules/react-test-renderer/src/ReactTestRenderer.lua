@@ -293,11 +293,7 @@ toTree = function(nodeInput: Fiber | nil)
 	then
 		return childrenToTree(node.child)
 	else
-		invariant(
-			false,
-			"toTree() does not yet know how to handle nodes with tag="
-				.. tostring(node.tag)
-		)
+		invariant(false, "toTree() does not yet know how to handle nodes with tag=" .. tostring(node.tag))
 	end
 	return
 end
@@ -380,11 +376,7 @@ local function getChildren(parent)
 	return children
 end
 
-local function findAll(
-	root: Object,
-	predicate: Predicate,
-	options: FindOptions?
-): Array<Object>
+local function findAll(root: Object, predicate: Predicate, options: FindOptions?): Array<Object>
 	-- ROBLOX deviation: ternary split to conditional statement
 	local deep = true
 	if options then
@@ -487,8 +479,7 @@ end
 function ReactTestInstance.new(fiber: Fiber)
 	invariant(
 		validWrapperTypes[fiber.tag] ~= nil,
-		"Unexpected object passed to ReactTestInstance constructor (tag: %s). "
-			.. "This is probably a bug in React.",
+		"Unexpected object passed to ReactTestInstance constructor (tag: %s). " .. "This is probably a bug in React.",
 		fiber.tag
 	)
 	local testInstance = {}
@@ -521,10 +512,7 @@ function ReactTestInstance:findByProps(props: Object): Object
 		string.format("with props: %s", JSON:JSONEncode(props))
 	)
 end
-function ReactTestInstance:findAll(
-	predicate: Predicate,
-	options: FindOptions?
-): Array<Object>
+function ReactTestInstance:findAll(predicate: Predicate, options: FindOptions?): Array<Object>
 	return findAll(self, predicate, options)
 end
 function ReactTestInstance:findAllByType(type_: any, options: FindOptions?): Array<Object>
@@ -532,20 +520,14 @@ function ReactTestInstance:findAllByType(type_: any, options: FindOptions?): Arr
 		return node.type == type_
 	end, options)
 end
-function ReactTestInstance:findAllByProps(
-	props: Object,
-	options: FindOptions?
-): Array<Object>
+function ReactTestInstance:findAllByProps(props: Object, options: FindOptions?): Array<Object>
 	return findAll(self, function(node)
 		return node.props and propsMatch(node.props, props)
 	end, options)
 end
 
 -- ROBLOX deviation START: the first argument gets an explicit nil in many tests
-local function create(
-	element: ReactElement<any, any> | nil,
-	options: TestRendererOptions?
-)
+local function create(element: ReactElement<any, any> | nil, options: TestRendererOptions?)
 	-- ROBLOX deviation END
 	local createNodeMock = defaultTestOptions.createNodeMock
 	local isConcurrent = false
@@ -714,10 +696,7 @@ local function unstable_concurrentAct(scope: () -> () | Thenable<any>)
 		error("This version of `act` requires a special mock build of Scheduler.")
 	end
 	if typeof(setTimeout) == "table" and setTimeout._isMockFunction ~= true then
-		error(
-			"This version of `act` requires Jest's timer mocks "
-				.. "(i.e. jest.useFakeTimers)."
-		)
+		error("This version of `act` requires Jest's timer mocks " .. "(i.e. jest.useFakeTimers).")
 	end
 
 	local previousActingUpdatesScopeDepth = actingUpdatesScopeDepth
@@ -748,11 +727,7 @@ local function unstable_concurrentAct(scope: () -> () | Thenable<any>)
 	-- our test suite, we should be able to.
 	local ok, error_ = pcall(function()
 		local thenable = batchedUpdates(scope)
-		if
-			typeof(thenable) == "table"
-			and thenable ~= nil
-			and typeof(thenable.andThen) == "function"
-		then
+		if typeof(thenable) == "table" and thenable ~= nil and typeof(thenable.andThen) == "function" then
 			return function(resolve, reject)
 				thenable:andThen(function()
 					flushActWork(function()

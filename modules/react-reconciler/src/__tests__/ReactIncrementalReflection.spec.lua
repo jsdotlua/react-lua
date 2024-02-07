@@ -1,5 +1,4 @@
-<<<<<<< HEAD
--- ROBLOX upstream: https://github.com/facebook/react/blob/d13f5b9538e48f74f7c571ef3cde652ca887cca0/packages/react-reconciler/src/__tests__/ReactIncrementalReflection-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactIncrementalReflection-test.js
 -- * Copyright (c) Facebook, Inc. and its affiliates.
 -- *
 -- * This source code is licensed under the MIT license found in the
@@ -8,22 +7,6 @@
 -- * @emails react-core
 -- * @jest-environment node
 --
-=======
--- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactIncrementalReflection-test.js
---[[*
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @emails react-core
- * @jest-environment node
- ]]
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Array = LuauPolyfill.Array
-local Boolean = LuauPolyfill.Boolean
->>>>>>> upstream-apply
 
 local Packages = script.Parent.Parent.Parent
 local React
@@ -107,7 +90,6 @@ describe("ReactIncrementalReflection", function()
 		local function Foo()
 			return React.createElement(Component)
 		end
-<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(Foo))
 
@@ -127,25 +109,6 @@ describe("ReactIncrementalReflection", function()
 			{ withoutStack = true }
 		)
 		jestExpect(instances[1]:_isMounted()).toBe(true)
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, nil))
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, nil))
-		end -- Render part way through but don't yet commit the updates.
-		expect(Scheduler).toFlushAndYieldThrough({ "componentWillMount: false" })
-		expect(instances[
-			1 --[[ ROBLOX adaptation: added 1 to array index ]]
-		]:_isMounted()).toBe(false) -- Render the rest and commit the updates.
-		expect(Scheduler).toFlushAndYield({ "componentDidMount: true" })
-		expect(instances[
-			1 --[[ ROBLOX adaptation: added 1 to array index ]]
-		]:_isMounted()).toBe(true)
->>>>>>> upstream-apply
 	end)
 
 	it("handles isMounted when an unmount is deferred", function()
@@ -183,7 +146,6 @@ describe("ReactIncrementalReflection", function()
 			end
 			return React.createElement(Other)
 		end
-<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(Foo, { mount = true }))
 		jestExpect(function()
@@ -199,22 +161,6 @@ describe("ReactIncrementalReflection", function()
 
 		ReactNoop.render(React.createElement(Foo, { mount = false }))
 		-- Render part way through but don't yet commit the updates so it is not
-=======
-		ReactNoop:render(React.createElement(Foo, { mount = true }))
-		expect(Scheduler).toFlushAndYield({ "Component" })
-		expect(instances[
-			1 --[[ ROBLOX adaptation: added 1 to array index ]]
-		]:_isMounted()).toBe(true)
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, { mount = false }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, { mount = false }))
-		end -- Render part way through but don't yet commit the updates so it is not
->>>>>>> upstream-apply
 		-- fully unmounted yet.
 		jestExpect(Scheduler).toFlushAndYieldThrough({
 			"Other",
@@ -331,7 +277,6 @@ describe("ReactIncrementalReflection", function()
 				}),
 			}
 		end
-<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(Foo, { step = 0 }))
 		-- Flush past Component but don't complete rendering everything yet.
@@ -340,19 +285,6 @@ describe("ReactIncrementalReflection", function()
 				"componentWillMount",
 				nil,
 			},
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, { step = 0 }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, { step = 0 }))
-		end -- Flush past Component but don't complete rendering everything yet.
-		expect(Scheduler).toFlushAndYieldThrough({
-			{ "componentWillMount", nil },
->>>>>>> upstream-apply
 			"render",
 			"render sibling",
 		})
@@ -360,7 +292,6 @@ describe("ReactIncrementalReflection", function()
 		jestExpect(classInstance).toBeDefined()
 		-- The instance has been complete but is still not committed so it should
 		-- not find any host nodes in it.
-<<<<<<< HEAD
 		jestExpect(findInstance(classInstance)).toBe(nil)
 		jestExpect(function()
 			-- ROBLOX FIXME: toFlushAndYield gets an empty array
@@ -375,10 +306,6 @@ describe("ReactIncrementalReflection", function()
 			"Using UNSAFE_componentWillUpdate in strict mode is not recommended",
 		}, { withoutStack = true })
 
-=======
-		expect(findInstance(classInstance)).toBe(nil)
-		expect(Scheduler).toFlushAndYield({ { "componentDidMount", span() } })
->>>>>>> upstream-apply
 		local hostSpan = classInstance.span
 		jestExpect(hostSpan).toBeDefined()
 
@@ -404,26 +331,12 @@ describe("ReactIncrementalReflection", function()
 
 		-- The next step will render a new host node but won't get committed yet.
 		-- We expect this to mutate the original Fiber.
-<<<<<<< HEAD
 		ReactNoop.render(React.createElement(Foo, { step = 2 }))
 		jestExpect(Scheduler).toFlushAndYieldThrough({
 			{
 				"componentWillUpdate",
 				hostSpan,
 			},
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, { step = 2 }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, { step = 2 }))
-		end
-		expect(Scheduler).toFlushAndYieldThrough({
-			{ "componentWillUpdate", hostSpan },
->>>>>>> upstream-apply
 			"render",
 			"render sibling",
 		})
@@ -440,7 +353,6 @@ describe("ReactIncrementalReflection", function()
 		})
 
 		local hostDiv = classInstance.div
-<<<<<<< HEAD
 		jestExpect(hostDiv).toBeDefined()
 		jestExpect(hostSpan).never.toBe(hostDiv)
 
@@ -454,22 +366,6 @@ describe("ReactIncrementalReflection", function()
 				"componentWillUpdate",
 				hostDiv,
 			},
-=======
-		expect(hostDiv).toBeDefined()
-		expect(hostSpan)["not"].toBe(hostDiv) -- We should now find the new host node.
-		expect(ReactNoop:findInstance(classInstance)).toBe(hostDiv) -- Render to null but don't commit it yet.
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, { step = 3 }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, { step = 3 }))
-		end
-		expect(Scheduler).toFlushAndYieldThrough({
-			{ "componentWillUpdate", hostDiv },
->>>>>>> upstream-apply
 			"render",
 			"render sibling",
 		})

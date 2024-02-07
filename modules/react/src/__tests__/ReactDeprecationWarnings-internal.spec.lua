@@ -57,8 +57,7 @@ describe("ReactDeprecationWarnings", function()
 			return React.createElement(RefComponent, { ref = "refComponent" })
 		end
 		ReactNoop.render(React.createElement(Component))
-		local expectedName = _G.__DEV__ and "Component"
-			or "<enable __DEV__ mode for component names>"
+		local expectedName = _G.__DEV__ and "Component" or "<enable __DEV__ mode for component names>"
 		-- ROBLOX Test Noise: jest setup config makes this hide error
 		-- boundary warnings in upstream (scripts/jest/setupTests.js:72)
 		-- ROBLOX deviation: we removed string ref support ahead of upstream schedule
@@ -85,10 +84,7 @@ describe("ReactDeprecationWarnings", function()
 		end
 		local Component = React.Component:extend("")
 		function Component:render()
-			return React.createElement(
-				RefComponent,
-				{ ref = "refComponent", __self = self }
-			)
+			return React.createElement(RefComponent, { ref = "refComponent", __self = self })
 		end
 		ReactNoop.renderLegacySyncRoot(React.createElement(Component))
 		jestExpect(Scheduler).toFlushWithoutYielding()
@@ -100,16 +96,12 @@ describe("ReactDeprecationWarnings", function()
 		end
 		local Component = React.Component:extend("Component")
 		function Component:render()
-			return React.createElement(
-				RefComponent,
-				{ ref = "refComponent", __self = {} }
-			)
+			return React.createElement(RefComponent, { ref = "refComponent", __self = {} })
 		end
 		ReactNoop.render(React.createElement(Component))
 
 		-- ROBLOX deviation: we removed string ref support ahead of upstream schedule
-		local expectedName = _G.__DEV__ and "Component"
-			or "<enable __DEV__ mode for component names>"
+		local expectedName = _G.__DEV__ and "Component" or "<enable __DEV__ mode for component names>"
 		-- ROBLOX Test Noise: jest setup config makes this hide error
 		-- boundary warnings in upstream (scripts/jest/setupTests.js:72)
 		jestExpect(function()

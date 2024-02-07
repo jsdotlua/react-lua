@@ -51,12 +51,9 @@ describe("utils", function()
 			jestExpect(getDisplayName(function() end, "Fallback")).toEqual("Fallback")
 		end)
 
-		it(
-			"should return Anonymous for anonymous functions without a fallback",
-			function()
-				jestExpect(getDisplayName(function() end)).toEqual("Anonymous")
-			end
-		)
+		it("should return Anonymous for anonymous functions without a fallback", function()
+			jestExpect(getDisplayName(function() end)).toEqual("Anonymous")
+		end)
 
 		-- Simulate a reported bug:
 		-- https://github.com/facebook/react/issues/16685
@@ -67,74 +64,53 @@ describe("utils", function()
 	end)
 	describe("getDisplayNameForReactElement", function()
 		-- ROBLOX deviation: Lua can't put fields on functions
-		xit(
-			"should return correct display name for an element with function type",
-			function()
-				local function FauxComponent() end
+		xit("should return correct display name for an element with function type", function()
+			local function FauxComponent() end
 
-				-- FauxComponent.displayName = 'OverrideDisplayName'
+			-- FauxComponent.displayName = 'OverrideDisplayName'
 
-				local element = createElement(FauxComponent)
+			local element = createElement(FauxComponent)
 
-				jestExpect(getDisplayNameForReactElement(element)).toEqual(
-					"OverrideDisplayName"
-				)
-			end
-		)
+			jestExpect(getDisplayNameForReactElement(element)).toEqual("OverrideDisplayName")
+		end)
 
-		it(
-			"should return correct display name for an element with a type of StrictMode",
-			function()
-				local element = createElement(StrictMode)
+		it("should return correct display name for an element with a type of StrictMode", function()
+			local element = createElement(StrictMode)
 
-				jestExpect(getDisplayNameForReactElement(element)).toEqual("StrictMode")
-			end
-		)
+			jestExpect(getDisplayNameForReactElement(element)).toEqual("StrictMode")
+		end)
 
-		it(
-			"should return correct display name for an element with a type of SuspenseList",
-			function()
-				local element
-				-- ROBLOX Test Noise: This warning shouldn't be triggered
-				jestExpect(function()
-					element = createElement(SuspenseList)
-				end).toErrorDev("type is invalid", { withoutStack = true })
+		it("should return correct display name for an element with a type of SuspenseList", function()
+			local element
+			-- ROBLOX Test Noise: This warning shouldn't be triggered
+			jestExpect(function()
+				element = createElement(SuspenseList)
+			end).toErrorDev("type is invalid", { withoutStack = true })
 
-				jestExpect(getDisplayNameForReactElement(element)).toEqual("SuspenseList")
-			end
-		)
+			jestExpect(getDisplayNameForReactElement(element)).toEqual("SuspenseList")
+		end)
 
-		it(
-			"should return NotImplementedInDevtools for an element with invalid symbol type",
-			function()
-				local element
-				-- ROBLOX Test Noise: This warning isn't captured in
-				-- upstream, so it may rely on test setup to suppress it
-				jestExpect(function()
-					element = (createElement :: any)(Symbol("foo"))
-				end).toErrorDev("type is invalid", { withoutStack = true })
+		it("should return NotImplementedInDevtools for an element with invalid symbol type", function()
+			local element
+			-- ROBLOX Test Noise: This warning isn't captured in
+			-- upstream, so it may rely on test setup to suppress it
+			jestExpect(function()
+				element = (createElement :: any)(Symbol("foo"))
+			end).toErrorDev("type is invalid", { withoutStack = true })
 
-				jestExpect(getDisplayNameForReactElement(element)).toEqual(
-					"NotImplementedInDevtools"
-				)
-			end
-		)
+			jestExpect(getDisplayNameForReactElement(element)).toEqual("NotImplementedInDevtools")
+		end)
 
-		it(
-			"should return NotImplementedInDevtools for an element with invalid type",
-			function()
-				local element
-				-- ROBLOX Test Noise: This warning isn't captured in
-				-- upstream, so it may rely on test setup to suppress it
-				jestExpect(function()
-					element = (createElement :: any)(true)
-				end).toErrorDev("type is invalid", { withoutStack = true })
+		it("should return NotImplementedInDevtools for an element with invalid type", function()
+			local element
+			-- ROBLOX Test Noise: This warning isn't captured in
+			-- upstream, so it may rely on test setup to suppress it
+			jestExpect(function()
+				element = (createElement :: any)(true)
+			end).toErrorDev("type is invalid", { withoutStack = true })
 
-				jestExpect(getDisplayNameForReactElement(element)).toEqual(
-					"NotImplementedInDevtools"
-				)
-			end
-		)
+			jestExpect(getDisplayNameForReactElement(element)).toEqual("NotImplementedInDevtools")
+		end)
 
 		it("should return Element for null type", function()
 			local element

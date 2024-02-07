@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/d13f5b9538e48f74f7c571ef3cde652ca887cca0/packages/react-reconciler/src/__tests__/ReactIncremental-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactIncremental-test.js
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
 --  * This source code is licensed under the MIT license found in the
@@ -9,25 +8,6 @@
 --  * @emails react-core
 --  * @jest-environment node
 --  */
-=======
--- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactIncremental-test.js
---[[*
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @emails react-core
- * @jest-environment node
- ]]
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Boolean = LuauPolyfill.Boolean
-local Error = LuauPolyfill.Error
-local Object = LuauPolyfill.Object
-local Set = LuauPolyfill.Set
-type Object = LuauPolyfill.Object
->>>>>>> upstream-apply
 
 local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
@@ -146,7 +126,6 @@ describe("ReactIncremental", function()
 				}),
 			}
 		end
-<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(Foo), function()
 			Scheduler.unstable_yieldValue("callback")
@@ -163,23 +142,6 @@ describe("ReactIncremental", function()
 			"Bar",
 			"callback",
 		})
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, nil), function()
-					return Scheduler:unstable_yieldValue("callback")
-				end)
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, nil), function()
-				return Scheduler:unstable_yieldValue("callback")
-			end)
-		end -- Do one step of work.
-		expect(ReactNoop:flushNextYield()).toEqual({ "Foo" }) -- Do the rest of the work.
-		expect(Scheduler).toFlushAndYield({ "Bar", "Bar", "callback" })
->>>>>>> upstream-apply
 	end)
 	it("updates a previous render", function()
 		local function Header()
@@ -271,7 +233,6 @@ describe("ReactIncremental", function()
 				React.createElement(Bar, nil, props.text),
 				React.createElement(Bar, nil, props.text)
 			)
-<<<<<<< HEAD
 		end
 
 		-- Init
@@ -306,35 +267,6 @@ describe("ReactIncremental", function()
 		jestExpect(Scheduler).toFlushAndYield({
 			"Bar",
 		})
-=======
-		end -- Init
-		ReactNoop:render(React.createElement(Foo, { text = "foo" }))
-		expect(Scheduler).toFlushAndYield({ "Foo", "Bar", "Bar" })
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, { text = "bar" }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, { text = "bar" }))
-		end -- Flush part of the work
-		expect(Scheduler).toFlushAndYieldThrough({ "Foo", "Bar" }) -- This will abort the previous work and restart
-		ReactNoop:flushSync(function()
-			return ReactNoop:render(nil)
-		end)
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Foo, { text = "baz" }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Foo, { text = "baz" }))
-		end -- Flush part of the new work
-		expect(Scheduler).toFlushAndYieldThrough({ "Foo", "Bar" }) -- Flush the rest of the work which now includes the low priority
-		expect(Scheduler).toFlushAndYield({ "Bar" })
->>>>>>> upstream-apply
 	end)
 	it("should call callbacks even if updates are aborted", function()
 		local inst
@@ -355,7 +287,6 @@ describe("ReactIncremental", function()
 				React.createElement("div", nil, self.state.text2)
 			)
 		end
-<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(Foo))
 		jestExpect(Scheduler).toFlushWithoutYielding()
@@ -401,55 +332,6 @@ describe("ReactIncremental", function()
 		})
 	end)
 	-- @gate experimental
-=======
-		ReactNoop:render(React.createElement(Foo, nil))
-		expect(Scheduler).toFlushWithoutYielding()
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				inst:setState(function()
-					Scheduler:unstable_yieldValue("setState1")
-					return { text = "bar" }
-				end, function()
-					return Scheduler:unstable_yieldValue("callback1")
-				end)
-			end)
-		else
-			inst:setState(function()
-				Scheduler:unstable_yieldValue("setState1")
-				return { text = "bar" }
-			end, function()
-				return Scheduler:unstable_yieldValue("callback1")
-			end)
-		end -- Flush part of the work
-		expect(Scheduler).toFlushAndYieldThrough({ "setState1" }) -- This will abort the previous work and restart
-		ReactNoop:flushSync(function()
-			return ReactNoop:render(React.createElement(Foo, nil))
-		end)
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				inst:setState(function()
-					Scheduler:unstable_yieldValue("setState2")
-					return { text2 = "baz" }
-				end, function()
-					return Scheduler:unstable_yieldValue("callback2")
-				end)
-			end)
-		else
-			inst:setState(function()
-				Scheduler:unstable_yieldValue("setState2")
-				return { text2 = "baz" }
-			end, function()
-				return Scheduler:unstable_yieldValue("callback2")
-			end)
-		end -- Flush the rest of the work which now includes the low priority
-		expect(Scheduler).toFlushAndYield({ "setState1", "setState2", "callback1", "callback2" })
-		expect(inst.state).toEqual({ text = "bar", text2 = "baz" })
-	end) -- @gate www
->>>>>>> upstream-apply
 	it("can deprioritize unfinished work and resume it later", function()
 		local function Bar(props)
 			Scheduler.unstable_yieldValue("Bar")
@@ -467,8 +349,6 @@ describe("ReactIncremental", function()
 				"div",
 				nil,
 				React.createElement(Bar, nil, props.text),
-<<<<<<< HEAD
-=======
 				React.createElement(LegacyHiddenDiv, { mode = "hidden" }, React.createElement(Middle, nil, props.text)),
 				React.createElement(Bar, nil, props.text),
 				React.createElement(LegacyHiddenDiv, { mode = "hidden" }, React.createElement(Middle, nil, "Footer"))
@@ -586,7 +466,6 @@ describe("ReactIncremental", function()
 		function Content.render(self: Content)
 			return {
 				React.createElement(Tester, { key = "a", unused = self.props.unused }),
->>>>>>> upstream-apply
 				React.createElement(
 					LegacyHiddenDiv,
 					{ mode = "hidden" },
@@ -1333,256 +1212,8 @@ describe("ReactIncremental", function()
 		function Bar:render()
 			return React.createElement("div", nil, self.props.children)
 		end
-<<<<<<< HEAD
 
 		local function Foo(ref)
-=======
-		local function Foo(ref0)
-			local multiplier = ref0.multiplier
-			return React.createElement("div", nil, React.createElement(Bar, { multiplier = multiplier }))
-		end
-		local function updater(state, props)
-			return { num = state.num * props.multiplier }
-		end
-		ReactNoop:render(React.createElement(Foo, { multiplier = 2 }))
-		expect(Scheduler).toFlushWithoutYielding()
-		expect(instance.state.num).toEqual(1)
-		instance:setState(updater)
-		expect(Scheduler).toFlushWithoutYielding()
-		expect(instance.state.num).toEqual(2)
-		instance:setState(updater)
-		ReactNoop:render(React.createElement(Foo, { multiplier = 3 }))
-		expect(Scheduler).toFlushWithoutYielding()
-		expect(instance.state.num).toEqual(6)
-	end)
-	it("can call setState inside update callback", function()
-		local instance
-		type Bar = React_Component<any, any> & {}
-		type Bar_statics = {}
-		local Bar = React.Component:extend("Bar") :: Bar & Bar_statics
-		function Bar.init(self: Bar)
-			self.state = { num = 1 }
-			instance = self
-		end
-		function Bar.render(self: Bar)
-			return React.createElement("div", nil, self.props.children)
-		end
-		local function Foo(ref0)
-			local multiplier = ref0.multiplier
-			return React.createElement("div", nil, React.createElement(Bar, { multiplier = multiplier }))
-		end
-		local function updater(state, props)
-			return { num = state.num * props.multiplier }
-		end
-		local function callback()
-			self:setState({ called = true })
-		end
-		ReactNoop:render(React.createElement(Foo, { multiplier = 2 }))
-		expect(Scheduler).toFlushWithoutYielding()
-		instance:setState(updater)
-		instance:setState(updater, callback)
-		expect(Scheduler).toFlushWithoutYielding()
-		expect(instance.state.num).toEqual(4)
-		expect(instance.state.called).toEqual(true)
-	end)
-	it("can replaceState", function()
-		local instance
-		type Bar = React_Component<any, any> & { state: Object }
-		type Bar_statics = {}
-		local Bar = React.Component:extend("Bar") :: Bar & Bar_statics
-		function Bar.init(self: Bar)
-			self.state = { a = "a" }
-		end
-		function Bar.render(self: Bar)
-			instance = self
-			return React.createElement("div", nil, self.props.children)
-		end
-		local function Foo()
-			return React.createElement("div", nil, React.createElement(Bar, nil))
-		end
-		ReactNoop:render(React.createElement(Foo, nil))
-		expect(Scheduler).toFlushWithoutYielding()
-		instance:setState({ b = "b" })
-		instance:setState({ c = "c" })
-		instance.updater:enqueueReplaceState(instance, { d = "d" })
-		expect(Scheduler).toFlushWithoutYielding()
-		expect(instance.state).toEqual({ d = "d" })
-	end)
-	it("can forceUpdate", function()
-		local function Baz()
-			Scheduler:unstable_yieldValue("Baz")
-			return React.createElement("div", nil)
-		end
-		local instance
-		type Bar = React_Component<any, any> & {}
-		type Bar_statics = {}
-		local Bar = React.Component:extend("Bar") :: Bar & Bar_statics
-		function Bar.init(self: Bar)
-			instance = self
-		end
-		function Bar.shouldComponentUpdate(self: Bar)
-			return false
-		end
-		function Bar.render(self: Bar)
-			Scheduler:unstable_yieldValue("Bar")
-			return React.createElement(Baz, nil)
-		end
-		local function Foo()
-			Scheduler:unstable_yieldValue("Foo")
-			return React.createElement("div", nil, React.createElement(Bar, nil))
-		end
-		ReactNoop:render(React.createElement(Foo, nil))
-		expect(Scheduler).toFlushAndYield({ "Foo", "Bar", "Baz" })
-		instance:forceUpdate()
-		expect(Scheduler).toFlushAndYield({ "Bar", "Baz" })
-	end)
-	it("should clear forceUpdate after update is flushed", function()
-		local a = 0
-		type Foo = React_Component<any, any> & {}
-		type Foo_statics = {}
-		local Foo = React.PureComponent:extend("Foo") :: Foo & Foo_statics
-		function Foo.render(self: Foo)
-			local msg = ("A: %s, B: %s"):format(tostring(a), tostring(self.props.b))
-			Scheduler:unstable_yieldValue(msg)
-			return msg
-		end
-		local foo = React.createRef(nil)
-		ReactNoop:render(React.createElement(Foo, { ref = foo, b = 0 }))
-		expect(Scheduler).toFlushAndYield({ "A: 0, B: 0" })
-		a = 1
-		foo.current:forceUpdate()
-		expect(Scheduler).toFlushAndYield({ "A: 1, B: 0" })
-		ReactNoop:render(React.createElement(Foo, { ref = foo, b = 0 }))
-		expect(Scheduler).toFlushAndYield({})
-	end)
-	xit("can call sCU while resuming a partly mounted component", function()
-		local instances = Set.new()
-		type Bar = React_Component<any, any> & { state: Object }
-		type Bar_statics = {}
-		local Bar = React.Component:extend("Bar") :: Bar & Bar_statics
-		function Bar.init(self: Bar)
-			self.state = { y = "A" }
-			instances:add(self)
-		end
-		function Bar.shouldComponentUpdate(self: Bar, newProps, newState)
-			return self.props.x ~= newProps.x or self.state.y ~= newState.y
-		end
-		function Bar.render(self: Bar)
-			Scheduler:unstable_yieldValue("Bar:" .. tostring(self.props.x))
-			return React.createElement("span", { prop = String(self.props.x == self.state.y) })
-		end
-		local function Foo(props)
-			Scheduler:unstable_yieldValue("Foo")
-			return {
-				React.createElement(Bar, { key = "a", x = "A" }),
-				React.createElement(Bar, {
-					key = "b",
-					x = if props.step == 0 then "B" else "B2",
-				}),
-				React.createElement(Bar, { key = "c", x = "C" }),
-				React.createElement(Bar, { key = "d", x = "D" }),
-			}
-		end
-		ReactNoop:render(React.createElement(Foo, { step = 0 }))
-		ReactNoop:flushDeferredPri(40)
-		expect(Scheduler).toHaveYielded({ "Foo", "Bar:A", "Bar:B", "Bar:C" })
-		expect(instances.size).toBe(3)
-		ReactNoop:render(React.createElement(Foo, { step = 1 }))
-		ReactNoop:flushDeferredPri(50) -- A was memoized and reused. B was memoized but couldn't be reused because
-		-- props differences. C was memoized and reused. D never even started so it
-		-- needed a new instance.
-		expect(Scheduler).toHaveYielded({ "Foo", "Bar:B2", "Bar:D" }) -- We expect each rerender to correspond to a new instance.
-		expect(instances.size).toBe(4)
-	end)
-	xit("gets new props when setting state on a partly updated component", function()
-		local instances = {}
-		type Bar = React_Component<any, any> & { state: Object, performAction: (self: Bar) -> any }
-		type Bar_statics = {}
-		local Bar = React.Component:extend("Bar") :: Bar & Bar_statics
-		function Bar.init(self: Bar)
-			self.state = { y = "A" }
-			table.insert(instances, self) --[[ ROBLOX CHECK: check if 'instances' is an Array ]]
-		end
-		function Bar:performAction()
-			self:setState({ y = "B" })
-		end
-		function Bar.render(self: Bar)
-			Scheduler:unstable_yieldValue("Bar:" .. tostring(self.props.x) .. "-" .. tostring(self.props.step))
-			return React.createElement("span", { prop = String(self.props.x == self.state.y) })
-		end
-		local function Baz()
-			-- This component is used as a sibling to Foo so that we can fully
-			-- complete Foo, without committing.
-			Scheduler:unstable_yieldValue("Baz")
-			return React.createElement("div", nil)
-		end
-		local function Foo(props)
-			Scheduler:unstable_yieldValue("Foo")
-			return {
-				React.createElement(Bar, { key = "a", x = "A", step = props.step }),
-				React.createElement(Bar, { key = "b", x = "B", step = props.step }),
-			}
-		end
-		ReactNoop:render(
-			React.createElement(
-				"div",
-				nil,
-				React.createElement(Foo, { step = 0 }),
-				React.createElement(Baz, nil),
-				React.createElement(Baz, nil)
-			)
-		)
-		expect(Scheduler).toFlushWithoutYielding() -- Flush part way through with new props, fully completing the first Bar.
-		-- However, it doesn't commit yet.
-		ReactNoop:render(
-			React.createElement(
-				"div",
-				nil,
-				React.createElement(Foo, { step = 1 }),
-				React.createElement(Baz, nil),
-				React.createElement(Baz, nil)
-			)
-		)
-		ReactNoop:flushDeferredPri(45)
-		expect(Scheduler).toHaveYielded({ "Foo", "Bar:A-1", "Bar:B-1", "Baz" }) -- Make an update to the same Bar.
-		instances[
-			1 --[[ ROBLOX adaptation: added 1 to array index ]]
-		]:performAction()
-		expect(Scheduler).toFlushAndYield({ "Bar:A-1", "Baz" })
-	end)
-	xit("calls componentWillMount twice if the initial render is aborted", function()
-		type LifeCycle = React_Component<any, any> & { state: Object }
-		type LifeCycle_statics = {}
-		local LifeCycle = React.Component:extend("LifeCycle") :: LifeCycle & LifeCycle_statics
-		function LifeCycle.init(self: LifeCycle)
-			self.state = { x = self.props.x }
-		end
-		function LifeCycle.UNSAFE_componentWillReceiveProps(self: LifeCycle, nextProps)
-			Scheduler:unstable_yieldValue(
-				"componentWillReceiveProps:" .. tostring(self.state.x) .. "-" .. tostring(nextProps.x)
-			)
-			self:setState({ x = nextProps.x })
-		end
-		function LifeCycle.UNSAFE_componentWillMount(self: LifeCycle)
-			Scheduler:unstable_yieldValue(
-				"componentWillMount:" .. tostring(self.state.x) .. "-" .. tostring(self.props.x)
-			)
-		end
-		function LifeCycle.componentDidMount(self: LifeCycle)
-			Scheduler:unstable_yieldValue(
-				"componentDidMount:" .. tostring(self.state.x) .. "-" .. tostring(self.props.x)
-			)
-		end
-		function LifeCycle.render(self: LifeCycle)
-			return React.createElement("span", nil)
-		end
-		local function Trail()
-			Scheduler:unstable_yieldValue("Trail")
-			return nil
-		end
-		local function App(props)
-			Scheduler:unstable_yieldValue("App")
->>>>>>> upstream-apply
 			return React.createElement(
 				"div",
 				nil,
@@ -2592,7 +2223,6 @@ describe("ReactIncremental", function()
 				React.createElement("div", nil, React.createElement(ShowBoth))
 			)
 		)
-<<<<<<< HEAD
 		jestExpect(function()
 			return jestExpect(Scheduler).toFlushAndYield({
 				"Intl {}",
@@ -2608,14 +2238,6 @@ describe("ReactIncremental", function()
 				.. "Please update the following components: Intl, ShowLocale"
 		)
 		ReactNoop.render(
-=======
-		expect(Scheduler).toFlushAndYield({
-			"Intl {}",
-			'ShowLocale {"locale":"fr"}',
-			'ShowBoth {"locale":"fr"}',
-		})
-		ReactNoop:render(
->>>>>>> upstream-apply
 			React.createElement(
 				Intl,
 				{
@@ -2630,7 +2252,6 @@ describe("ReactIncremental", function()
 			'ShowLocale {"locale":"de"}',
 			'ShowBoth {"locale":"de"}',
 		})
-<<<<<<< HEAD
 		ReactNoop.render(
 			React.createElement(
 				Intl,
@@ -2678,56 +2299,6 @@ describe("ReactIncremental", function()
 				.. "using it should migrate to the new version.\n\n"
 				.. "Please update the following components: Router, ShowRoute"
 		)
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(
-					React.createElement(
-						Intl,
-						{ locale = "sv" },
-						React.createElement(ShowLocale, nil),
-						React.createElement("div", nil, React.createElement(ShowBoth, nil))
-					)
-				)
-			end)
-		else
-			ReactNoop:render(
-				React.createElement(
-					Intl,
-					{ locale = "sv" },
-					React.createElement(ShowLocale, nil),
-					React.createElement("div", nil, React.createElement(ShowBoth, nil))
-				)
-			)
-		end
-		expect(Scheduler).toFlushAndYieldThrough({ "Intl {}" })
-		ReactNoop:render(
-			React.createElement(
-				Intl,
-				{ locale = "en" },
-				React.createElement(ShowLocale, nil),
-				React.createElement(Router, { route = "/about" }, React.createElement(Indirection, nil)),
-				React.createElement(ShowBoth, nil)
-			)
-		)
-		expect(Scheduler).toFlushAndYield({
-			'ShowLocale {"locale":"sv"}',
-			'ShowBoth {"locale":"sv"}',
-			"Intl {}",
-			'ShowLocale {"locale":"en"}',
-			"Router {}",
-			"Indirection {}",
-			'ShowLocale {"locale":"en"}',
-			'ShowRoute {"route":"/about"}',
-			"ShowNeither {}",
-			"Intl {}",
-			'ShowBoth {"locale":"ru","route":"/about"}',
-			'ShowBoth {"locale":"en","route":"/about"}',
-			'ShowBoth {"locale":"en"}',
-		})
->>>>>>> upstream-apply
 	end)
 
 	it("does not leak own context into context provider", function()
@@ -2747,7 +2318,6 @@ describe("ReactIncremental", function()
 
 			return React.createElement(Recurse)
 		end
-<<<<<<< HEAD
 
 		Recurse.contextTypes = {
 			n = PropTypes.number,
@@ -2770,15 +2340,6 @@ describe("ReactIncremental", function()
 				.. "using it should migrate to the new version.\n\n"
 				.. "Please update the following components: Recurse"
 		)
-=======
-		ReactNoop:render(React.createElement(Recurse, nil))
-		expect(Scheduler).toFlushAndYield({
-			"Recurse {}",
-			'Recurse {"n":2}',
-			'Recurse {"n":1}',
-			'Recurse {"n":0}',
-		})
->>>>>>> upstream-apply
 	end)
 
 	if not ReactFeatureFlags.disableModulePatternComponents then
@@ -2836,23 +2397,11 @@ describe("ReactIncremental", function()
 						.. "using it should migrate to the new version.\n\n"
 						.. "Please update the following components: Recurse",
 				})
-<<<<<<< HEAD
 			end
 		)
 	end
 
 	-- @gate experimental
-=======
-			end).toErrorDev({
-				"Warning: The <Recurse /> component appears to be a function component that returns a class instance. "
-					.. "Change Recurse to a class that extends React.Component instead. "
-					.. "If you can't use a class try assigning the prototype on the function as a workaround. "
-					.. "`Recurse.prototype = React.Component.prototype`. "
-					.. "Don't use an arrow function since it cannot be called with `new` by React.",
-			})
-		end)
-	end -- @gate www
->>>>>>> upstream-apply
 	it("provides context when reusing work", function()
 		local Intl = React.Component:extend("Intl")
 
@@ -2878,7 +2427,6 @@ describe("ReactIncremental", function()
 
 			return self.context.locale
 		end
-<<<<<<< HEAD
 
 		ShowLocale.contextTypes = {
 			locale = PropTypes.string,
@@ -2903,49 +2451,10 @@ describe("ReactIncremental", function()
 			React.createElement(ShowLocale)
 		))
 		jestExpect(Scheduler).toFlushAndYieldThrough({
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(
-					React.createElement(
-						Intl,
-						{ locale = "fr" },
-						React.createElement(ShowLocale, nil),
-						React.createElement(
-							LegacyHiddenDiv,
-							{ mode = "hidden" },
-							React.createElement(ShowLocale, nil),
-							React.createElement(Intl, { locale = "ru" }, React.createElement(ShowLocale, nil))
-						),
-						React.createElement(ShowLocale, nil)
-					)
-				)
-			end)
-		else
-			ReactNoop:render(
-				React.createElement(
-					Intl,
-					{ locale = "fr" },
-					React.createElement(ShowLocale, nil),
-					React.createElement(
-						LegacyHiddenDiv,
-						{ mode = "hidden" },
-						React.createElement(ShowLocale, nil),
-						React.createElement(Intl, { locale = "ru" }, React.createElement(ShowLocale, nil))
-					),
-					React.createElement(ShowLocale, nil)
-				)
-			)
-		end
-		expect(Scheduler).toFlushAndYieldThrough({
->>>>>>> upstream-apply
 			"Intl {}",
 			'ShowLocale {"locale":"fr"}',
 			'ShowLocale {"locale":"fr"}',
 		})
-<<<<<<< HEAD
 		jestExpect(function()
 			return jestExpect(Scheduler).toFlushAndYield({
 				'ShowLocale {"locale":"fr"}',
@@ -2958,13 +2467,6 @@ describe("ReactIncremental", function()
 				.. "using it should migrate to the new version.\n\n"
 				.. "Please update the following components: Intl, ShowLocale"
 		)
-=======
-		expect(Scheduler).toFlushAndYield({
-			'ShowLocale {"locale":"fr"}',
-			"Intl {}",
-			'ShowLocale {"locale":"ru"}',
-		})
->>>>>>> upstream-apply
 	end)
 	-- ROBLOX TODO: PropTypes
 	xit("reads context when setState is below the provider", function()
@@ -3060,7 +2562,6 @@ describe("ReactIncremental", function()
 				)
 			)
 		)
-<<<<<<< HEAD
 		jestExpect(function()
 			return jestExpect(Scheduler).toFlushAndYield({
 				"Intl:read {}",
@@ -3076,16 +2577,6 @@ describe("ReactIncremental", function()
 				.. "using it should migrate to the new version.\n\n"
 				.. "Please update the following components: Intl, ShowLocaleClass, ShowLocaleFn"
 		)
-=======
-		expect(Scheduler).toFlushAndYield({
-			"Intl:read {}",
-			'Intl:provide {"locale":"fr"}',
-			"IndirectionFn {}",
-			"IndirectionClass {}",
-			'ShowLocaleClass:read {"locale":"fr"}',
-			'ShowLocaleFn:read {"locale":"fr"}',
-		})
->>>>>>> upstream-apply
 		statefulInst:setState({ x = 1 })
 		jestExpect(Scheduler).toFlushWithoutYielding()
 		-- All work has been memoized because setState()
@@ -3189,7 +2680,6 @@ describe("ReactIncremental", function()
 				)
 			)
 		)
-<<<<<<< HEAD
 		jestExpect(function()
 			return jestExpect(Scheduler).toFlushAndYield({
 				"Intl:read {}",
@@ -3209,18 +2699,6 @@ describe("ReactIncremental", function()
 			locale = "gr",
 		})
 		jestExpect(Scheduler).toFlushAndYield({
-=======
-		expect(Scheduler).toFlushAndYield({
-			"Intl:read {}",
-			'Intl:provide {"locale":"fr"}',
-			"IndirectionFn {}",
-			"IndirectionClass {}",
-			'ShowLocaleClass:read {"locale":"fr"}',
-			'ShowLocaleFn:read {"locale":"fr"}',
-		})
-		statefulInst:setState({ locale = "gr" })
-		expect(Scheduler).toFlushAndYield({
->>>>>>> upstream-apply
 			-- Intl is below setState() so it might have been
 			-- affected by it. Therefore we re-render and recompute
 			-- its child context.
@@ -3235,7 +2713,6 @@ describe("ReactIncremental", function()
 			'ShowLocaleFn:read {"locale":"gr"}',
 		})
 	end)
-<<<<<<< HEAD
 	it(
 		"maintains the correct context when providers bail out due to low priority",
 		function()
@@ -3252,63 +2729,6 @@ describe("ReactIncremental", function()
 			local Middle = React.Component:extend("Middle")
 
 			function Middle:init(props, context)
-=======
-	it("maintains the correct context when providers bail out due to low priority", function()
-		type Root = React_Component<any, any> & {}
-		type Root_statics = {}
-		local Root = React.Component:extend("Root") :: Root & Root_statics
-		function Root.render(self: Root)
-			return React.createElement(Middle, self.props)
-		end
-		local instance
-		type Middle = React_Component<any, any> & {}
-		type Middle_statics = {}
-		local Middle = React.Component:extend("Middle") :: Middle & Middle_statics
-		function Middle.init(self: Middle, props, context)
-			instance = self
-		end
-		function Middle.shouldComponentUpdate(self: Middle)
-			-- Return false so that our child will get a NoWork priority (and get bailed out)
-			return false
-		end
-		function Middle.render(self: Middle)
-			return React.createElement(Child, nil)
-		end -- Child must be a context provider to trigger the bug
-		type Child = React_Component<any, any> & { getChildContext: (self: Child) -> any }
-		type Child_statics = {}
-		local Child = React.Component:extend("Child") :: Child & Child_statics
-		Child.childContextTypes = {}
-		function Child:getChildContext()
-			return {}
-		end
-		function Child.render(self: Child)
-			return React.createElement("div", nil)
-		end -- Init
-		ReactNoop:render(React.createElement(Root, nil))
-		expect(Scheduler).toFlushWithoutYielding() -- Trigger an update in the middle of the tree
-		instance:setState({})
-		expect(Scheduler).toFlushWithoutYielding()
-	end)
-	it("maintains the correct context when unwinding due to an error in render", function()
-		type Root = React_Component<any, any> & {}
-		type Root_statics = {}
-		local Root = React.Component:extend("Root") :: Root & Root_statics
-		function Root.componentDidCatch(self: Root, error_)
-			-- If context is pushed/popped correctly,
-			-- This method will be used to handle the intentionally-thrown Error.
-		end
-		function Root.render(self: Root)
-			return React.createElement(ContextProvider, { depth = 1 })
-		end
-		local instance
-		type ContextProvider = React_Component<any, any> & { getChildContext: (self: ContextProvider) -> any }
-		type ContextProvider_statics = {}
-		local ContextProvider = React.Component:extend("ContextProvider") :: ContextProvider & ContextProvider_statics
-		ContextProvider.childContextTypes = {}
-		function ContextProvider.init(self: ContextProvider, props, context)
-			self.state = {}
-			if props.depth == 1 then
->>>>>>> upstream-apply
 				instance = self
 			end
 
@@ -3316,7 +2736,6 @@ describe("ReactIncremental", function()
 				-- Return false so that our child will get a NoWork priority (and get bailed out)
 				return false
 			end
-<<<<<<< HEAD
 			function Middle:render()
 				return React.createElement(Child)
 			end
@@ -3415,21 +2834,6 @@ describe("ReactIncremental", function()
 		end
 	)
 
-=======
-			return if self.props.depth
-					< 4 --[[ ROBLOX CHECK: operator '<' works only if either both arguments are strings or both are a number ]]
-				then React.createElement(ContextProvider, { depth = self.props.depth + 1 })
-				else React.createElement("div", nil)
-		end -- Init
-		ReactNoop:render(React.createElement(Root, nil))
-		expect(Scheduler).toFlushWithoutYielding() -- Trigger an update in the middle of the tree
-		-- This is necessary to reproduce the error as it currently exists.
-		instance:setState({ throwError = true })
-		expect(function()
-			return expect(Scheduler).toFlushWithoutYielding()
-		end).toErrorDev("Error boundaries should implement getDerivedStateFromError()")
-	end)
->>>>>>> upstream-apply
 	it("should not recreate masked context unless inputs have changed", function()
 		local scuCounter = 0
 		local MyComponent = React.Component:extend("MyComponent")
@@ -3461,7 +2865,6 @@ describe("ReactIncremental", function()
 			scuCounter += 1
 			return ret -- Don't let test hang
 		end
-<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(MyComponent))
 		jestExpect(function()
@@ -3483,18 +2886,6 @@ describe("ReactIncremental", function()
 				.. "Please update the following components: MyComponent",
 		}, {
 			withoutStack = 1,
-=======
-		ReactNoop:render(React.createElement(MyComponent, nil))
-		expect(Scheduler).toFlushAndYield({
-			"render",
-			"componentDidMount",
-			"shouldComponentUpdate",
-			"render",
-			"componentDidUpdate",
-			"shouldComponentUpdate",
-			"render",
-			"componentDidUpdate",
->>>>>>> upstream-apply
 		})
 	end)
 	-- ROBLOX: xited upstream
@@ -3633,7 +3024,6 @@ describe("ReactIncremental", function()
 				React.createElement(Middle, nil, React.createElement(Child))
 			)
 		)
-<<<<<<< HEAD
 		jestExpect(function()
 			return jestExpect(Scheduler).toFlushAndYield({
 				"count:0",
@@ -3648,11 +3038,6 @@ describe("ReactIncremental", function()
 		jestExpect(Scheduler).toFlushAndYield({
 			"count:1",
 		})
-=======
-		expect(Scheduler).toFlushAndYield({ "count:0" })
-		instance:updateCount()
-		expect(Scheduler).toFlushAndYield({ "count:1" })
->>>>>>> upstream-apply
 	end)
 	-- ROBLOX TODO: PropTypes
 	xit(
@@ -3682,7 +3067,6 @@ describe("ReactIncremental", function()
 				self.state = { count = 0 }
 				instance = self
 			end
-<<<<<<< HEAD
 
 			TopContextProvider.childContextTypes = {
 				count = PropTypes.number,
@@ -3701,113 +3085,6 @@ describe("ReactIncremental", function()
 			}
 
 			ReactNoop.render(
-=======
-			self.render = function()
-				return self.props.children
-			end
-			self.updateCount = function()
-				return self:setState(function(state)
-					return { count = state.count + 1 }
-				end)
-			end
-			self.state = { count = 0 }
-			instance = self
-		end
-		type MiddleContextProvider = React_Component<any, any> & { getChildContext: any }
-		type MiddleContextProvider_statics = {}
-		local MiddleContextProvider =
-			React.Component:extend("MiddleContextProvider") :: MiddleContextProvider & MiddleContextProvider_statics
-		MiddleContextProvider.childContextTypes = { name = PropTypes.string }
-		function MiddleContextProvider.init(self: MiddleContextProvider)
-			self.getChildContext = function()
-				return { name = "brian" }
-			end
-			self.render = function()
-				return self.props.children
-			end
-		end
-		type Child = React_Component<any, any> & {}
-		type Child_statics = {}
-		local Child = React.Component:extend("Child") :: Child & Child_statics
-		Child.contextTypes = { count = PropTypes.number }
-		function Child.init(self: Child)
-			self.render = function()
-				Scheduler:unstable_yieldValue(("count:%s"):format(tostring(self.context.count)))
-				return nil
-			end
-		end
-		ReactNoop:render(
-			React.createElement(
-				TopContextProvider,
-				nil,
-				React.createElement(MiddleContextProvider, nil, React.createElement(Child, nil))
-			)
-		)
-		expect(Scheduler).toFlushAndYield({ "count:0" })
-		instance:updateCount()
-		expect(Scheduler).toFlushAndYield({ "count:1" })
-	end)
-	it("should not update descendants with new context values if shouldComponentUpdate returns false", function()
-		local instance
-		type TopContextProvider = React_Component<any, any> & { getChildContext: any, updateCount: any }
-		type TopContextProvider_statics = {}
-		local TopContextProvider =
-			React.Component:extend("TopContextProvider") :: TopContextProvider & TopContextProvider_statics
-		TopContextProvider.childContextTypes = { count = PropTypes.number }
-		function TopContextProvider.init(self: TopContextProvider)
-			self.getChildContext = function()
-				return { count = self.state.count }
-			end
-			self.render = function()
-				return self.props.children
-			end
-			self.updateCount = function()
-				return self:setState(function(state)
-					return { count = state.count + 1 }
-				end)
-			end
-			self.state = { count = 0 }
-			instance = self
-		end
-		type MiddleScu = React_Component<any, any> & {}
-		type MiddleScu_statics = {}
-		local MiddleScu = React.Component:extend("MiddleScu") :: MiddleScu & MiddleScu_statics
-		function MiddleScu.init(self: MiddleScu)
-			self.render = function()
-				return self.props.children
-			end
-		end
-		function MiddleScu.shouldComponentUpdate(self: MiddleScu)
-			return false
-		end
-		type MiddleContextProvider = React_Component<any, any> & { getChildContext: any }
-		type MiddleContextProvider_statics = {}
-		local MiddleContextProvider =
-			React.Component:extend("MiddleContextProvider") :: MiddleContextProvider & MiddleContextProvider_statics
-		MiddleContextProvider.childContextTypes = { name = PropTypes.string }
-		function MiddleContextProvider.init(self: MiddleContextProvider)
-			self.getChildContext = function()
-				return { name = "brian" }
-			end
-			self.render = function()
-				return self.props.children
-			end
-		end
-		type Child = React_Component<any, any> & {}
-		type Child_statics = {}
-		local Child = React.Component:extend("Child") :: Child & Child_statics
-		Child.contextTypes = { count = PropTypes.number }
-		function Child.init(self: Child)
-			self.render = function()
-				Scheduler:unstable_yieldValue(("count:%s"):format(tostring(self.context.count)))
-				return nil
-			end
-		end
-		ReactNoop:render(
-			React.createElement(
-				TopContextProvider,
-				nil,
->>>>>>> upstream-apply
 				React.createElement(
 					TopContextProvider,
 					nil,
@@ -3818,7 +3095,6 @@ describe("ReactIncremental", function()
 					)
 				)
 			)
-<<<<<<< HEAD
 			jestExpect(function()
 				return jestExpect(Scheduler).toFlushAndYield({
 					"count:0",
@@ -3833,35 +3109,6 @@ describe("ReactIncremental", function()
 			jestExpect(Scheduler).toFlushAndYield({
 				"count:1",
 			})
-=======
-		)
-		expect(Scheduler).toFlushAndYield({ "count:0" })
-		instance:updateCount()
-		expect(Scheduler).toFlushWithoutYielding()
-	end)
-	it("should update descendants with new context values if setState() is called in the middle of the tree", function()
-		local middleInstance
-		local topInstance
-		type TopContextProvider = React_Component<any, any> & { getChildContext: any, updateCount: any }
-		type TopContextProvider_statics = {}
-		local TopContextProvider =
-			React.Component:extend("TopContextProvider") :: TopContextProvider & TopContextProvider_statics
-		TopContextProvider.childContextTypes = { count = PropTypes.number }
-		function TopContextProvider.init(self: TopContextProvider)
-			self.getChildContext = function()
-				return { count = self.state.count }
-			end
-			self.render = function()
-				return self.props.children
-			end
-			self.updateCount = function()
-				return self:setState(function(state)
-					return { count = state.count + 1 }
-				end)
-			end
-			self.state = { count = 0 }
-			topInstance = self
->>>>>>> upstream-apply
 		end
 	)
 	-- ROBLOX TODO: PropTypes
@@ -3930,7 +3177,6 @@ describe("ReactIncremental", function()
 					)
 				)
 			)
-<<<<<<< HEAD
 			jestExpect(function()
 				return jestExpect(Scheduler).toFlushAndYield({
 					"count:0",
@@ -4049,21 +3295,11 @@ describe("ReactIncremental", function()
 			})
 		end
 	)
-=======
-		)
-		expect(Scheduler).toFlushAndYield({ "count:0, name:brian" })
-		topInstance:updateCount()
-		expect(Scheduler).toFlushWithoutYielding()
-		middleInstance:updateName("not brian")
-		expect(Scheduler).toFlushAndYield({ "count:1, name:not brian" })
-	end)
->>>>>>> upstream-apply
 	it("does not interrupt for update at same priority", function()
 		local function Child(props)
 			Scheduler.unstable_yieldValue("Child: " .. tostring(props.step))
 			return nil
 		end
-<<<<<<< HEAD
 
 		local function Parent(props)
 			Scheduler.unstable_yieldValue("Parent: " .. tostring(props.step))
@@ -4083,20 +3319,6 @@ describe("ReactIncremental", function()
 			"Parent: 2",
 			"Child: 2",
 		})
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Parent, { step = 1 }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Parent, { step = 1 }))
-		end
-		expect(Scheduler).toFlushAndYieldThrough({ "Parent: 1" }) -- Interrupt at same priority
-		ReactNoop:render(React.createElement(Parent, { step = 2 }))
-		expect(Scheduler).toFlushAndYield({ "Child: 1", "Parent: 2", "Child: 2" })
->>>>>>> upstream-apply
 	end)
 	it("does not interrupt for update at lower priority", function()
 		local function Child(props)
@@ -4104,7 +3326,6 @@ describe("ReactIncremental", function()
 
 			return nil
 		end
-<<<<<<< HEAD
 
 		local function Parent(props)
 			Scheduler.unstable_yieldValue("Parent: " .. tostring(props.step))
@@ -4127,28 +3348,12 @@ describe("ReactIncremental", function()
 			"Parent: 2",
 			"Child: 2",
 		})
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Parent, { step = 1 }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Parent, { step = 1 }))
-		end
-		expect(Scheduler).toFlushAndYieldThrough({ "Parent: 1" }) -- Interrupt at lower priority
-		ReactNoop:expire(2000)
-		ReactNoop:render(React.createElement(Parent, { step = 2 }))
-		expect(Scheduler).toFlushAndYield({ "Child: 1", "Parent: 2", "Child: 2" })
->>>>>>> upstream-apply
 	end)
 	it("does interrupt for update at higher priority", function()
 		local function Child(props)
 			Scheduler.unstable_yieldValue("Child: " .. tostring(props.step))
 			return nil
 		end
-<<<<<<< HEAD
 
 		local function Parent(props)
 			Scheduler.unstable_yieldValue("Parent: " .. tostring(props.step))
@@ -4172,117 +3377,6 @@ describe("ReactIncremental", function()
 			"Child: 2",
 		})
 		jestExpect(Scheduler).toFlushAndYield({})
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				ReactNoop:render(React.createElement(Parent, { step = 1 }))
-			end)
-		else
-			ReactNoop:render(React.createElement(Parent, { step = 1 }))
-		end
-		expect(Scheduler).toFlushAndYieldThrough({ "Parent: 1" }) -- Interrupt at higher priority
-		ReactNoop:flushSync(function()
-			return ReactNoop:render(React.createElement(Parent, { step = 2 }))
-		end)
-		expect(Scheduler).toHaveYielded({ "Parent: 2", "Child: 2" })
-		expect(Scheduler).toFlushAndYield({})
-	end) -- We sometimes use Maps with Fibers as keys.
-	it("does not break with a bad Map polyfill", function()
-		local realMapSet = Map.prototype.set
-		local function triggerCodePathThatUsesFibersAsMapKeys()
-			local function Thing()
-				error(Error.new("No."))
-			end -- This class uses legacy context, which triggers warnings,
-			-- the procedures for which use a Map to store fibers.
-			type Boundary = React_Component<any, any> & { state: Object }
-			type Boundary_statics = {}
-			local Boundary = React.Component:extend("Boundary") :: Boundary & Boundary_statics
-			Boundary.contextTypes = {
-				color = function()
-					return nil
-				end,
-			}
-			function Boundary.init(self: Boundary)
-				self.state = { didError = false }
-			end
-			function Boundary.componentDidCatch(self: Boundary)
-				self:setState({ didError = true })
-			end
-			function Boundary.render(self: Boundary)
-				return if Boolean.toJSBoolean(self.state.didError) then nil else React.createElement(Thing, nil)
-			end
-			ReactNoop:render(React.createElement(React.StrictMode, nil, React.createElement(Boundary, nil)))
-			expect(function()
-				expect(Scheduler).toFlushWithoutYielding()
-			end).toErrorDev({ "Legacy context API has been detected within a strict-mode tree" })
-		end -- First, verify that this code path normally receives Fibers as keys,
-		-- and that they're not extensible.
-		jest.resetModules()
-		local receivedNonExtensibleObjects -- eslint-disable-next-line no-extend-native
-		Map.prototype.set = function(self: any, key)
-			if typeof(key) == "table" and key ~= nil then
-				if not Boolean.toJSBoolean(Object.isExtensible(key)) then
-					receivedNonExtensibleObjects = true
-				end
-			end
-			return realMapSet(self, table.unpack(arguments))
-		end
-		React = require_("react")
-		ReactNoop = require_("react-noop-renderer")
-		Scheduler = require_("scheduler")
-		do --[[ ROBLOX COMMENT: try-finally block conversion ]]
-			local ok, result, hasReturned = pcall(function()
-				receivedNonExtensibleObjects = false
-				triggerCodePathThatUsesFibersAsMapKeys()
-			end)
-			do
-				-- eslint-disable-next-line no-extend-native
-				Map.prototype.set = realMapSet
-			end
-			if hasReturned then
-				return result
-			end
-			if not ok then
-				error(result)
-			end
-		end -- If this fails, find another code path in Fiber
-		-- that passes Fibers as keys to Maps.
-		-- Note that we only expect them to be non-extensible
-		-- in development.
-		expect(receivedNonExtensibleObjects).toBe(__DEV__) -- Next, verify that a Map polyfill that "writes" to keys
-		-- doesn't cause a failure.
-		jest.resetModules() -- eslint-disable-next-line no-extend-native
-		Map.prototype.set = function(self: any, key, value)
-			if typeof(key) == "table" and key ~= nil then
-				-- A polyfill could do something like this.
-				-- It would throw if an object is not extensible.
-				key.__internalValueSlot = value
-			end
-			return realMapSet(self, table.unpack(arguments))
-		end
-		React = require_("react")
-		ReactNoop = require_("react-noop-renderer")
-		Scheduler = require_("scheduler")
-		do --[[ ROBLOX COMMENT: try-finally block conversion ]]
-			local ok, result, hasReturned = pcall(function()
-				triggerCodePathThatUsesFibersAsMapKeys()
-			end)
-			do
-				-- eslint-disable-next-line no-extend-native
-				Map.prototype.set = realMapSet
-			end
-			if hasReturned then
-				return result
-			end
-			if not ok then
-				error(result)
-			end
-		end -- If we got this far, our feature detection worked.
-		-- We knew that Map#set() throws for non-extensible objects,
-		-- so we didn't set them as non-extensible for that reason.
->>>>>>> upstream-apply
 	end)
 
 	-- ROBLOX TODO: sort out default map.set reassignment.

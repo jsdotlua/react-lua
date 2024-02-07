@@ -25,8 +25,7 @@ type Lane = ReactFiberLaneModule.Lane
 type Lanes = ReactFiberLaneModule.Lanes
 type Wakeable = Shared.Wakeable
 
-local enableDebugTracing =
-	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableDebugTracing
+local enableDebugTracing = require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableDebugTracing
 
 local nativeConsole: Object = console
 local nativeConsoleLog: nil | Function = nil
@@ -263,11 +262,7 @@ local function logForceUpdateScheduled(componentName: string, lane: Lane): ()
 end
 exports.logForceUpdateScheduled = logForceUpdateScheduled
 
-local function logStateUpdateScheduled(
-	componentName: string,
-	lane: Lane,
-	payloadOrAction: any
-): ()
+local function logStateUpdateScheduled(componentName: string, lane: Lane, payloadOrAction: any): ()
 	if _G.__DEV__ then
 		if enableDebugTracing then
 			log(

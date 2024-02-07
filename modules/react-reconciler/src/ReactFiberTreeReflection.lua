@@ -37,8 +37,7 @@ local ReactFiberFlags = require("./ReactFiberFlags")
 local NoFlags = ReactFiberFlags.NoFlags
 local Placement = ReactFiberFlags.Placement
 local Hydrating = ReactFiberFlags.Hydrating
-local enableFundamentalAPI =
-	require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableFundamentalAPI
+local enableFundamentalAPI = require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableFundamentalAPI
 
 local ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner
 
@@ -135,10 +134,7 @@ exports.isMounted = function(component): boolean
 end
 
 local function assertIsMounted(fiber)
-	invariant(
-		getNearestMountedFiber(fiber) == fiber,
-		"Unable to find node on an unmounted component."
-	)
+	invariant(getNearestMountedFiber(fiber) == fiber, "Unable to find node on an unmounted component.")
 end
 
 local function findCurrentFiberUsingSlowPath(fiber: Fiber): Fiber?
@@ -359,9 +355,7 @@ end
 
 exports.isFiberSuspenseAndTimedOut = function(fiber: Fiber): boolean
 	local memoizedState = fiber.memoizedState
-	return fiber.tag == SuspenseComponent
-		and memoizedState ~= nil
-		and memoizedState.dehydrated == nil
+	return fiber.tag == SuspenseComponent and memoizedState ~= nil and memoizedState.dehydrated == nil
 end
 
 exports.doesFiberContain = function(parentFiber: Fiber, childFiber: Fiber): boolean

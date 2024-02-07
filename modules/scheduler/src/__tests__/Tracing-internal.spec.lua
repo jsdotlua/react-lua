@@ -46,11 +46,9 @@ describe("Tracing", function()
 		end)
 
 		it("should return the value of a traced function", function()
-			jestExpect(
-				SchedulerTracing.unstable_trace("arbitrary", currentTime(), function()
-					return 123
-				end)
-			).toBe(123)
+			jestExpect(SchedulerTracing.unstable_trace("arbitrary", currentTime(), function()
+				return 123
+			end)).toBe(123)
 		end)
 
 		it("should return the value of a clear function", function()
@@ -90,52 +88,46 @@ describe("Tracing", function()
 			jestExpect(SchedulerTracing.unstable_getCurrent()).toContainNoInteractions()
 		end)
 
-		it(
-			"should report the traced interaction from within the trace callback",
-			function()
-				local done = false
-				advanceTimeBy(100)
+		it("should report the traced interaction from within the trace callback", function()
+			local done = false
+			advanceTimeBy(100)
 
-				SchedulerTracing.unstable_trace("some event", currentTime(), function()
-					local interactions = SchedulerTracing.unstable_getCurrent()
-					jestExpect(interactions).toMatchInteractions({
-						{ name = "some event", timestamp = 100 },
-					})
+			SchedulerTracing.unstable_trace("some event", currentTime(), function()
+				local interactions = SchedulerTracing.unstable_getCurrent()
+				jestExpect(interactions).toMatchInteractions({
+					{ name = "some event", timestamp = 100 },
+				})
 
-					done = true
-				end)
+				done = true
+			end)
 
-				jestExpect(done).toBe(true)
+			jestExpect(done).toBe(true)
+		end)
+
+		it("should report the traced interaction from within wrapped callbacks", function()
+			local done = false
+			local wrappedIndirection
+
+			local function indirection()
+				local interactions = SchedulerTracing.unstable_getCurrent()
+				jestExpect(interactions).toMatchInteractions({
+					{ name = "some event", timestamp = 100 },
+				})
+
+				done = true
 			end
-		)
 
-		it(
-			"should report the traced interaction from within wrapped callbacks",
-			function()
-				local done = false
-				local wrappedIndirection
+			advanceTimeBy(100)
 
-				local function indirection()
-					local interactions = SchedulerTracing.unstable_getCurrent()
-					jestExpect(interactions).toMatchInteractions({
-						{ name = "some event", timestamp = 100 },
-					})
+			SchedulerTracing.unstable_trace("some event", currentTime(), function()
+				wrappedIndirection = SchedulerTracing.unstable_wrap(indirection)
+			end)
 
-					done = true
-				end
+			advanceTimeBy(50)
 
-				advanceTimeBy(100)
-
-				SchedulerTracing.unstable_trace("some event", currentTime(), function()
-					wrappedIndirection = SchedulerTracing.unstable_wrap(indirection)
-				end)
-
-				advanceTimeBy(50)
-
-				wrappedIndirection()
-				jestExpect(done).toBe(true)
-			end
-		)
+			wrappedIndirection()
+			jestExpect(done).toBe(true)
+		end)
 
 		it("should clear the interaction stack for traced callbacks", function()
 			local innerTestReached = false
@@ -148,17 +140,13 @@ describe("Tracing", function()
 				SchedulerTracing.unstable_clear(function()
 					jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({})
 
-					SchedulerTracing.unstable_trace(
-						"inner event",
-						currentTime(),
-						function()
-							jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
-								{ name = "inner event" },
-							})
+					SchedulerTracing.unstable_trace("inner event", currentTime(), function()
+						jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
+							{ name = "inner event" },
+						})
 
-							innerTestReached = true
-						end
-					)
+						innerTestReached = true
+					end)
 				end)
 
 				jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
@@ -181,17 +169,13 @@ describe("Tracing", function()
 				SchedulerTracing.unstable_clear(function()
 					jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({})
 
-					SchedulerTracing.unstable_trace(
-						"inner event",
-						currentTime(),
-						function()
-							jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
-								{ name = "inner event" },
-							})
+					SchedulerTracing.unstable_trace("inner event", currentTime(), function()
+						jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
+							{ name = "inner event" },
+						})
 
-							innerTestReached = true
-						end
-					)
+						innerTestReached = true
+					end)
 				end)
 
 				jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
@@ -243,8 +227,7 @@ describe("Tracing", function()
 
 				advanceTimeBy(50)
 
-				local wrapperOuterIndirection =
-					SchedulerTracing.unstable_wrap(outerIndirection)
+				local wrapperOuterIndirection = SchedulerTracing.unstable_wrap(outerIndirection)
 
 				local wrapperInnerIndirection
 				local innerEventTraced = false
@@ -261,8 +244,7 @@ describe("Tracing", function()
 					wrapperOuterIndirection()
 					jestExpect(outerIndirectionTraced).toBe(true)
 
-					wrapperInnerIndirection =
-						SchedulerTracing.unstable_wrap(innerIndirection)
+					wrapperInnerIndirection = SchedulerTracing.unstable_wrap(innerIndirection)
 
 					innerEventTraced = true
 				end)
@@ -285,107 +267,72 @@ describe("Tracing", function()
 		end)
 
 		describe("error handling", function()
-			it(
-				"should reset state appropriately when an error occurs in a trace callback",
-				function()
-					local done = false
-					advanceTimeBy(100)
+			it("should reset state appropriately when an error occurs in a trace callback", function()
+				local done = false
+				advanceTimeBy(100)
 
-					SchedulerTracing.unstable_trace(
-						"outer event",
-						currentTime(),
-						function()
-							jestExpect(function()
-								SchedulerTracing.unstable_trace(
-									"inner event",
-									currentTime(),
-									function()
-										error("intentional")
-									end
-								)
-							end).toThrow()
+				SchedulerTracing.unstable_trace("outer event", currentTime(), function()
+					jestExpect(function()
+						SchedulerTracing.unstable_trace("inner event", currentTime(), function()
+							error("intentional")
+						end)
+					end).toThrow()
 
-							jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
-								{ name = "outer event", timestamp = 100 },
-							})
+					jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
+						{ name = "outer event", timestamp = 100 },
+					})
 
-							done = true
-						end
-					)
-					jestExpect(done).toBe(true)
-				end
-			)
+					done = true
+				end)
+				jestExpect(done).toBe(true)
+			end)
 
-			it(
-				"should reset state appropriately when an error occurs in a wrapped callback",
-				function()
-					local done = false
-					advanceTimeBy(100)
+			it("should reset state appropriately when an error occurs in a wrapped callback", function()
+				local done = false
+				advanceTimeBy(100)
 
-					SchedulerTracing.unstable_trace(
-						"outer event",
-						currentTime(),
-						function()
-							local wrappedCallback
+				SchedulerTracing.unstable_trace("outer event", currentTime(), function()
+					local wrappedCallback
 
-							SchedulerTracing.unstable_trace(
-								"inner event",
-								currentTime(),
-								function()
-									wrappedCallback = SchedulerTracing.unstable_wrap(
-										function()
-											error("intentional")
-										end
-									)
-								end
-							)
+					SchedulerTracing.unstable_trace("inner event", currentTime(), function()
+						wrappedCallback = SchedulerTracing.unstable_wrap(function()
+							error("intentional")
+						end)
+					end)
 
-							-- ROBLOX deviation: unstable_wrap returns a table with a __call metamethod so it can have a cancel field
-							jestExpect(function()
-								wrappedCallback()
-							end).toThrow()
+					-- ROBLOX deviation: unstable_wrap returns a table with a __call metamethod so it can have a cancel field
+					jestExpect(function()
+						wrappedCallback()
+					end).toThrow()
 
-							jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
-								{ name = "outer event", timestamp = 100 },
-							})
+					jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
+						{ name = "outer event", timestamp = 100 },
+					})
 
-							done = true
-						end
-					)
-					jestExpect(done).toBe(true)
-				end
-			)
+					done = true
+				end)
+				jestExpect(done).toBe(true)
+			end)
 		end)
 
 		describe("advanced integration", function()
 			it("should return a unique threadID per request", function()
-				jestExpect(SchedulerTracing.unstable_getThreadID()).never.toBe(
-					SchedulerTracing.unstable_getThreadID()
-				)
+				jestExpect(SchedulerTracing.unstable_getThreadID()).never.toBe(SchedulerTracing.unstable_getThreadID())
 			end)
 
-			it(
-				"should expose the current set of interactions to be externally manipulated",
-				function()
-					SchedulerTracing.unstable_trace(
-						"outer event",
-						currentTime(),
-						function()
-							jestExpect(SchedulerTracing.__interactionsRef.current).toBe(
-								SchedulerTracing.unstable_getCurrent()
-							)
+			it("should expose the current set of interactions to be externally manipulated", function()
+				SchedulerTracing.unstable_trace("outer event", currentTime(), function()
+					jestExpect(SchedulerTracing.__interactionsRef.current).toBe(SchedulerTracing.unstable_getCurrent())
 
-							SchedulerTracing.__interactionsRef.current = Set.new({
-								{ name = "override event" },
-							})
+					SchedulerTracing.__interactionsRef.current = Set.new({
+						{ name = "override event" },
+					})
 
-							jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
-								{ name = "override event" },
-							})
-						end
-					)
-				end
-			)
+					jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
+						{ name = "override event" },
+					})
+				end)
+			end)
 
 			it("should expose a subscriber ref to be externally manipulated", function()
 				SchedulerTracing.unstable_trace("outer event", currentTime(), function()
@@ -403,11 +350,9 @@ describe("Tracing", function()
 		end)
 
 		it("should return the value of a traced function", function()
-			jestExpect(
-				SchedulerTracing.unstable_trace("arbitrary", currentTime(), function()
-					return 123
-				end)
-			).toBe(123)
+			jestExpect(SchedulerTracing.unstable_trace("arbitrary", currentTime(), function()
+				return 123
+			end)).toBe(123)
 		end)
 
 		it("should return the value of a wrapped function", function()

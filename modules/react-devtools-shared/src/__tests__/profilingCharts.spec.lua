@@ -73,22 +73,14 @@ xdescribe("profiling charts", function()
 				return store._profilerStore:startProfiling()
 			end)
 			utils.act(function()
-				return SchedulerTracing.unstable_trace(
-					"mount",
-					Scheduler.unstable_now(),
-					function()
-						return container:render(React.createElement(Parent))
-					end
-				)
+				return SchedulerTracing.unstable_trace("mount", Scheduler.unstable_now(), function()
+					return container:render(React.createElement(Parent))
+				end)
 			end)
 			utils.act(function()
-				return SchedulerTracing.unstable_trace(
-					"update",
-					Scheduler.unstable_now(),
-					function()
-						return container:render(React.createElement(Parent))
-					end
-				)
+				return SchedulerTracing.unstable_trace("update", Scheduler.unstable_now(), function()
+					return container:render(React.createElement(Parent))
+				end)
 			end)
 			utils.act(function()
 				return store._profilerStore:stopProfiling()
@@ -100,18 +92,13 @@ xdescribe("profiling charts", function()
 					commitIndex = commitIndex,
 					rootID = rootID,
 				})
-				local chartData =
-					store._profilerStore:profilingCache():getFlamegraphChartData({
-						commitIndex = commitIndex,
-						commitTree = commitTree,
-						rootID = rootID,
-					})
-				jestExpect(commitTree).toMatchSnapshot(
-					("%s: CommitTree"):format(tostring(commitIndex - 1))
-				)
-				jestExpect(chartData).toMatchSnapshot(
-					("%s: FlamegraphChartData"):format(tostring(commitIndex - 1))
-				)
+				local chartData = store._profilerStore:profilingCache():getFlamegraphChartData({
+					commitIndex = commitIndex,
+					commitTree = commitTree,
+					rootID = rootID,
+				})
+				jestExpect(commitTree).toMatchSnapshot(("%s: CommitTree"):format(tostring(commitIndex - 1)))
+				jestExpect(chartData).toMatchSnapshot(("%s: FlamegraphChartData"):format(tostring(commitIndex - 1)))
 				renderFinished = true
 				return nil
 			end
@@ -157,23 +144,15 @@ xdescribe("profiling charts", function()
 			end)
 
 			utils.act(function()
-				return SchedulerTracing.unstable_trace(
-					"mount",
-					Scheduler.unstable_now(),
-					function()
-						return container:render(React.createElement(Parent))
-					end
-				)
+				return SchedulerTracing.unstable_trace("mount", Scheduler.unstable_now(), function()
+					return container:render(React.createElement(Parent))
+				end)
 			end)
 
 			utils.act(function()
-				return SchedulerTracing.unstable_trace(
-					"update",
-					Scheduler.unstable_now(),
-					function()
-						return container:render(React.createElement(Parent))
-					end
-				)
+				return SchedulerTracing.unstable_trace("update", Scheduler.unstable_now(), function()
+					return container:render(React.createElement(Parent))
+				end)
 			end)
 
 			utils.act(function()
@@ -186,18 +165,13 @@ xdescribe("profiling charts", function()
 					commitIndex = commitIndex,
 					rootID = rootID,
 				})
-				local chartData =
-					store._profilerStore:profilingCache():getRankedChartData({
-						commitIndex = commitIndex,
-						commitTree = commitTree,
-						rootID = rootID,
-					})
-				jestExpect(commitTree).toMatchSnapshot(
-					("%s: CommitTree"):format(tostring(commitIndex - 1))
-				)
-				jestExpect(chartData).toMatchSnapshot(
-					("%s: RankedChartData"):format(tostring(commitIndex - 1))
-				)
+				local chartData = store._profilerStore:profilingCache():getRankedChartData({
+					commitIndex = commitIndex,
+					commitTree = commitTree,
+					rootID = rootID,
+				})
+				jestExpect(commitTree).toMatchSnapshot(("%s: CommitTree"):format(tostring(commitIndex - 1)))
+				jestExpect(chartData).toMatchSnapshot(("%s: RankedChartData"):format(tostring(commitIndex - 1)))
 				renderFinished = true
 				return nil
 			end
@@ -241,23 +215,15 @@ xdescribe("profiling charts", function()
 				return store._profilerStore:startProfiling()
 			end)
 			utils.act(function()
-				return SchedulerTracing.unstable_trace(
-					"mount",
-					Scheduler.unstable_now(),
-					function()
-						return container:render(React.createElement(Parent))
-					end
-				)
+				return SchedulerTracing.unstable_trace("mount", Scheduler.unstable_now(), function()
+					return container:render(React.createElement(Parent))
+				end)
 			end)
 
 			utils.act(function()
-				return SchedulerTracing.unstable_trace(
-					"update",
-					Scheduler.unstable_now(),
-					function()
-						return container:render(React.createElement(Parent))
-					end
-				)
+				return SchedulerTracing.unstable_trace("update", Scheduler.unstable_now(), function()
+					return container:render(React.createElement(Parent))
+				end)
 			end)
 			utils.act(function()
 				return store._profilerStore:stopProfiling()
@@ -265,10 +231,9 @@ xdescribe("profiling charts", function()
 			local renderFinished = false
 			local function Validator(ref)
 				local _commitIndex, rootID = ref.commitIndex, ref.rootID
-				local chartData =
-					store._profilerStore:profilingCache():getInteractionsChartData({
-						rootID = rootID,
-					})
+				local chartData = store._profilerStore:profilingCache():getInteractionsChartData({
+					rootID = rootID,
+				})
 				jestExpect(chartData).toMatchSnapshot("Interactions")
 				renderFinished = true
 				return nil

@@ -15,8 +15,7 @@ local exports = {}
 local Scheduler = require("@pkg/@jsdotlua/scheduler")
 -- ROBLOX deviation END
 -- use dynamic dispatch for CommonJS interop named imports.
-local scheduleCallback, IdlePriority =
-	Scheduler.unstable_scheduleCallback, Scheduler.unstable_IdlePriority
+local scheduleCallback, IdlePriority = Scheduler.unstable_scheduleCallback, Scheduler.unstable_IdlePriority
 -- ROBLOX deviation START: use next_ instead
 -- type Entry<T> = { value: T, onDelete: () -> unknown, previous: Entry<T>, next: Entry<T> }
 export type Entry<T> = {
@@ -32,8 +31,7 @@ local function createLRU<T>(limit: number)
 	local cleanUp
 	-- ROBLOX deviation END
 	local LIMIT = limit -- Circular, doubly-linked list
-	local first: Entry<T> | nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] =
-		nil
+	local first: Entry<T> | nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] = nil
 	local size: number = 0
 	local cleanUpIsScheduled: boolean = false
 	local function scheduleCleanUp()

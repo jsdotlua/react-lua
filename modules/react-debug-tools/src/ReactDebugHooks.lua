@@ -32,14 +32,8 @@ local exports = {}
 -- type ReactProviderType = sharedReactTypesModule.ReactProviderType
 local ReactTypes = require("@pkg/@jsdotlua/shared")
 type MutableSource<T> = ReactTypes.MutableSource<T>
-type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<
-	Source,
-	Snapshot
->
-type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<
-	Source,
-	Snapshot
->
+type MutableSourceGetSnapshotFn<Source, Snapshot> = ReactTypes.MutableSourceGetSnapshotFn<Source, Snapshot>
+type MutableSourceSubscribeFn<Source, Snapshot> = ReactTypes.MutableSourceSubscribeFn<Source, Snapshot>
 type ReactContext<T> = ReactTypes.ReactContext<T>
 type ReactProviderType<T> = ReactTypes.ReactProviderType<T>
 
@@ -55,8 +49,7 @@ type ReactBindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
 -- ROBLOX deviation START: fix import
 -- local reactReconcilerSrcReactInternalTypesModule =
 -- 	require(Packages["react-reconciler"].src.ReactInternalTypes)
-local reactReconcilerSrcReactInternalTypesModule =
-	require("@pkg/@jsdotlua/react-reconciler")
+local reactReconcilerSrcReactInternalTypesModule = require("@pkg/@jsdotlua/react-reconciler")
 -- ROBLOX deviation END
 type Fiber = reactReconcilerSrcReactInternalTypesModule.Fiber
 type DispatcherType = reactReconcilerSrcReactInternalTypesModule.Dispatcher
@@ -82,12 +75,9 @@ local ErrorStackParser = {
 		if error_.stack == nil then
 			return {}
 		end
-		local filtered = Array.filter(
-			string.split(error_.stack :: string, "\n"),
-			function(line)
-				return string.find(line, "^LoadedCode") ~= nil
-			end
-		)
+		local filtered = Array.filter(string.split(error_.stack :: string, "\n"), function(line)
+			return string.find(line, "^LoadedCode") ~= nil
+		end)
 		return Array.map(filtered, function(stackTraceLine)
 			-- ROBLOX FIXME Luau: shouldn't need to explicitly provide nilable field
 			local functionName = string.match(stackTraceLine, "function (%w+)$")
@@ -124,8 +114,7 @@ type BasicStateAction<S> = (S) -> S | S
 type Dispatch<A> = (A) -> ()
 local primitiveStackCache: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | Map<string, Array<any>> =
 	nil
-local currentFiber: Fiber | nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] =
-	nil
+local currentFiber: Fiber | nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] = nil
 type Hook = {
 	memoizedState: any,
 	next: Hook | nil,--[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]]
@@ -215,31 +204,20 @@ local function getPrimitiveStackCache(): Map<string, Array<any>>
 	return primitiveStackCache :: Map<string, Array<any>>
 	-- ROBLOX deviation END
 end
-local currentHook: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | Hook =
-	nil
-local function nextHook(
-): nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | Hook
+local currentHook: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | Hook = nil
+local function nextHook(): nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | Hook
 	local hook = currentHook
 	if hook ~= nil then
 		currentHook = hook.next
 	end
 	return hook
 end
-local function readContext<T>(
-	context: ReactContext<T>,
-	observedBits: void | number | boolean
-): T
+local function readContext<T>(context: ReactContext<T>, observedBits: void | number | boolean): T
 	-- For now we don't expose readContext usage in the hooks debugging info.
 	return context._currentValue
 end
-local function useContext<T>(
-	context: ReactContext<T>,
-	observedBits: void | number | boolean
-): T
-	table.insert(
-		hookLog,
-		{ primitive = "Context", stackError = Error.new(), value = context._currentValue }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+local function useContext<T>(context: ReactContext<T>, observedBits: void | number | boolean): T
+	table.insert(hookLog, { primitive = "Context", stackError = Error.new(), value = context._currentValue }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 	return context._currentValue
 end
 -- ROBLOX deviation START: return 2 values instead of a tuple
@@ -255,10 +233,7 @@ local function useState<S>(initialState: (() -> S) | S): (S, Dispatch<BasicState
 			then -- $FlowFixMe: Flow doesn't like mixed types
 				initialState()
 			else initialState
-	table.insert(
-		hookLog,
-		{ primitive = "State", stackError = Error.new(), value = state }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "State", stackError = Error.new(), value = state }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 	-- ROBLOX deviation START: return 2 values instead of a tuple
 	-- return { state, function(action: BasicStateAction<S>) end }
 	return state, function(action: BasicStateAction<S>) end
@@ -270,11 +245,7 @@ end
 -- 	initialArg: I,
 -- 	init: ((I) -> S)?
 -- ): any --[[ ROBLOX TODO: Unhandled node for type: TupleTypeAnnotation ]] --[[ [S, Dispatch<A>] ]]
-local function useReducer<S, I, A>(
-	reducer: (S, A) -> S,
-	initialArg: I,
-	init: ((I) -> S)?
-): (S, Dispatch<A>)
+local function useReducer<S, I, A>(reducer: (S, A) -> S, initialArg: I, init: ((I) -> S)?): (S, Dispatch<A>)
 	-- ROBLOX deviation END
 	local hook = nextHook()
 	local state
@@ -283,10 +254,7 @@ local function useReducer<S, I, A>(
 	else
 		state = if init ~= nil then init(initialArg) else (initialArg :: any) :: S
 	end
-	table.insert(
-		hookLog,
-		{ primitive = "Reducer", stackError = Error.new(), value = state }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "Reducer", stackError = Error.new(), value = state }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 	-- ROBLOX deviation START: return 2 values instead of a tuple
 	-- return { state, function(action: A) end }
 	return state, function(action: A) end
@@ -298,10 +266,7 @@ local function useRef<T>(initialValue: T): { current: T | nil }
 	-- ROBLOX deviation END
 	local hook = nextHook()
 	local ref = if hook ~= nil then hook.memoizedState else { current = initialValue }
-	table.insert(
-		hookLog,
-		{ primitive = "Ref", stackError = Error.new(), value = ref.current }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "Ref", stackError = Error.new(), value = ref.current }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 	return ref
 end
 -- ROBLOX deviation START: add binding support; these aren't fully working hooks, so this
@@ -328,28 +293,22 @@ end
 local function useLayoutEffect(
 	-- ROBLOX deviation START: Luau needs union type packs for this type to translate idiomatically
 	-- create: () -> () -> () | void,
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	-- ROBLOX deviation END
 	inputs: Array<unknown> | void | nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]]
 ): ()
 	nextHook()
-	table.insert(
-		hookLog,
-		{ primitive = "LayoutEffect", stackError = Error.new(), value = create }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "LayoutEffect", stackError = Error.new(), value = create }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 end
 local function useEffect(
 	-- ROBLOX deviation START: Luau needs union type packs for this type to translate idiomatically
 	-- create: () -> () -> () | void,
-	create: (() -> ()) | (() -> (() -> ())),
+	create: (() -> ()) | (() -> () -> ()),
 	-- ROBLOX deviation END
 	inputs: Array<unknown> | void | nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]]
 ): ()
 	nextHook()
-	table.insert(
-		hookLog,
-		{ primitive = "Effect", stackError = Error.new(), value = create }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "Effect", stackError = Error.new(), value = create }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 end
 local function useImperativeHandle<T>(
 	ref: {
@@ -368,10 +327,7 @@ local function useImperativeHandle<T>(
 	if ref ~= nil and typeof(ref) == "table" then
 		instance = ref.current
 	end
-	table.insert(
-		hookLog,
-		{ primitive = "ImperativeHandle", stackError = Error.new(), value = instance }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "ImperativeHandle", stackError = Error.new(), value = instance }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 end
 -- ROBLOX deviation START: add generic params
 -- local function useDebugValue(value: any, formatterFn: ((value: any) -> any)?)
@@ -424,14 +380,8 @@ local function useMemo<T...>(nextCreate: () -> T..., inputs: Array<any> | nil): 
 end
 local function useMutableSource<Source, Snapshot>(
 	source: MutableSource<Source>,
-	getSnapshot: MutableSourceGetSnapshotFn<
-		Source,
-		Snapshot
-	>,
-	subscribe: MutableSourceSubscribeFn<
-		Source,
-		Snapshot
-	>
+	getSnapshot: MutableSourceGetSnapshotFn<Source, Snapshot>,
+	subscribe: MutableSourceSubscribeFn<Source, Snapshot>
 ): Snapshot
 	-- useMutableSource() composes multiple hooks internally.
 	-- Advance the current hook index the same number of times
@@ -441,10 +391,7 @@ local function useMutableSource<Source, Snapshot>(
 	nextHook() -- Effect
 	nextHook() -- Effect
 	local value = getSnapshot(source._source)
-	table.insert(
-		hookLog,
-		{ primitive = "MutableSource", stackError = Error.new(), value = value }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "MutableSource", stackError = Error.new(), value = value }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 	return value
 end
 -- ROBLOX deviation START: enable these once they are fully enabled in the Dispatcher type and in ReactFiberHooks' myriad dispatchers
@@ -501,10 +448,7 @@ local function useOpaqueIdentifier(): OpaqueIDType | void
 		-- ROBLOX deviation END
 		value = nil
 	end
-	table.insert(
-		hookLog,
-		{ primitive = "OpaqueIdentifier", stackError = Error.new(), value = value }
-	) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
+	table.insert(hookLog, { primitive = "OpaqueIdentifier", stackError = Error.new(), value = value }) --[[ ROBLOX CHECK: check if 'hookLog' is an Array ]]
 	return value
 end
 -- ROBLOX deviation START: predefined variable
@@ -716,17 +660,11 @@ local function findPrimitiveIndex(hookStack, hook)
 			-- If the next two frames are functions called `useX` then we assume that they're part of the
 			-- wrappers that the React packager or other packages adds around the dispatcher.
 			-- ROBLOX NOTE: 1-indexed so drop -1
-			if
-				i < #hookStack
-				and isReactWrapper(hookStack[i].functionName, hook.primitive)
-			then
+			if i < #hookStack and isReactWrapper(hookStack[i].functionName, hook.primitive) then
 				i += 1
 			end
 			-- ROBLOX NOTE: 1-indexed so drop -1
-			if
-				i < #hookStack
-				and isReactWrapper(hookStack[i].functionName, hook.primitive)
-			then
+			if i < #hookStack and isReactWrapper(hookStack[i].functionName, hook.primitive) then
 				i += 1
 			end
 			return i
@@ -909,8 +847,7 @@ local function buildTree(rootStack, readHookLog: Array<any>): HooksTree
 				end
 				-- Pop back the stack as many steps as were not common.
 				for j = #prevStack - 1, commonSteps + 1, -1 do
-					levelChildren =
-						table.remove(stackOfChildren :: Array<any>) :: Array<any>
+					levelChildren = table.remove(stackOfChildren :: Array<any>) :: Array<any>
 				end
 			end
 
@@ -944,9 +881,7 @@ local function buildTree(rootStack, readHookLog: Array<any>): HooksTree
 		-- For now, the "id" of stateful hooks is just the stateful hook index.
 		-- Custom hooks have no ids, nor do non-stateful native hooks (e.g. Context, DebugValue).
 		-- ROBLOX FIXME Luau: Luau doesn't infer number | nil like it should
-		local id = if primitive == "Context" or primitive == "DebugValue"
-			then nil
-			else POSTFIX_INCREMENT()
+		local id = if primitive == "Context" or primitive == "DebugValue" then nil else POSTFIX_INCREMENT()
 		-- For the time being, only State and Reducer hooks support runtime overrides.
 		local isStateEditable = primitive == "Reducer" or primitive == "State"
 
@@ -1198,9 +1133,7 @@ local function inspectHooksOfFiber(fiber: Fiber, currentDispatcher: CurrentDispa
 		and fiber.tag ~= ForwardRef
 		and fiber.tag ~= Block
 	then
-		error(
-			Error.new("Unknown Fiber. Needs to be a function component to inspect hooks.")
-		)
+		error(Error.new("Unknown Fiber. Needs to be a function component to inspect hooks."))
 	end -- Warm up the cache so that it doesn't consume the currentHook.
 	getPrimitiveStackCache()
 	local type_ = fiber.type

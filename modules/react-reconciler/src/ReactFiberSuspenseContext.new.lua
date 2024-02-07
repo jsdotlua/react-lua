@@ -52,20 +52,14 @@ exports.InvisibleParentSuspenseContext = InvisibleParentSuspenseContext
 local ForceSuspenseFallback: ShallowSuspenseContext = 0b10
 exports.ForceSuspenseFallback = ForceSuspenseFallback
 
-local suspenseStackCursor: StackCursor<SuspenseContext> =
-	createCursor(DefaultSuspenseContext)
+local suspenseStackCursor: StackCursor<SuspenseContext> = createCursor(DefaultSuspenseContext)
 exports.suspenseStackCursor = suspenseStackCursor
 
-function exports.hasSuspenseContext(
-	parentContext: SuspenseContext,
-	flag: SuspenseContext
-): boolean
+function exports.hasSuspenseContext(parentContext: SuspenseContext, flag: SuspenseContext): boolean
 	return bit32.band(parentContext, flag) ~= 0
 end
 
-function exports.setDefaultShallowSuspenseContext(
-	parentContext: SuspenseContext
-): SuspenseContext
+function exports.setDefaultShallowSuspenseContext(parentContext: SuspenseContext): SuspenseContext
 	return bit32.band(parentContext, SubtreeSuspenseContextMask)
 end
 
@@ -73,10 +67,7 @@ function exports.setShallowSuspenseContext(
 	parentContext: SuspenseContext,
 	shallowContext: ShallowSuspenseContext
 ): SuspenseContext
-	return bit32.bor(
-		bit32.band(parentContext, SubtreeSuspenseContextMask),
-		shallowContext
-	)
+	return bit32.bor(bit32.band(parentContext, SubtreeSuspenseContextMask), shallowContext)
 end
 
 function exports.addSubtreeSuspenseContext(

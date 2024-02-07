@@ -145,8 +145,7 @@ local currentDebugFiberInDEV = ReactCurrentFiber.current
 local resetCurrentDebugFiberInDEV = ReactCurrentFiber.resetCurrentFiber
 local setCurrentDebugFiberInDEV = ReactCurrentFiber.setCurrentFiber
 local onCommitUnmount = require("./ReactFiberDevToolsHook.new.lua").onCommitUnmount
-local resolveDefaultProps =
-	require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
+local resolveDefaultProps = require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
 local ReactProfilerTimer = require("./ReactProfilerTimer.new.lua")
 local startLayoutEffectTimer = ReactProfilerTimer.startLayoutEffectTimer
 local recordPassiveEffectDuration = ReactProfilerTimer.recordPassiveEffectDuration
@@ -203,21 +202,12 @@ end
 
 -- deviation: stub to allow dependency injection that breaks circular dependency
 local function schedulePassiveEffectCallback(): ()
-	console.warn(
-		"ReactFiberCommitWork: schedulePassiveEffectCallback causes a dependency cycle\n"
-			.. debug.traceback()
-	)
+	console.warn("ReactFiberCommitWork: schedulePassiveEffectCallback causes a dependency cycle\n" .. debug.traceback())
 end
 
 -- deviation: stub to allow dependency injection that breaks circular dependency
-local function captureCommitPhaseError(
-	rootFiber: Fiber,
-	sourceFiber: Fiber | nil,
-	error_: any?
-): ()
-	console.warn(
-		"ReactFiberCommitWork: captureCommitPhaseError causes a dependency cycle"
-	)
+local function captureCommitPhaseError(rootFiber: Fiber, sourceFiber: Fiber | nil, error_: any?): ()
+	console.warn("ReactFiberCommitWork: captureCommitPhaseError causes a dependency cycle")
 	error(error_)
 end
 
@@ -230,8 +220,7 @@ local HookPassive = ReactHookEffectTags.Passive
 local didWarnAboutReassigningPropsRef
 local didWarnAboutReassigningProps = function()
 	if not didWarnAboutReassigningPropsRef then
-		didWarnAboutReassigningPropsRef =
-			require("./ReactFiberBeginWork.new.lua").didWarnAboutReassigningProps
+		didWarnAboutReassigningPropsRef = require("./ReactFiberBeginWork.new.lua").didWarnAboutReassigningProps
 	end
 	return didWarnAboutReassigningPropsRef
 end
@@ -256,11 +245,7 @@ local nearestProfilerOnStack: Fiber | nil = nil
 local function callComponentWillUnmountWithTimer(current, instance)
 	instance.props = current.memoizedProps
 	instance.state = current.memoizedState
-	if
-		enableProfilerTimer
-		and enableProfilerCommitHooks
-		and bit32.band(current.mode, ProfileMode) ~= 0
-	then
+	if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(current.mode, ProfileMode) ~= 0 then
 		-- ROBLOX performance? we could hoist start...Timer() out and eliminate the anon function, but then the timer would incldue the pcall overhead
 		local ok, exception = xpcall(function()
 			startLayoutEffectTimer()
@@ -280,14 +265,9 @@ local function callComponentWillUnmountWithTimer(current, instance)
 end
 
 -- Capture errors so they don't interrupt unmounting.
-function safelyCallComponentWillUnmount(
-	current: Fiber,
-	instance: any,
-	nearestMountedAncestor
-): ()
+function safelyCallComponentWillUnmount(current: Fiber, instance: any, nearestMountedAncestor): ()
 	-- ROBLOX performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
-	local ok, error_ =
-		xpcall(callComponentWillUnmountWithTimer, describeError, current, instance)
+	local ok, error_ = xpcall(callComponentWillUnmountWithTimer, describeError, current, instance)
 
 	if not ok then
 		captureCommitPhaseError(current, nearestMountedAncestor, error_)
@@ -310,11 +290,7 @@ local function safelyDetachRef(current: Fiber, nearestMountedAncestor: Fiber): (
 	end
 end
 
-local function safelyCallDestroy(
-	current: Fiber,
-	nearestMountedAncestor: Fiber | nil,
-	destroy: () -> ()
-): ()
+local function safelyCallDestroy(current: Fiber, nearestMountedAncestor: Fiber | nil, destroy: () -> ()): ()
 	-- ROBLOX performance: eliminate the __DEV__ and invokeGuardedCallback, like React 18 has done
 	local ok, error_ = xpcall(destroy, describeError)
 	if not ok then
@@ -322,10 +298,7 @@ local function safelyCallDestroy(
 	end
 end
 
-local function commitBeforeMutationLifeCycles(
-	current: Fiber | nil,
-	finishedWork: Fiber
-): ()
+local function commitBeforeMutationLifeCycles(current: Fiber | nil, finishedWork: Fiber): ()
 	if
 		finishedWork.tag == FunctionComponent
 		or finishedWork.tag == ForwardRef
@@ -343,10 +316,7 @@ local function commitBeforeMutationLifeCycles(
 				-- but instead we rely on them being set during last render.
 				-- TODO: revisit this when we implement resuming.
 				if __DEV__ then
-					if
-						finishedWork.type == finishedWork.elementType
-						and not didWarnAboutReassigningProps
-					then
+					if finishedWork.type == finishedWork.elementType and not didWarnAboutReassigningProps then
 						if instance.props ~= finishedWork.memoizedProps then
 							console.error(
 								"Expected %s props to match memoized props before "
@@ -415,11 +385,7 @@ local function commitBeforeMutationLifeCycles(
 	)
 end
 
-local function commitHookEffectListUnmount(
-	flags: HookFlags,
-	finishedWork: Fiber,
-	nearestMountedAncestor: Fiber?
-)
+local function commitHookEffectListUnmount(flags: HookFlags, finishedWork: Fiber, nearestMountedAncestor: Fiber?)
 	local updateQueue: FunctionComponentUpdateQueue | nil = finishedWork.updateQueue
 	local lastEffect
 	if updateQueue ~= nil then
@@ -444,8 +410,7 @@ local function commitHookEffectListUnmount(
 end
 
 local function commitHookEffectListMount(flags: HookFlags, finishedWork: Fiber)
-	local updateQueue: FunctionComponentUpdateQueue | nil =
-		finishedWork.updateQueue :: any
+	local updateQueue: FunctionComponentUpdateQueue | nil = finishedWork.updateQueue :: any
 	local lastEffect = if updateQueue ~= nil then updateQueue.lastEffect else nil
 	if lastEffect ~= nil then
 		local firstEffect = lastEffect.next
@@ -487,8 +452,7 @@ function commitProfilerPassiveEffect(finishedRoot: FiberRoot, finishedWork: Fibe
 	if enableProfilerTimer and enableProfilerCommitHooks then
 		if finishedWork.tag == Profiler then
 			local passiveEffectDuration = finishedWork.stateNode.passiveEffectDuration
-			local id, onPostCommit =
-				finishedWork.memoizedProps.id, finishedWork.memoizedProps.onPostCommit
+			local id, onPostCommit = finishedWork.memoizedProps.id, finishedWork.memoizedProps.onPostCommit
 
 			-- This value will still reflect the previous commit phase.
 			-- It does not get reset until the start of the next commit phase.
@@ -592,20 +556,10 @@ local function recursivelyCommitLayoutEffects(
 				if __DEV__ then
 					local prevCurrentFiberInDEV = currentDebugFiberInDEV
 					setCurrentDebugFiberInDEV(finishedWork)
-					invokeGuardedCallback(
-						nil,
-						commitLayoutEffectsForProfiler,
-						nil,
-						finishedWork,
-						finishedRoot
-					)
+					invokeGuardedCallback(nil, commitLayoutEffectsForProfiler, nil, finishedWork, finishedRoot)
 					if hasCaughtError() then
 						local error_ = clearCaughtError()
-						captureCommitPhaseError(
-							finishedWork,
-							finishedWork.return_,
-							error_
-						)
+						captureCommitPhaseError(finishedWork, finishedWork.return_, error_)
 					end
 					if prevCurrentFiberInDEV ~= nil then
 						setCurrentDebugFiberInDEV(prevCurrentFiberInDEV)
@@ -614,18 +568,9 @@ local function recursivelyCommitLayoutEffects(
 					end
 				else
 					-- ROBLOX TODO? pass in captureCommitPhaseError?
-					local ok, error_ = xpcall(
-						commitLayoutEffectsForProfiler,
-						describeError,
-						finishedWork,
-						finishedRoot
-					)
+					local ok, error_ = xpcall(commitLayoutEffectsForProfiler, describeError, finishedWork, finishedRoot)
 					if not ok then
-						captureCommitPhaseError(
-							finishedWork,
-							finishedWork.return_,
-							error_
-						)
+						captureCommitPhaseError(finishedWork, finishedWork.return_, error_)
 					end
 				end
 			end
@@ -726,12 +671,7 @@ local function recursivelyCommitLayoutEffects(
 
 		local primaryFlags = bit32.band(flags, bit32.bor(Update, Callback))
 		if primaryFlags ~= NoFlags then
-			if
-				tag == FunctionComponent
-				or tag == ForwardRef
-				or tag == SimpleMemoComponent
-				or tag == Block
-			then
+			if tag == FunctionComponent or tag == ForwardRef or tag == SimpleMemoComponent or tag == Block then
 				if
 					enableProfilerTimer
 					and enableProfilerCommitHooks
@@ -740,10 +680,7 @@ local function recursivelyCommitLayoutEffects(
 					-- ROBLOX try
 					local ok, error_ = xpcall(function()
 						startLayoutEffectTimer()
-						commitHookEffectListMount(
-							bit32.bor(HookLayout, HookHasEffect),
-							finishedWork
-						)
+						commitHookEffectListMount(bit32.bor(HookLayout, HookHasEffect), finishedWork)
 					end, describeError)
 					-- ROBLOX finally
 					recordLayoutEffectDuration(finishedWork)
@@ -751,10 +688,7 @@ local function recursivelyCommitLayoutEffects(
 						error(error_)
 					end
 				else
-					commitHookEffectListMount(
-						bit32.bor(HookLayout, HookHasEffect),
-						finishedWork
-					)
+					commitHookEffectListMount(bit32.bor(HookLayout, HookHasEffect), finishedWork)
 				end
 
 				if bit32.band(finishedWork.subtreeFlags, PassiveMask) ~= NoFlags then
@@ -808,8 +742,7 @@ function commitLayoutEffectsForProfiler(finishedWork: Fiber, finishedRoot: Fiber
 		local flags = finishedWork.flags
 		local current = finishedWork.alternate
 
-		local onCommit, onRender =
-			finishedWork.memoizedProps.onCommit, finishedWork.memoizedProps.onRender
+		local onCommit, onRender = finishedWork.memoizedProps.onCommit, finishedWork.memoizedProps.onRender
 		local effectDuration = finishedWork.stateNode.effectDuration
 
 		local commitTime = getCommitTime()
@@ -880,10 +813,7 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber)
 			-- but instead we rely on them being set during last render.
 			-- TODO: revisit this when we implement resuming.
 			if __DEV__ then
-				if
-					finishedWork.type == finishedWork.elementType
-					and not didWarnAboutReassigningProps
-				then
+				if finishedWork.type == finishedWork.elementType and not didWarnAboutReassigningProps then
 					if instance.props ~= finishedWork.memoizedProps then
 						console.error(
 							"Expected %s props to match memoized props before "
@@ -926,18 +856,14 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber)
 				instance:componentDidMount()
 			end
 		else
-			local prevProps = finishedWork.elementType == finishedWork.type
-					and current.memoizedProps
+			local prevProps = finishedWork.elementType == finishedWork.type and current.memoizedProps
 				or resolveDefaultProps(finishedWork.type, current.memoizedProps)
 			local prevState = current.memoizedState
 			-- We could update instance props and state here,
 			-- but instead we rely on them being set during last render.
 			-- TODO: revisit this when we implement resuming.
 			if __DEV__ then
-				if
-					finishedWork.type == finishedWork.elementType
-					and not didWarnAboutReassigningProps
-				then
+				if finishedWork.type == finishedWork.elementType and not didWarnAboutReassigningProps then
 					if instance.props ~= finishedWork.memoizedProps then
 						console.error(
 							"Expected %s props to match memoized props before "
@@ -968,11 +894,7 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber)
 				local ok, result = xpcall(function()
 					startLayoutEffectTimer()
 					-- deviation: Call with ":" so that the method receives self
-					instance:componentDidUpdate(
-						prevProps,
-						prevState,
-						instance.__reactInternalSnapshotBeforeUpdate
-					)
+					instance:componentDidUpdate(prevProps, prevState, instance.__reactInternalSnapshotBeforeUpdate)
 				end, describeError)
 				-- finally
 				recordLayoutEffectDuration(finishedWork)
@@ -981,11 +903,7 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber)
 				end
 			else
 				-- deviation: Call with ":" so that the method receives self
-				instance:componentDidUpdate(
-					prevProps,
-					prevState,
-					instance.__reactInternalSnapshotBeforeUpdate
-				)
+				instance:componentDidUpdate(prevProps, prevState, instance.__reactInternalSnapshotBeforeUpdate)
 			end
 		end
 	end
@@ -995,10 +913,7 @@ function commitLayoutEffectsForClassComponent(finishedWork: Fiber)
 	local updateQueue: UpdateQueue<any> | nil = finishedWork.updateQueue
 	if updateQueue ~= nil then
 		if __DEV__ then
-			if
-				finishedWork.type == finishedWork.elementType
-				and not didWarnAboutReassigningProps
-			then
+			if finishedWork.type == finishedWork.elementType and not didWarnAboutReassigningProps then
 				if instance.props ~= finishedWork.memoizedProps then
 					console.error(
 						"Expected %s props to match memoized props before "
@@ -1196,18 +1111,10 @@ function commitUnmount(
 								and bit32.band(current.mode, ProfileMode) ~= 0
 							then
 								startLayoutEffectTimer()
-								safelyCallDestroy(
-									current,
-									nearestMountedAncestor,
-									effect.destroy
-								)
+								safelyCallDestroy(current, nearestMountedAncestor, effect.destroy)
 								recordLayoutEffectDuration(current)
 							else
-								safelyCallDestroy(
-									current,
-									nearestMountedAncestor,
-									effect.destroy
-								)
+								safelyCallDestroy(current, nearestMountedAncestor, effect.destroy)
 							end
 						end
 					end
@@ -1231,12 +1138,7 @@ function commitUnmount(
 		-- We are also not using this parent because
 		-- the portal will get pushed immediately.
 		if supportsMutation then
-			unmountHostComponents(
-				finishedRoot,
-				current,
-				nearestMountedAncestor,
-				renderPriorityLevel
-			)
+			unmountHostComponents(finishedRoot, current, nearestMountedAncestor, renderPriorityLevel)
 		elseif supportsPersistence then
 			unimplemented("emptyPortalContainer")
 			-- emptyPortalContainer(current)
@@ -1390,8 +1292,7 @@ local function getHostParentFiber(fiber: Fiber): Fiber
 	-- ROBLOX deviation START: use React 18 approach, which Luau understands better than invariant
 	error(
 		Error.new(
-			"Expected to find a host parent. This error is likely caused by a bug "
-				.. "in React. Please file an issue."
+			"Expected to find a host parent. This error is likely caused by a bug " .. "in React. Please file an issue."
 		)
 	)
 	-- ROBLOX deviation END
@@ -1422,11 +1323,7 @@ function getHostSibling(fiber: Fiber): Instance?
 		end
 		(node.sibling :: Fiber).return_ = node.return_ :: Fiber
 		node = node.sibling :: Fiber
-		while
-			node.tag ~= HostComponent
-			and node.tag ~= HostText
-			and node.tag ~= DehydratedFragment
-		do
+		while node.tag ~= HostComponent and node.tag ~= HostText and node.tag ~= DehydratedFragment do
 			-- If it is not host node and, we might have a host node inside it.
 			-- Try to search down until we find one.
 			if bit32.band(node.flags, Placement) ~= 0 then
@@ -1485,8 +1382,7 @@ local function commitPlacement(finishedWork: Fiber)
 		-- eslint-disable-next-line-no-fallthrough
 		invariant(
 			false,
-			"Invalid host parent fiber. This error is likely caused by a bug "
-				.. "in React. Please file an issue."
+			"Invalid host parent fiber. This error is likely caused by a bug " .. "in React. Please file an issue."
 		)
 	end
 	if bit32.band(parentFiber.flags, ContentReset) ~= 0 then
@@ -1506,11 +1402,7 @@ local function commitPlacement(finishedWork: Fiber)
 	end
 end
 
-function insertOrAppendPlacementNodeIntoContainer(
-	node: Fiber,
-	before: Instance?,
-	parent: Container
-)
+function insertOrAppendPlacementNodeIntoContainer(node: Fiber, before: Instance?, parent: Container)
 	local tag = node.tag
 	local isHost = tag == HostComponent or tag == HostText
 	-- ROBLOX performance: avoid always-false compare for Roblox renderer in hot path
@@ -1626,12 +1518,7 @@ function unmountHostComponents(
 		end
 
 		if node.tag == HostComponent or node.tag == HostText then
-			commitNestedUnmounts(
-				finishedRoot,
-				node,
-				nearestMountedAncestor,
-				renderPriorityLevel
-			)
+			commitNestedUnmounts(finishedRoot, node, nearestMountedAncestor, renderPriorityLevel)
 			-- After all the children have unmounted, it is now safe to remove the
 			-- node from the tree.
 			if currentParentIsContainer then
@@ -1754,12 +1641,7 @@ local function commitDeletion(
 	-- if supportsMutation then
 	-- Recursively delete all host nodes from the parent.
 	-- Detach refs and call componentWillUnmount() on the whole subtree.
-	unmountHostComponents(
-		finishedRoot,
-		current,
-		nearestMountedAncestor,
-		renderPriorityLevel
-	)
+	unmountHostComponents(finishedRoot, current, nearestMountedAncestor, renderPriorityLevel)
 	-- else
 	--   -- Detach refs and call componentWillUnmount() on the whole subtree.
 	--   commitNestedUnmounts(
@@ -1859,19 +1741,11 @@ local function commitWork(current: Fiber | nil, finishedWork: Fiber)
 		-- This prevents sibling component effects from interfering with each other,
 		-- e.g. a destroy function in one component should never override a ref set
 		-- by a create function in another component during the same commit.
-		if
-			enableProfilerTimer
-			and enableProfilerCommitHooks
-			and bit32.band(finishedWork.mode, ProfileMode) ~= 0
-		then
+		if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(finishedWork.mode, ProfileMode) ~= 0 then
 			-- ROBLOX try
 			local ok, result = xpcall(function()
 				startLayoutEffectTimer()
-				commitHookEffectListUnmount(
-					bit32.bor(HookLayout, HookHasEffect),
-					finishedWork,
-					finishedWork.return_
-				)
+				commitHookEffectListUnmount(bit32.bor(HookLayout, HookHasEffect), finishedWork, finishedWork.return_)
 			end, describeError)
 			-- ROBLOX finally
 			recordLayoutEffectDuration(finishedWork)
@@ -1879,11 +1753,7 @@ local function commitWork(current: Fiber | nil, finishedWork: Fiber)
 				error(result)
 			end
 		else
-			commitHookEffectListUnmount(
-				bit32.bor(HookLayout, HookHasEffect),
-				finishedWork,
-				finishedWork.return_
-			)
+			commitHookEffectListUnmount(bit32.bor(HookLayout, HookHasEffect), finishedWork, finishedWork.return_)
 		end
 		return
 	elseif finishedWork.tag == ClassComponent then
@@ -1907,14 +1777,7 @@ local function commitWork(current: Fiber | nil, finishedWork: Fiber)
 			local updatePayload: nil | UpdatePayload = finishedWork.updateQueue :: any
 			finishedWork.updateQueue = nil
 			if updatePayload ~= nil then
-				commitUpdate(
-					instance,
-					updatePayload,
-					type,
-					oldProps,
-					newProps,
-					finishedWork
-				)
+				commitUpdate(instance, updatePayload, type, oldProps, newProps, finishedWork)
 			end
 		end
 		return
@@ -1975,10 +1838,7 @@ local function commitWork(current: Fiber | nil, finishedWork: Fiber)
 	--   return
 	-- end
 	-- break
-	elseif
-		finishedWork.tag == OffscreenComponent
-		or finishedWork.tag == LegacyHiddenComponent
-	then
+	elseif finishedWork.tag == OffscreenComponent or finishedWork.tag == LegacyHiddenComponent then
 		local newState: OffscreenState | nil = finishedWork.memoizedState
 		local isHidden = newState ~= nil
 		hideOrUnhideAllChildren(finishedWork, isHidden)
@@ -2021,10 +1881,7 @@ function commitSuspenseComponent(finishedWork: Fiber)
 			end
 		elseif __DEV__ then
 			if suspenseCallback ~= nil then
-				console.error(
-					"Unexpected type for suspenseCallback: %s",
-					tostring(suspenseCallback)
-				)
+				console.error("Unexpected type for suspenseCallback: %s", tostring(suspenseCallback))
 			end
 		end
 	end
@@ -2122,43 +1979,24 @@ local function commitPassiveUnmount(finishedWork: Fiber): ()
 		or finishedWork.tag == SimpleMemoComponent
 		or finishedWork.tag == Block
 	then
-		if
-			enableProfilerTimer
-			and enableProfilerCommitHooks
-			and bit32.band(finishedWork.mode, ProfileMode) ~= 0
-		then
+		if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(finishedWork.mode, ProfileMode) ~= 0 then
 			startPassiveEffectTimer()
-			commitHookEffectListUnmount(
-				bit32.bor(HookPassive, HookHasEffect),
-				finishedWork,
-				finishedWork.return_
-			)
+			commitHookEffectListUnmount(bit32.bor(HookPassive, HookHasEffect), finishedWork, finishedWork.return_)
 			recordPassiveEffectDuration(finishedWork)
 		else
-			commitHookEffectListUnmount(
-				bit32.bor(HookPassive, HookHasEffect),
-				finishedWork,
-				finishedWork.return_
-			)
+			commitHookEffectListUnmount(bit32.bor(HookPassive, HookHasEffect), finishedWork, finishedWork.return_)
 		end
 	end
 end
 
-local function commitPassiveUnmountInsideDeletedTree(
-	current: Fiber,
-	nearestMountedAncestor: Fiber | nil
-): ()
+local function commitPassiveUnmountInsideDeletedTree(current: Fiber, nearestMountedAncestor: Fiber | nil): ()
 	if
 		current.tag == FunctionComponent
 		or current.tag == ForwardRef
 		or current.tag == SimpleMemoComponent
 		or current.tag == Block
 	then
-		if
-			enableProfilerTimer
-			and enableProfilerCommitHooks
-			and bit32.band(current.mode, ProfileMode) ~= 0
-		then
+		if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(current.mode, ProfileMode) ~= 0 then
 			startPassiveEffectTimer()
 			commitHookEffectListUnmount(HookPassive, current, nearestMountedAncestor)
 			recordPassiveEffectDuration(current)
@@ -2175,19 +2013,11 @@ local function commitPassiveMount(finishedRoot: FiberRoot, finishedWork: Fiber):
 		or finishedWork.tag == SimpleMemoComponent
 		or finishedWork.tag == Block
 	then
-		if
-			enableProfilerTimer
-			and enableProfilerCommitHooks
-			and bit32.band(finishedWork.mode, ProfileMode) ~= 0
-		then
+		if enableProfilerTimer and enableProfilerCommitHooks and bit32.band(finishedWork.mode, ProfileMode) ~= 0 then
 			startPassiveEffectTimer()
 			-- ROBLOX try
-			local ok, error_ = xpcall(
-				commitHookEffectListMount,
-				describeError,
-				bit32.bor(HookPassive, HookHasEffect),
-				finishedWork
-			)
+			local ok, error_ =
+				xpcall(commitHookEffectListMount, describeError, bit32.bor(HookPassive, HookHasEffect), finishedWork)
 			-- ROBLOX finally
 			recordPassiveEffectDuration(finishedWork)
 			if not ok then
@@ -2209,13 +2039,7 @@ function invokeLayoutEffectMountInDEV(fiber: Fiber): ()
 			or fiber.tag == SimpleMemoComponent
 			or fiber.tag == Block
 		then
-			invokeGuardedCallback(
-				nil,
-				commitHookEffectListMount,
-				nil,
-				bit32.bor(HookLayout, HookHasEffect),
-				fiber
-			)
+			invokeGuardedCallback(nil, commitHookEffectListMount, nil, bit32.bor(HookLayout, HookHasEffect), fiber)
 			if hasCaughtError() then
 				local mountError = clearCaughtError()
 				captureCommitPhaseError(fiber, fiber.return_, mountError)
@@ -2241,13 +2065,7 @@ function invokePassiveEffectMountInDEV(fiber: Fiber): ()
 			or fiber.tag == SimpleMemoComponent
 			or fiber.tag == Block
 		then
-			invokeGuardedCallback(
-				nil,
-				commitHookEffectListMount,
-				nil,
-				bit32.bor(HookPassive, HookHasEffect),
-				fiber
-			)
+			invokeGuardedCallback(nil, commitHookEffectListMount, nil, bit32.bor(HookPassive, HookHasEffect), fiber)
 			if hasCaughtError() then
 				local mountError = clearCaughtError()
 				captureCommitPhaseError(fiber, fiber.return_, mountError)

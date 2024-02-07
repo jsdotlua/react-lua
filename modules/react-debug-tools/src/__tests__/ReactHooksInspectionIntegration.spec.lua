@@ -42,11 +42,7 @@ describe("ReactHooksInspectionIntegration", function()
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		React = require("@pkg/@jsdotlua/react")
 		-- ROBLOX deviation END
-<<<<<<< HEAD
 		act = ReactTestRenderer.unstable_concurrentAct
-=======
-		act = require_("jest-react").act
->>>>>>> upstream-apply
 		-- ROBLOX deviation START: fix requires
 		-- ReactDebugTools = require_("react-debug-tools")
 		ReactDebugTools = require("@pkg/@jsdotlua/react-debug-tools")
@@ -750,7 +746,6 @@ describe("ReactHooksInspectionIntegration", function()
 	end)
 	it("should support useId hook", function()
 		local function Foo(props)
-<<<<<<< HEAD
 			-- ROBLOX deviation START: not implemented
 			-- local id = React.unstable_useOpaqueIdentifier()
 			local id = nil
@@ -760,14 +755,6 @@ describe("ReactHooksInspectionIntegration", function()
 				-- ROBLOX deviation START: useState returns 2 values
 				-- end, {})[1]
 			end, {})
-=======
-			local id = React.useId()
-			local state = React.useState("hello")[1]
-			-- ROBLOX deviation START: use Frame instead
-			-- ROBLOX deviation START: use Frame instead
-			-- -- return React.createElement("div", { id = id }, state)
-				return React.createElement("Frame", { id = id }, state)
->>>>>>> upstream-apply
 			-- ROBLOX deviation END
 			-- ROBLOX deviation START: use Frame instead
 			-- return React.createElement("div", { id = id }, state)
@@ -792,7 +779,6 @@ describe("ReactHooksInspectionIntegration", function()
 		].isStateEditable).toEqual(false)
 		expect(tree[
 			1 --[[ ROBLOX adaptation: added 1 to array index ]]
-<<<<<<< HEAD
 		].name).toEqual("OpaqueIdentifier")
 		-- ROBLOX deviation START: use String.startsWith
 		-- expect((tostring(tree[
@@ -807,22 +793,11 @@ describe("ReactHooksInspectionIntegration", function()
 			-- id = 1,
 			id = 2,
 			-- ROBLOX deviation END
-=======
-		].name).toEqual("Id")
-		expect(String(tree[
-			1 --[[ ROBLOX adaptation: added 1 to array index ]]
-		].value):startsWith(":r")).toBe(true)
-		expect(tree[
-			2 --[[ ROBLOX adaptation: added 1 to array index ]]
-		]).toEqual({
-			id = 1,
->>>>>>> upstream-apply
 			isStateEditable = true,
 			name = "State",
 			value = "hello",
 			subHooks = {},
 		})
-<<<<<<< HEAD
 	end) -- @gate experimental
 	-- ROBLOX deviation START: unstable_useOpaqueIdentifier not implemented
 	-- it("should support composite useOpaqueIdentifier hook in concurrent mode", function()
@@ -887,9 +862,6 @@ describe("ReactHooksInspectionIntegration", function()
 			})
 		end
 	)
-=======
-	end)
->>>>>>> upstream-apply
 	describe("useDebugValue", function()
 		it("should support inspectable values for multiple custom hooks", function()
 			local function useLabeledValue(label)
@@ -1409,7 +1381,6 @@ describe("ReactHooksInspectionIntegration", function()
 				subHooks = {},
 			},
 		})
-<<<<<<< HEAD
 	end)
 	-- ROBLOX deviation START: no experimental features
 	-- if Boolean.toJSBoolean(__EXPERIMENTAL__) then
@@ -1448,65 +1419,4 @@ describe("ReactHooksInspectionIntegration", function()
 	-- 	end)
 	-- end
 	-- ROBLOX deviation END
-=======
-	end) -- @gate enableUseMutableSource
-	it("should support composite useMutableSource hook", function()
-		local createMutableSource = Boolean.toJSBoolean(React.createMutableSource) and React.createMutableSource
-			or React.unstable_createMutableSource
-		local useMutableSource = Boolean.toJSBoolean(React.useMutableSource) and React.useMutableSource
-			or React.unstable_useMutableSource
-		local mutableSource = createMutableSource({}, function()
-			return 1
-		end)
-		local function Foo(props)
-			useMutableSource(mutableSource, function()
-				return "snapshot"
-			end, function() end)
-			React.useMemo(function()
-				return "memo"
-			end, {})
-			return React.createElement("div", nil)
-		end
-		local renderer = ReactTestRenderer.create(React.createElement(Foo, nil))
-		local childFiber = renderer.root:findByType(Foo):_currentFiber()
-		local tree = ReactDebugTools:inspectHooksOfFiber(childFiber)
-		expect(tree).toEqual({
-			{
-				id = 0,
-				isStateEditable = false,
-				name = "MutableSource",
-				value = "snapshot",
-				subHooks = {},
-			},
-			{ id = 1, isStateEditable = false, name = "Memo", value = "memo", subHooks = {} },
-		})
-	end)
-	it("should support composite useSyncExternalStore hook", function()
-		local useSyncExternalStore = React.useSyncExternalStore
-		local function Foo()
-			local value = useSyncExternalStore(function()
-				return function() end
-			end, function()
-				return "snapshot"
-			end)
-			React.useMemo(function()
-				return "memo"
-			end, {})
-			return value
-		end
-		local renderer = ReactTestRenderer.create(React.createElement(Foo, nil))
-		local childFiber = renderer.root:findByType(Foo):_currentFiber()
-		local tree = ReactDebugTools:inspectHooksOfFiber(childFiber)
-		expect(tree).toEqual({
-			{
-				id = 0,
-				isStateEditable = false,
-				name = "SyncExternalStore",
-				value = "snapshot",
-				subHooks = {},
-			},
-			{ id = 1, isStateEditable = false, name = "Memo", value = "memo", subHooks = {} },
-		})
-	end)
->>>>>>> upstream-apply
 end)

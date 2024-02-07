@@ -257,10 +257,7 @@ it("should render one portal", function()
 		React.createElement(
 			"Frame",
 			{},
-			ReactRoblox.createPortal(
-				React.createElement("TextLabel", { Text = "portal" }),
-				portalContainer
-			)
+			ReactRoblox.createPortal(React.createElement("TextLabel", { Text = "portal" }), portalContainer)
 		)
 	)
 	Scheduler.unstable_flushAllWithoutAsserting()
@@ -523,10 +520,7 @@ it("should reconcile portal children", function()
 	local portalContainer = Instance.new("Frame")
 
 	reactRobloxRoot:render(React.createElement("Frame", {}, {
-		ReactRoblox.createPortal(
-			React.createElement("TextLabel", { Text = "portal:1" }),
-			portalContainer
-		),
+		ReactRoblox.createPortal(React.createElement("TextLabel", { Text = "portal:1" }), portalContainer),
 	}))
 
 	Scheduler.unstable_flushAllWithoutAsserting()
@@ -536,10 +530,7 @@ it("should reconcile portal children", function()
 	jestExpect(#parent:GetChildren()[1]:GetChildren()).toBe(0)
 
 	reactRobloxRoot:render(React.createElement("Frame", {}, {
-		ReactRoblox.createPortal(
-			React.createElement("TextLabel", { Text = "portal:2" }),
-			portalContainer
-		),
+		ReactRoblox.createPortal(React.createElement("TextLabel", { Text = "portal:2" }), portalContainer),
 	}))
 
 	Scheduler.unstable_flushAllWithoutAsserting()
@@ -549,10 +540,7 @@ it("should reconcile portal children", function()
 	jestExpect(#parent:GetChildren()[1]:GetChildren()).toBe(0)
 
 	reactRobloxRoot:render(React.createElement("Frame", {}, {
-		ReactRoblox.createPortal(
-			React.createElement("TextLabel", { Text = "portal:3" }),
-			portalContainer
-		),
+		ReactRoblox.createPortal(React.createElement("TextLabel", { Text = "portal:3" }), portalContainer),
 	}))
 
 	Scheduler.unstable_flushAllWithoutAsserting()
@@ -599,9 +587,7 @@ it("should reconcile portal children", function()
 	jestExpect(#parent:GetChildren()).toBe(1)
 	jestExpect(#parent:GetChildren()[1]:GetChildren()).toBe(0)
 
-	reactRobloxRoot:render(
-		React.createElement("Frame", {}, ReactRoblox.createPortal(nil, portalContainer))
-	)
+	reactRobloxRoot:render(React.createElement("Frame", {}, ReactRoblox.createPortal(nil, portalContainer)))
 
 	Scheduler.unstable_flushAllWithoutAsserting()
 	jestExpect(#portalContainer:GetChildren()).toBe(0)

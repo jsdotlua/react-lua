@@ -86,102 +86,93 @@ xdescribe("ProfilingCache", function()
 		_G.__PROFILE__ = nil
 	end)
 
-	it(
-		"should collect data for each root (including ones added or mounted after profiling started)",
-		function()
-			local function Child(props)
-				Scheduler.unstable_advanceTime(props.duration)
-				return nil
+	it("should collect data for each root (including ones added or mounted after profiling started)", function()
+		local function Child(props)
+			Scheduler.unstable_advanceTime(props.duration)
+			return nil
+		end
+
+		local MemoizedChild = React.memo(Child)
+
+		local function Parent(props)
+			Scheduler.unstable_advanceTime(10)
+
+			local count = props.count
+			local children = table.create(count) :: any
+			for index = 0, count - 1 do
+				children[index + 1] = React.createElement(Child, { key = index, duration = index })
 			end
 
-			local MemoizedChild = React.memo(Child)
+			return React.createElement(
+				React.Fragment,
+				nil,
+				children,
+				React.createElement(MemoizedChild, { duration = 1 })
+			)
+		end
 
-			local function Parent(props)
-				Scheduler.unstable_advanceTime(10)
+		local containerA = ReactRoblox.createRoot(Instance.new("Frame"))
+		local containerB = ReactRoblox.createRoot(Instance.new("Frame"))
+		local containerC = ReactRoblox.createRoot(Instance.new("Frame"))
+		act(function()
+			return containerA:render(React.createElement(Parent, { count = 2 }))
+		end)
 
-				local count = props.count
-				local children = table.create(count) :: any
-				for index = 0, count - 1 do
-					children[index + 1] =
-						React.createElement(Child, { key = index, duration = index })
-				end
+		act(function()
+			return containerB:render(React.createElement(Parent, { count = 1 }))
+		end)
+		act(function()
+			return store._profilerStore:startProfiling()
+		end)
+		act(function()
+			return containerA:render(React.createElement(Parent, { count = 3 }))
+		end)
+		act(function()
+			return containerC:render(React.createElement(Parent, { count = 1 }))
+		end)
+		act(function()
+			return containerA:render(React.createElement(Parent, { count = 1 }))
+		end)
+		act(function()
+			return containerB:render(nil)
+		end)
+		act(function()
+			return containerA:render(React.createElement(Parent, { count = 0 }))
+		end)
+		act(function()
+			return store._profilerStore:stopProfiling()
+		end)
 
-				return React.createElement(
-					React.Fragment,
-					nil,
-					children,
-					React.createElement(MemoizedChild, { duration = 1 })
+		local allProfilingDataForRoots = {}
+		local function Validator(rootID, previousProfilingDataForRoot)
+			local profilingDataForRoot = store._profilerStore:getDataForRoot(rootID)
+
+			if previousProfilingDataForRoot ~= nil then
+				jestExpect(profilingDataForRoot).toEqual(previousProfilingDataForRoot)
+			else
+				jestExpect(profilingDataForRoot).toMatchSnapshot(
+					string.format("Data for root %s", tostring(profilingDataForRoot.displayName))
 				)
 			end
-
-			local containerA = ReactRoblox.createRoot(Instance.new("Frame"))
-			local containerB = ReactRoblox.createRoot(Instance.new("Frame"))
-			local containerC = ReactRoblox.createRoot(Instance.new("Frame"))
-			act(function()
-				return containerA:render(React.createElement(Parent, { count = 2 }))
-			end)
-
-			act(function()
-				return containerB:render(React.createElement(Parent, { count = 1 }))
-			end)
-			act(function()
-				return store._profilerStore:startProfiling()
-			end)
-			act(function()
-				return containerA:render(React.createElement(Parent, { count = 3 }))
-			end)
-			act(function()
-				return containerC:render(React.createElement(Parent, { count = 1 }))
-			end)
-			act(function()
-				return containerA:render(React.createElement(Parent, { count = 1 }))
-			end)
-			act(function()
-				return containerB:render(nil)
-			end)
-			act(function()
-				return containerA:render(React.createElement(Parent, { count = 0 }))
-			end)
-			act(function()
-				return store._profilerStore:stopProfiling()
-			end)
-
-			local allProfilingDataForRoots = {}
-			local function Validator(rootID, previousProfilingDataForRoot)
-				local profilingDataForRoot = store._profilerStore:getDataForRoot(rootID)
-
-				if previousProfilingDataForRoot ~= nil then
-					jestExpect(profilingDataForRoot).toEqual(previousProfilingDataForRoot)
-				else
-					jestExpect(profilingDataForRoot).toMatchSnapshot(
-						string.format(
-							"Data for root %s",
-							tostring(profilingDataForRoot.displayName)
-						)
-					)
-				end
-				table.insert(allProfilingDataForRoots, profilingDataForRoot)
-			end
-
-			local profilingData = store._profilerStore:profilingData()
-			local dataForRoots = if profilingData ~= nil
-				then profilingData.dataForRoots
-				else nil
-			jestExpect(dataForRoots).never.toBeNull()
-
-			if dataForRoots ~= nil then
-				dataForRoots:forEach(function(dataForRoot)
-					Validator(dataForRoot.rootID, nil)
-				end)
-			end
-			jestExpect(#allProfilingDataForRoots).toBe(3)
-			utils.exportImportHelper(bridge, store)
-
-			for _, profilingDataForRoot in allProfilingDataForRoots do
-				Validator(profilingDataForRoot.rootID, profilingDataForRoot)
-			end
+			table.insert(allProfilingDataForRoots, profilingDataForRoot)
 		end
-	)
+
+		local profilingData = store._profilerStore:profilingData()
+		local dataForRoots = if profilingData ~= nil then profilingData.dataForRoots else nil
+		jestExpect(dataForRoots).never.toBeNull()
+
+		if dataForRoots ~= nil then
+			dataForRoots:forEach(function(dataForRoot)
+				Validator(dataForRoot.rootID, nil)
+			end)
+		end
+		jestExpect(#allProfilingDataForRoots).toBe(3)
+		utils.exportImportHelper(bridge, store)
+
+		for _, profilingDataForRoot in allProfilingDataForRoots do
+			Validator(profilingDataForRoot.rootID, profilingDataForRoot)
+		end
+	end)
 	it("should collect data for each commit", function()
 		local MemoizedChild, Child
 		local function Parent(props)
@@ -190,8 +181,7 @@ xdescribe("ProfilingCache", function()
 			local count = props.count
 			local children = table.create(count) :: any
 			for index = 0, count - 1 do
-				children[index + 1] =
-					React.createElement(Child, { key = index, duration = index })
+				children[index + 1] = React.createElement(Child, { key = index, duration = index })
 			end
 
 			return React.createElement(
@@ -232,16 +222,13 @@ xdescribe("ProfilingCache", function()
 		end)
 		local allCommitData = {}
 		local function Validator(ref)
-			local commitIndex, previousCommitDetails, rootID =
-				ref.commitIndex, ref.previousCommitDetails, ref.rootID
+			local commitIndex, previousCommitDetails, rootID = ref.commitIndex, ref.previousCommitDetails, ref.rootID
 			local commitData = store._profilerStore:getCommitData(rootID, commitIndex)
 			if previousCommitDetails ~= nil then
 				jestExpect(commitData).toEqual(previousCommitDetails)
 			else
 				table.insert(allCommitData, commitData)
-				jestExpect(commitData).toMatchSnapshot(
-					string.format("CommitDetails commitIndex: %d", commitIndex - 1)
-				)
+				jestExpect(commitData).toMatchSnapshot(string.format("CommitDetails commitIndex: %d", commitIndex - 1))
 			end
 		end
 		local rootID = store:getRoots()[1]
@@ -300,19 +287,13 @@ xdescribe("ProfilingCache", function()
 		end
 		ModernContextConsumer = React.Component:extend("ModernContextConsumer")
 		function ModernContextConsumer:render()
-			return React.createElement(
-				FunctionComponentWithHooks,
-				{ count = self.context }
-			)
+			return React.createElement(FunctionComponentWithHooks, { count = self.context })
 		end
 
 		LegacyContextConsumer = React.Component:extend("LegacyContextConsumer")
 		function LegacyContextConsumer:render()
 			instance = self
-			return React.createElement(
-				FunctionComponentWithHooks,
-				{ count = self.context.count }
-			)
+			return React.createElement(FunctionComponentWithHooks, { count = self.context.count })
 		end
 
 		local container = ReactRoblox.createRoot(Instance.new("Frame"))
@@ -327,14 +308,10 @@ xdescribe("ProfilingCache", function()
 			return (instance :: any):setState({ count = 1 })
 		end)
 		act(function()
-			return container:render(
-				React.createElement(LegacyContextProvider, { foo = 123 })
-			)
+			return container:render(React.createElement(LegacyContextProvider, { foo = 123 }))
 		end)
 		act(function()
-			return container:render(
-				React.createElement(LegacyContextProvider, { bar = "abc" })
-			)
+			return container:render(React.createElement(LegacyContextProvider, { bar = "abc" }))
 		end)
 		act(function()
 			return container:render(React.createElement(LegacyContextProvider, nil))
@@ -344,16 +321,13 @@ xdescribe("ProfilingCache", function()
 		end)
 		local allCommitData = {}
 		local function Validator(ref)
-			local commitIndex, previousCommitDetails, rootID =
-				ref.commitIndex, ref.previousCommitDetails, ref.rootID
+			local commitIndex, previousCommitDetails, rootID = ref.commitIndex, ref.previousCommitDetails, ref.rootID
 			local commitData = store._profilerStore:getCommitData(rootID, commitIndex)
 			if previousCommitDetails ~= nil then
 				jestExpect(commitData).toEqual(previousCommitDetails)
 			else
 				table.insert(allCommitData, commitData)
-				jestExpect(commitData).toMatchSnapshot(
-					string.format("CommitDetails commitIndex: %d", commitIndex - 1)
-				)
+				jestExpect(commitData).toMatchSnapshot(string.format("CommitDetails commitIndex: %d", commitIndex - 1))
 			end
 		end
 		local rootID = store:getRoots()[1]
@@ -423,22 +397,14 @@ xdescribe("ProfilingCache", function()
 		end)
 		act(function()
 			return container:render(
-				React.createElement(
-					Context.Provider,
-					{ value = true },
-					React.createElement(Component, { count = 1 })
-				)
+				React.createElement(Context.Provider, { value = true }, React.createElement(Component, { count = 1 }))
 			)
 		end)
 
 		-- Second render has no changed hooks, only changed props.
 		act(function()
 			return container:render(
-				React.createElement(
-					Context.Provider,
-					{ value = true },
-					React.createElement(Component, { count = 2 })
-				)
+				React.createElement(Context.Provider, { value = true }, React.createElement(Component, { count = 2 }))
 			)
 		end)
 
@@ -456,11 +422,7 @@ xdescribe("ProfilingCache", function()
 		-- Technically, DevTools will miss this "context" change since it only tracks legacy context.
 		act(function()
 			return container:render(
-				React.createElement(
-					Context.Provider,
-					{ value = false },
-					React.createElement(Component, { count = 2 })
-				)
+				React.createElement(Context.Provider, { value = false }, React.createElement(Component, { count = 2 }))
 			)
 		end)
 
@@ -471,18 +433,14 @@ xdescribe("ProfilingCache", function()
 		local allCommitData = {}
 
 		local function Validator(ref)
-			local commitIndex, previousCommitDetails, rootID =
-				ref.commitIndex, ref.previousCommitDetails, ref.rootID
+			local commitIndex, previousCommitDetails, rootID = ref.commitIndex, ref.previousCommitDetails, ref.rootID
 			local commitData = store._profilerStore:getCommitData(rootID, commitIndex)
 			if previousCommitDetails ~= nil then
 				jestExpect(commitData).toEqual(previousCommitDetails)
 			else
 				table.insert(allCommitData, commitData)
 				jestExpect(commitData).toMatchSnapshot(
-					string.format(
-						"CommitDetails commitIndex: %s",
-						tostring(commitIndex - 1)
-					)
+					string.format("CommitDetails commitIndex: %s", tostring(commitIndex - 1))
 				)
 			end
 			return nil
@@ -509,51 +467,45 @@ xdescribe("ProfilingCache", function()
 			})
 		end
 	end)
-	it(
-		"should calculate a self duration based on actual children (not filtered children)",
-		function()
-			local Parent, Child
-			store:setComponentFilters({ utils.createDisplayNameFilter("^Parent$") })
-			local function Grandparent()
-				Scheduler.unstable_advanceTime(10)
-				return React.createElement(
-					React.Fragment,
-					nil,
-					React.createElement(Parent, { key = "one" }),
-					React.createElement(Parent, { key = "two" })
-				)
-			end
-			function Parent()
-				Scheduler.unstable_advanceTime(2)
-				return React.createElement(Child, nil)
-			end
-			function Child()
-				Scheduler.unstable_advanceTime(1)
-				return nil
-			end
-			act(function()
-				return store._profilerStore:startProfiling()
-			end)
-			act(function()
-				return ReactRoblox.createRoot(Instance.new("Frame"))
-					:render(React.createElement(Grandparent, nil))
-			end)
-			act(function()
-				return store._profilerStore:stopProfiling()
-			end)
-			local commitData = nil
-			local function Validator(ref)
-				local commitIndex, rootID = ref.commitIndex, ref.rootID
-				commitData = store._profilerStore:getCommitData(rootID, commitIndex)
-				jestExpect(commitData).toMatchSnapshot(
-					"CommitDetails with filtered self durations"
-				)
-			end
-			local rootID = store:getRoots()[1]
-			Validator({ commitIndex = 1, rootID = rootID })
-			jestExpect(commitData).never.toBeNull()
+	it("should calculate a self duration based on actual children (not filtered children)", function()
+		local Parent, Child
+		store:setComponentFilters({ utils.createDisplayNameFilter("^Parent$") })
+		local function Grandparent()
+			Scheduler.unstable_advanceTime(10)
+			return React.createElement(
+				React.Fragment,
+				nil,
+				React.createElement(Parent, { key = "one" }),
+				React.createElement(Parent, { key = "two" })
+			)
 		end
-	)
+		function Parent()
+			Scheduler.unstable_advanceTime(2)
+			return React.createElement(Child, nil)
+		end
+		function Child()
+			Scheduler.unstable_advanceTime(1)
+			return nil
+		end
+		act(function()
+			return store._profilerStore:startProfiling()
+		end)
+		act(function()
+			return ReactRoblox.createRoot(Instance.new("Frame")):render(React.createElement(Grandparent, nil))
+		end)
+		act(function()
+			return store._profilerStore:stopProfiling()
+		end)
+		local commitData = nil
+		local function Validator(ref)
+			local commitIndex, rootID = ref.commitIndex, ref.rootID
+			commitData = store._profilerStore:getCommitData(rootID, commitIndex)
+			jestExpect(commitData).toMatchSnapshot("CommitDetails with filtered self durations")
+		end
+		local rootID = store:getRoots()[1]
+		Validator({ commitIndex = 1, rootID = rootID })
+		jestExpect(commitData).never.toBeNull()
+	end)
 	--[=[
 		xit("should calculate self duration correctly for suspended views", function(done)
 			local Fallback, Async
@@ -648,8 +600,7 @@ xdescribe("ProfilingCache", function()
 			local count = props.count
 			local children = table.create(count) :: any
 			for index = 0, count - 1 do
-				children[index + 1] =
-					React.createElement(Child, { key = index, duration = index })
+				children[index + 1] = React.createElement(Child, { key = index, duration = index })
 			end
 
 			return React.createElement(
@@ -685,8 +636,7 @@ xdescribe("ProfilingCache", function()
 
 		local allFiberCommits = {}
 		local function Validator(ref)
-			local fiberID, previousFiberCommits, rootID =
-				ref.fiberID, ref.previousFiberCommits, ref.rootID
+			local fiberID, previousFiberCommits, rootID = ref.fiberID, ref.previousFiberCommits, ref.rootID
 			local fiberCommits = store._profilerStore:profilingCache():getFiberCommits({
 				fiberID = fiberID,
 				rootID = rootID,
@@ -695,9 +645,7 @@ xdescribe("ProfilingCache", function()
 				jestExpect(fiberCommits).toEqual(previousFiberCommits)
 			else
 				table.insert(allFiberCommits, fiberCommits)
-				jestExpect(fiberCommits).toMatchSnapshot(
-					string.format("FiberCommits: element %d", fiberID)
-				)
+				jestExpect(fiberCommits).toMatchSnapshot(string.format("FiberCommits: element %d", fiberID))
 			end
 		end
 		local rootID = store:getRoots()[1]
@@ -705,12 +653,7 @@ xdescribe("ProfilingCache", function()
 		for index = 0, store:getNumElements() - 1 do
 			local fiberID = store:getElementIDAtIndex(index)
 			if fiberID == nil then
-				error(
-					string.format(
-						"Unexpected null ID for element at index %s",
-						tostring(index)
-					)
-				)
+				error(string.format("Unexpected null ID for element at index %s", tostring(index)))
 			end
 
 			Validator({
@@ -751,8 +694,7 @@ xdescribe("ProfilingCache", function()
 			local count = props.count
 			local children = table.create(count) :: any
 			for index = 0, count - 1 do
-				children[index + 1] =
-					React.createElement(Child, { key = index, duration = index })
+				children[index + 1] = React.createElement(Child, { key = index, duration = index })
 			end
 
 			return React.createElement(
@@ -774,22 +716,14 @@ xdescribe("ProfilingCache", function()
 			return store._profilerStore:startProfiling()
 		end)
 		act(function()
-			return SchedulerTracing.unstable_trace(
-				"mount: one child",
-				Scheduler.unstable_now(),
-				function()
-					return container:render(React.createElement(Parent, { count = 1 }))
-				end
-			)
+			return SchedulerTracing.unstable_trace("mount: one child", Scheduler.unstable_now(), function()
+				return container:render(React.createElement(Parent, { count = 1 }))
+			end)
 		end)
 		act(function()
-			return SchedulerTracing.unstable_trace(
-				"update: two children",
-				Scheduler.unstable_now(),
-				function()
-					return container:render(React.createElement(Parent, { count = 2 }))
-				end
-			)
+			return SchedulerTracing.unstable_trace("update: two children", Scheduler.unstable_now(), function()
+				return container:render(React.createElement(Parent, { count = 2 }))
+			end)
 		end)
 		act(function()
 			return store._profilerStore:stopProfiling()
@@ -797,10 +731,9 @@ xdescribe("ProfilingCache", function()
 		local interactions = nil
 		local function Validator(ref)
 			local previousInteractions, rootID = ref.previousInteractions, ref.rootID
-			interactions =
-				store._profilerStore:profilingCache():getInteractionsChartData({
-					rootID = rootID,
-				}).interactions
+			interactions = store._profilerStore:profilingCache():getInteractionsChartData({
+				rootID = rootID,
+			}).interactions
 			-- ROBLOX FIXME: interactions[0] supposed to have __count=1, but it's 0 once it gets to the ProfilerStore. it's correct in WorkLoop and Tracing.
 			if previousInteractions ~= nil then
 				jestExpect(interactions).toEqual(previousInteractions)
@@ -846,16 +779,8 @@ xdescribe("ProfilingCache", function()
 				React.createElement(
 					Switch,
 					nil,
-					React.createElement(
-						Route,
-						{ path = "/" },
-						React.createElement(Home, nil)
-					),
-					React.createElement(
-						Route,
-						{ path = "/about" },
-						React.createElement(About, nil)
-					)
+					React.createElement(Route, { path = "/" }, React.createElement(Home, nil)),
+					React.createElement(Route, { path = "/about" }, React.createElement(About, nil))
 				)
 			)
 		end
@@ -863,11 +788,7 @@ xdescribe("ProfilingCache", function()
 			return React.createElement(
 				React.Suspense,
 				nil,
-				React.createElement(
-					Link,
-					{ path = "/about" },
-					React.createElement("TextLabel", { Text = "Home" })
-				)
+				React.createElement(Link, { path = "/about" }, React.createElement("TextLabel", { Text = "Home" }))
 			)
 		end
 		function About()
@@ -878,11 +799,7 @@ xdescribe("ProfilingCache", function()
 		function Router(ref)
 			local children = ref.children
 			local path, setPath = React.useState("/")
-			return React.createElement(
-				RouterContext.Provider,
-				{ value = { path = path, setPath = setPath } },
-				children
-			)
+			return React.createElement(RouterContext.Provider, { value = { path = path, setPath = setPath } }, children)
 		end
 
 		-- Mimics https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/Switch.js

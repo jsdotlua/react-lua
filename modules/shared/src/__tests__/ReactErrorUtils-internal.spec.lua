@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/3e94bce765d355d74f6a60feb4addb6d196e3482/packages/shared/__tests__/ReactErrorUtils-test.internal.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/shared/__tests__/ReactErrorUtils-test.internal.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -167,12 +167,7 @@ it("can be shimmed", function()
 	local callback = function()
 		error(err)
 	end
-	ReactErrorUtils.invokeGuardedCallbackAndCatchFirstError(
-		"foo",
-		callback,
-		nil,
-		"somearg"
-	)
+	ReactErrorUtils.invokeGuardedCallbackAndCatchFirstError("foo", callback, nil, "somearg")
 
 	jestExpect(function()
 		ReactErrorUtils.rethrowCaughtError()

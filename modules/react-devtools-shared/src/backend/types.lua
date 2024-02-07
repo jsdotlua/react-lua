@@ -103,47 +103,31 @@ export type ReactRenderer = {
 	rendererPackageName: string,
 	bundleType: BundleType,
 	-- 16.9+
-	overrideHookState: ((
-		self: ReactRenderer,
-		Object,
-		number,
-		Array<string | number>,
-		any
-	) -> ()),
+	overrideHookState: (self: ReactRenderer, Object, number, Array<string | number>, any) -> (),
 	-- 17+
-	overrideHookStateDeletePath: ((
-		self: ReactRenderer,
-		Object,
-		number,
-		Array<string | number>
-	) -> ()),
+	overrideHookStateDeletePath: (self: ReactRenderer, Object, number, Array<string | number>) -> (),
 	-- 17+
-	overrideHookStateRenamePath: ((
+	overrideHookStateRenamePath: (
 		self: ReactRenderer,
 		Object,
 		number,
 		Array<string | number>,
 		Array<string | number>
-	) -> ()),
-	-- 16.7+
-	overrideProps: ((self: ReactRenderer, Object, Array<string | number>, any) -> ()),
-	-- 17+
-	overridePropsDeletePath: (
-		(self: ReactRenderer, Object, Array<string | number>) -> ()
-	),
-	-- 17+
-	overridePropsRenamePath: ((
-		self: ReactRenderer,
-		Object,
-		Array<string | number>,
-		Array<string | number>
-	) -> ()),
-	-- 16.9+
-	scheduleUpdate: ((self: ReactRenderer, Object) -> ()),
-	setSuspenseHandler: (
-		self: ReactRenderer,
-		shouldSuspend: (fiber: Object) -> boolean
 	) -> (),
+	-- 16.7+
+	overrideProps: (self: ReactRenderer, Object, Array<string | number>, any) -> (),
+	-- 17+
+	overridePropsDeletePath: (self: ReactRenderer, Object, Array<string | number>) -> (),
+	-- 17+
+	overridePropsRenamePath: (
+		self: ReactRenderer,
+		Object,
+		Array<string | number>,
+		Array<string | number>
+	) -> (),
+	-- 16.9+
+	scheduleUpdate: (self: ReactRenderer, Object) -> (),
+	setSuspenseHandler: (self: ReactRenderer, shouldSuspend: (fiber: Object) -> boolean) -> (),
 	-- Only injected by React v16.8+ in order to support hooks inspection.
 	currentDispatcherRef: CurrentDispatcherRef?,
 	-- Only injected by React v16.9+ in DEV mode.
@@ -332,13 +316,7 @@ export type RendererInterface = {
 	overrideValueAtPath: (Type, number, number?, Array<string | number>, any) -> (),
 	prepareViewAttributeSource: (number, Array<string | number>) -> (),
 	prepareViewElementSource: (number) -> (),
-	renamePath: (
-		Type,
-		number,
-		number?,
-		Array<string | number>,
-		Array<string | number>
-	) -> (),
+	renamePath: (Type, number, number?, Array<string | number>, Array<string | number>) -> (),
 	renderer: ReactRenderer | nil,
 	setTraceUpdatesEnabled: (boolean) -> (),
 	setTrackedPath: (Array<PathFrame> | nil) -> (),
@@ -368,7 +346,7 @@ export type DevToolsHook = {
 	on: (string, Handler) -> (),
 	off: (string, Handler) -> (),
 	reactDevtoolsAgent: Object?,
-	sub: (string, Handler) -> (() -> ()),
+	sub: (string, Handler) -> () -> (),
 
 	-- Used by react-native-web and Flipper/Inspector
 	resolveRNStyle: ResolveNativeStyle?,

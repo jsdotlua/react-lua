@@ -47,11 +47,8 @@ exports.shouldYieldToHost = function(): boolean
 	-- https://jira.rbx.com/browse/CLI-35978
 	local values: any = yieldedValues
 	if
-		(
-			expectedNumberOfYields ~= -1
-			and values ~= nil
-			and #values >= expectedNumberOfYields
-		) or (shouldYieldForPaint and needsPaint)
+		(expectedNumberOfYields ~= -1 and values ~= nil and #values >= expectedNumberOfYields)
+		or (shouldYieldForPaint and needsPaint)
 	then
 		-- We yielded at least as many values as expected. Stop flushing.
 		didStop = true
@@ -216,10 +213,7 @@ end
 
 exports.unstable_flushAll = function()
 	if yieldedValues ~= nil then
-		error(
-			"Log is not empty. Assert on the log of yielded values before "
-				.. "flushing additional work."
-		)
+		error("Log is not empty. Assert on the log of yielded values before " .. "flushing additional work.")
 	end
 	exports.unstable_flushAllWithoutAsserting()
 	if yieldedValues ~= nil then

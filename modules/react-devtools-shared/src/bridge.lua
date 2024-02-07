@@ -51,9 +51,7 @@ type OverrideHookState = OverrideValue & { hookID: number }
 type PathType = string
 
 -- ROBLOX deviation: Luau can't use ...type, use intersection instead
-type DeletePath =
-	ElementAndRendererID
-	& { type: PathType, hookID: number?, path: Array<string | number> }
+type DeletePath = ElementAndRendererID & { type: PathType, hookID: number?, path: Array<string | number> }
 
 -- ROBLOX deviation: Luau can't use ...type, use intersection instead
 type RenamePath = ElementAndRendererID & {
@@ -84,9 +82,7 @@ type ViewAttributeSourceParams = ElementAndRendererID & { path: Array<string | n
 type InspectElementParams = ElementAndRendererID & { path: Array<string | number>? }
 
 -- ROBLOX deviation: Luau can't use ...type, use intersection instead
-type StoreAsGlobalParams =
-	ElementAndRendererID
-	& { count: number, path: Array<string | number> }
+type StoreAsGlobalParams = ElementAndRendererID & { count: number, path: Array<string | number> }
 
 -- ROBLOX deviation: Luau can't use ...type, use intersection instead
 type NativeStyleEditor_RenameAttributeParams = ElementAndRendererID & {
@@ -96,9 +92,7 @@ type NativeStyleEditor_RenameAttributeParams = ElementAndRendererID & {
 }
 
 -- ROBLOX deviation: Luau can't use ...type, use intersection instead
-type NativeStyleEditor_SetValueParams =
-	ElementAndRendererID
-	& { name: string, value: string }
+type NativeStyleEditor_SetValueParams = ElementAndRendererID & { name: string, value: string }
 
 type UpdateConsolePatchSettingsParams = {
 	appendComponentStack: boolean,
@@ -203,10 +197,7 @@ export type Bridge<
 	) -> (),
 	shutdown: (self: Bridge<OutgoingEvents, IncomingEvents>) -> (),
 	_flush: (self: Bridge<OutgoingEvents, IncomingEvents>) -> (),
-	overrideValueAtPath: (
-		self: Bridge<OutgoingEvents, IncomingEvents>,
-		_ref: OverrideValueAtPath
-	) -> (),
+	overrideValueAtPath: (self: Bridge<OutgoingEvents, IncomingEvents>, _ref: OverrideValueAtPath) -> (),
 }
 
 type Bridge_Statics = {
@@ -215,10 +206,7 @@ type Bridge_Statics = {
 
 -- ROBLOX deviation: not sure where TimeoutID comes from in upstream
 type TimeoutID = any
-local Bridge: Bridge<any, any> & Bridge_Statics = setmetatable(
-	{},
-	{ __index = EventEmitter }
-) :: any
+local Bridge: Bridge<any, any> & Bridge_Statics = setmetatable({}, { __index = EventEmitter }) :: any
 local BridgeMetatable = { __index = Bridge }
 
 function Bridge.new(wall: Wall)
@@ -250,12 +238,7 @@ end
 function Bridge:send(event: EventName, ...: ElementType<any, EventName>)
 	local payload = { ... }
 	if self._isShutdown then
-		console.warn(
-			string.format(
-				'Cannot send message "%s" through a Bridge that has been shutdown.',
-				event
-			)
-		)
+		console.warn(string.format('Cannot send message "%s" through a Bridge that has been shutdown.', event))
 		return
 	end
 
@@ -334,10 +317,7 @@ function Bridge:_flush(): ()
 		-- ROBLOX deviation: Use a while loop instead of for loop to handle new insertions during the loop
 		local i = 1
 		while i < #self._messageQueue do
-			self._wall.send(
-				self._messageQueue[i],
-				table.unpack(self._messageQueue[i + 1])
-			)
+			self._wall.send(self._messageQueue[i], table.unpack(self._messageQueue[i + 1]))
 			i += 2
 		end
 		table.clear(self._messageQueue)
@@ -354,8 +334,7 @@ end
 -- Temporarily support older standalone backends by forwarding "overrideValueAtPath" commands
 -- to the older message types they may be listening to.
 function Bridge:overrideValueAtPath(_ref: OverrideValueAtPath)
-	local id, path, rendererID, type_, value =
-		_ref.id, _ref.path, _ref.rendererID, _ref.type, _ref.value
+	local id, path, rendererID, type_, value = _ref.id, _ref.path, _ref.rendererID, _ref.type, _ref.value
 	if type_ == "context" then
 		self:send("overrideContext", {
 			id = id,

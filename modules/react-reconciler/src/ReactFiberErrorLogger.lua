@@ -73,12 +73,9 @@ exports.logCapturedError = function(boundary: Fiber, errorInfo: CapturedValue<an
 
 			local componentNameMessage
 			if componentName then
-				componentNameMessage = "The above error occurred in the <"
-					.. tostring(componentName)
-					.. "> component:"
+				componentNameMessage = "The above error occurred in the <" .. tostring(componentName) .. "> component:"
 			else
-				componentNameMessage =
-					"The above error occurred in one of your React components:"
+				componentNameMessage = "The above error occurred in one of your React components:"
 			end
 
 			local errorBoundaryMessage
@@ -92,11 +89,7 @@ exports.logCapturedError = function(boundary: Fiber, errorInfo: CapturedValue<an
 				errorBoundaryMessage = "Consider adding an error boundary to your tree to customize error handling behavior.\n"
 					.. "Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries."
 			end
-			local combinedMessage = componentNameMessage
-				.. "\n"
-				.. componentStack
-				.. "\n\n"
-				.. errorBoundaryMessage
+			local combinedMessage = componentNameMessage .. "\n" .. componentStack .. "\n\n" .. errorBoundaryMessage
 
 			-- In development, we provide our own message with just the component stack.
 			-- We don't include the original error message and JS stack because the browser

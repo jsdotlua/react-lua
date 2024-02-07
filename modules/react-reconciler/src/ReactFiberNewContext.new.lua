@@ -100,10 +100,7 @@ exports.pushProvider = function<T>(providerFiber: Fiber, nextValue: T): ()
 
 		context._currentValue = nextValue
 		if _G.__DEV__ then
-			if
-				context._currentRenderer ~= nil
-				and context._currentRenderer ~= rendererSigil
-			then
+			if context._currentRenderer ~= nil and context._currentRenderer ~= rendererSigil then
 				console.error(
 					"Detected multiple renderers concurrently rendering the "
 						.. "same context provider. This is currently unsupported."
@@ -116,10 +113,7 @@ exports.pushProvider = function<T>(providerFiber: Fiber, nextValue: T): ()
 
 		context._currentValue2 = nextValue
 		if _G.__DEV__ then
-			if
-				context._currentRenderer2 ~= nil
-				and context._currentRenderer2 ~= rendererSigil
-			then
+			if context._currentRenderer2 ~= nil and context._currentRenderer2 ~= rendererSigil then
 				console.error(
 					"Detected multiple renderers concurrently rendering the "
 						.. "same context provider. This is currently unsupported."
@@ -143,33 +137,32 @@ exports.popProvider = function(providerFiber: Fiber)
 	end
 end
 
-exports.calculateChangedBits =
-	function<T>(context: ReactContext<T>, newValue: T, oldValue: T)
-		if is(oldValue, newValue) then
-			-- No change
-			return 0
-		else
-			-- deviation: unravel ternary that's unsafe to translate
-			local changedBits = MAX_SIGNED_31_BIT_INT
-			if typeof(context._calculateChangedBits) == "function" then
-				changedBits = context._calculateChangedBits(oldValue, newValue)
-			end
-
-			-- ROBLOX performance: eliminate nice-to-have compare in hot path that's removed in React 18
-			-- if _G.__DEV__ then
-			--   if bit32.band(changedBits, MAX_SIGNED_31_BIT_INT) ~= changedBits then
-			--     console.error(
-			--       "calculateChangedBits: Expected the return value to be a " ..
-			--         "31-bit integer. Instead received: %s",
-			--       changedBits
-			--     )
-			--   end
-			-- end
-			-- deviation: JS does a bitwise OR with 0 presumably to floor the value and
-			-- coerce to an int; we just use math.floor
-			return math.floor(changedBits)
+exports.calculateChangedBits = function<T>(context: ReactContext<T>, newValue: T, oldValue: T)
+	if is(oldValue, newValue) then
+		-- No change
+		return 0
+	else
+		-- deviation: unravel ternary that's unsafe to translate
+		local changedBits = MAX_SIGNED_31_BIT_INT
+		if typeof(context._calculateChangedBits) == "function" then
+			changedBits = context._calculateChangedBits(oldValue, newValue)
 		end
+
+		-- ROBLOX performance: eliminate nice-to-have compare in hot path that's removed in React 18
+		-- if _G.__DEV__ then
+		--   if bit32.band(changedBits, MAX_SIGNED_31_BIT_INT) ~= changedBits then
+		--     console.error(
+		--       "calculateChangedBits: Expected the return value to be a " ..
+		--         "31-bit integer. Instead received: %s",
+		--       changedBits
+		--     )
+		--   end
+		-- end
+		-- deviation: JS does a bitwise OR with 0 presumably to floor the value and
+		-- coerce to an int; we just use math.floor
+		return math.floor(changedBits)
 	end
+end
 
 exports.scheduleWorkOnParentPath = function(parent: Fiber | nil, renderLanes: Lanes)
 	-- Update the child lanes of all the ancestors, including the alternates.
@@ -181,9 +174,7 @@ exports.scheduleWorkOnParentPath = function(parent: Fiber | nil, renderLanes: La
 			if alternate ~= nil then
 				alternate.childLanes = mergeLanes(alternate.childLanes, renderLanes)
 			end
-		elseif
-			alternate ~= nil and not isSubsetOfLanes(alternate.childLanes, renderLanes)
-		then
+		elseif alternate ~= nil and not isSubsetOfLanes(alternate.childLanes, renderLanes) then
 			alternate.childLanes = mergeLanes(alternate.childLanes, renderLanes)
 		else
 			-- Neither alternate was updated, which means the rest of the
@@ -225,8 +216,7 @@ exports.propagateContextChange = function<T>(
 
 					if fiber.tag == ClassComponent then
 						-- Schedule a force update on the work-in-progress.
-						local update =
-							createUpdate(NoTimestamp, pickArbitraryLane(renderLanes))
+						local update = createUpdate(NoTimestamp, pickArbitraryLane(renderLanes))
 						update.tag = ForceUpdate
 						-- TODO: Because we don't have a work-in-progress, this will add the
 						-- update to the current fiber, too, which means it will persist even if
@@ -356,72 +346,68 @@ exports.prepareToReadContext = function(
 	end
 end
 
-exports.readContext =
-	function<T>(context: ReactContext<T>, observedBits: nil | number | boolean): T
-		if _G.__DEV__ then
-			-- This warning would fire if you read context inside a Hook like useMemo.
-			-- Unlike the class check below, it's not enforced in production for perf.
-			if isDisallowedContextReadInDEV then
-				console.error(
-					"Context can only be read while React is rendering. "
-						.. "In classes, you can read it in the render method or getDerivedStateFromProps. "
-						.. "In function components, you can read it directly in the function body, but not "
-						.. "inside Hooks like useReducer() or useMemo()."
+exports.readContext = function<T>(context: ReactContext<T>, observedBits: nil | number | boolean): T
+	if _G.__DEV__ then
+		-- This warning would fire if you read context inside a Hook like useMemo.
+		-- Unlike the class check below, it's not enforced in production for perf.
+		if isDisallowedContextReadInDEV then
+			console.error(
+				"Context can only be read while React is rendering. "
+					.. "In classes, you can read it in the render method or getDerivedStateFromProps. "
+					.. "In function components, you can read it directly in the function body, but not "
+					.. "inside Hooks like useReducer() or useMemo()."
+			)
+		end
+	end
+
+	if lastContextWithAllBitsObserved == context then
+		-- Nothing to do. We already observe everything in this context.
+	elseif observedBits == false or observedBits == 0 then
+		-- Do not observe any updates.
+	else
+		local resolvedObservedBits -- Avoid deopting on observable arguments or heterogeneous types.
+		if typeof(observedBits) ~= "number" or observedBits == Number.MAX_SAFE_INTEGER then
+			-- Observe all updates.
+			-- lastContextWithAllBitsObserved = ((context: any): ReactContext<mixed>)
+			lastContextWithAllBitsObserved = context
+			resolvedObservedBits = Number.MAX_SAFE_INTEGER
+		else
+			resolvedObservedBits = observedBits
+		end
+
+		local contextItem = {
+			-- context: ((context: any): ReactContext<mixed>),
+			context = context,
+			observedBits = resolvedObservedBits,
+			next = nil,
+		}
+
+		if lastContextDependency == nil then
+			if currentlyRenderingFiber == nil then
+				error(
+					Error.new(
+						"Context can only be read while React is rendering. "
+							.. "In classes, you can read it in the render method or getDerivedStateFromProps. "
+							.. "In function components, you can read it directly in the function body, but not "
+							.. "inside Hooks like useReducer() or useMemo()."
+					)
 				)
 			end
-		end
 
-		if lastContextWithAllBitsObserved == context then
-		-- Nothing to do. We already observe everything in this context.
-		elseif observedBits == false or observedBits == 0 then
-		-- Do not observe any updates.
-		else
-			local resolvedObservedBits -- Avoid deopting on observable arguments or heterogeneous types.
-			if
-				typeof(observedBits) ~= "number"
-				or observedBits == Number.MAX_SAFE_INTEGER
-			then
-				-- Observe all updates.
-				-- lastContextWithAllBitsObserved = ((context: any): ReactContext<mixed>)
-				lastContextWithAllBitsObserved = context
-				resolvedObservedBits = Number.MAX_SAFE_INTEGER
-			else
-				resolvedObservedBits = observedBits
-			end
-
-			local contextItem = {
-				-- context: ((context: any): ReactContext<mixed>),
-				context = context,
-				observedBits = resolvedObservedBits,
-				next = nil,
+			-- This is the first dependency for this component. Create a new list.
+			lastContextDependency = contextItem;
+			(currentlyRenderingFiber :: Fiber).dependencies = {
+				lanes = NoLanes,
+				firstContext = contextItem,
+				responders = nil,
 			}
-
-			if lastContextDependency == nil then
-				if currentlyRenderingFiber == nil then
-					error(
-						Error.new(
-							"Context can only be read while React is rendering. "
-								.. "In classes, you can read it in the render method or getDerivedStateFromProps. "
-								.. "In function components, you can read it directly in the function body, but not "
-								.. "inside Hooks like useReducer() or useMemo()."
-						)
-					)
-				end
-
-				-- This is the first dependency for this component. Create a new list.
-				lastContextDependency = contextItem;
-				(currentlyRenderingFiber :: Fiber).dependencies = {
-					lanes = NoLanes,
-					firstContext = contextItem,
-					responders = nil,
-				}
-			else
-				-- Append a new context item.
-				(lastContextDependency :: any).next = contextItem
-				lastContextDependency = contextItem
-			end
+		else
+			-- Append a new context item.
+			(lastContextDependency :: any).next = contextItem
+			lastContextDependency = contextItem
 		end
-		return if isPrimaryRenderer then context._currentValue else context._currentValue2
 	end
+	return if isPrimaryRenderer then context._currentValue else context._currentValue2
+end
 
 return exports

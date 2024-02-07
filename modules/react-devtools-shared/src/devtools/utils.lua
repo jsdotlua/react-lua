@@ -40,16 +40,11 @@ exports.printElement = function(element: Element, includeWeight: boolean?)
 		hocDisplayNames = table.clone(element.hocDisplayNames)
 	end
 
-	local hocs = if hocDisplayNames == nil
-		then ""
-		else string.format(" [%s]", table.concat(hocDisplayNames, "]["))
+	local hocs = if hocDisplayNames == nil then "" else string.format(" [%s]", table.concat(hocDisplayNames, "]["))
 	local suffix = ""
 
 	if includeWeight then
-		suffix = string.format(
-			" (%s)",
-			if element.isCollapsed then "1" else tostring(element.weight)
-		)
+		suffix = string.format(" (%s)", if element.isCollapsed then "1" else tostring(element.weight))
 	end
 	return string.format(
 		"%s%s <%s%s>%s%s",
@@ -80,10 +75,7 @@ exports.printStore = function(store: Store, includeWeight: boolean?)
 	Array.forEach(store:getRoots(), function(rootID)
 		local weight = ((store:getElementByID(rootID) :: any) :: Element).weight
 
-		table.insert(
-			snapshotLines,
-			"[root]" .. (if includeWeight then string.format(" (%d)", weight) else "")
-		)
+		table.insert(snapshotLines, "[root]" .. (if includeWeight then string.format(" (%d)", weight) else ""))
 		for i = rootWeight, rootWeight + weight - 1 do
 			local element: Element? = store:getElementAtIndex(i)
 
@@ -91,10 +83,7 @@ exports.printStore = function(store: Store, includeWeight: boolean?)
 				error(string.format("Could not find element at index %d", i))
 			end
 
-			table.insert(
-				snapshotLines,
-				exports.printElement(element :: Element, includeWeight :: boolean)
-			)
+			table.insert(snapshotLines, exports.printElement(element :: Element, includeWeight :: boolean))
 		end
 		rootWeight += weight
 	end)
@@ -121,11 +110,7 @@ end
 -- so this method replaces e.g. 'foo' with "foo"
 exports.sanitizeForParse = function(value)
 	if typeof(value) == "string" then
-		if
-			#value >= 2
-			and string.sub(value, 1, 1) == "'"
-			and string.sub(value, #value) == "'"
-		then
+		if #value >= 2 and string.sub(value, 1, 1) == "'" and string.sub(value, #value) == "'" then
 			return '"' .. string.sub(value, 1, #value - 2) .. '"'
 		end
 	end

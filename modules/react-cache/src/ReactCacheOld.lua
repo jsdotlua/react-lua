@@ -121,12 +121,7 @@ local lru = createLRU(CACHE_LIMIT)
 local entries: Record<Resource<any, any>, Record<number, Entry<any>>> = {}
 -- ROBLOX deviation END
 local CacheContext = React.createContext(nil)
-local function accessResult<I, K, V>(
-	resource: any,
-	fetch: (I) -> Thenable<V>,
-	input: I,
-	key: K
-): Result<V>
+local function accessResult<I, K, V>(resource: any, fetch: (I) -> Thenable<V>, input: I, key: K): Result<V>
 	-- ROBLOX deviation START: use regular indexing instead
 	-- local entriesForResource = entries:get(resource)
 	local entriesForResource = entries[resource]
@@ -143,9 +138,7 @@ local function accessResult<I, K, V>(
 	end
 	-- ROBLOX deviation START: cast as Luau doesn't narrow type on itself
 	-- local entry = entriesForResource:get(key)
-	local entriesForResource_ = (
-		entriesForResource :: Record<any, Entry<any>>
-	) :: Record<K, Entry<any>>
+	local entriesForResource_ = (entriesForResource :: Record<any, Entry<any>>) :: Record<K, Entry<any>>
 	local entry = entriesForResource_[key]
 	-- ROBLOX deviation END
 	if entry == nil then
@@ -227,20 +220,15 @@ local function unstable_createResource<
 	I,
 	K, --[[ ROBLOX CHECK: upstream type uses type constraint which is not supported by Luau ]] --[[ K: string | number ]]
 	V
->(
-	fetch: (
-		I
-	) -> Thenable<V>,
-	maybeHashInput: (
-		(I) -> K
-	)?
-): Resource<
+>(fetch: (
+	I
+) -> Thenable<V>, maybeHashInput: (
+	(I) -> K
+)?): Resource<
 	I,
 	V
 >
-	local hashInput: (I) -> K = if maybeHashInput ~= nil
-		then maybeHashInput
-		else identityHashFn :: any
+	local hashInput: (I) -> K = if maybeHashInput ~= nil then maybeHashInput else identityHashFn :: any
 	-- ROBLOX deviation START: split declaration and assignment
 	-- local resource = {
 	local resource

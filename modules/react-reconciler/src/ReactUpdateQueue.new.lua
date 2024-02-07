@@ -128,14 +128,12 @@ local ShouldCapture = ReactFiberFlags.ShouldCapture
 local DidCapture = ReactFiberFlags.DidCapture
 
 local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
-local debugRenderPhaseSideEffectsForStrictMode =
-	ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode
+local debugRenderPhaseSideEffectsForStrictMode = ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode
 
 local ReactTypeOfMode = require("./ReactTypeOfMode")
 local StrictMode = ReactTypeOfMode.StrictMode
 -- local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
-local markSkippedUpdateLanes =
-	require("./ReactFiberWorkInProgress").markSkippedUpdateLanes
+local markSkippedUpdateLanes = require("./ReactFiberWorkInProgress").markSkippedUpdateLanes
 
 -- ROBLOX deviation START: use if-then-error, which avoid string format and function call overhead, as in React 18
 -- local invariant = require("@pkg/@jsdotlua/shared").invariant
@@ -225,12 +223,7 @@ end
 exports.cloneUpdateQueue = cloneUpdateQueue
 
 -- ROBLOX deviation START: add extra parameters here so updates can be create in single table ctor
-local function createUpdate(
-	eventTime: number,
-	lane: Lane,
-	payload: any?,
-	callback: (() -> ...any)?
-): Update<any>
+local function createUpdate(eventTime: number, lane: Lane, payload: any?, callback: (() -> ...any)?): Update<any>
 	-- ROBLOX performance: Use pooled update object when available
 	if updatePoolIndex > 0 then
 		local update = updatePool[updatePoolIndex]
@@ -409,10 +402,7 @@ local function getStateFromUpdate<State>(
 			-- signature of the updater, which doesn't make sense for our case
 			local nextState = payload(prevState, nextProps)
 			if __DEV__ then
-				if
-					debugRenderPhaseSideEffectsForStrictMode
-					and bit32.band(workInProgress.mode, StrictMode) ~= 0
-				then
+				if debugRenderPhaseSideEffectsForStrictMode and bit32.band(workInProgress.mode, StrictMode) ~= 0 then
 					disableLogs()
 					-- ROBLOX deviation: YOLO flag for disabling pcall
 					local ok, result
@@ -437,10 +427,7 @@ local function getStateFromUpdate<State>(
 		return payload
 	elseif updateTag == CaptureUpdate or updateTag == UpdateState then
 		if updateTag == CaptureUpdate then
-			workInProgress.flags = bit32.bor(
-				bit32.band(workInProgress.flags, bit32.bnot(ShouldCapture)),
-				DidCapture
-			)
+			workInProgress.flags = bit32.bor(bit32.band(workInProgress.flags, bit32.bnot(ShouldCapture)), DidCapture)
 		end
 		-- Intentional fallthrough
 		local payload = update.payload
@@ -455,10 +442,7 @@ local function getStateFromUpdate<State>(
 			-- signature of the updater, which doesn't make sense for our case
 			partialState = payload(prevState, nextProps)
 			if __DEV__ then
-				if
-					debugRenderPhaseSideEffectsForStrictMode
-					and bit32.band(workInProgress.mode, StrictMode) ~= 0
-				then
+				if debugRenderPhaseSideEffectsForStrictMode and bit32.band(workInProgress.mode, StrictMode) ~= 0 then
 					disableLogs()
 					-- ROBLOX deviation: YOLO flag for disabling pcall
 					local ok, result
@@ -497,12 +481,7 @@ local function getStateFromUpdate<State>(
 end
 exports.getStateFromUpdate = getStateFromUpdate
 
-local function processUpdateQueue<State>(
-	workInProgress: Fiber,
-	props: any,
-	instance: any,
-	renderLanes: Lanes
-): ()
+local function processUpdateQueue<State>(workInProgress: Fiber, props: any, instance: any, renderLanes: Lanes): ()
 	-- This is always non-null on a ClassComponent or HostRoot
 	local queue: UpdateQueue<State> = workInProgress.updateQueue :: any
 
@@ -616,14 +595,7 @@ local function processUpdateQueue<State>(
 				end
 
 				-- Process this update.
-				newState = getStateFromUpdate(
-					workInProgress,
-					queue,
-					update,
-					newState,
-					props,
-					instance
-				)
+				newState = getStateFromUpdate(workInProgress, queue, update, newState, props, instance)
 				local callback = update.callback
 				if
 					callback ~= nil
@@ -652,9 +624,7 @@ local function processUpdateQueue<State>(
 					local lastPendingUpdate = pendingQueue
 					-- Intentionally unsound. Pending updates form a circular list, but we
 					-- unravel them when transferring them to the base queue.
-					local firstPendingUpdate = (
-						lastPendingUpdate.next :: any
-					) :: Update<State>
+					local firstPendingUpdate = (lastPendingUpdate.next :: any) :: Update<State>
 					lastPendingUpdate.next = nil
 					update = firstPendingUpdate
 					queue.lastBaseUpdate = lastPendingUpdate
@@ -694,8 +664,7 @@ local function callCallback(callback, context)
 	if type(callback) ~= "function" then
 		error(
 			string.format(
-				"Invalid argument passed as callback. Expected a function. Instead "
-					.. "received: %s",
+				"Invalid argument passed as callback. Expected a function. Instead " .. "received: %s",
 				tostring(callback)
 			)
 		)
@@ -712,11 +681,7 @@ exports.checkHasForceUpdateAfterProcessing = function(): boolean
 	return hasForceUpdate
 end
 
-local function commitUpdateQueue<State>(
-	finishedWork: Fiber,
-	finishedQueue: UpdateQueue<State>,
-	instance: any
-): ()
+local function commitUpdateQueue<State>(finishedWork: Fiber, finishedQueue: UpdateQueue<State>, instance: any): ()
 	-- Commit the effects
 	local effects = finishedQueue.effects
 	finishedQueue.effects = nil

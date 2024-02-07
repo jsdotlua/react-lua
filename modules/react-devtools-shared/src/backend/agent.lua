@@ -24,10 +24,8 @@ local throttle = function(fn: Function, _limit: number): Function
 end
 local constants = require("../constants")
 local SESSION_STORAGE_LAST_SELECTION_KEY = constants.SESSION_STORAGE_LAST_SELECTION_KEY
-local SESSION_STORAGE_RELOAD_AND_PROFILE_KEY =
-	constants.SESSION_STORAGE_RELOAD_AND_PROFILE_KEY
-local SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY =
-	constants.SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY
+local SESSION_STORAGE_RELOAD_AND_PROFILE_KEY = constants.SESSION_STORAGE_RELOAD_AND_PROFILE_KEY
+local SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY = constants.SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY
 local __DEBUG__ = constants.__DEBUG__
 local storage = require("../storage")
 local sessionStorageGetItem = storage.sessionStorageGetItem
@@ -161,10 +159,7 @@ export type Agent = EventEmitter<{
 	getRendererInterfaces: (self: Agent) -> { [RendererID]: RendererInterface },
 	copyElementPath: (self: Agent, copyElementParams: CopyElementParams) -> (),
 	deletePath: (self: Agent, deletePathParams: DeletePathParams) -> (),
-	getInstanceAndStyle: (
-		self: Agent,
-		elementAndRendererId: ElementAndRendererID
-	) -> InstanceAndStyle | nil,
+	getInstanceAndStyle: (self: Agent, elementAndRendererId: ElementAndRendererID) -> InstanceAndStyle | nil,
 	getIDForNode: (self: Agent, node: Object) -> number | nil,
 	getProfilingData: (self: Agent, rendererIdObject: { rendererID: RendererID }) -> (),
 	getProfilingStatus: (self: Agent) -> (),
@@ -172,10 +167,7 @@ export type Agent = EventEmitter<{
 	inspectElement: (self: Agent, inspectElementParams: InspectElementParams) -> (),
 	logElementToConsole: (self: Agent, elementAndRendererID: ElementAndRendererID) -> (),
 	overrideSuspense: (self: Agent, overrideSuspenseParams: OverrideSuspenseParams) -> (),
-	overrideValueAtPath: (
-		self: Agent,
-		overrideValueAtPathParams: OverrideValueAtPathParams
-	) -> (),
+	overrideValueAtPath: (self: Agent, overrideValueAtPathParams: OverrideValueAtPathParams) -> (),
 	overrideContext: (self: Agent, setInParams: SetInParams) -> (),
 	overrideHookState: (self: Agent, overrideHookParams: OverrideHookParams) -> (),
 	overrideProps: (self: Agent, setInParams: SetInParams) -> (),
@@ -183,11 +175,7 @@ export type Agent = EventEmitter<{
 	reloadAndProfile: (self: Agent, recordChangeDescriptions: boolean) -> (),
 	renamePath: (self: Agent, renamePathParams: RenamePathParams) -> (),
 	selectNode: (self: Agent, target: Object) -> (),
-	setRendererInterface: (
-		self: Agent,
-		rendererID: number,
-		rendererInterface: RendererInterface
-	) -> (),
+	setRendererInterface: (self: Agent, rendererID: number, rendererInterface: RendererInterface) -> (),
 	setTraceUpdatesEnabled: (self: Agent, traceUpdatesEnabled: boolean) -> (),
 	syncSelectionFromNativeElementsPanel: (self: Agent) -> (),
 	shutdown: (self: Agent) -> (),
@@ -230,17 +218,14 @@ function Agent.new(bridge: BackendBridge)
 	self._traceUpdatesEnabled = false
 
 	if sessionStorageGetItem(SESSION_STORAGE_RELOAD_AND_PROFILE_KEY) == "true" then
-		self._recordChangeDescriptions = sessionStorageGetItem(
-			SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY
-		) == "true"
+		self._recordChangeDescriptions = sessionStorageGetItem(SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY) == "true"
 		self._isProfiling = true
 
 		sessionStorageRemoveItem(SESSION_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY)
 		sessionStorageRemoveItem(SESSION_STORAGE_RELOAD_AND_PROFILE_KEY)
 	end
 
-	local persistedSelectionString =
-		sessionStorageGetItem(SESSION_STORAGE_LAST_SELECTION_KEY)
+	local persistedSelectionString = sessionStorageGetItem(SESSION_STORAGE_LAST_SELECTION_KEY)
 
 	if persistedSelectionString ~= nil then
 		self._persistedSelection = JSON.JSONDecode(persistedSelectionString)
@@ -267,15 +252,9 @@ function Agent.new(bridge: BackendBridge)
 	bridge:addListener("startProfiling", wrapSelf(self.startProfiling))
 	bridge:addListener("stopProfiling", wrapSelf(self.stopProfiling))
 	bridge:addListener("storeAsGlobal", wrapSelf(self.storeAsGlobal))
-	bridge:addListener(
-		"syncSelectionFromNativeElementsPanel",
-		wrapSelf(self.syncSelectionFromNativeElementsPanel)
-	)
+	bridge:addListener("syncSelectionFromNativeElementsPanel", wrapSelf(self.syncSelectionFromNativeElementsPanel))
 	bridge:addListener("shutdown", wrapSelf(self.shutdown))
-	bridge:addListener(
-		"updateConsolePatchSettings",
-		wrapSelf(self.updateConsolePatchSettings)
-	)
+	bridge:addListener("updateConsolePatchSettings", wrapSelf(self.updateConsolePatchSettings))
 	bridge:addListener("updateComponentFilters", wrapSelf(self.updateComponentFilters))
 	bridge:addListener("viewAttributeSource", wrapSelf(self.viewAttributeSource))
 	bridge:addListener("viewElementSource", wrapSelf(self.viewElementSource))
@@ -311,14 +290,11 @@ function Agent:getRendererInterfaces()
 end
 
 function Agent:copyElementPath(copyElementParams: CopyElementParams): ()
-	local id, path, rendererID =
-		copyElementParams.id, copyElementParams.path, copyElementParams.rendererID
+	local id, path, rendererID = copyElementParams.id, copyElementParams.path, copyElementParams.rendererID
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).copyElementPath(id, path)
 	end
@@ -333,16 +309,12 @@ function Agent:deletePath(deletePathParams: DeletePathParams): ()
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).deletePath(type_, id, hookID, path)
 	end
 end
-function Agent:getInstanceAndStyle(
-	elementAndRendererId: ElementAndRendererID
-): InstanceAndStyle | nil
+function Agent:getInstanceAndStyle(elementAndRendererId: ElementAndRendererID): InstanceAndStyle | nil
 	local id, rendererID = elementAndRendererId.id, elementAndRendererId.rendererID
 	local renderer = self._rendererInterfaces[rendererID]
 
@@ -383,9 +355,7 @@ function Agent:getOwnersList(elementAndRendererID: ElementAndRendererID)
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		local owners = (renderer :: RendererInterface).getOwnersList(id)
 
@@ -396,21 +366,13 @@ function Agent:getOwnersList(elementAndRendererID: ElementAndRendererID)
 	end
 end
 function Agent:inspectElement(inspectElementParams: InspectElementParams)
-	local id, path, rendererID =
-		inspectElementParams.id,
-		inspectElementParams.path,
-		inspectElementParams.rendererID
+	local id, path, rendererID = inspectElementParams.id, inspectElementParams.path, inspectElementParams.rendererID
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
-		self._bridge:send(
-			"inspectedElement",
-			(renderer :: RendererInterface).inspectElement(id, path)
-		)
+		self._bridge:send("inspectedElement", (renderer :: RendererInterface).inspectElement(id, path))
 
 		-- When user selects an element, stop trying to restore the selection,
 		-- and instead remember the current selection for the next reload.
@@ -437,24 +399,18 @@ function Agent:logElementToConsole(elementAndRendererID: ElementAndRendererID)
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).logElementToConsole(id)
 	end
 end
 function Agent:overrideSuspense(overrideSuspenseParams: OverrideSuspenseParams)
 	local id, rendererID, forceFallback =
-		overrideSuspenseParams.id,
-		overrideSuspenseParams.rendererID,
-		overrideSuspenseParams.forceFallback
+		overrideSuspenseParams.id, overrideSuspenseParams.rendererID, overrideSuspenseParams.forceFallback
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).overrideSuspense(id, forceFallback)
 	end
@@ -470,17 +426,9 @@ function Agent:overrideValueAtPath(overrideValueAtPathParams: OverrideValueAtPat
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
-		(renderer :: RendererInterface).overrideValueAtPath(
-			type_,
-			id,
-			hookID,
-			path,
-			value
-		)
+		(renderer :: RendererInterface).overrideValueAtPath(type_, id, hookID, path, value)
 	end
 end
 
@@ -488,11 +436,7 @@ end
 -- to the new "overrideValueAtPath" command the backend is now listening to.
 function Agent:overrideContext(setInParams: SetInParams)
 	local id, path, rendererID, wasForwarded, value =
-		setInParams.id,
-		setInParams.path,
-		setInParams.rendererID,
-		setInParams.wasForwarded,
-		setInParams.value
+		setInParams.id, setInParams.path, setInParams.rendererID, setInParams.wasForwarded, setInParams.value
 
 	-- Don't forward a message that's already been forwarded by the front-end Bridge.
 	-- We only need to process the override command once!
@@ -535,11 +479,7 @@ end
 -- to the new "overrideValueAtPath" command the backend is now listening to.
 function Agent:overrideProps(setInParams: SetInParams)
 	local id, path, rendererID, wasForwarded, value =
-		setInParams.id,
-		setInParams.path,
-		setInParams.rendererID,
-		setInParams.wasForwarded,
-		setInParams.value
+		setInParams.id, setInParams.path, setInParams.rendererID, setInParams.wasForwarded, setInParams.value
 
 	-- Don't forward a message that's already been forwarded by the front-end Bridge.
 	-- We only need to process the override command once!
@@ -558,11 +498,7 @@ end
 -- to the new "overrideValueAtPath" command the backend is now listening to.
 function Agent:overrideState(setInParams: SetInParams)
 	local id, path, rendererID, wasForwarded, value =
-		setInParams.id,
-		setInParams.path,
-		setInParams.rendererID,
-		setInParams.wasForwarded,
-		setInParams.value
+		setInParams.id, setInParams.path, setInParams.rendererID, setInParams.wasForwarded, setInParams.value
 
 	-- Don't forward a message that's already been forwarded by the front-end Bridge.
 	-- We only need to process the override command once!
@@ -605,9 +541,7 @@ function Agent:renamePath(renamePathParams: RenamePathParams)
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).renamePath(type_, id, hookID, oldPath, newPath)
 	end
@@ -619,10 +553,7 @@ function Agent:selectNode(target: Object): ()
 		self._bridge:send("selectFiber", id)
 	end
 end
-function Agent:setRendererInterface(
-	rendererID: number,
-	rendererInterface: RendererInterface
-)
+function Agent:setRendererInterface(rendererID: number, rendererInterface: RendererInterface)
 	self._rendererInterfaces[rendererID] = rendererInterface
 
 	if self._isProfiling then
@@ -636,10 +567,7 @@ function Agent:setRendererInterface(
 	-- It'll start tracking mounts for matches to the last selection path.
 	local selection: PersistedSelection? = self._persistedSelection
 
-	if
-		selection ~= nil
-		and (selection :: PersistedSelection).rendererID == rendererID
-	then
+	if selection ~= nil and (selection :: PersistedSelection).rendererID == rendererID then
 		rendererInterface.setTrackedPath((selection :: PersistedSelection).path)
 	end
 end
@@ -688,16 +616,11 @@ end
 
 function Agent:storeAsGlobal(storeAsGlobalParams: StoreAsGlobalParams)
 	local count, id, path, rendererID =
-		storeAsGlobalParams.count,
-		storeAsGlobalParams.id,
-		storeAsGlobalParams.path,
-		storeAsGlobalParams.rendererID
+		storeAsGlobalParams.count, storeAsGlobalParams.id, storeAsGlobalParams.path, storeAsGlobalParams.rendererID
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).storeAsGlobal(id, path, count)
 	end
@@ -707,8 +630,7 @@ function Agent:updateConsolePatchSettings(_ref16: {
 	appendComponentStack: boolean,
 	breakOnConsoleErrors: boolean,
 })
-	local appendComponentStack, breakOnConsoleErrors =
-		_ref16.appendComponentStack, _ref16.breakOnConsoleErrors
+	local appendComponentStack, breakOnConsoleErrors = _ref16.appendComponentStack, _ref16.breakOnConsoleErrors
 
 	-- If the frontend preference has change,
 	-- or in the case of React Native- if the backend is just finding out the preference-
@@ -729,14 +651,11 @@ function Agent:updateComponentFilters(componentFilters: Array<ComponentFilter>)
 	end
 end
 function Agent:viewAttributeSource(copyElementParams: CopyElementParams)
-	local id, path, rendererID =
-		copyElementParams.id, copyElementParams.path, copyElementParams.rendererID
+	local id, path, rendererID = copyElementParams.id, copyElementParams.path, copyElementParams.rendererID
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).prepareViewAttributeSource(id, path)
 	end
@@ -746,9 +665,7 @@ function Agent:viewElementSource(elementAndRendererID: ElementAndRendererID)
 	local renderer = self._rendererInterfaces[rendererID]
 
 	if renderer == nil then
-		console.warn(
-			string.format('Invalid renderer id "%d" for element "%d"', rendererID, id)
-		)
+		console.warn(string.format('Invalid renderer id "%d" for element "%d"', rendererID, id))
 	else
 		(renderer :: RendererInterface).prepareViewElementSource(id)
 	end

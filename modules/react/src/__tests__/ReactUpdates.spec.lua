@@ -95,11 +95,7 @@ describe("ReactUpdates", function()
 		end
 		function Component:render()
 			instance = self
-			return React.createElement(
-				"div",
-				nil,
-				string.format("(%s, %s)", self.state.x, self.state.y)
-			)
+			return React.createElement("div", nil, string.format("(%s, %s)", self.state.x, self.state.y))
 		end
 		ReactTestRenderer.create(React.createElement(Component))
 		jestExpect(instance.state.x).toBe(0)
@@ -171,11 +167,7 @@ describe("ReactUpdates", function()
 		end
 		local childRef = React.createRef()
 		function Parent:render()
-			return React.createElement(
-				"div",
-				nil,
-				React.createElement(Child, { ref = childRef, x = self.state.x })
-			)
+			return React.createElement("div", nil, React.createElement(Child, { ref = childRef, x = self.state.x }))
 		end
 		local childUpdateCount = 0
 		function Child:init()
@@ -189,11 +181,7 @@ describe("ReactUpdates", function()
 			end)()
 		end
 		function Child:render()
-			return React.createElement(
-				"div",
-				nil,
-				tostring(self.props.x) .. tostring(self.state.y)
-			)
+			return React.createElement("div", nil, tostring(self.props.x) .. tostring(self.state.y))
 		end
 		ReactTestRenderer.create(React.createElement(Parent))
 		local child = childRef.current
@@ -230,11 +218,7 @@ describe("ReactUpdates", function()
 		end
 		local childRef = React.createRef()
 		function Parent:render()
-			return React.createElement(
-				"div",
-				nil,
-				React.createElement(Child, { ref = childRef, x = self.state.x })
-			)
+			return React.createElement("div", nil, React.createElement(Child, { ref = childRef, x = self.state.x }))
 		end
 		local childUpdateCount = 0
 		function Child:init()
@@ -248,11 +232,7 @@ describe("ReactUpdates", function()
 			end)()
 		end
 		function Child:render()
-			return React.createElement(
-				"div",
-				nil,
-				tostring(self.props.x) .. tostring(self.state.y)
-			)
+			return React.createElement("div", nil, tostring(self.props.x) .. tostring(self.state.y))
 		end
 		ReactTestRenderer.create(React.createElement(Parent))
 		local child = childRef.current
@@ -606,11 +586,7 @@ describe("ReactUpdates", function()
 		local innerRef = React.createRef()
 		function Outer:render()
 			table.insert(updates, "Outer-render-" .. tostring(self.state.x))
-			return React.createElement(
-				"div",
-				nil,
-				React.createElement(Inner, { x = self.state.x, ref = innerRef })
-			)
+			return React.createElement("div", nil, React.createElement(Inner, { x = self.state.x, ref = innerRef }))
 		end
 		function Outer:componentDidUpdate()
 			local x = self.state.x
@@ -624,20 +600,11 @@ describe("ReactUpdates", function()
 			self.state = { x = 0 }
 		end
 		function Inner:render()
-			table.insert(
-				updates,
-				"Inner-render-" .. tostring(self.props.x) .. "-" .. tostring(self.state.x)
-			)
+			table.insert(updates, "Inner-render-" .. tostring(self.props.x) .. "-" .. tostring(self.state.x))
 			return React.createElement("div")
 		end
 		function Inner:componentDidUpdate()
-			table.insert(
-				updates,
-				"Inner-didUpdate-"
-					.. tostring(self.props.x)
-					.. "-"
-					.. tostring(self.state.x)
-			)
+			table.insert(updates, "Inner-didUpdate-" .. tostring(self.props.x) .. "-" .. tostring(self.state.x))
 		end
 		ReactTestRenderer.create(React.createElement(Outer))
 		table.insert(updates, "Outer-setState-1")
@@ -692,16 +659,11 @@ describe("ReactUpdates", function()
 				< self.props.count --[[ ROBLOX CHECK: operator '<' works only if either both arguments are strings or both are a number ]]
 			then
 				ReactTestRenderer.create(
-					React.createElement(
-						MockComponent,
-						{ depth = self.props.depth + 1, count = self.props.count }
-					)
+					React.createElement(MockComponent, { depth = self.props.depth + 1, count = self.props.count })
 				)
 			end
 		end
-		ReactTestRenderer.create(
-			React.createElement(MockComponent, { depth = 0, count = 2 })
-		)
+		ReactTestRenderer.create(React.createElement(MockComponent, { depth = 0, count = 2 }))
 		jestExpect(updates).toEqual({ 0, 1, 2 })
 		ReactTestRenderer.unstable_batchedUpdates(function()
 			-- Simulate update on each component from top to bottom.
@@ -725,11 +687,7 @@ describe("ReactUpdates", function()
 		end
 		function X:render()
 			if self.state.s == 0 then
-				return React.createElement(
-					"div",
-					nil,
-					React.createElement("span", nil, "0")
-				)
+				return React.createElement("div", nil, React.createElement("span", nil, "0"))
 			else
 				return React.createElement("div", nil, "1")
 			end
@@ -781,12 +739,7 @@ describe("ReactUpdates", function()
 		local root
 		ReactTestRenderer.unstable_batchedUpdates(function()
 			root = ReactTestRenderer.create(
-				React.createElement(
-					"div",
-					nil,
-					React.createElement(A),
-					React.createElement(B)
-				)
+				React.createElement("div", nil, React.createElement(A), React.createElement(B))
 			)
 		end)
 		jestExpect(a.state.x).toBe(1)
@@ -887,10 +840,7 @@ describe("ReactUpdates", function()
 					.. "a function. Instead received: no.",
 				{ withoutStack = true }
 			)
-		end).toThrowError(
-			"Invalid argument passed as callback. Expected a function. Instead "
-				.. "received: no"
-		)
+		end).toThrowError("Invalid argument passed as callback. Expected a function. Instead " .. "received: no")
 		ReactTestRenderer.create(React.createElement(A))
 
 		local invalidCallback = { foo = "bar" }
@@ -902,19 +852,13 @@ describe("ReactUpdates", function()
 				"setState(...): Expected the last optional `callback` argument to be "
 					.. "a function. Instead received: table."
 			)
-		end).toThrowError(
-			"Invalid argument passed as callback. Expected a function. Instead "
-				.. "received: table"
-		)
+		end).toThrowError("Invalid argument passed as callback. Expected a function. Instead " .. "received: table")
 
 		-- Make sure the warning is deduplicated and doesn't fire again
 		ReactTestRenderer.create(React.createElement(A))
 		jestExpect(function()
 			component:setState({}, invalidCallback :: any)
-		end).toThrowError(
-			"Invalid argument passed as callback. Expected a function. Instead "
-				.. "received: table"
-		)
+		end).toThrowError("Invalid argument passed as callback. Expected a function. Instead " .. "received: table")
 	end)
 
 	it("throws in forceUpdate if the update callback is not a function", function()
@@ -942,10 +886,7 @@ describe("ReactUpdates", function()
 					.. "a function. Instead received: no.",
 				{ withoutStack = true }
 			)
-		end).toThrowError(
-			"Invalid argument passed as callback. Expected a function. Instead "
-				.. "received: no"
-		)
+		end).toThrowError("Invalid argument passed as callback. Expected a function. Instead " .. "received: no")
 		ReactTestRenderer.create(React.createElement(A))
 
 		local invalidCallback = { foo = "bar" }
@@ -957,19 +898,13 @@ describe("ReactUpdates", function()
 				"forceUpdate(...): Expected the last optional `callback` argument to be "
 					.. "a function. Instead received: table."
 			)
-		end).toThrowError(
-			"Invalid argument passed as callback. Expected a function. Instead "
-				.. "received: table"
-		)
+		end).toThrowError("Invalid argument passed as callback. Expected a function. Instead " .. "received: table")
 
 		-- Make sure the warning is deduplicated and doesn't fire again
 		ReactTestRenderer.create(React.createElement(A))
 		jestExpect(function()
 			component:forceUpdate(invalidCallback :: any)
-		end).toThrowError(
-			"Invalid argument passed as callback. Expected a function. Instead "
-				.. "received: table"
-		)
+		end).toThrowError("Invalid argument passed as callback. Expected a function. Instead " .. "received: table")
 	end)
 
 	it("does not update one component twice in a batch (#2410)", function()
@@ -1264,14 +1199,7 @@ describe("ReactUpdates", function()
 			local memoizedStep = self.state.step
 			self:setState(function(baseState)
 				local baseStep = baseState.step
-				table.insert(
-					ops,
-					string.format(
-						"base: %s, memoized: %s",
-						tostring(baseStep),
-						memoizedStep
-					)
-				)
+				table.insert(ops, string.format("base: %s, memoized: %s", tostring(baseStep), memoizedStep))
 				return baseStep == 0 and { step = 1 } or nil
 			end)
 			return nil
@@ -1506,30 +1434,27 @@ describe("ReactUpdates", function()
 		jestExpect(container.toJSON()).toBe("1")
 	end)
 	-- ROBLOX TODO: figure out how to do this with test renderer
-	it.skip(
-		"does not fall into mutually recursive infinite update loop with same container",
-		function()
-			-- Note: this test would fail if there were two or more different roots.
-			local B = React.Component:extend("B")
-			local container = ReactTestRenderer.create(React.createElement("div"))
-			local A = React.Component:extend("A")
-			function A:componentDidMount()
-				container:update(React.createElement(B))
-			end
-			function A:render()
-				return nil
-			end
-			function B:componentDidMount()
-				container:update(React.createElement(A))
-			end
-			function B:render()
-				return nil
-			end
-			jestExpect(function()
-				container:update(React.createElement(A))
-			end).toThrow("Maximum")
+	it.skip("does not fall into mutually recursive infinite update loop with same container", function()
+		-- Note: this test would fail if there were two or more different roots.
+		local B = React.Component:extend("B")
+		local container = ReactTestRenderer.create(React.createElement("div"))
+		local A = React.Component:extend("A")
+		function A:componentDidMount()
+			container:update(React.createElement(B))
 		end
-	)
+		function A:render()
+			return nil
+		end
+		function B:componentDidMount()
+			container:update(React.createElement(A))
+		end
+		function B:render()
+			return nil
+		end
+		jestExpect(function()
+			container:update(React.createElement(A))
+		end).toThrow("Maximum")
+	end)
 	it("does not fall into an infinite error loop", function()
 		local function BadRender()
 			error(Error.new("error"))
@@ -1553,10 +1478,7 @@ describe("ReactUpdates", function()
 			end)
 		end
 		function NonTerminating:render()
-			return React.createElement(
-				ErrorBoundary,
-				{ key = self.state.step, parent = self }
-			)
+			return React.createElement(ErrorBoundary, { key = self.state.step, parent = self })
 		end
 		jestExpect(function()
 			ReactTestRenderer.create(React.createElement(NonTerminating))

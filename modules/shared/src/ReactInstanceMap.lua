@@ -1,9 +1,5 @@
-<<<<<<< HEAD
--- ROBLOX upstream: https://github.com/facebook/react/blob/2ba43edc2675380a0f2222f351475bf9d750c6a9/packages/shared/ReactInstanceMap.js
---!strict
-=======
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/shared/ReactInstanceMap.js
->>>>>>> upstream-apply
+--!strict
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *

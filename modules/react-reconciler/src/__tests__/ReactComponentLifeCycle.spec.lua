@@ -474,15 +474,11 @@ it("should carry through each of the phases of setup", function()
 	}, { withoutStack = 1 })
 
 	-- getInitialState
-	jestExpect(_testJournal.returnedFromGetInitialState).toEqual(
-		GET_INIT_STATE_RETURN_VAL
-	)
+	jestExpect(_testJournal.returnedFromGetInitialState).toEqual(GET_INIT_STATE_RETURN_VAL)
 	jestExpect(_testJournal.lifeCycleAtStartOfGetInitialState).toBe("UNMOUNTED")
 
 	-- componentWillMount
-	jestExpect(_testJournal.stateAtStartOfWillMount).toEqual(
-		_testJournal.returnedFromGetInitialState
-	)
+	jestExpect(_testJournal.stateAtStartOfWillMount).toEqual(_testJournal.returnedFromGetInitialState)
 	jestExpect(_testJournal.lifeCycleAtStartOfWillMount).toBe("UNMOUNTED")
 
 	-- componentDidMount
@@ -579,17 +575,13 @@ xit("should not throw when updating an auxiliary component", function()
 	end
 
 	ReactNoop.act(function()
-		ReactNoop.render(
-			React.createElement(Component, { text = "uno", tooltipText = "one" })
-		)
+		ReactNoop.render(React.createElement(Component, { text = "uno", tooltipText = "one" }))
 	end)
 
 	-- Since `instance` is a root component, we can set its props. This also
 	-- makes Tooltip rerender the tooltip component, which shouldn't throw.
 	ReactNoop.act(function()
-		ReactNoop.render(
-			React.createElement(Component, { text = "dos", tooltipText = "two" })
-		)
+		ReactNoop.render(React.createElement(Component, { text = "dos", tooltipText = "two" }))
 	end)
 end)
 
@@ -598,8 +590,7 @@ it("should allow state updates in componentDidMount", function()
 	--[[*
      * calls setState in an componentDidMount.
      ]]
-	local SetStateInComponentDidMount =
-		React.Component:extend("SetStateInComponentDidMount")
+	local SetStateInComponentDidMount = React.Component:extend("SetStateInComponentDidMount")
 	function SetStateInComponentDidMount:init()
 		self.state = {
 			stateField = self.props.valueToUseInitially,
@@ -743,11 +734,7 @@ it("should call nested new lifecycle methods in the right order", function()
 	Outer.componentDidUpdate = logger("outer componentDidUpdate")
 	Outer.componentWillUnmount = logger("outer componentWillUnmount")
 	function Outer:render()
-		return React.createElement(
-			"Frame",
-			{},
-			React.createElement(Inner, { x = self.props.x })
-		)
+		return React.createElement("Frame", {}, React.createElement(Inner, { x = self.props.x }))
 	end
 
 	function Inner:init()
@@ -803,384 +790,365 @@ it("should call nested new lifecycle methods in the right order", function()
 	})
 end)
 
-it(
-	"should not invoke deprecated lifecycles (cWM/cWRP/cWU) if new static gDSFP is present",
-	function()
-		local Component = React.Component:extend("Component")
-		function Component:init()
-			self.state = {}
-		end
-		function Component.getDerivedStateFromProps()
-			return nil
-		end
-		function Component:componentWillMount()
-			error(Error("unexpected"))
-		end
-		function Component:componentWillReceiveProps()
-			-- ROBLOX deviation: assert self is non nil
-			jestExpect(self).never.toEqual(nil)
-
-			error(Error("unexpected"))
-		end
-		function Component:componentWillUpdate()
-			error(Error("unexpected"))
-		end
-		function Component:render()
-			return nil
-		end
-
-		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(Component))
-				end)
-			end).toErrorDev(
-				"Unsafe legacy lifecycles will not be called for components using new component APIs."
-			)
-		end).toWarnDev(
-			-- We should consider removing this altogether; the old behavior referred
-			-- to here is unique to React. None of Roact's old behavior is reflected
-			-- by these messages and is likely to confuse existing users
-			{
-				"componentWillMount has been renamed",
-				"componentWillReceiveProps has been renamed",
-				"componentWillUpdate has been renamed",
-			},
-			{ withoutStack = true }
-		)
+it("should not invoke deprecated lifecycles (cWM/cWRP/cWU) if new static gDSFP is present", function()
+	local Component = React.Component:extend("Component")
+	function Component:init()
+		self.state = {}
 	end
-)
+	function Component.getDerivedStateFromProps()
+		return nil
+	end
+	function Component:componentWillMount()
+		error(Error("unexpected"))
+	end
+	function Component:componentWillReceiveProps()
+		-- ROBLOX deviation: assert self is non nil
+		jestExpect(self).never.toEqual(nil)
 
--- ROBLOX FIXME: outputs none of the toWarnDev() expected messages in DEV mode
-it(
-	"should not invoke deprecated lifecycles (cWM/cWRP/cWU) if new getSnapshotBeforeUpdate is present",
-	function()
-		local Component = React.Component:extend("Component")
-		function Component:init()
-			self.state = {}
-		end
-		function Component:getSnapshotBeforeUpdate()
-			return nil
-		end
-		function Component:componentWillMount()
-			error(Error("unexpected"))
-		end
-		function Component:componentWillReceiveProps()
-			error(Error("unexpected"))
-		end
-		function Component:componentWillUpdate()
-			-- ROBLOX deviation: assert self is non nil
-			jestExpect(self).never.toEqual(nil)
-			error(Error("unexpected"))
-		end
-		function Component:componentDidUpdate()
-			-- ROBLOX deviation: assert self is non nil
-			jestExpect(self).never.toEqual(nil)
-		end
-		function Component:render()
-			return nil
-		end
+		error(Error("unexpected"))
+	end
+	function Component:componentWillUpdate()
+		error(Error("unexpected"))
+	end
+	function Component:render()
+		return nil
+	end
 
+	jestExpect(function()
 		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(Component, { value = 1 }))
-				end)
-			end).toErrorDev(
-				"Unsafe legacy lifecycles will not be called for components using new component APIs."
-			)
-		end).toWarnDev({
+			ReactNoop.act(function()
+				ReactNoop.render(React.createElement(Component))
+			end)
+		end).toErrorDev("Unsafe legacy lifecycles will not be called for components using new component APIs.")
+	end).toWarnDev(
+		-- We should consider removing this altogether; the old behavior referred
+		-- to here is unique to React. None of Roact's old behavior is reflected
+		-- by these messages and is likely to confuse existing users
+		{
 			"componentWillMount has been renamed",
 			"componentWillReceiveProps has been renamed",
 			"componentWillUpdate has been renamed",
-		}, { withoutStack = true })
-		ReactNoop.act(function()
-			ReactNoop.render(React.createElement(Component, { value = 2 }))
-		end)
+		},
+		{ withoutStack = true }
+	)
+end)
+
+-- ROBLOX FIXME: outputs none of the toWarnDev() expected messages in DEV mode
+it("should not invoke deprecated lifecycles (cWM/cWRP/cWU) if new getSnapshotBeforeUpdate is present", function()
+	local Component = React.Component:extend("Component")
+	function Component:init()
+		self.state = {}
 	end
-)
+	function Component:getSnapshotBeforeUpdate()
+		return nil
+	end
+	function Component:componentWillMount()
+		error(Error("unexpected"))
+	end
+	function Component:componentWillReceiveProps()
+		error(Error("unexpected"))
+	end
+	function Component:componentWillUpdate()
+		-- ROBLOX deviation: assert self is non nil
+		jestExpect(self).never.toEqual(nil)
+		error(Error("unexpected"))
+	end
+	function Component:componentDidUpdate()
+		-- ROBLOX deviation: assert self is non nil
+		jestExpect(self).never.toEqual(nil)
+	end
+	function Component:render()
+		return nil
+	end
 
-it(
-	"should not invoke new unsafe lifecycles (cWM/cWRP/cWU) if static gDSFP is present",
-	function()
-		local Component = React.Component:extend("Component")
-		function Component:init()
-			self.state = {}
-		end
-		function Component.getDerivedStateFromProps()
-			return nil
-		end
-		function Component:UNSAFE_componentWillMount()
-			error(Error("unexpected"))
-		end
-		function Component:UNSAFE_componentWillReceiveProps()
-			error(Error("unexpected"))
-		end
-		function Component:UNSAFE_componentWillUpdate()
-			error(Error("unexpected"))
-		end
-		function Component:render()
-			return nil
-		end
-
+	jestExpect(function()
 		jestExpect(function()
 			ReactNoop.act(function()
 				ReactNoop.render(React.createElement(Component, { value = 1 }))
 			end)
-		end).toErrorDev({
-			"Unsafe legacy lifecycles will not be called for components using new component APIs.",
-			-- deviation: ReactNoop runs with a StrictMode root and logs more warnings
-			"Using UNSAFE_componentWillMount in strict mode is not recommended",
-			"Using UNSAFE_componentWillReceiveProps in strict mode is not recommended",
-			"Using UNSAFE_componentWillUpdate in strict mode is not recommended",
-		}, { withoutStack = 3 })
+		end).toErrorDev("Unsafe legacy lifecycles will not be called for components using new component APIs.")
+	end).toWarnDev({
+		"componentWillMount has been renamed",
+		"componentWillReceiveProps has been renamed",
+		"componentWillUpdate has been renamed",
+	}, { withoutStack = true })
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(Component, { value = 2 }))
+	end)
+end)
+
+it("should not invoke new unsafe lifecycles (cWM/cWRP/cWU) if static gDSFP is present", function()
+	local Component = React.Component:extend("Component")
+	function Component:init()
+		self.state = {}
+	end
+	function Component.getDerivedStateFromProps()
+		return nil
+	end
+	function Component:UNSAFE_componentWillMount()
+		error(Error("unexpected"))
+	end
+	function Component:UNSAFE_componentWillReceiveProps()
+		error(Error("unexpected"))
+	end
+	function Component:UNSAFE_componentWillUpdate()
+		error(Error("unexpected"))
+	end
+	function Component:render()
+		return nil
+	end
+
+	jestExpect(function()
 		ReactNoop.act(function()
-			ReactNoop.render(React.createElement(Component, { value = 2 }))
+			ReactNoop.render(React.createElement(Component, { value = 1 }))
 		end)
+	end).toErrorDev({
+		"Unsafe legacy lifecycles will not be called for components using new component APIs.",
+		-- deviation: ReactNoop runs with a StrictMode root and logs more warnings
+		"Using UNSAFE_componentWillMount in strict mode is not recommended",
+		"Using UNSAFE_componentWillReceiveProps in strict mode is not recommended",
+		"Using UNSAFE_componentWillUpdate in strict mode is not recommended",
+	}, { withoutStack = 3 })
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(Component, { value = 2 }))
+	end)
+end)
+
+it("should warn about deprecated lifecycles (cWM/cWRP/cWU) if new static gDSFP is present", function()
+	local AllLegacyLifecycles = React.Component:extend("AllLegacyLifecycles")
+	function AllLegacyLifecycles:init()
+		self.state = {}
 	end
-)
+	function AllLegacyLifecycles.getDerivedStateFromProps()
+		return nil
+	end
+	function AllLegacyLifecycles:componentWillMount() end
+	function AllLegacyLifecycles:UNSAFE_componentWillReceiveProps() end
+	function AllLegacyLifecycles:componentWillUpdate() end
+	function AllLegacyLifecycles:render()
+		return nil
+	end
 
-it(
-	"should warn about deprecated lifecycles (cWM/cWRP/cWU) if new static gDSFP is present",
-	function()
-		local AllLegacyLifecycles = React.Component:extend("AllLegacyLifecycles")
-		function AllLegacyLifecycles:init()
-			self.state = {}
-		end
-		function AllLegacyLifecycles.getDerivedStateFromProps()
-			return nil
-		end
-		function AllLegacyLifecycles:componentWillMount() end
-		function AllLegacyLifecycles:UNSAFE_componentWillReceiveProps() end
-		function AllLegacyLifecycles:componentWillUpdate() end
-		function AllLegacyLifecycles:render()
-			return nil
-		end
-
-		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(AllLegacyLifecycles))
-				end)
-			end).toErrorDev({
-				"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-					.. "AllLegacyLifecycles uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
-					.. "  componentWillMount\n"
-					.. "  UNSAFE_componentWillReceiveProps\n"
-					.. "  componentWillUpdate\n\n"
-					.. "The above lifecycles should be removed. Learn more about this warning here:\n"
-					.. "https://reactjs.org/link/unsafe-component-lifecycles",
-				"UNSAFE_componentWillReceiveProps in strict mode is not recommended",
-			}, { withoutStack = 1 })
-		end).toWarnDev({
-			"componentWillMount has been renamed",
-			"componentWillUpdate has been renamed",
-		}, { withoutStack = true })
-
-		local WillMount = React.Component:extend("WillMount")
-		function WillMount:init()
-			self.state = {}
-		end
-		function WillMount.getDerivedStateFromProps()
-			return nil
-		end
-		function WillMount:UNSAFE_componentWillMount() end
-		function WillMount:render()
-			return nil
-		end
-
+	jestExpect(function()
 		jestExpect(function()
 			ReactNoop.act(function()
-				ReactNoop.render(React.createElement(WillMount))
-			end).toErrorDev({
-				"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-					.. "WillMount uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
-					.. "  UNSAFE_componentWillMount\n\n"
-					.. "The above lifecycles should be removed. Learn more about this warning here:\n"
-					.. "https://reactjs.org/link/unsafe-component-lifecycles",
-				"UNSAFE_componentWillMount in strict mode is not recommended",
-			}, { withoutStack = 1 })
-		end)
-
-		local WillMountAndUpdate = React.Component:extend("WillMountAndUpdate")
-		function WillMountAndUpdate:init()
-			self.state = {}
-		end
-		function WillMountAndUpdate.getDerivedStateFromProps()
-			return nil
-		end
-		function WillMountAndUpdate:componentWillMount() end
-		function WillMountAndUpdate:UNSAFE_componentWillUpdate() end
-		function WillMountAndUpdate:render()
-			return nil
-		end
-
-		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(WillMountAndUpdate))
-				end)
-			end).toErrorDev({
-				"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-					.. "WillMountAndUpdate uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
-					.. "  componentWillMount\n"
-					.. "  UNSAFE_componentWillUpdate\n\n"
-					.. "The above lifecycles should be removed. Learn more about this warning here:\n"
-					.. "https://reactjs.org/link/unsafe-component-lifecycles",
-				"UNSAFE_componentWillUpdate in strict mode is not recommended",
-			}, { withoutStack = 1 })
-		end).toWarnDev({ "componentWillMount has been renamed" }, {
-			withoutStack = true,
-		})
-
-		local WillReceiveProps = React.Component:extend("WillReceiveProps")
-		function WillReceiveProps:init()
-			self.state = {}
-		end
-		function WillReceiveProps.getDerivedStateFromProps()
-			return nil
-		end
-		function WillReceiveProps:componentWillReceiveProps() end
-		function WillReceiveProps:render()
-			return nil
-		end
-
-		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(WillReceiveProps))
-				end)
-			end).toErrorDev(
-				"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-					.. "WillReceiveProps uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
-					.. "  componentWillReceiveProps\n\n"
-					.. "The above lifecycles should be removed. Learn more about this warning here:\n"
-					.. "https://reactjs.org/link/unsafe-component-lifecycles"
-			)
-		end).toWarnDev({ "componentWillReceiveProps has been renamed" }, {
-			withoutStack = true,
-		})
-	end
-)
-
-it(
-	"should warn about deprecated lifecycles (cWM/cWRP/cWU) if new getSnapshotBeforeUpdate is present",
-	function()
-		local AllLegacyLifecycles = React.Component:extend("AllLegacyLifecycles")
-		function AllLegacyLifecycles:init()
-			self.state = {}
-		end
-		function AllLegacyLifecycles:getSnapshotBeforeUpdate() end
-		function AllLegacyLifecycles:componentWillMount() end
-		function AllLegacyLifecycles:UNSAFE_componentWillReceiveProps() end
-		function AllLegacyLifecycles:componentWillUpdate() end
-		function AllLegacyLifecycles:componentDidUpdate() end
-		function AllLegacyLifecycles:render()
-			return nil
-		end
-
-		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(AllLegacyLifecycles))
-				end)
-			end).toErrorDev({
-				"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-					.. "AllLegacyLifecycles uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
-					.. "  componentWillMount\n"
-					.. "  UNSAFE_componentWillReceiveProps\n"
-					.. "  componentWillUpdate\n\n"
-					.. "The above lifecycles should be removed. Learn more about this warning here:\n"
-					.. "https://reactjs.org/link/unsafe-component-lifecycles",
-				"UNSAFE_componentWillReceiveProps in strict mode is not recommended",
-			}, { withoutStack = 1 })
-		end).toWarnDev({
-			"componentWillMount has been renamed",
-			"componentWillUpdate has been renamed",
-		}, { withoutStack = true })
-
-		local WillMount = React.Component:extend("WillMount")
-		function WillMount:init()
-			self.state = {}
-		end
-		function WillMount:getSnapshotBeforeUpdate() end
-		function WillMount:UNSAFE_componentWillMount() end
-		function WillMount:componentDidUpdate() end
-		function WillMount:render()
-			return nil
-		end
-
-		jestExpect(function()
-			ReactNoop.act(function()
-				ReactNoop.render(React.createElement(WillMount))
+				ReactNoop.render(React.createElement(AllLegacyLifecycles))
 			end)
 		end).toErrorDev({
 			"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-				.. "WillMount uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
+				.. "AllLegacyLifecycles uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
+				.. "  componentWillMount\n"
+				.. "  UNSAFE_componentWillReceiveProps\n"
+				.. "  componentWillUpdate\n\n"
+				.. "The above lifecycles should be removed. Learn more about this warning here:\n"
+				.. "https://reactjs.org/link/unsafe-component-lifecycles",
+			"UNSAFE_componentWillReceiveProps in strict mode is not recommended",
+		}, { withoutStack = 1 })
+	end).toWarnDev({
+		"componentWillMount has been renamed",
+		"componentWillUpdate has been renamed",
+	}, { withoutStack = true })
+
+	local WillMount = React.Component:extend("WillMount")
+	function WillMount:init()
+		self.state = {}
+	end
+	function WillMount.getDerivedStateFromProps()
+		return nil
+	end
+	function WillMount:UNSAFE_componentWillMount() end
+	function WillMount:render()
+		return nil
+	end
+
+	jestExpect(function()
+		ReactNoop.act(function()
+			ReactNoop.render(React.createElement(WillMount))
+		end).toErrorDev({
+			"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
+				.. "WillMount uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
 				.. "  UNSAFE_componentWillMount\n\n"
 				.. "The above lifecycles should be removed. Learn more about this warning here:\n"
 				.. "https://reactjs.org/link/unsafe-component-lifecycles",
 			"UNSAFE_componentWillMount in strict mode is not recommended",
 		}, { withoutStack = 1 })
+	end)
 
-		local WillMountAndUpdate = React.Component:extend("WillMountAndUpdate")
-		function WillMountAndUpdate:init()
-			self.state = {}
-		end
-		function WillMountAndUpdate:getSnapshotBeforeUpdate() end
-		function WillMountAndUpdate:componentWillMount() end
-		function WillMountAndUpdate:UNSAFE_componentWillUpdate() end
-		function WillMountAndUpdate:componentDidUpdate() end
-		function WillMountAndUpdate:render()
-			return nil
-		end
-
-		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(WillMountAndUpdate))
-				end)
-			end).toErrorDev({
-				"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-					.. "WillMountAndUpdate uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
-					.. "  componentWillMount\n"
-					.. "  UNSAFE_componentWillUpdate\n\n"
-					.. "The above lifecycles should be removed. Learn more about this warning here:\n"
-					.. "https://reactjs.org/link/unsafe-component-lifecycles",
-				"UNSAFE_componentWillUpdate in strict mode is not recommended",
-			}, { withoutStack = 1 })
-		end).toWarnDev({ "componentWillMount has been renamed" }, {
-			withoutStack = true,
-		})
-
-		local WillReceiveProps = React.Component:extend("WillReceiveProps")
-		function WillReceiveProps:init()
-			self.state = {}
-		end
-		function WillReceiveProps:getSnapshotBeforeUpdate() end
-		function WillReceiveProps:componentWillReceiveProps() end
-		function WillReceiveProps:componentDidUpdate() end
-		function WillReceiveProps:render()
-			return nil
-		end
-
-		jestExpect(function()
-			jestExpect(function()
-				ReactNoop.act(function()
-					ReactNoop.render(React.createElement(WillReceiveProps))
-				end)
-			end).toErrorDev(
-				"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
-					.. "WillReceiveProps uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
-					.. "  componentWillReceiveProps\n\n"
-					.. "The above lifecycles should be removed. Learn more about this warning here:\n"
-					.. "https://reactjs.org/link/unsafe-component-lifecycles"
-			)
-		end).toWarnDev({ "componentWillReceiveProps has been renamed" }, {
-			withoutStack = true,
-		})
+	local WillMountAndUpdate = React.Component:extend("WillMountAndUpdate")
+	function WillMountAndUpdate:init()
+		self.state = {}
 	end
-)
+	function WillMountAndUpdate.getDerivedStateFromProps()
+		return nil
+	end
+	function WillMountAndUpdate:componentWillMount() end
+	function WillMountAndUpdate:UNSAFE_componentWillUpdate() end
+	function WillMountAndUpdate:render()
+		return nil
+	end
+
+	jestExpect(function()
+		jestExpect(function()
+			ReactNoop.act(function()
+				ReactNoop.render(React.createElement(WillMountAndUpdate))
+			end)
+		end).toErrorDev({
+			"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
+				.. "WillMountAndUpdate uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
+				.. "  componentWillMount\n"
+				.. "  UNSAFE_componentWillUpdate\n\n"
+				.. "The above lifecycles should be removed. Learn more about this warning here:\n"
+				.. "https://reactjs.org/link/unsafe-component-lifecycles",
+			"UNSAFE_componentWillUpdate in strict mode is not recommended",
+		}, { withoutStack = 1 })
+	end).toWarnDev({ "componentWillMount has been renamed" }, {
+		withoutStack = true,
+	})
+
+	local WillReceiveProps = React.Component:extend("WillReceiveProps")
+	function WillReceiveProps:init()
+		self.state = {}
+	end
+	function WillReceiveProps.getDerivedStateFromProps()
+		return nil
+	end
+	function WillReceiveProps:componentWillReceiveProps() end
+	function WillReceiveProps:render()
+		return nil
+	end
+
+	jestExpect(function()
+		jestExpect(function()
+			ReactNoop.act(function()
+				ReactNoop.render(React.createElement(WillReceiveProps))
+			end)
+		end).toErrorDev(
+			"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
+				.. "WillReceiveProps uses getDerivedStateFromProps() but also contains the following legacy lifecycles:\n"
+				.. "  componentWillReceiveProps\n\n"
+				.. "The above lifecycles should be removed. Learn more about this warning here:\n"
+				.. "https://reactjs.org/link/unsafe-component-lifecycles"
+		)
+	end).toWarnDev({ "componentWillReceiveProps has been renamed" }, {
+		withoutStack = true,
+	})
+end)
+
+it("should warn about deprecated lifecycles (cWM/cWRP/cWU) if new getSnapshotBeforeUpdate is present", function()
+	local AllLegacyLifecycles = React.Component:extend("AllLegacyLifecycles")
+	function AllLegacyLifecycles:init()
+		self.state = {}
+	end
+	function AllLegacyLifecycles:getSnapshotBeforeUpdate() end
+	function AllLegacyLifecycles:componentWillMount() end
+	function AllLegacyLifecycles:UNSAFE_componentWillReceiveProps() end
+	function AllLegacyLifecycles:componentWillUpdate() end
+	function AllLegacyLifecycles:componentDidUpdate() end
+	function AllLegacyLifecycles:render()
+		return nil
+	end
+
+	jestExpect(function()
+		jestExpect(function()
+			ReactNoop.act(function()
+				ReactNoop.render(React.createElement(AllLegacyLifecycles))
+			end)
+		end).toErrorDev({
+			"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
+				.. "AllLegacyLifecycles uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
+				.. "  componentWillMount\n"
+				.. "  UNSAFE_componentWillReceiveProps\n"
+				.. "  componentWillUpdate\n\n"
+				.. "The above lifecycles should be removed. Learn more about this warning here:\n"
+				.. "https://reactjs.org/link/unsafe-component-lifecycles",
+			"UNSAFE_componentWillReceiveProps in strict mode is not recommended",
+		}, { withoutStack = 1 })
+	end).toWarnDev({
+		"componentWillMount has been renamed",
+		"componentWillUpdate has been renamed",
+	}, { withoutStack = true })
+
+	local WillMount = React.Component:extend("WillMount")
+	function WillMount:init()
+		self.state = {}
+	end
+	function WillMount:getSnapshotBeforeUpdate() end
+	function WillMount:UNSAFE_componentWillMount() end
+	function WillMount:componentDidUpdate() end
+	function WillMount:render()
+		return nil
+	end
+
+	jestExpect(function()
+		ReactNoop.act(function()
+			ReactNoop.render(React.createElement(WillMount))
+		end)
+	end).toErrorDev({
+		"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
+			.. "WillMount uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
+			.. "  UNSAFE_componentWillMount\n\n"
+			.. "The above lifecycles should be removed. Learn more about this warning here:\n"
+			.. "https://reactjs.org/link/unsafe-component-lifecycles",
+		"UNSAFE_componentWillMount in strict mode is not recommended",
+	}, { withoutStack = 1 })
+
+	local WillMountAndUpdate = React.Component:extend("WillMountAndUpdate")
+	function WillMountAndUpdate:init()
+		self.state = {}
+	end
+	function WillMountAndUpdate:getSnapshotBeforeUpdate() end
+	function WillMountAndUpdate:componentWillMount() end
+	function WillMountAndUpdate:UNSAFE_componentWillUpdate() end
+	function WillMountAndUpdate:componentDidUpdate() end
+	function WillMountAndUpdate:render()
+		return nil
+	end
+
+	jestExpect(function()
+		jestExpect(function()
+			ReactNoop.act(function()
+				ReactNoop.render(React.createElement(WillMountAndUpdate))
+			end)
+		end).toErrorDev({
+			"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
+				.. "WillMountAndUpdate uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
+				.. "  componentWillMount\n"
+				.. "  UNSAFE_componentWillUpdate\n\n"
+				.. "The above lifecycles should be removed. Learn more about this warning here:\n"
+				.. "https://reactjs.org/link/unsafe-component-lifecycles",
+			"UNSAFE_componentWillUpdate in strict mode is not recommended",
+		}, { withoutStack = 1 })
+	end).toWarnDev({ "componentWillMount has been renamed" }, {
+		withoutStack = true,
+	})
+
+	local WillReceiveProps = React.Component:extend("WillReceiveProps")
+	function WillReceiveProps:init()
+		self.state = {}
+	end
+	function WillReceiveProps:getSnapshotBeforeUpdate() end
+	function WillReceiveProps:componentWillReceiveProps() end
+	function WillReceiveProps:componentDidUpdate() end
+	function WillReceiveProps:render()
+		return nil
+	end
+
+	jestExpect(function()
+		jestExpect(function()
+			ReactNoop.act(function()
+				ReactNoop.render(React.createElement(WillReceiveProps))
+			end)
+		end).toErrorDev(
+			"Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n"
+				.. "WillReceiveProps uses getSnapshotBeforeUpdate() but also contains the following legacy lifecycles:\n"
+				.. "  componentWillReceiveProps\n\n"
+				.. "The above lifecycles should be removed. Learn more about this warning here:\n"
+				.. "https://reactjs.org/link/unsafe-component-lifecycles"
+		)
+	end).toWarnDev({ "componentWillReceiveProps has been renamed" }, {
+		withoutStack = true,
+	})
+end)
 
 --   if !require('shared/ReactFeatureFlags').disableModulePatternComponents)
 --     it('calls effects on module-pattern component', function()
@@ -1347,221 +1315,196 @@ it("should invoke both deprecated and new lifecycles if both are present", funct
 end)
 
 -- ROBLOX TODO: possibly a bug in the test due to divRef deviations, but a function state update doesn't get all the way through
-xit(
-	"should not override state with stale values if prevState is spread within getDerivedStateFromProps",
-	function()
-		local divRef = React.createRef()
-		local childInstance
-		-- ROBLOX deviation: Noop renderer doesn't udpated the divRef like reactDOM does. figure out idiomatic way to update
-		local capturedValue
+xit("should not override state with stale values if prevState is spread within getDerivedStateFromProps", function()
+	local divRef = React.createRef()
+	local childInstance
+	-- ROBLOX deviation: Noop renderer doesn't udpated the divRef like reactDOM does. figure out idiomatic way to update
+	local capturedValue
 
-		local Child = React.Component:extend("Child")
-		function Child:init()
-			self.state = { local_ = 0 }
-		end
-		function Child.getDerivedStateFromProps(nextProps, prevState)
-			prevState.remote = nextProps.remote
-			return prevState
-		end
-		function Child:updateState()
-			self:setState(function(state)
-				return { local_ = state.local_ + 1 }
-			end)
-			self.props.onChange(self, self.state.remote + 1)
-		end
-		function Child:render()
-			capturedValue = "remote:"
-				.. tostring(self.state.remote)
-				.. ", local:"
-				.. tostring(self.state.local_)
-			childInstance = self
-			local renderedDiv = React.createElement("div", {
-				onClick = self.updateState,
-				ref = divRef,
-			}, capturedValue)
-			divRef.current = renderedDiv
-			return renderedDiv
-		end
-
-		local Parent = React.Component:extend("Parent")
-		function Parent:init()
-			self.state = { value = 0 }
-		end
-		function Parent:handleChange(value)
-			self:setState({ value = value })
-		end
-		function Parent:render()
-			return React.createElement(
-				Child,
-				{ remote = self.state.value, onChange = self.handleChange }
-			)
-		end
-
-		ReactNoop.act(function()
-			ReactNoop.render(React.createElement(Parent))
-		end)
-
-		-- ROBLOX TODO: divRef doesn't get updated with Noop renderer like it does in DOM
-		-- jestExpect(divRef.current.textContent).toBe('remote:0, local:0')
-		jestExpect(capturedValue).toBe("remote:0, local:0")
-
-		ReactNoop.act(function()
-			-- Trigger setState() calls
-			childInstance:updateState()
-		end)
-		-- ROBLOX TODO: remote is still 0 on this next line
-		-- jestExpect(divRef.current.textContent).toBe('remote:1, local:1')
-		jestExpect(capturedValue).toBe("remote:1, local:1")
-
-		-- Trigger batched setState() calls
-		divRef.current.click()
-		jestExpect(divRef.current.textContent).toBe("remote:2, local:2")
+	local Child = React.Component:extend("Child")
+	function Child:init()
+		self.state = { local_ = 0 }
 	end
-)
+	function Child.getDerivedStateFromProps(nextProps, prevState)
+		prevState.remote = nextProps.remote
+		return prevState
+	end
+	function Child:updateState()
+		self:setState(function(state)
+			return { local_ = state.local_ + 1 }
+		end)
+		self.props.onChange(self, self.state.remote + 1)
+	end
+	function Child:render()
+		capturedValue = "remote:" .. tostring(self.state.remote) .. ", local:" .. tostring(self.state.local_)
+		childInstance = self
+		local renderedDiv = React.createElement("div", {
+			onClick = self.updateState,
+			ref = divRef,
+		}, capturedValue)
+		divRef.current = renderedDiv
+		return renderedDiv
+	end
 
-it(
-	"should pass the return value from getSnapshotBeforeUpdate to componentDidUpdate",
-	function()
-		local log = {}
+	local Parent = React.Component:extend("Parent")
+	function Parent:init()
+		self.state = { value = 0 }
+	end
+	function Parent:handleChange(value)
+		self:setState({ value = value })
+	end
+	function Parent:render()
+		return React.createElement(Child, { remote = self.state.value, onChange = self.handleChange })
+	end
 
-		local MyComponent = React.Component:extend("MyComponent")
-		function MyComponent:init()
-			self.state = {
-				value = 0,
-			}
-		end
-		function MyComponent.getDerivedStateFromProps(nextProps, prevState)
-			return {
-				value = prevState.value + 1,
-			}
-		end
-		function MyComponent:getSnapshotBeforeUpdate(prevProps, prevState)
-			table.insert(
-				log,
-				string.format(
-					"getSnapshotBeforeUpdate() prevProps:%s prevState:%s",
-					prevProps.value,
-					prevState.value
-				)
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(Parent))
+	end)
+
+	-- ROBLOX TODO: divRef doesn't get updated with Noop renderer like it does in DOM
+	-- jestExpect(divRef.current.textContent).toBe('remote:0, local:0')
+	jestExpect(capturedValue).toBe("remote:0, local:0")
+
+	ReactNoop.act(function()
+		-- Trigger setState() calls
+		childInstance:updateState()
+	end)
+	-- ROBLOX TODO: remote is still 0 on this next line
+	-- jestExpect(divRef.current.textContent).toBe('remote:1, local:1')
+	jestExpect(capturedValue).toBe("remote:1, local:1")
+
+	-- Trigger batched setState() calls
+	divRef.current.click()
+	jestExpect(divRef.current.textContent).toBe("remote:2, local:2")
+end)
+
+it("should pass the return value from getSnapshotBeforeUpdate to componentDidUpdate", function()
+	local log = {}
+
+	local MyComponent = React.Component:extend("MyComponent")
+	function MyComponent:init()
+		self.state = {
+			value = 0,
+		}
+	end
+	function MyComponent.getDerivedStateFromProps(nextProps, prevState)
+		return {
+			value = prevState.value + 1,
+		}
+	end
+	function MyComponent:getSnapshotBeforeUpdate(prevProps, prevState)
+		table.insert(
+			log,
+			string.format("getSnapshotBeforeUpdate() prevProps:%s prevState:%s", prevProps.value, prevState.value)
+		)
+		return "abc"
+	end
+	function MyComponent:componentDidUpdate(prevProps, prevState, snapshot)
+		table.insert(
+			log,
+			string.format(
+				"componentDidUpdate() prevProps:%s prevState:%s snapshot:%s",
+				prevProps.value,
+				prevState.value,
+				snapshot
 			)
-			return "abc"
-		end
-		function MyComponent:componentDidUpdate(prevProps, prevState, snapshot)
-			table.insert(
-				log,
-				string.format(
-					"componentDidUpdate() prevProps:%s prevState:%s snapshot:%s",
-					prevProps.value,
-					prevState.value,
-					snapshot
-				)
-			)
-		end
-		function MyComponent:render()
-			table.insert(log, "render")
+		)
+	end
+	function MyComponent:render()
+		table.insert(log, "render")
+		return nil
+	end
+
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(
+			"Frame",
+			{},
+			React.createElement(MyComponent, {
+				value = "foo",
+			})
+		))
+	end)
+	jestExpect(log).toEqual({ "render" })
+	log = {}
+
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(
+			"Frame",
+			{},
+			React.createElement(MyComponent, {
+				value = "bar",
+			})
+		))
+	end)
+	jestExpect(log).toEqual({
+		"render",
+		"getSnapshotBeforeUpdate() prevProps:foo prevState:1",
+		"componentDidUpdate() prevProps:foo prevState:1 snapshot:abc",
+	})
+	log = {}
+
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(
+			"Frame",
+			{},
+			React.createElement(MyComponent, {
+				value = "baz",
+			})
+		))
+	end)
+	jestExpect(log).toEqual({
+		"render",
+		"getSnapshotBeforeUpdate() prevProps:bar prevState:2",
+		"componentDidUpdate() prevProps:bar prevState:2 snapshot:abc",
+	})
+	log = {}
+
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement("Frame"))
+	end)
+	jestExpect(log).toEqual({})
+end)
+
+it("should pass previous state to shouldComponentUpdate even with getDerivedStateFromProps", function()
+	local divRef = React.createRef()
+	local capturedValue
+	local SimpleComponent = React.Component:extend("SimpleComponent")
+	function SimpleComponent:init(props)
+		self.state = {
+			value = props.value,
+		}
+	end
+
+	function SimpleComponent.getDerivedStateFromProps(nextProps, prevState)
+		if nextProps.value == prevState.value then
 			return nil
 		end
-
-		ReactNoop.act(function()
-			ReactNoop.render(
-				React.createElement(
-					"Frame",
-					{},
-					React.createElement(MyComponent, {
-						value = "foo",
-					})
-				)
-			)
-		end)
-		jestExpect(log).toEqual({ "render" })
-		log = {}
-
-		ReactNoop.act(function()
-			ReactNoop.render(
-				React.createElement(
-					"Frame",
-					{},
-					React.createElement(MyComponent, {
-						value = "bar",
-					})
-				)
-			)
-		end)
-		jestExpect(log).toEqual({
-			"render",
-			"getSnapshotBeforeUpdate() prevProps:foo prevState:1",
-			"componentDidUpdate() prevProps:foo prevState:1 snapshot:abc",
-		})
-		log = {}
-
-		ReactNoop.act(function()
-			ReactNoop.render(
-				React.createElement(
-					"Frame",
-					{},
-					React.createElement(MyComponent, {
-						value = "baz",
-					})
-				)
-			)
-		end)
-		jestExpect(log).toEqual({
-			"render",
-			"getSnapshotBeforeUpdate() prevProps:bar prevState:2",
-			"componentDidUpdate() prevProps:bar prevState:2 snapshot:abc",
-		})
-		log = {}
-
-		ReactNoop.act(function()
-			ReactNoop.render(React.createElement("Frame"))
-		end)
-		jestExpect(log).toEqual({})
+		return { value = nextProps.value }
 	end
-)
 
-it(
-	"should pass previous state to shouldComponentUpdate even with getDerivedStateFromProps",
-	function()
-		local divRef = React.createRef()
-		local capturedValue
-		local SimpleComponent = React.Component:extend("SimpleComponent")
-		function SimpleComponent:init(props)
-			self.state = {
-				value = props.value,
-			}
-		end
-
-		function SimpleComponent.getDerivedStateFromProps(nextProps, prevState)
-			if nextProps.value == prevState.value then
-				return nil
-			end
-			return { value = nextProps.value }
-		end
-
-		function SimpleComponent:shouldComponentUpdate(nextProps, nextState)
-			return nextState.value ~= self.state.value
-		end
-
-		function SimpleComponent:render()
-			capturedValue = self.state.value
-			return React.createElement(
-				"Frame",
-				{ ref = divRef },
-				React.createElement("TextLabel", { Text = self.state.value })
-			)
-		end
-
-		-- ROBLOX TODO: upstream uses reactDOM renderer, which means divRef gets updated properly. figure out what can work for Noop
-		ReactNoop.act(function()
-			ReactNoop.render(React.createElement(SimpleComponent, { value = "initial" }))
-		end)
-		jestExpect(capturedValue).toBe("initial")
-		ReactNoop.act(function()
-			ReactNoop.render(React.createElement(SimpleComponent, { value = "updated" }))
-		end)
-		jestExpect(capturedValue).toBe("updated")
+	function SimpleComponent:shouldComponentUpdate(nextProps, nextState)
+		return nextState.value ~= self.state.value
 	end
-)
+
+	function SimpleComponent:render()
+		capturedValue = self.state.value
+		return React.createElement(
+			"Frame",
+			{ ref = divRef },
+			React.createElement("TextLabel", { Text = self.state.value })
+		)
+	end
+
+	-- ROBLOX TODO: upstream uses reactDOM renderer, which means divRef gets updated properly. figure out what can work for Noop
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(SimpleComponent, { value = "initial" }))
+	end)
+	jestExpect(capturedValue).toBe("initial")
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(SimpleComponent, { value = "updated" }))
+	end)
+	jestExpect(capturedValue).toBe("updated")
+end)
 
 --   -- ROBLOX TODO? Don't think we can convert this, since it relies on refs and DOM objects
 --   xit('should call getSnapshotBeforeUpdate before mutations are committed', function()
@@ -1625,32 +1568,29 @@ it(
 --     ReactDOM.render(<MyComponent value="baz" />, div)
 --   })
 
-it(
-	"should warn if getSnapshotBeforeUpdate is defined with no componentDidUpdate",
-	function()
-		local MyComponent = React.Component:extend("MyComponent")
-		function MyComponent:getSnapshotBeforeUpdate()
-			return nil
-		end
-		function MyComponent:render()
-			return nil
-		end
+it("should warn if getSnapshotBeforeUpdate is defined with no componentDidUpdate", function()
+	local MyComponent = React.Component:extend("MyComponent")
+	function MyComponent:getSnapshotBeforeUpdate()
+		return nil
+	end
+	function MyComponent:render()
+		return nil
+	end
 
-		jestExpect(function()
-			ReactNoop.act(function()
-				ReactNoop.render(React.createElement(MyComponent))
-			end)
-		end).toErrorDev(
-			"MyComponent: getSnapshotBeforeUpdate() should be used with componentDidUpdate(). "
-				.. "This component defines getSnapshotBeforeUpdate() only."
-		)
-
-		-- De-duped
+	jestExpect(function()
 		ReactNoop.act(function()
 			ReactNoop.render(React.createElement(MyComponent))
 		end)
-	end
-)
+	end).toErrorDev(
+		"MyComponent: getSnapshotBeforeUpdate() should be used with componentDidUpdate(). "
+			.. "This component defines getSnapshotBeforeUpdate() only."
+	)
+
+	-- De-duped
+	ReactNoop.act(function()
+		ReactNoop.render(React.createElement(MyComponent))
+	end)
+end)
 
 it("warns about deprecated unsafe lifecycles", function()
 	local MyComponent = React.Component:extend("MyComponent")

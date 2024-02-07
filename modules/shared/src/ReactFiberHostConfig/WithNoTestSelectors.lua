@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @flow
-<<<<<<< HEAD
 ]]
 
 local invariant = require("../invariant")
@@ -20,25 +19,6 @@ local function shim(...)
 		"The current renderer does not support test selectors. "
 			.. "This error is likely caused by a bug in React. "
 			.. "Please file an issue."
-=======
- ]]
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Error = LuauPolyfill.Error
-local exports = {}
--- Renderers that don't support test selectors
--- can re-export everything from this module.
-local function shim(
-	...: any --[[ ROBLOX CHECK: check correct type of elements. Upstream type: <any> ]]
-)
-	local args = { ... }
-	error(
-		Error.new(
-			"The current renderer does not support test selectors. "
-				.. "This error is likely caused by a bug in React. "
-				.. "Please file an issue."
-		)
->>>>>>> upstream-apply
 	)
 end
 

@@ -17,16 +17,11 @@ describe("bridge", function()
 	local Bridge
 
 	beforeEach(function()
-<<<<<<< HEAD
 		jest.resetModules()
 		jest.useFakeTimers()
 		Bridge = require("./bridge")
 	end)
 
-=======
-		Bridge = require_("react-devtools-shared/src/bridge").default
-	end) -- @reactVersion >=16.0
->>>>>>> upstream-apply
 	it("should shutdown properly", function()
 		local wall = {
 			listen = jest.fn(function()

@@ -31,13 +31,8 @@ exports.cleanForBridge = function(
 	if data ~= nil then
 		local cleanedPaths: Array<Array<string | number>> = {}
 		local unserializablePaths: Array<Array<string | number>> = {}
-		local cleanedData = dehydrate(
-			data :: Object,
-			cleanedPaths,
-			unserializablePaths,
-			path :: Array<string | number>,
-			isPathAllowed
-		)
+		local cleanedData =
+			dehydrate(data :: Object, cleanedPaths, unserializablePaths, path :: Array<string | number>, isPathAllowed)
 		return {
 			data = cleanedData,
 			cleaned = cleanedPaths,

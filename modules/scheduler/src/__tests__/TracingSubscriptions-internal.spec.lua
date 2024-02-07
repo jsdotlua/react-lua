@@ -122,21 +122,18 @@ describe("TracingSubscriptions", function()
 		beforeEach(function()
 			return loadModules({ enableSchedulerTracing = true })
 		end)
-		it(
-			"should lazily subscribe to tracing and unsubscribe again if there are no external subscribers",
-			function()
-				loadModules({ enableSchedulerTracing = true, autoSubscribe = false })
-				jestExpect(SchedulerTracing.__subscriberRef.current).toBe(nil)
-				SchedulerTracing.unstable_subscribe(firstSubscriber)
-				jestExpect(SchedulerTracing.__subscriberRef.current).toBeDefined()
-				SchedulerTracing.unstable_subscribe(secondSubscriber)
-				jestExpect(SchedulerTracing.__subscriberRef.current).toBeDefined()
-				SchedulerTracing.unstable_unsubscribe(secondSubscriber)
-				jestExpect(SchedulerTracing.__subscriberRef.current).toBeDefined()
-				SchedulerTracing.unstable_unsubscribe(firstSubscriber)
-				jestExpect(SchedulerTracing.__subscriberRef.current).toBe(nil)
-			end
-		)
+		it("should lazily subscribe to tracing and unsubscribe again if there are no external subscribers", function()
+			loadModules({ enableSchedulerTracing = true, autoSubscribe = false })
+			jestExpect(SchedulerTracing.__subscriberRef.current).toBe(nil)
+			SchedulerTracing.unstable_subscribe(firstSubscriber)
+			jestExpect(SchedulerTracing.__subscriberRef.current).toBeDefined()
+			SchedulerTracing.unstable_subscribe(secondSubscriber)
+			jestExpect(SchedulerTracing.__subscriberRef.current).toBeDefined()
+			SchedulerTracing.unstable_unsubscribe(secondSubscriber)
+			jestExpect(SchedulerTracing.__subscriberRef.current).toBeDefined()
+			SchedulerTracing.unstable_unsubscribe(firstSubscriber)
+			jestExpect(SchedulerTracing.__subscriberRef.current).toBe(nil)
+		end)
 		describe("error handling", function()
 			it("should cover onInteractionTraced/onWorkStarted within", function()
 				SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
@@ -145,23 +142,13 @@ describe("TracingSubscriptions", function()
 					-- It should call the callback before re-throwing
 					throwInOnInteractionTraced = true
 					jestExpect(function()
-						return SchedulerTracing.unstable_trace(
-							secondEvent.name,
-							currentTime,
-							mock,
-							threadID
-						)
+						return SchedulerTracing.unstable_trace(secondEvent.name, currentTime, mock, threadID)
 					end).toThrow("Expected error onInteractionTraced")
 					throwInOnInteractionTraced = false
 					jestExpect(mock).toHaveBeenCalledTimes(1)
 					throwInOnWorkStarted = true
 					jestExpect(function()
-						return SchedulerTracing.unstable_trace(
-							secondEvent.name,
-							currentTime,
-							mock,
-							threadID
-						)
+						return SchedulerTracing.unstable_trace(secondEvent.name, currentTime, mock, threadID)
 					end).toThrow("Expected error onWorkStarted")
 					jestExpect(mock).toHaveBeenCalledTimes(2)
 
@@ -171,9 +158,7 @@ describe("TracingSubscriptions", function()
 					})
 
 					-- It should call other subscribers despite the earlier error
-					jestExpect(secondSubscriber.onInteractionTraced).toHaveBeenCalledTimes(
-						3
-					)
+					jestExpect(secondSubscriber.onInteractionTraced).toHaveBeenCalledTimes(3)
 					jestExpect(secondSubscriber.onWorkStarted).toHaveBeenCalledTimes(3)
 				end)
 			end)
@@ -181,18 +166,13 @@ describe("TracingSubscriptions", function()
 				SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
 					local innerInteraction
 					local mock = jest.fn(function()
-						innerInteraction =
-							SchedulerTracing.unstable_getCurrent()._array[2] --[[ ROBLOX adaptation: added 1 to array index ]]
+						innerInteraction = SchedulerTracing.unstable_getCurrent()._array[2] --[[ ROBLOX adaptation: added 1 to array index ]]
 					end)
 
 					throwInOnWorkStopped = true
 
 					jestExpect(function()
-						return SchedulerTracing.unstable_trace(
-							secondEvent.name,
-							currentTime,
-							mock
-						)
+						return SchedulerTracing.unstable_trace(secondEvent.name, currentTime, mock)
 					end).toThrow("Expected error onWorkStopped")
 					throwInOnWorkStopped = false
 
@@ -213,34 +193,22 @@ describe("TracingSubscriptions", function()
 					local mock = jest.fn()
 					throwInOnInteractionScheduledWorkCompleted = true
 					jestExpect(function()
-						return SchedulerTracing.unstable_trace(
-							secondEvent.name,
-							currentTime,
-							mock
-						)
-					end).toThrow(
-						"Expected error onInteractionScheduledWorkCompleted"
-					)
+						return SchedulerTracing.unstable_trace(secondEvent.name, currentTime, mock)
+					end).toThrow("Expected error onInteractionScheduledWorkCompleted")
 					throwInOnInteractionScheduledWorkCompleted = false
 					jestExpect(SchedulerTracing.unstable_getCurrent()).toMatchInteractions({
 						firstEvent,
 					})
-					jestExpect(secondSubscriber.onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(
-						1
-					)
+					jestExpect(secondSubscriber.onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
 				end)
 			end)
 			it("should cover the callback within trace", function()
 				jestExpect(onWorkStarted).never.toHaveBeenCalled()
 				jestExpect(onWorkStopped).never.toHaveBeenCalled()
 				jestExpect(function()
-					SchedulerTracing.unstable_trace(
-						firstEvent.name,
-						currentTime,
-						function()
-							error("Expected error callback")
-						end
-					)
+					SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
+						error("Expected error callback")
+					end)
 				end).toThrow("Expected error callback")
 				jestExpect(onWorkStarted).toHaveBeenCalledTimes(1)
 				jestExpect(onWorkStopped).toHaveBeenCalledTimes(1)
@@ -278,25 +246,19 @@ describe("TracingSubscriptions", function()
 			it("should cover onWorkStopped within wrap", function()
 				SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
 					-- ROBLOX FIXME: Array.from() polyfill doesn't recognize Set correctly
-					local outerInteraction =
-						SchedulerTracing.unstable_getCurrent()._array[1] --[[ ROBLOX adaptation: added 1 to array index ]]
+					local outerInteraction = SchedulerTracing.unstable_getCurrent()._array[1] --[[ ROBLOX adaptation: added 1 to array index ]]
 					jestExpect(outerInteraction.__count).toBe(1)
 					local wrapped
 					local innerInteraction
-					SchedulerTracing.unstable_trace(
-						secondEvent.name,
-						currentTime,
-						function()
-							-- ROBLOX FIXME: Array.from() polyfill doesn't recognize Set correctly
-							innerInteraction =
-								SchedulerTracing.unstable_getCurrent()._array[2] --[[ ROBLOX adaptation: added 1 to array index ]]
-							jestExpect(outerInteraction.__count).toBe(1)
-							jestExpect(innerInteraction.__count).toBe(1)
-							wrapped = SchedulerTracing.unstable_wrap(jest.fn())
-							jestExpect(outerInteraction.__count).toBe(2)
-							jestExpect(innerInteraction.__count).toBe(2)
-						end
-					)
+					SchedulerTracing.unstable_trace(secondEvent.name, currentTime, function()
+						-- ROBLOX FIXME: Array.from() polyfill doesn't recognize Set correctly
+						innerInteraction = SchedulerTracing.unstable_getCurrent()._array[2] --[[ ROBLOX adaptation: added 1 to array index ]]
+						jestExpect(outerInteraction.__count).toBe(1)
+						jestExpect(innerInteraction.__count).toBe(1)
+						wrapped = SchedulerTracing.unstable_wrap(jest.fn())
+						jestExpect(outerInteraction.__count).toBe(2)
+						jestExpect(innerInteraction.__count).toBe(2)
+					end)
 					jestExpect(outerInteraction.__count).toBe(2)
 					jestExpect(innerInteraction.__count).toBe(1)
 					throwInOnWorkStopped = true
@@ -353,9 +315,7 @@ describe("TracingSubscriptions", function()
 				end).toThrow("Expected error onWorkCanceled")
 				jestExpect(onWorkCanceled).toHaveBeenCalledTimes(1)
 				jestExpect(interaction.__count).toBe(0)
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(
-					firstEvent
-				)
+				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(firstEvent)
 				jestExpect(secondSubscriber.onWorkCanceled).toHaveBeenCalledTimes(1)
 			end)
 		end)
@@ -364,22 +324,15 @@ describe("TracingSubscriptions", function()
 			jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
 			SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
 				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(
-					firstEvent
-				)
+				jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(firstEvent)
 				jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
 				jestExpect(onWorkStarted).toHaveBeenCalledTimes(1)
-				jestExpect(onWorkStarted).toHaveBeenLastNotifiedOfWork(
-					Set.new({ firstEvent }),
-					threadID
-				)
+				jestExpect(onWorkStarted).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent }), threadID)
 				jestExpect(onWorkStopped).never.toHaveBeenCalled()
 
 				SchedulerTracing.unstable_trace(secondEvent.name, currentTime, function()
 					jestExpect(onInteractionTraced).toHaveBeenCalledTimes(2)
-					jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(
-						secondEvent
-					)
+					jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(secondEvent)
 					jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
 					jestExpect(onWorkStarted).toHaveBeenCalledTimes(2)
 					jestExpect(onWorkStarted).toHaveBeenLastNotifiedOfWork(
@@ -389,41 +342,27 @@ describe("TracingSubscriptions", function()
 					jestExpect(onWorkStopped).never.toHaveBeenCalled()
 				end, threadID)
 				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(
-					secondEvent
-				)
+				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(secondEvent)
 				jestExpect(onWorkStopped).toHaveBeenCalledTimes(1)
-				jestExpect(onWorkStopped).toHaveBeenLastNotifiedOfWork(
-					Set.new({ firstEvent, secondEvent }),
-					threadID
-				)
+				jestExpect(onWorkStopped).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent, secondEvent }), threadID)
 			end, threadID)
 			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(2)
-			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(
-				firstEvent
-			)
+			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(firstEvent)
 			jestExpect(onWorkScheduled).never.toHaveBeenCalled()
 			jestExpect(onWorkCanceled).never.toHaveBeenCalled()
 			jestExpect(onWorkStarted).toHaveBeenCalledTimes(2)
 			jestExpect(onWorkStopped).toHaveBeenCalledTimes(2)
-			jestExpect(onWorkStopped).toHaveBeenLastNotifiedOfWork(
-				Set.new({ firstEvent }),
-				threadID
-			)
+			jestExpect(onWorkStopped).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent }), threadID)
 		end)
 		it("calls lifecycle methods for wrap", function()
 			local unwrapped = jest.fn()
 			local wrapped
 			SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
 				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(
-					firstEvent
-				)
+				jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(firstEvent)
 				SchedulerTracing.unstable_trace(secondEvent.name, currentTime, function()
 					jestExpect(onInteractionTraced).toHaveBeenCalledTimes(2)
-					jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(
-						secondEvent
-					)
+					jestExpect(onInteractionTraced).toHaveBeenLastNotifiedOfInteraction(secondEvent)
 					wrapped = SchedulerTracing.unstable_wrap(unwrapped, threadID)
 					jestExpect(onWorkScheduled).toHaveBeenCalledTimes(1)
 					jestExpect(onWorkScheduled).toHaveBeenLastNotifiedOfWork(
@@ -439,75 +378,48 @@ describe("TracingSubscriptions", function()
 			jestExpect(onWorkScheduled).toHaveBeenCalledTimes(1)
 			jestExpect(onWorkCanceled).never.toHaveBeenCalled()
 			jestExpect(onWorkStarted).toHaveBeenCalledTimes(3)
-			jestExpect(onWorkStarted).toHaveBeenLastNotifiedOfWork(
-				Set.new({ firstEvent, secondEvent }),
-				threadID
-			)
+			jestExpect(onWorkStarted).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent, secondEvent }), threadID)
 			jestExpect(onWorkStopped).toHaveBeenCalledTimes(3)
-			jestExpect(onWorkStopped).toHaveBeenLastNotifiedOfWork(
-				Set.new({ firstEvent, secondEvent }),
-				threadID
-			)
+			jestExpect(onWorkStopped).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent, secondEvent }), threadID)
 			jestExpect(onInteractionScheduledWorkCompleted
 				.mock
 				.calls
 				[1] --[[ ROBLOX adaptation: added 1 to array index ]]
-				[1] --[[ ROBLOX adaptation: added 1 to array index ]]).toMatchInteraction(
-				firstEvent
-			)
+				[1] --[[ ROBLOX adaptation: added 1 to array index ]]).toMatchInteraction(firstEvent)
 			jestExpect(onInteractionScheduledWorkCompleted
 				.mock
 				.calls
 				[2] --[[ ROBLOX adaptation: added 1 to array index ]]
-				[1] --[[ ROBLOX adaptation: added 1 to array index ]]).toMatchInteraction(
-				secondEvent
-			)
+				[1] --[[ ROBLOX adaptation: added 1 to array index ]]).toMatchInteraction(secondEvent)
 		end)
-		it(
-			"should call the correct interaction subscriber methods when a wrapped callback is canceled",
-			function()
-				local fnOne = jest.fn()
-				local fnTwo = jest.fn()
-				local wrappedOne, wrappedTwo
-				SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
-					wrappedOne = SchedulerTracing.unstable_wrap(fnOne, threadID)
-					SchedulerTracing.unstable_trace(
-						secondEvent.name,
-						currentTime,
-						function()
-							wrappedTwo = SchedulerTracing.unstable_wrap(fnTwo, threadID)
-						end
-					)
+		it("should call the correct interaction subscriber methods when a wrapped callback is canceled", function()
+			local fnOne = jest.fn()
+			local fnTwo = jest.fn()
+			local wrappedOne, wrappedTwo
+			SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
+				wrappedOne = SchedulerTracing.unstable_wrap(fnOne, threadID)
+				SchedulerTracing.unstable_trace(secondEvent.name, currentTime, function()
+					wrappedTwo = SchedulerTracing.unstable_wrap(fnTwo, threadID)
 				end)
-				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(2)
-				jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
-				jestExpect(onWorkCanceled).never.toHaveBeenCalled()
-				jestExpect(onWorkStarted).toHaveBeenCalledTimes(2)
-				jestExpect(onWorkStopped).toHaveBeenCalledTimes(2)
-				wrappedTwo:cancel()
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(
-					secondEvent
-				)
-				jestExpect(onWorkCanceled).toHaveBeenCalledTimes(1)
-				jestExpect(onWorkCanceled).toHaveBeenLastNotifiedOfWork(
-					Set.new({ firstEvent, secondEvent }),
-					threadID
-				)
-				wrappedOne:cancel()
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(2)
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(
-					firstEvent
-				)
-				jestExpect(onWorkCanceled).toHaveBeenCalledTimes(2)
-				jestExpect(onWorkCanceled).toHaveBeenLastNotifiedOfWork(
-					Set.new({ firstEvent }),
-					threadID
-				)
-				jestExpect(fnOne).never.toHaveBeenCalled()
-				jestExpect(fnTwo).never.toHaveBeenCalled()
-			end
-		)
+			end)
+			jestExpect(onInteractionTraced).toHaveBeenCalledTimes(2)
+			jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
+			jestExpect(onWorkCanceled).never.toHaveBeenCalled()
+			jestExpect(onWorkStarted).toHaveBeenCalledTimes(2)
+			jestExpect(onWorkStopped).toHaveBeenCalledTimes(2)
+			wrappedTwo:cancel()
+			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
+			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(secondEvent)
+			jestExpect(onWorkCanceled).toHaveBeenCalledTimes(1)
+			jestExpect(onWorkCanceled).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent, secondEvent }), threadID)
+			wrappedOne:cancel()
+			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(2)
+			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(firstEvent)
+			jestExpect(onWorkCanceled).toHaveBeenCalledTimes(2)
+			jestExpect(onWorkCanceled).toHaveBeenLastNotifiedOfWork(Set.new({ firstEvent }), threadID)
+			jestExpect(fnOne).never.toHaveBeenCalled()
+			jestExpect(fnTwo).never.toHaveBeenCalled()
+		end)
 		it(
 			"should not end an interaction twice if wrap is used to schedule follow up work within another wrap",
 			function()
@@ -527,39 +439,32 @@ describe("TracingSubscriptions", function()
 				wrappedTwo()
 				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
 				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(
-					firstEvent
-				)
+				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(firstEvent)
 			end
 		)
-		it(
-			"should not decrement the interaction count twice if a wrapped function is run twice",
-			function()
-				local unwrappedOne = jest.fn()
-				local unwrappedTwo = jest.fn()
-				local wrappedOne, wrappedTwo
-				SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
-					wrappedOne = SchedulerTracing.unstable_wrap(unwrappedOne, threadID)
-					wrappedTwo = SchedulerTracing.unstable_wrap(unwrappedTwo, threadID)
-				end)
-				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
-				wrappedOne()
-				jestExpect(unwrappedOne).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
-				wrappedOne()
-				jestExpect(unwrappedOne).toHaveBeenCalledTimes(2)
-				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
-				wrappedTwo()
-				jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
-				jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(
-					firstEvent
-				)
-			end
-		)
+		it("should not decrement the interaction count twice if a wrapped function is run twice", function()
+			local unwrappedOne = jest.fn()
+			local unwrappedTwo = jest.fn()
+			local wrappedOne, wrappedTwo
+			SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function()
+				wrappedOne = SchedulerTracing.unstable_wrap(unwrappedOne, threadID)
+				wrappedTwo = SchedulerTracing.unstable_wrap(unwrappedTwo, threadID)
+			end)
+			jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
+			jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
+			wrappedOne()
+			jestExpect(unwrappedOne).toHaveBeenCalledTimes(1)
+			jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
+			jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
+			wrappedOne()
+			jestExpect(unwrappedOne).toHaveBeenCalledTimes(2)
+			jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
+			jestExpect(onInteractionScheduledWorkCompleted).never.toHaveBeenCalled()
+			wrappedTwo()
+			jestExpect(onInteractionTraced).toHaveBeenCalledTimes(1)
+			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(1)
+			jestExpect(onInteractionScheduledWorkCompleted).toHaveBeenLastNotifiedOfInteraction(firstEvent)
+		end)
 		it("should unsubscribe", function()
 			SchedulerTracing.unstable_unsubscribe(firstSubscriber)
 			SchedulerTracing.unstable_trace(firstEvent.name, currentTime, function() end)

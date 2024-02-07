@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react/src/__tests__/forwardRef-test.internal.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/__tests__/forwardRef-test.internal.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -43,17 +43,11 @@ it("should work without a ref to be forwarded", function()
 	end
 
 	local function Wrapper(props)
-		return React.createElement(
-			Child,
-			Object.assign({}, props, { ref = props.forwardedRef })
-		)
+		return React.createElement(Child, Object.assign({}, props, { ref = props.forwardedRef }))
 	end
 
 	local RefForwardingComponent = React.forwardRef(function(props, ref)
-		return React.createElement(
-			Wrapper,
-			Object.assign({}, props, { forwardedRef = ref })
-		)
+		return React.createElement(Wrapper, Object.assign({}, props, { forwardedRef = ref }))
 	end)
 
 	ReactNoop.render(React.createElement(RefForwardingComponent, { value = 123 }))
@@ -68,24 +62,16 @@ it("should forward a ref for a single child", function()
 	end
 
 	local function Wrapper(props)
-		return React.createElement(
-			Child,
-			Object.assign({}, props, { ref = props.forwardedRef })
-		)
+		return React.createElement(Child, Object.assign({}, props, { ref = props.forwardedRef }))
 	end
 
 	local RefForwardingComponent = React.forwardRef(function(props, ref)
-		return React.createElement(
-			Wrapper,
-			Object.assign({}, props, { forwardedRef = ref })
-		)
+		return React.createElement(Wrapper, Object.assign({}, props, { forwardedRef = ref }))
 	end)
 
 	local ref = React.createRef()
 
-	ReactNoop.render(
-		React.createElement(RefForwardingComponent, { ref = ref, value = 123 })
-	)
+	ReactNoop.render(React.createElement(RefForwardingComponent, { ref = ref, value = 123 }))
 	jestExpect(Scheduler).toFlushAndYield({ 123 })
 	-- jestExpect(Object.instanceof(ref.current, Child)).toBe(true)
 	jestExpect(getmetatable(ref.current).__index).toBe(Child)
@@ -99,17 +85,11 @@ it("should forward a ref for multiple children", function()
 	end
 
 	local function Wrapper(props)
-		return React.createElement(
-			Child,
-			Object.assign({}, props, { ref = props.forwardedRef })
-		)
+		return React.createElement(Child, Object.assign({}, props, { ref = props.forwardedRef }))
 	end
 
 	local RefForwardingComponent = React.forwardRef(function(props, ref)
-		return React.createElement(
-			Wrapper,
-			Object.assign({}, props, { forwardedRef = ref })
-		)
+		return React.createElement(Wrapper, Object.assign({}, props, { forwardedRef = ref }))
 	end)
 
 	local ref = React.createRef()
@@ -137,17 +117,11 @@ it("should maintain child instance and ref through updates", function()
 	end
 
 	local function Wrapper(props)
-		return React.createElement(
-			Child,
-			Object.assign({}, props, { ref = props.forwardedRef })
-		)
+		return React.createElement(Child, Object.assign({}, props, { ref = props.forwardedRef }))
 	end
 
 	local RefForwardingComponent = React.forwardRef(function(props, ref)
-		return React.createElement(
-			Wrapper,
-			Object.assign({}, props, { forwardedRef = ref })
-		)
+		return React.createElement(Wrapper, Object.assign({}, props, { forwardedRef = ref }))
 	end)
 
 	local setRefCount = 0
@@ -158,17 +132,13 @@ it("should maintain child instance and ref through updates", function()
 		ref = r
 	end
 
-	ReactNoop.render(
-		React.createElement(RefForwardingComponent, { ref = setRef, value = 123 })
-	)
+	ReactNoop.render(React.createElement(RefForwardingComponent, { ref = setRef, value = 123 }))
 	jestExpect(Scheduler).toFlushAndYield({ 123 })
 	-- ROBLOX FIXME: When instanceof is implemented, use it
 	-- jestExpect(Object.instanceof(ref, Child)).toBe(true)
 	jestExpect(getmetatable(ref).__index).toBe(Child)
 	jestExpect(setRefCount).toBe(1)
-	ReactNoop.render(
-		React.createElement(RefForwardingComponent, { ref = setRef, value = 456 })
-	)
+	ReactNoop.render(React.createElement(RefForwardingComponent, { ref = setRef, value = 456 }))
 	jestExpect(Scheduler).toFlushAndYield({ 456 })
 	-- ROBLOX FIXME: When instanceof is implemented, use it
 	-- jestExpect(Object.instanceof(ref, Child)).toBe(true)
@@ -203,27 +173,17 @@ it("should not break lifecycle error handling", function()
 	local function Wrapper(props)
 		local forwardedRef = props.forwardedRef
 		Scheduler.unstable_yieldValue("Wrapper")
-		return React.createElement(
-			BadRender,
-			Object.assign({}, props, { ref = forwardedRef })
-		)
+		return React.createElement(BadRender, Object.assign({}, props, { ref = forwardedRef }))
 	end
 
 	local RefForwardingComponent = React.forwardRef(function(props, ref)
-		return React.createElement(
-			Wrapper,
-			Object.assign({}, props, { forwardedRef = ref })
-		)
+		return React.createElement(Wrapper, Object.assign({}, props, { forwardedRef = ref }))
 	end)
 
 	local ref = React.createRef()
 
 	ReactNoop.render(
-		React.createElement(
-			ErrorBoundary,
-			nil,
-			React.createElement(RefForwardingComponent, { ref = ref })
-		)
+		React.createElement(ErrorBoundary, nil, React.createElement(RefForwardingComponent, { ref = ref }))
 	)
 	-- ROBLOX Test Noise: jest setup config makes this hide error
 	-- boundary warnings in upstream (scripts/jest/setupTests.js:72)
@@ -261,10 +221,7 @@ it("should not re-run the render callback on a deep setState", function()
 
 	local Forward = React.forwardRef(function(props, ref)
 		Scheduler.unstable_yieldValue("Forward")
-		return React.createElement(
-			Middle,
-			Object.assign({}, props, { forwardedRef = ref })
-		)
+		return React.createElement(Middle, Object.assign({}, props, { forwardedRef = ref }))
 	end)
 
 	local function App()

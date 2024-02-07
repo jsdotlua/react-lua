@@ -1,5 +1,4 @@
-<<<<<<< HEAD
--- ROBLOX upstream: https://github.com/facebook/react/blob/d13f5b9538e48f74f7c571ef3cde652ca887cca0/packages/react/src/__tests__/ReactStrictMode-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/__tests__/ReactStrictMode-test.js
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
 --  * This source code is licensed under the MIT license found in the
@@ -7,29 +6,12 @@
 --  *
 --  * @emails react-core
 --!strict
-=======
--- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/__tests__/ReactStrictMode-test.js
---[[*
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @emails react-core
- ]]
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Boolean = LuauPolyfill.Boolean
-local console = LuauPolyfill.console
-type Object = LuauPolyfill.Object
->>>>>>> upstream-apply
 
 local Packages = script.Parent.Parent.Parent
 local React
-<<<<<<< HEAD
 local ReactNoop
 -- local ReactDOM
--- local ReactDOMServer
+local ReactDOMServer
 local Scheduler
 -- local PropTypes
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
@@ -57,48 +39,6 @@ describe("ReactStrictMode", function()
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
-=======
-local ReactDOM
-local ReactDOMClient
-local ReactDOMServer
-local Scheduler
-local PropTypes
-local ReactFeatureFlags = require_("shared/ReactFeatureFlags")
-describe("ReactStrictMode", function()
-	beforeEach(function()
-		jest.resetModules()
-		React = require_("react")
-		ReactDOM = require_("react-dom")
-		ReactDOMClient = require_("react-dom/client")
-		ReactDOMServer = require_("react-dom/server")
-	end)
-	it("should appear in the client component stack", function()
-		local function Foo()
-			return React.createElement("div", { ariaTypo = "" })
-		end
-		local container = document:createElement("div")
-		expect(function()
-			ReactDOM:render(React.createElement(React.StrictMode, nil, React.createElement(Foo, nil)), container)
-		end).toErrorDev(
-			"Invalid ARIA attribute `ariaTypo`. "
-				.. "ARIA attributes follow the pattern aria-* and must be lowercase.\n"
-				.. "    in div (at **)\n"
-				.. "    in Foo (at **)"
-		)
-	end)
-	it("should appear in the SSR component stack", function()
-		local function Foo()
-			return React.createElement("div", { ariaTypo = "" })
-		end
-		expect(function()
-			ReactDOMServer:renderToString(React.createElement(React.StrictMode, nil, React.createElement(Foo, nil)))
-		end).toErrorDev(
-			"Invalid ARIA attribute `ariaTypo`. "
-				.. "ARIA attributes follow the pattern aria-* and must be lowercase.\n"
-				.. "    in div (at **)\n"
-				.. "    in Foo (at **)"
-		)
->>>>>>> upstream-apply
 	end)
 	-- ROBLOX TODO: Untranslated ReactDOMInvalidARIAHook file throws the error this test checks
 	-- xit('should appear in the client component stack', function()
@@ -465,7 +405,6 @@ end)
 describe("Concurrent Mode", function()
 	beforeEach(function()
 		jest.resetModules()
-<<<<<<< HEAD
 		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
@@ -478,66 +417,11 @@ describe("Concurrent Mode", function()
 		function()
 			local function Wrapper(props)
 				local children = props.children
-=======
-		React = require_("react")
-		ReactDOM = require_("react-dom")
-		ReactDOMClient = require_("react-dom/client")
-		Scheduler = require_("scheduler")
-	end)
-	it("should warn about unsafe legacy lifecycle methods anywhere in a StrictMode tree", function()
-		local function StrictRoot()
-			return React.createElement(React.StrictMode, nil, React.createElement(App, nil))
-		end
-		type App = React_Component<any, any> & {}
-		type App_statics = {}
-		local App = React.Component:extend("App") :: App & App_statics
-		function App.UNSAFE_componentWillMount(self: App) end
-		function App.UNSAFE_componentWillUpdate(self: App) end
-		function App.render(self: App)
-			return React.createElement(
-				"div",
-				nil,
-				React.createElement(Wrapper, nil, React.createElement(Foo, nil)),
-				React.createElement("div", nil, React.createElement(Bar, nil), React.createElement(Foo, nil))
-			)
-		end
-		local function Wrapper(ref0)
-			local children = ref0.children
-			return React.createElement("div", nil, children)
-		end
-		type Foo = React_Component<any, any> & {}
-		type Foo_statics = {}
-		local Foo = React.Component:extend("Foo") :: Foo & Foo_statics
-		function Foo.UNSAFE_componentWillReceiveProps(self: Foo) end
-		function Foo.render(self: Foo)
-			return nil
-		end
-		type Bar = React_Component<any, any> & {}
-		type Bar_statics = {}
-		local Bar = React.Component:extend("Bar") :: Bar & Bar_statics
-		function Bar.UNSAFE_componentWillReceiveProps(self: Bar) end
-		function Bar.render(self: Bar)
-			return nil
-		end
-		local container = document:createElement("div")
-		local root = ReactDOMClient:createRoot(container)
-		root:render(React.createElement(StrictRoot, nil))
-		expect(function()
-			return Scheduler:unstable_flushAll()
-		end).toErrorDev({
-			--[[ eslint-disable max-len ]]
-			[[Warning: Using UNSAFE_componentWillMount in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.
->>>>>>> upstream-apply
 
 				return React.createElement("div", nil, children)
 			end
 
-<<<<<<< HEAD
 			local Foo = React.Component:extend("Foo")
-=======
-Please update the following components: App]],
-			[[Warning: Using UNSAFE_componentWillReceiveProps in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.
->>>>>>> upstream-apply
 
 			function Foo:UNSAFE_componentWillReceiveProps() end
 			function Foo:render()
@@ -551,7 +435,6 @@ Please update the following components: App]],
 				return nil
 			end
 
-<<<<<<< HEAD
 			local AsyncRoot = React.Component:extend("AsyncRoot")
 
 			function AsyncRoot:UNSAFE_componentWillMount() end
@@ -576,55 +459,12 @@ Please update the following components: App]],
 			root.render(React.createElement(AsyncRoot))
 			jestExpect(function()
 				return Scheduler.unstable_flushAll()
-=======
-Please update the following components: App]],
-			--[[ eslint-enable max-len ]]
-		}, { withoutStack = true }) -- Dedupe
-		root:render(React.createElement(App, nil))
-		Scheduler:unstable_flushAll()
-	end)
-	it("should coalesce warnings by lifecycle name", function()
-		local function StrictRoot()
-			return React.createElement(React.StrictMode, nil, React.createElement(App, nil))
-		end
-		type App = React_Component<any, any> & {}
-		type App_statics = {}
-		local App = React.Component:extend("App") :: App & App_statics
-		function App.UNSAFE_componentWillMount(self: App) end
-		function App.UNSAFE_componentWillUpdate(self: App) end
-		function App.render(self: App)
-			return React.createElement(Parent, nil)
-		end
-		type Parent = React_Component<any, any> & {}
-		type Parent_statics = {}
-		local Parent = React.Component:extend("Parent") :: Parent & Parent_statics
-		function Parent.componentWillMount(self: Parent) end
-		function Parent.componentWillUpdate(self: Parent) end
-		function Parent.componentWillReceiveProps(self: Parent) end
-		function Parent.render(self: Parent)
-			return React.createElement(Child, nil)
-		end
-		type Child = React_Component<any, any> & {}
-		type Child_statics = {}
-		local Child = React.Component:extend("Child") :: Child & Child_statics
-		function Child.UNSAFE_componentWillReceiveProps(self: Child) end
-		function Child.render(self: Child)
-			return nil
-		end
-		local container = document:createElement("div")
-		local root = ReactDOMClient:createRoot(container)
-		root:render(React.createElement(StrictRoot, nil))
-		expect(function()
-			expect(function()
-				return Scheduler:unstable_flushAll()
->>>>>>> upstream-apply
 			end).toErrorDev({
 
 				[[Warning: Using UNSAFE_componentWillMount in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.
 
 * Move code with side effects to componentDidMount, and set initial state in the constructor.
 
-<<<<<<< HEAD
 Please update the following components: AsyncRoot]],
 
 				[[Warning: Using UNSAFE_componentWillReceiveProps in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.
@@ -682,9 +522,6 @@ Please update the following components: AsyncRoot]],
 
 Please update the following components: AsyncRoot]],
 
-=======
-Please update the following components: App]],
->>>>>>> upstream-apply
 				[[Warning: Using UNSAFE_componentWillReceiveProps in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.
 
 * Move data fetching code or side effects to componentDidUpdate.
@@ -696,12 +533,7 @@ Please update the following components: Child]],
 
 * Move data fetching code or side effects to componentDidUpdate.
 
-<<<<<<< HEAD
 Please update the following components: AsyncRoot]],
-=======
-Please update the following components: App]],
-				--[[ eslint-enable max-len ]]
->>>>>>> upstream-apply
 			}, { withoutStack = true })
 		end).toWarnDev({
 
@@ -726,7 +558,6 @@ Please update the following components: Parent]],
 * Rename componentWillUpdate to UNSAFE_componentWillUpdate to suppress this warning in non-strict mode. In React 18.x, only the UNSAFE_ name will work.
 
 Please update the following components: Parent]],
-<<<<<<< HEAD
 		}, { withoutStack = true })
 		root.render(React.createElement(AsyncRoot))
 		Scheduler.unstable_flushAll()
@@ -736,27 +567,6 @@ Please update the following components: Parent]],
 
 		function Foo:UNSAFE_componentWillMount() end
 		function Foo:render()
-=======
-			--[[ eslint-enable max-len ]]
-		}, { withoutStack = true }) -- Dedupe
-		root:render(React.createElement(StrictRoot, nil))
-		Scheduler:unstable_flushAll()
-	end)
-	it("should warn about components not present during the initial render", function()
-		local function StrictRoot(ref0)
-			local foo = ref0.foo
-			return React.createElement(
-				React.StrictMode,
-				nil,
-				if Boolean.toJSBoolean(foo) then React.createElement(Foo, nil) else React.createElement(Bar, nil)
-			)
-		end
-		type Foo = React_Component<any, any> & {}
-		type Foo_statics = {}
-		local Foo = React.Component:extend("Foo") :: Foo & Foo_statics
-		function Foo.UNSAFE_componentWillMount(self: Foo) end
-		function Foo.render(self: Foo)
->>>>>>> upstream-apply
 			return nil
 		end
 
@@ -766,7 +576,6 @@ Please update the following components: Parent]],
 		function Bar:render()
 			return nil
 		end
-<<<<<<< HEAD
 
 		local AsyncRoot = React.Component:extend("AsyncRoot")
 
@@ -804,22 +613,6 @@ Please update the following components: Parent]],
 
 		root.render(React.createElement(AsyncRoot, { foo = false }))
 		Scheduler.unstable_flushAll()
-=======
-		local container = document:createElement("div")
-		local root = ReactDOMClient:createRoot(container)
-		root:render(React.createElement(StrictRoot, { foo = true }))
-		expect(function()
-			return Scheduler:unstable_flushAll()
-		end).toErrorDev("Using UNSAFE_componentWillMount in strict mode is not recommended", { withoutStack = true })
-		root:render(React.createElement(StrictRoot, { foo = false }))
-		expect(function()
-			return Scheduler:unstable_flushAll()
-		end).toErrorDev("Using UNSAFE_componentWillMount in strict mode is not recommended", { withoutStack = true }) -- Dedupe
-		root:render(React.createElement(StrictRoot, { foo = true }))
-		Scheduler:unstable_flushAll()
-		root:render(React.createElement(StrictRoot, { foo = false }))
-		Scheduler:unstable_flushAll()
->>>>>>> upstream-apply
 	end)
 	it('should also warn inside of "strict" mode trees', function()
 		local StrictMode = React.StrictMode
@@ -870,18 +663,12 @@ end)
 describe("symbol checks", function()
 	beforeEach(function()
 		jest.resetModules()
-<<<<<<< HEAD
 		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
-=======
-		React = require_("react")
-		ReactDOM = require_("react-dom")
-		ReactDOMClient = require_("react-dom/client")
->>>>>>> upstream-apply
 	end)
 	it("should switch from StrictMode to a Fragment and reset state", function()
 		local Fragment, StrictMode = React.Fragment, React.StrictMode
@@ -1034,18 +821,12 @@ end)
 describe("string refs", function()
 	beforeEach(function()
 		jest.resetModules()
-<<<<<<< HEAD
 		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
 		-- ReactDOMServer = require('react-dom/server')
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
-=======
-		React = require_("react")
-		ReactDOM = require_("react-dom")
-		ReactDOMClient = require_("react-dom/client")
->>>>>>> upstream-apply
 	end)
 
 	xit("should warn within a strict tree", function()
@@ -1133,7 +914,6 @@ end)
 describe("context legacy", function()
 	beforeEach(function()
 		jest.resetModules()
-<<<<<<< HEAD
 		React = require(".")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
@@ -1141,12 +921,6 @@ describe("context legacy", function()
 		-- ReactDOMServer = require('react-dom/server')
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- PropTypes = require('prop-types')
-=======
-		React = require_("react")
-		ReactDOM = require_("react-dom")
-		ReactDOMClient = require_("react-dom/client")
-		PropTypes = require_("prop-types")
->>>>>>> upstream-apply
 	end)
 	-- ROBLOX TODO: Proptypes
 	xit("should warn if the legacy context API have been used in strict mode", function()

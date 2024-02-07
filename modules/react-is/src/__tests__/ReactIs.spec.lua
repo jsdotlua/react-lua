@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-is/src/__tests__/ReactIs-test.js
-=======
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-is/src/__tests__/ReactIs-test.js
->>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -19,16 +15,12 @@ local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
 local Object = LuauPolyfill.Object
-<<<<<<< HEAD
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 local jest = JestGlobals.jest
-=======
-local Symbol = LuauPolyfill.Symbol
->>>>>>> upstream-apply
 
 -- ROBLOX deviation START: add imports
 local Promise = require("@pkg/@jsdotlua/promise")
@@ -69,12 +61,9 @@ describe("ReactIs", function()
 		-- ROBLOX deviation START: no undefined in Lua, we only support nil
 		-- expect(ReactIs.typeOf(nil)).toBe(nil)
 		-- ROBLOX deviation END
-<<<<<<< HEAD
-=======
 		expect(ReactIs.typeOf(nil)).toBe(nil)
 		expect(ReactIs.typeOf(0 / 0)).toBe(nil)
 		expect(ReactIs.typeOf(Symbol("def"))).toBe(nil)
->>>>>>> upstream-apply
 	end)
 	it("identifies valid element types", function()
 		type Component = React_Component<any, any> & {}
@@ -87,16 +76,12 @@ describe("ReactIs", function()
 			return React.createElement("TextLabel")
 			-- ROBLOX deviation END
 		end
-<<<<<<< HEAD
-
-=======
 		type PureComponent = React_Component<any, any> & {}
 		type PureComponent_statics = {}
 		local PureComponent = React.PureComponent:extend("PureComponent") :: PureComponent & PureComponent_statics
 		function PureComponent.render(self: PureComponent)
 			return React.createElement("div")
 		end
->>>>>>> upstream-apply
 		local function FunctionComponent()
 			-- ROBLOX deviation START: replace div with TextLabel
 			-- return React.createElement("div")

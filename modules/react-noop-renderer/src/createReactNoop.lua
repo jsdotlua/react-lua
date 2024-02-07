@@ -113,10 +113,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 		table.insert(parentInstance.children, child)
 	end
 
-	local function appendChildToContainer(
-		parentInstance: Container,
-		child: Instance | TextInstance
-	): ()
+	local function appendChildToContainer(parentInstance: Container, child: Instance | TextInstance): ()
 		if typeof(parentInstance.rootID) ~= "string" then
 			-- Some calls to this aren't typesafe.
 			-- This helps surface mistakes in tests.
@@ -125,10 +122,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 		appendChildToContainerOrInstance(parentInstance, child)
 	end
 
-	local function appendChild(
-		parentInstance: Instance,
-		child: Instance | TextInstance
-	): ()
+	local function appendChild(parentInstance: Instance, child: Instance | TextInstance): ()
 		if typeof((parentInstance :: any).rootID) == "string" then
 			-- Some calls to this aren't typesafe.
 			-- This helps surface mistakes in tests.
@@ -194,14 +188,8 @@ local function createReactNoop(reconciler, useMutation: boolean)
 		Array.splice(parentInstance.children, index, 1)
 	end
 
-	local function removeChildFromContainer(
-		parentInstance: Container,
-		child: Instance | TextInstance
-	)
-		if
-			typeof(parentInstance) == "table"
-			and typeof(parentInstance.rootID) ~= "string"
-		then
+	local function removeChildFromContainer(parentInstance: Container, child: Instance | TextInstance)
+		if typeof(parentInstance) == "table" and typeof(parentInstance.rootID) ~= "string" then
 			-- Some calls to this aren't typesafe.
 			-- This helps surface mistakes in tests.
 			error(Error("removeChildFromContainer() first argument is not a container."))
@@ -276,11 +264,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 			return NO_CONTEXT
 		end,
 
-		getChildHostContext = function(
-			parentHostContext: HostContext,
-			type: string,
-			rootcontainerInstance: Container
-		)
+		getChildHostContext = function(parentHostContext: HostContext, type: string, rootcontainerInstance: Container)
 			if type == "uppercase" then
 				return UPPERCASE_CONTEXT
 			end
@@ -315,8 +299,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 					-- text: shouldSetTextContent(type, props)
 					-- 	? computeText((props.children: any) + '', hostContext)
 					-- 	: null,
-					text = shouldSetTextContent(type, props)
-							and computeText(tostring(props.children), hostContext)
+					text = shouldSetTextContent(type, props) and computeText(tostring(props.children), hostContext)
 						or nil,
 					context = hostContext,
 				},
@@ -329,20 +312,11 @@ local function createReactNoop(reconciler, useMutation: boolean)
 			table.insert(parentInstance.children, child)
 		end,
 
-		finalizeInitialChildren = function(
-			_domElement: Instance,
-			_type: string,
-			_props: Props
-		): boolean
+		finalizeInitialChildren = function(_domElement: Instance, _type: string, _props: Props): boolean
 			return false
 		end,
 
-		prepareUpdate = function(
-			instanceH: Instance,
-			type: string,
-			oldProps: Props,
-			newProps: Props
-		): Object?
+		prepareUpdate = function(instanceH: Instance, type: string, oldProps: Props, newProps: Props): Object?
 			if type == "errorInCompletePhase" then
 				error(Error("Error in host config."))
 			end
@@ -518,16 +492,11 @@ local function createReactNoop(reconciler, useMutation: boolean)
 				instance.hidden = not not newProps.hidden
 				if shouldSetTextContent(type, newProps) then
 					-- deviation: Not sure about this one
-					instance.text =
-						computeText(tostring(newProps.children), instance.context)
+					instance.text = computeText(tostring(newProps.children), instance.context)
 				end
 			end,
 
-			commitTextUpdate = function(
-				textInstance: TextInstance,
-				oldText: string,
-				newText: string
-			)
+			commitTextUpdate = function(textInstance: TextInstance, oldText: string, newText: string)
 				hostUpdateCounter += 1
 				textInstance.text = computeText(newText, textInstance.context)
 			end,
@@ -570,9 +539,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 			cloneInstance = cloneInstance,
 			clearContainer = clearContainer,
 
-			createContainerChildSet = function(
-				container: Container
-			): Array<Instance | TextInstance>
+			createContainerChildSet = function(container: Container): Array<Instance | TextInstance>
 				return {}
 			end,
 
@@ -583,24 +550,15 @@ local function createReactNoop(reconciler, useMutation: boolean)
 				table.insert(childSet, child)
 			end,
 
-			finalizeContainerChildren = function(
-				container: Container,
-				newChildren: Array<Instance | TextInstance>
-			)
+			finalizeContainerChildren = function(container: Container, newChildren: Array<Instance | TextInstance>)
 				container.pendingChildren = newChildren
-				if
-					#newChildren == 1
-					and newChildren[1].text == "Error when completing root"
-				then
+				if #newChildren == 1 and newChildren[1].text == "Error when completing root" then
 					-- Trigger an error for testing purposes
 					error(Error("Error when completing root"))
 				end
 			end,
 
-			replaceContainerChildren = function(
-				container: Container,
-				newChildren: Array<Instance | TextInstance>
-			)
+			replaceContainerChildren = function(container: Container, newChildren: Array<Instance | TextInstance>)
 				container.children = newChildren
 			end,
 
@@ -610,25 +568,12 @@ local function createReactNoop(reconciler, useMutation: boolean)
 				props: Props,
 				internalInstanceHandle: Object
 			)
-				local clone = cloneInstance(
-					instance,
-					nil,
-					type,
-					props,
-					props,
-					internalInstanceHandle,
-					true,
-					nil
-				)
+				local clone = cloneInstance(instance, nil, type, props, props, internalInstanceHandle, true, nil)
 				clone.hidden = true
 				return clone
 			end,
 
-			cloneHiddenTextInstance = function(
-				instance: TextInstance,
-				text: string,
-				internalInstanceHandle: Object
-			)
+			cloneHiddenTextInstance = function(instance: TextInstance, text: string, internalInstanceHandle: Object)
 				-- deviation: use metatable to define non-enumerable properties
 				local clone = setmetatable({
 					text = instance.text,
@@ -678,11 +623,9 @@ local function createReactNoop(reconciler, useMutation: boolean)
 			local children = Array.map(child, function(c)
 				return childToJSX(c)
 			end)
-			if
-				Array.every(children, function(c)
-					return typeof(c) == "string" or typeof(c) == "number"
-				end)
-			then
+			if Array.every(children, function(c)
+				return typeof(c) == "string" or typeof(c) == "number"
+			end) then
 				return Array.join(children, "")
 			end
 			return children
@@ -828,8 +771,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 				children = {},
 			}
 			idCounter += 1
-			local fiberRoot =
-				NoopRenderer.createContainer(container, ConcurrentRoot, false, nil)
+			local fiberRoot = NoopRenderer.createContainer(container, ConcurrentRoot, false, nil)
 			return {
 				_Scheduler = Scheduler,
 				render = function(children)
@@ -851,8 +793,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 				children = {},
 			}
 			idCounter += 1
-			local fiberRoot =
-				NoopRenderer.createContainer(container, BlockingRoot, false, nil)
+			local fiberRoot = NoopRenderer.createContainer(container, BlockingRoot, false, nil)
 			return {
 				_Scheduler = Scheduler,
 				render = function(children)
@@ -874,8 +815,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 				children = {},
 			}
 			idCounter += 1
-			local fiberRoot =
-				NoopRenderer.createContainer(container, LegacyRoot, false, nil)
+			local fiberRoot = NoopRenderer.createContainer(container, LegacyRoot, false, nil)
 			return {
 				_Scheduler = Scheduler,
 				render = function(children)
@@ -1040,10 +980,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 
 			-- ROBLOX FIXME: This likely needs to be adopted to Roblox
 			-- Instance structure as opposed to HTML DOM nodes
-			local function logHostInstances(
-				children: Array<Instance | TextInstance>,
-				depth: number
-			)
+			local function logHostInstances(children: Array<Instance | TextInstance>, depth: number)
 				-- ROBLOX deviation: May not be able to assume children is an array in
 				-- Roblox (we use keys as names), so iterate with `pairs`
 
@@ -1055,13 +992,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 						log(indent .. "- " .. (child :: TextInstance).text)
 					else
 						-- $FlowFixMe - The child should've been refined now.
-						log(
-							indent
-								.. "- "
-								.. (child :: Instance).type
-								.. "#"
-								.. tostring(child.id)
-						)
+						log(indent .. "- " .. (child :: Instance).type .. "#" .. tostring(child.id))
 						-- $FlowFixMe - The child should've been refined now.
 						logHostInstances((child :: Instance).children, depth + 1)
 					end
@@ -1082,7 +1013,9 @@ local function createReactNoop(reconciler, useMutation: boolean)
 						log(
 							string.rep("  ", depth + 1) .. "~",
 							-- ROBLOX TODO: this is a bogus field, even in upstream
-							"[" .. tostring((update :: any).expirationTime) .. "]"
+							"["
+								.. tostring((update :: any).expirationTime)
+								.. "]"
 						)
 					until update == nil
 				end
@@ -1096,7 +1029,9 @@ local function createReactNoop(reconciler, useMutation: boolean)
 							log(
 								string.rep("  ", depth + 1) .. "~",
 								-- ROBLOX TODO: this is a bogus field, even in upstream
-								"[" .. tostring((update :: any).expirationTime) .. "]"
+								"["
+									.. tostring((update :: any).expirationTime)
+									.. "]"
 							)
 						until pendingUpdate == nil or pendingUpdate == firstPending
 					end
@@ -1108,9 +1043,7 @@ local function createReactNoop(reconciler, useMutation: boolean)
 					string.rep("  ", depth)
 						.. "- "
 						-- need to explicitly coerce Symbol to a string
-						.. if fiber.type
-							then (fiber.type.name or tostring(fiber.type))
-							else "[root]",
+						.. if fiber.type then (fiber.type.name or tostring(fiber.type)) else "[root]",
 					"["
 						-- ROBLOX TODO: this field is bogus even in upstream, will always be nil
 						.. tostring((fiber :: any).childExpirationTime)
@@ -1170,17 +1103,10 @@ local function createReactNoop(reconciler, useMutation: boolean)
 
 	local function noopAct(scope: (() -> Thenable<any>) | () -> ())
 		if Scheduler.unstable_flushAllWithoutAsserting == nil then
-			error(
-				Error("This version of `act` requires a special mock build of Scheduler.")
-			)
+			error(Error("This version of `act` requires a special mock build of Scheduler."))
 		end
 		if typeof(setTimeout) == "table" and setTimeout._isMockFunction ~= true then
-			error(
-				Error(
-					"This version of `act` requires Jest's timer mocks "
-						.. "(i.e. jest.useFakeTimers)."
-				)
-			)
+			error(Error("This version of `act` requires Jest's timer mocks " .. "(i.e. jest.useFakeTimers)."))
 		end
 
 		local previousActingUpdatesScopeDepth = actingUpdatesScopeDepth

@@ -1,16 +1,11 @@
-<<<<<<< HEAD
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/0cf22a56a18790ef34c71bef14f64695c0498619/packages/react/src/ReactBaseClasses.js
-=======
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/ReactBaseClasses.js
->>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
-<<<<<<< HEAD
 local __DEV__ = _G.__DEV__ :: boolean
 local __COMPAT_WARNINGS__ = _G.__COMPAT_WARNINGS__ :: boolean
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
@@ -25,17 +20,6 @@ local SharedModule = require("@pkg/@jsdotlua/shared")
 -- ROBLOX deviation END
 type React_Component<Props, State = nil> = SharedModule.React_Component<Props, State>
 local ReactNoopUpdateQueue = require("./ReactNoopUpdateQueue")
-=======
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Boolean = LuauPolyfill.Boolean
-local Error = LuauPolyfill.Error
-local Object = LuauPolyfill.Object
-local console = LuauPolyfill.console
-local exports = {}
-local ReactNoopUpdateQueue = require(script.Parent.ReactNoopUpdateQueue).default
-local assign = require(Packages.shared.assign).default
->>>>>>> upstream-apply
 local emptyObject = {}
 
 if __DEV__ then
@@ -339,7 +323,6 @@ end
  * @final
  * @protected
  ]]
-<<<<<<< HEAD
 function Component:setState(partialState, callback)
 	if
 		partialState ~= nil
@@ -352,22 +335,6 @@ function Component:setState(partialState, callback)
 		)
 	end
 	self.__updater.enqueueSetState(self, partialState, callback, "setState")
-=======
-Component.prototype.setState = function(self: any, partialState, callback)
-	if
-		typeof(partialState) ~= "table"
-		and typeof(partialState) ~= "function"
-		and partialState ~= nil --[[ ROBLOX CHECK: loose inequality used upstream ]]
-	then
-		error(
-			Error.new(
-				"setState(...): takes an object of state variables to update or a "
-					.. "function which returns an object of state variables."
-			)
-		)
-	end
-	self.updater:enqueueSetState(self, partialState, callback, "setState")
->>>>>>> upstream-apply
 end
 
 --[[*
@@ -430,7 +397,6 @@ end
 --[[*
  * Convenience component with default shallow equality check for sCU.
  ]]
-<<<<<<< HEAD
 -- ROBLOX deviation START: work within the `extend` framework defined above to emulate JS's
 -- class inheritance
 
@@ -468,19 +434,3 @@ return {
 	Component = Component,
 	PureComponent = PureComponent :: typeof(Component),
 }
-=======
-local function PureComponent(props, context, updater)
-	self.props = props
-	self.context = context -- If a component has string refs, we will assign a different object later.
-	self.refs = emptyObject
-	self.updater = Boolean.toJSBoolean(updater) and updater or ReactNoopUpdateQueue
-end
-PureComponent.prototype = ComponentDummy.new()
-local pureComponentPrototype = PureComponent.prototype
-pureComponentPrototype.constructor = PureComponent -- Avoid an extra prototype jump for these methods.
-assign(pureComponentPrototype, Component.prototype)
-pureComponentPrototype.isPureReactComponent = true
-exports.Component = Component
-exports.PureComponent = PureComponent
-return exports
->>>>>>> upstream-apply

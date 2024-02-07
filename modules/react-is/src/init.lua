@@ -103,9 +103,7 @@ local function typeOf(object: any)
 			else
 				-- ROBLOX note: We need to check that __type is a table before we
 				-- index into it, or Luau will throw errors
-				local __typeofType = __type
-					and typeof(__type) == "table"
-					and __type["$$typeof"]
+				local __typeofType = __type and typeof(__type) == "table" and __type["$$typeof"]
 
 				if
 					__typeofType == REACT_CONTEXT_TYPE
@@ -168,8 +166,7 @@ local function isAsyncMode(object: any)
 			-- ROBLOX deviation END
 			hasWarnedAboutDeprecatedIsAsyncMode = true -- Using console['warn'] to evade Babel and ESLint
 			console["warn"](
-				"The ReactIs.isAsyncMode() alias has been deprecated, "
-					.. "and will be removed in React 18+."
+				"The ReactIs.isAsyncMode() alias has been deprecated, " .. "and will be removed in React 18+."
 			)
 		end
 	end
@@ -185,8 +182,7 @@ local function isConcurrentMode(object: any)
 			-- ROBLOX deviation END
 			hasWarnedAboutDeprecatedIsConcurrentMode = true -- Using console['warn'] to evade Babel and ESLint
 			console["warn"](
-				"The ReactIs.isConcurrentMode() alias has been deprecated, "
-					.. "and will be removed in React 18+."
+				"The ReactIs.isConcurrentMode() alias has been deprecated, " .. "and will be removed in React 18+."
 			)
 		end
 	end
@@ -202,9 +198,7 @@ local function isContextProvider(object: any)
 end
 exports.isContextProvider = isContextProvider
 local function isElement(object: any)
-	return typeof(object) == "table"
-		and object ~= nil
-		and object["$$typeof"] == REACT_ELEMENT_TYPE
+	return typeof(object) == "table" and object ~= nil and object["$$typeof"] == REACT_ELEMENT_TYPE
 end
 exports.isElement = isElement
 local function isForwardRef(object: any)

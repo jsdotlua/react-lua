@@ -34,13 +34,12 @@ local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 --  * require.
 --  */
 local supportsUserTiming = _G.performance ~= nil
-local performance = _G.performance
-	or {
-		mark = function(str)
-			debug.profilebegin(str)
-			debug.profileend()
-		end,
-	}
+local performance = _G.performance or {
+	mark = function(str)
+		debug.profilebegin(str)
+		debug.profileend()
+	end,
+}
 
 function formatLanes(laneOrLanes: Lane | Lanes): string
 	return tostring(laneOrLanes)
@@ -89,17 +88,11 @@ exports.markComponentSuspended = function(fiber: Fiber, wakeable: Wakeable): ()
 			local id = getWakeableID(wakeable)
 			local componentName = getComponentName(fiber.type) or "Unknown"
 			-- TODO Add component stack id
-			performance.mark(
-				"--suspense-suspend-" .. tostring(id) .. "-" .. componentName
-			)
+			performance.mark("--suspense-suspend-" .. tostring(id) .. "-" .. componentName)
 			wakeable:andThen(function()
-				performance.mark(
-					"--suspense-resolved-" .. tostring(id) .. "-" .. componentName
-				)
+				performance.mark("--suspense-resolved-" .. tostring(id) .. "-" .. componentName)
 			end, function()
-				performance.mark(
-					"--suspense-rejected-" .. tostring(id) .. "-" .. componentName
-				)
+				performance.mark("--suspense-rejected-" .. tostring(id) .. "-" .. componentName)
 			end)
 		end
 	end
@@ -174,9 +167,7 @@ exports.markForceUpdateScheduled = function(fiber: Fiber, lane: Lane): ()
 		if supportsUserTiming then
 			local componentName = getComponentName(fiber.type) or "Unknown"
 			-- TODO Add component stack id
-			performance.mark(
-				"--schedule-forced-update-" .. formatLanes(lane) .. "-" .. componentName
-			)
+			performance.mark("--schedule-forced-update-" .. formatLanes(lane) .. "-" .. componentName)
 		end
 	end
 end
@@ -186,9 +177,7 @@ exports.markStateUpdateScheduled = function(fiber: Fiber, lane: Lane): ()
 		if supportsUserTiming then
 			local componentName = getComponentName(fiber.type) or "Unknown"
 			-- TODO Add component stack id
-			performance.mark(
-				"--schedule-state-update-" .. formatLanes(lane) .. "-" .. componentName
-			)
+			performance.mark("--schedule-state-update-" .. formatLanes(lane) .. "-" .. componentName)
 		end
 	end
 end

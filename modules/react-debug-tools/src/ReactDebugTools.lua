@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-debug-tools/src/ReactDebugTools.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-debug-tools/src/ReactDebugTools.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *

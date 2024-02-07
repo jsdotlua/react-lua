@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-cache/src/__tests__/ReactCacheOld-test.internal.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-cache/src/__tests__/ReactCacheOld-test.internal.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -150,19 +150,14 @@ describe("ReactCache", function()
 							listeners = { { resolve = resolve, reject = reject } }
 							LuauPolyfill.setTimeout(function()
 								if textResourceShouldFail then
-									Scheduler.unstable_yieldValue(
-										string.format("Promise rejected [%s]", text)
-									)
+									Scheduler.unstable_yieldValue(string.format("Promise rejected [%s]", text))
 									status = "rejected"
-									value =
-										LuauPolyfill.Error.new("Failed to load: " .. text)
+									value = LuauPolyfill.Error.new("Failed to load: " .. text)
 									for _, listener in listeners do
 										listener.reject(value)
 									end
 								else
-									Scheduler.unstable_yieldValue(
-										string.format("Promise resolved [%s]", text)
-									)
+									Scheduler.unstable_yieldValue(string.format("Promise resolved [%s]", text))
 									status = "resolved"
 									value = text
 									for _, listener in listeners do
@@ -171,10 +166,7 @@ describe("ReactCache", function()
 								end
 							end, ms)
 						else
-							table.insert(
-								listeners,
-								{ resolve = resolve, reject = reject }
-							)
+							table.insert(listeners, { resolve = resolve, reject = reject })
 						end
 					elseif status == "resolved" then
 						resolve(value)
@@ -259,10 +251,7 @@ describe("ReactCache", function()
 				React.createElement(AsyncText, { ms = 100, text = "Hi" })
 			)
 		end
-		ReactTestRenderer.create(
-			React.createElement(App, nil),
-			{ unstable_isConcurrent = true }
-		)
+		ReactTestRenderer.create(React.createElement(App, nil), { unstable_isConcurrent = true })
 		expect(Scheduler).toFlushAndYield({ "Suspend! [Hi]", "Loading..." })
 		jest.advanceTimersByTime(100)
 		expect(Scheduler).toHaveYielded({ "Promise resolved [Hi]" })
@@ -277,10 +266,7 @@ describe("ReactCache", function()
 					React.createElement(AsyncText, { ms = 100, text = "Hi" })
 				)
 			end
-			local root = ReactTestRenderer.create(
-				React.createElement(App, nil),
-				{ unstable_isConcurrent = true }
-			)
+			local root = ReactTestRenderer.create(React.createElement(App, nil), { unstable_isConcurrent = true })
 			expect(Scheduler).toFlushAndYield({ "Suspend! [Hi]", "Loading..." })
 			textResourceShouldFail = true
 			jest.advanceTimersByTime(100)
@@ -295,68 +281,65 @@ describe("ReactCache", function()
 			expect(Scheduler).toHaveYielded({ "Error! [Hi]", "Error! [Hi]" })
 		end)
 	end)
-	it(
-		"warns if non-primitive key is passed to a resource without a hash function",
-		function()
-			-- ROBLOX deviation START: explicit type
-			-- local BadTextResource = createResource(function(ref0)
-			-- 	local text = ref0[1]
-			local BadTextResource = createResource(function(ref0: { string | number })
-				local text = ref0[1] :: string
-				-- ROBLOX deviation END
-				-- ROBLOX deviation START: simplify
-				-- local ms = (function()
-				-- 	local element = table.unpack(ref0, 2, 2)
-				-- 	if element == nil then
-				-- 		return 0
-				-- 	else
-				-- 		return element
-				-- 	end
-				-- end)()
-				local ms = ref0[2] or 0
-				-- ROBLOX deviation END
-				return Promise.new(function(resolve, reject)
-					return setTimeout(function()
-						resolve(text)
-					end, ms)
-				end)
+	it("warns if non-primitive key is passed to a resource without a hash function", function()
+		-- ROBLOX deviation START: explicit type
+		-- local BadTextResource = createResource(function(ref0)
+		-- 	local text = ref0[1]
+		local BadTextResource = createResource(function(ref0: { string | number })
+			local text = ref0[1] :: string
+			-- ROBLOX deviation END
+			-- ROBLOX deviation START: simplify
+			-- local ms = (function()
+			-- 	local element = table.unpack(ref0, 2, 2)
+			-- 	if element == nil then
+			-- 		return 0
+			-- 	else
+			-- 		return element
+			-- 	end
+			-- end)()
+			local ms = ref0[2] or 0
+			-- ROBLOX deviation END
+			return Promise.new(function(resolve, reject)
+				return setTimeout(function()
+					resolve(text)
+				end, ms)
 			end)
-			local function App()
-				-- ROBLOX deviation START: use dot notation and cast type because luau doesn't support mixed arrays
-				-- Scheduler:unstable_yieldValue("App")
-				-- return BadTextResource:read({ "Hi", 100 })
-				Scheduler.unstable_yieldValue("App")
-				return BadTextResource.read({ "Hi" :: string | number, 100 })
-				-- ROBLOX deviation END
-			end
-			ReactTestRenderer.create(
-				React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(App, nil)
-				),
-				{ unstable_isConcurrent = true }
-			)
-			-- ROBLOX deviation START: remove toJSBoolean and use _G
-			-- if Boolean.toJSBoolean(__DEV__) then
-			if _G.__DEV__ then
-				-- ROBLOX deviation END
-				expect(function()
-					expect(Scheduler).toFlushAndYield({ "App", "Loading..." })
-				end).toErrorDev({
-					"Invalid key type. Expected a string, number, symbol, or "
-						-- ROBLOX deviation START: FIXME - make console polyfill format arrays the same as JS
-						-- .. "boolean, but instead received: Hi,100\n\n"
-						.. 'boolean, but instead received: ["Hi", 100]\n\n'
-						-- ROBLOX deviation END
-						.. "To use non-primitive values as keys, you must pass a hash "
-						.. "function as the second argument to createResource().",
-				})
-			else
-				expect(Scheduler).toFlushAndYield({ "App", "Loading..." })
-			end
+		end)
+		local function App()
+			-- ROBLOX deviation START: use dot notation and cast type because luau doesn't support mixed arrays
+			-- Scheduler:unstable_yieldValue("App")
+			-- return BadTextResource:read({ "Hi", 100 })
+			Scheduler.unstable_yieldValue("App")
+			return BadTextResource.read({ "Hi" :: string | number, 100 })
+			-- ROBLOX deviation END
 		end
-	)
+		ReactTestRenderer.create(
+			React.createElement(
+				Suspense,
+				{ fallback = React.createElement(Text, { text = "Loading..." }) },
+				React.createElement(App, nil)
+			),
+			{ unstable_isConcurrent = true }
+		)
+		-- ROBLOX deviation START: remove toJSBoolean and use _G
+		-- if Boolean.toJSBoolean(__DEV__) then
+		if _G.__DEV__ then
+			-- ROBLOX deviation END
+			expect(function()
+				expect(Scheduler).toFlushAndYield({ "App", "Loading..." })
+			end).toErrorDev({
+				"Invalid key type. Expected a string, number, symbol, or "
+					-- ROBLOX deviation START: FIXME - make console polyfill format arrays the same as JS
+					-- .. "boolean, but instead received: Hi,100\n\n"
+					.. 'boolean, but instead received: ["Hi", 100]\n\n'
+					-- ROBLOX deviation END
+					.. "To use non-primitive values as keys, you must pass a hash "
+					.. "function as the second argument to createResource().",
+			})
+		else
+			expect(Scheduler).toFlushAndYield({ "App", "Loading..." })
+		end
+	end)
 	it("evicts least recently used values", function()
 		return Promise.resolve():andThen(function()
 			-- ROBLOX deviation START: use dot notation
@@ -479,147 +462,142 @@ describe("ReactCache", function()
 			expect(root).toMatchRenderedOutput("Result")
 		end)
 	end)
-	it(
-		"if a thenable resolves multiple times, does not update the first cached value",
-		function()
-			local resolveThenable
-			local BadTextResource = createResource(function(ref0)
-				-- ROBLOX deviation START: unused
-				-- local text = ref0[1]
-				-- local ms = (function()
-				-- 	local element = table.unpack(ref0, 2, 2)
-				-- 	if element == nil then
-				-- 		return 0
-				-- 	else
-				-- 		return element
-				-- 	end
-				-- end)()
-				-- ROBLOX deviation END
-				local listeners = nil
-				local value = nil
-				return {
-					-- ROBLOX deviation START: use andThen
-					-- ["then"] = function(self, resolve, reject)
-					andThen = function(self, resolve, reject)
-						-- ROBLOX deviation END
-						if value ~= nil then
-							resolve(value)
-						else
-							if listeners == nil then
-								listeners = { resolve }
-								resolveThenable = function(v)
-									-- ROBLOX deviation START: use for..in loop instead
-									-- Array.forEach(listeners, function(listener)
-									-- 	return listener(v)
-									-- end) --[[ ROBLOX CHECK: check if 'listeners' is an Array ]]
-									for _, listener in listeners do
-										listener(v)
-									end
-									-- ROBLOX deviation END
+	it("if a thenable resolves multiple times, does not update the first cached value", function()
+		local resolveThenable
+		local BadTextResource = createResource(function(ref0)
+			-- ROBLOX deviation START: unused
+			-- local text = ref0[1]
+			-- local ms = (function()
+			-- 	local element = table.unpack(ref0, 2, 2)
+			-- 	if element == nil then
+			-- 		return 0
+			-- 	else
+			-- 		return element
+			-- 	end
+			-- end)()
+			-- ROBLOX deviation END
+			local listeners = nil
+			local value = nil
+			return {
+				-- ROBLOX deviation START: use andThen
+				-- ["then"] = function(self, resolve, reject)
+				andThen = function(self, resolve, reject)
+					-- ROBLOX deviation END
+					if value ~= nil then
+						resolve(value)
+					else
+						if listeners == nil then
+							listeners = { resolve }
+							resolveThenable = function(v)
+								-- ROBLOX deviation START: use for..in loop instead
+								-- Array.forEach(listeners, function(listener)
+								-- 	return listener(v)
+								-- end) --[[ ROBLOX CHECK: check if 'listeners' is an Array ]]
+								for _, listener in listeners do
+									listener(v)
 								end
-							else
-								table.insert(listeners, resolve) --[[ ROBLOX CHECK: check if 'listeners' is an Array ]]
+								-- ROBLOX deviation END
 							end
+						else
+							table.insert(listeners, resolve) --[[ ROBLOX CHECK: check if 'listeners' is an Array ]]
 						end
-					end,
-				}
-				-- ROBLOX deviation START: explicit type
-				-- end, function(ref0)
-			end, function(ref0: { any })
-				-- ROBLOX deviation END
-				-- ROBLOX deviation START: ms not used
-				-- local text, ms = table.unpack(ref0, 1, 2)
-				-- return text
-				return ref0[1]
-				-- ROBLOX deviation END
-			end)
-			local function BadAsyncText(props)
-				local text = props.text
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					-- ROBLOX deviation START: use pcall
-					-- local ok, result, hasReturned = xpcall(function()
-					local ok, result = pcall(function()
+					end
+				end,
+			}
+			-- ROBLOX deviation START: explicit type
+			-- end, function(ref0)
+		end, function(ref0: { any })
+			-- ROBLOX deviation END
+			-- ROBLOX deviation START: ms not used
+			-- local text, ms = table.unpack(ref0, 1, 2)
+			-- return text
+			return ref0[1]
+			-- ROBLOX deviation END
+		end)
+		local function BadAsyncText(props)
+			local text = props.text
+			do --[[ ROBLOX COMMENT: try-catch block conversion ]]
+				-- ROBLOX deviation START: use pcall
+				-- local ok, result, hasReturned = xpcall(function()
+				local ok, result = pcall(function()
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use dot notation
+					-- local actualText = BadTextResource:read({ props.text, props.ms })
+					-- Scheduler:unstable_yieldValue(actualText)
+					local actualText = BadTextResource.read({ props.text, props.ms })
+					Scheduler.unstable_yieldValue(actualText)
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: using pcall
+					-- 	return actualText, true
+					-- end, function(promise)
+					return actualText
+				end)
+				if not ok then
+					local promise = result
+					-- ROBLOX deviation END
+					-- ROBLOX deviation START: use andThen
+					-- if typeof(promise["then"]) == "function" then
+					if typeof(promise.andThen) == "function" then
 						-- ROBLOX deviation END
 						-- ROBLOX deviation START: use dot notation
-						-- local actualText = BadTextResource:read({ props.text, props.ms })
-						-- Scheduler:unstable_yieldValue(actualText)
-						local actualText = BadTextResource.read({ props.text, props.ms })
-						Scheduler.unstable_yieldValue(actualText)
-						-- ROBLOX deviation END
-						-- ROBLOX deviation START: using pcall
-						-- 	return actualText, true
-						-- end, function(promise)
-						return actualText
-					end)
-					if not ok then
-						local promise = result
-						-- ROBLOX deviation END
-						-- ROBLOX deviation START: use andThen
-						-- if typeof(promise["then"]) == "function" then
-						if typeof(promise.andThen) == "function" then
+						-- Scheduler:unstable_yieldValue(
+						Scheduler.unstable_yieldValue(
 							-- ROBLOX deviation END
-							-- ROBLOX deviation START: use dot notation
-							-- Scheduler:unstable_yieldValue(
-							Scheduler.unstable_yieldValue(
-								-- ROBLOX deviation END
-								("Suspend! [%s]"):format(tostring(text))
-							)
-						else
-							-- ROBLOX deviation START: use dot notation
-							-- Scheduler:unstable_yieldValue(
-							Scheduler.unstable_yieldValue(
-								-- ROBLOX deviation END
-								("Error! [%s]"):format(tostring(text))
-							)
-						end
-						error(promise)
-						-- ROBLOX deviation START: using pcall
-						-- end)
-						-- if hasReturned then
-						-- 	return result
-						-- end
+							("Suspend! [%s]"):format(tostring(text))
+						)
+					else
+						-- ROBLOX deviation START: use dot notation
+						-- Scheduler:unstable_yieldValue(
+						Scheduler.unstable_yieldValue(
+							-- ROBLOX deviation END
+							("Error! [%s]"):format(tostring(text))
+						)
 					end
-					return result
-					-- ROBLOX deviation END
+					error(promise)
+					-- ROBLOX deviation START: using pcall
+					-- end)
+					-- if hasReturned then
+					-- 	return result
+					-- end
 				end
-			end
-			local root = ReactTestRenderer.create(
-				React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(BadAsyncText, { text = "Hi" })
-				),
-				{ unstable_isConcurrent = true }
-			)
-			expect(Scheduler).toFlushAndYield({ "Suspend! [Hi]", "Loading..." })
-			resolveThenable("Hi") -- This thenable improperly resolves twice. We should not update the
-			-- cached value.
-			resolveThenable("Hi muahahaha I am different")
-			-- ROBLOX deviation START: use dot notation
-			-- root:update(
-			root.update(
+				return result
 				-- ROBLOX deviation END
-				React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(BadAsyncText, { text = "Hi" })
-				),
-				{ unstable_isConcurrent = true }
-			)
-			expect(Scheduler).toHaveYielded({})
-			expect(Scheduler).toFlushAndYield({ "Hi" })
-			expect(root).toMatchRenderedOutput("Hi")
+			end
 		end
-	)
+		local root = ReactTestRenderer.create(
+			React.createElement(
+				Suspense,
+				{ fallback = React.createElement(Text, { text = "Loading..." }) },
+				React.createElement(BadAsyncText, { text = "Hi" })
+			),
+			{ unstable_isConcurrent = true }
+		)
+		expect(Scheduler).toFlushAndYield({ "Suspend! [Hi]", "Loading..." })
+		resolveThenable("Hi") -- This thenable improperly resolves twice. We should not update the
+		-- cached value.
+		resolveThenable("Hi muahahaha I am different")
+		-- ROBLOX deviation START: use dot notation
+		-- root:update(
+		root.update(
+			-- ROBLOX deviation END
+			React.createElement(
+				Suspense,
+				{ fallback = React.createElement(Text, { text = "Loading..." }) },
+				React.createElement(BadAsyncText, { text = "Hi" })
+			),
+			{ unstable_isConcurrent = true }
+		)
+		expect(Scheduler).toHaveYielded({})
+		expect(Scheduler).toFlushAndYield({ "Hi" })
+		expect(root).toMatchRenderedOutput("Hi")
+	end)
 	it("throws if read is called outside render", function()
 		expect(function()
 			-- ROBLOX deviation START: use dot notation
 			-- return TextResource:read({ "A", 1000 })
 			TextResource.read({ "A", 1000 })
 			-- ROBLOX deviation END
-		end).toThrow(
-			"read and preload may only be called from within a component's render"
-		)
+		end).toThrow("read and preload may only be called from within a component's render")
 	end)
 	it("throws if preload is called outside render", function()
 		expect(function()
@@ -627,8 +605,6 @@ describe("ReactCache", function()
 			-- return TextResource:preload({ "A", 1000 })
 			TextResource.preload({ "A", 1000 })
 			-- ROBLOX deviation END
-		end).toThrow(
-			"read and preload may only be called from within a component's render"
-		)
+		end).toThrow("read and preload may only be called from within a component's render")
 	end)
 end)

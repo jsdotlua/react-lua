@@ -39,17 +39,12 @@ end)
 
 it("getClosestInstanceFromNode should return a cached instance", function()
 	reactRobloxRoot:render(
-		React.createElement(
-			"Frame",
-			{},
-			{ Label = React.createElement("TextLabel", { Text = "Hello" }) }
-		)
+		React.createElement("Frame", {}, { Label = React.createElement("TextLabel", { Text = "Hello" }) })
 	)
 
 	Scheduler.unstable_flushAllWithoutAsserting()
 
-	local labelNode =
-		ReactRobloxComponentTree.getClosestInstanceFromNode(parent.Frame.Label)
+	local labelNode = ReactRobloxComponentTree.getClosestInstanceFromNode(parent.Frame.Label)
 	jestExpect(labelNode.memoizedProps.Text).toEqual("Hello")
 end)
 
@@ -77,8 +72,6 @@ it("getClosestInstanceFromNode should return portaled instances", function()
 
 	Scheduler.unstable_flushAllWithoutAsserting()
 
-	local portal3Label = ReactRobloxComponentTree.getClosestInstanceFromNode(
-		portalContainer3:GetChildren()[1]
-	)
+	local portal3Label = ReactRobloxComponentTree.getClosestInstanceFromNode(portalContainer3:GetChildren()[1])
 	jestExpect(portal3Label.memoizedProps.Text).toEqual("portal3[0]")
 end)

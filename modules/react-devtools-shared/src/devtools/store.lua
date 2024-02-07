@@ -27,8 +27,7 @@ local constants = require("../constants")
 local TREE_OPERATION_ADD = constants.TREE_OPERATION_ADD
 local TREE_OPERATION_REMOVE = constants.TREE_OPERATION_REMOVE
 local TREE_OPERATION_REORDER_CHILDREN = constants.TREE_OPERATION_REORDER_CHILDREN
-local TREE_OPERATION_UPDATE_TREE_BASE_DURATION =
-	constants.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
+local TREE_OPERATION_UPDATE_TREE_BASE_DURATION = constants.TREE_OPERATION_UPDATE_TREE_BASE_DURATION
 local types = require("../types")
 local ElementTypeRoot = types.ElementTypeRoot
 local utils = require("../utils")
@@ -64,10 +63,8 @@ local debug_ = function(methodName, ...)
 	end
 end
 
-local LOCAL_STORAGE_COLLAPSE_ROOTS_BY_DEFAULT_KEY =
-	"React::DevTools::collapseNodesByDefault"
-local LOCAL_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY =
-	"React::DevTools::recordChangeDescriptions"
+local LOCAL_STORAGE_COLLAPSE_ROOTS_BY_DEFAULT_KEY = "React::DevTools::collapseNodesByDefault"
+local LOCAL_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY = "React::DevTools::recordChangeDescriptions"
 
 type Config = {
 	isProfiling: boolean?,
@@ -86,9 +83,7 @@ type Config = {
 type Store_static = {
 	new: (bridge: FrontendBridge, config: Config?) -> Store,
 }
-local Store: Store & Store_static = (
-	setmetatable({}, { __index = EventEmitter }) :: any
-) :: Store & Store_static
+local Store: Store & Store_static = (setmetatable({}, { __index = EventEmitter }) :: any) :: Store & Store_static
 local StoreMetatable = { __index = Store }
 
 function Store.new(bridge: FrontendBridge, config: Config?): Store
@@ -156,13 +151,9 @@ function Store.new(bridge: FrontendBridge, config: Config?): Store
 		debug_("constructor", "subscribing to Bridge")
 	end
 
-	self._collapseNodesByDefault = localStorageGetItem(
-		LOCAL_STORAGE_COLLAPSE_ROOTS_BY_DEFAULT_KEY
-	) == "true"
+	self._collapseNodesByDefault = localStorageGetItem(LOCAL_STORAGE_COLLAPSE_ROOTS_BY_DEFAULT_KEY) == "true"
 
-	self._recordChangeDescriptions = localStorageGetItem(
-		LOCAL_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY
-	) == "true"
+	self._recordChangeDescriptions = localStorageGetItem(LOCAL_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY) == "true"
 
 	self._componentFilters = getSavedComponentFilters()
 
@@ -219,14 +210,8 @@ function Store.new(bridge: FrontendBridge, config: Config?): Store
 	bridge:addListener("overrideComponentFilters", self.onBridgeOverrideComponentFilters)
 	bridge:addListener("shutdown", self.onBridgeShutdown)
 	bridge:addListener("isBackendStorageAPISupported", self.onBridgeStorageSupported)
-	bridge:addListener(
-		"isNativeStyleEditorSupported",
-		self.onBridgeNativeStyleEditorSupported
-	)
-	bridge:addListener(
-		"unsupportedRendererVersion",
-		self.onBridgeUnsupportedRendererVersion
-	)
+	bridge:addListener("isNativeStyleEditorSupported", self.onBridgeNativeStyleEditorSupported)
+	bridge:addListener("unsupportedRendererVersion", self.onBridgeUnsupportedRendererVersion)
 
 	return self
 end
@@ -240,10 +225,7 @@ function Store:assertExpectedRootMapSizes()
 	end
 
 	-- These maps should always be the same size as the number of roots
-	self:assertMapSizeMatchesRootCount(
-		self._rootIDToCapabilities,
-		"_rootIDToCapabilities"
-	)
+	self:assertMapSizeMatchesRootCount(self._rootIDToCapabilities, "_rootIDToCapabilities")
 	self:assertMapSizeMatchesRootCount(self._rootIDToRendererID, "_rootIDToRendererID")
 end
 
@@ -273,10 +255,7 @@ end
 function Store:setCollapseNodesByDefault(value: boolean)
 	self._collapseNodesByDefault = value
 
-	localStorageSetItem(
-		LOCAL_STORAGE_COLLAPSE_ROOTS_BY_DEFAULT_KEY,
-		if value then "true" else "false"
-	)
+	localStorageSetItem(LOCAL_STORAGE_COLLAPSE_ROOTS_BY_DEFAULT_KEY, if value then "true" else "false")
 	self:emit("collapseNodesByDefault")
 end
 function Store:getComponentFilters(): Array<ComponentFilter>
@@ -292,17 +271,13 @@ function Store:setComponentFilters(value: Array<ComponentFilter>): ()
 
 	-- Filter updates are expensive to apply (since they impact the entire tree).
 	-- Let's determine if they've changed and avoid doing this work if they haven't.
-	local prevEnabledComponentFilters = Array.filter(
-		self._componentFilters,
-		function(filter)
-			return filter.isEnabled
-		end
-	)
+	local prevEnabledComponentFilters = Array.filter(self._componentFilters, function(filter)
+		return filter.isEnabled
+	end)
 	local nextEnabledComponentFilters = Array.filter(value, function(filter)
 		return filter.isEnabled
 	end)
-	local haveEnabledFiltersChanged = #prevEnabledComponentFilters
-		~= #nextEnabledComponentFilters
+	local haveEnabledFiltersChanged = #prevEnabledComponentFilters ~= #nextEnabledComponentFilters
 
 	if not haveEnabledFiltersChanged then
 		-- ROBLOX deviation: 1-indexing use 1 not 0
@@ -349,10 +324,7 @@ end
 function Store:setRecordChangeDescriptions(value: boolean): ()
 	self._recordChangeDescriptions = value
 
-	localStorageSetItem(
-		LOCAL_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY,
-		if value then "true" else "false"
-	)
+	localStorageSetItem(LOCAL_STORAGE_RECORD_CHANGE_DESCRIPTIONS_KEY, if value then "true" else "false")
 	self:emit("recordChangeDescriptions")
 end
 function Store:getRevision(): number
@@ -388,11 +360,7 @@ end
 function Store:getElementAtIndex(index: number): Element?
 	if index < 0 or index >= self:getNumElements() then
 		console.warn(
-			string.format(
-				"Invalid index %d specified; store contains %d items.",
-				index,
-				self:getNumElements()
-			)
+			string.format("Invalid index %d specified; store contains %d items.", index, self:getNumElements())
 		)
 		return nil
 	end
@@ -535,8 +503,7 @@ function Store:getOwnersListForElement(ownerID: number): Array<Element>
 				Array.from(unsortedIDs),
 				-- ROBLOX FIXME Luau: shouldn't need this annotation?
 				function(idA: number, idB: number)
-					return (self:getIndexOfElementID(idA) or 0)
-						- (self:getIndexOfElementID(idB) or 0)
+					return (self:getIndexOfElementID(idA) or 0) - (self:getIndexOfElementID(idB) or 0)
 				end
 			)
 
@@ -641,9 +608,7 @@ function Store:toggleIsCollapsed(id: number, isCollapsed: boolean): ()
 
 				local weightDelta = 1 - (element :: Element).weight
 				-- ROBLOX FIXME Luau: shouldn't need this annoatation, should infer correctly
-				local parentElement: Element? = (
-					self._idToElement:get(element.parentID) :: any
-				) :: Element
+				local parentElement: Element? = (self._idToElement:get(element.parentID) :: any) :: Element
 				while parentElement ~= nil do
 					-- We don't need to break on a collapsed parent in the same way as the expand case below.
 					-- That's because collapsing a node doesn't "bubble" and affect its parents.
@@ -656,9 +621,7 @@ function Store:toggleIsCollapsed(id: number, isCollapsed: boolean): ()
 			local currentElement: Element? = element
 
 			while currentElement ~= nil do
-				local oldWeight = if (currentElement :: Element).isCollapsed
-					then 1
-					else currentElement.weight
+				local oldWeight = if (currentElement :: Element).isCollapsed then 1 else currentElement.weight
 
 				if (currentElement :: Element).isCollapsed then
 					didMutate = true;
@@ -669,9 +632,7 @@ function Store:toggleIsCollapsed(id: number, isCollapsed: boolean): ()
 						else (currentElement :: Element).weight
 					local weightDelta = newWeight - oldWeight
 					-- ROBLOX FIXME Luau: shouldn't need this annoatation, should infer correctly
-					local parentElement: Element? = (
-						self._idToElement:get(currentElement.parentID) :: any
-					) :: Element
+					local parentElement: Element? = (self._idToElement:get(currentElement.parentID) :: any) :: Element
 
 					while parentElement ~= nil do
 						parentElement.weight += weightDelta
@@ -801,9 +762,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 			if self._idToElement:has(id) then
 				error(
 					Error.new(
-						("Cannot add node %s because a node with that id is already in the Store."):format(
-							tostring(id)
-						)
+						("Cannot add node %s because a node with that id is already in the Store."):format(tostring(id))
 					)
 				)
 			end
@@ -888,8 +847,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 
 				table.insert(parentElement.children, id)
 
-				local displayNameWithoutHOCs, hocDisplayNames =
-					separateDisplayNameAndHOCs(displayName, type_)
+				local displayNameWithoutHOCs, hocDisplayNames = separateDisplayNameAndHOCs(displayName, type_)
 
 				local element = {
 					children = {},
@@ -945,14 +903,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 					element.children, element.ownerID, element.parentID, element.weight
 
 				if #children > 0 then
-					error(
-						Error.new(
-							string.format(
-								"Node %s was removed before its children.",
-								tostring(id)
-							)
-						)
-					)
+					error(Error.new(string.format("Node %s was removed before its children.", tostring(id))))
 				end
 
 				self._idToElement:delete(id)
@@ -974,14 +925,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 					haveRootsChanged = true
 				else
 					if __DEBUG__ then
-						debug_(
-							"Remove",
-							string.format(
-								"node %s from parent %s",
-								tostring(id),
-								tostring(parentID)
-							)
-						)
+						debug_("Remove", string.format("node %s from parent %s", tostring(id), tostring(parentID)))
 					end
 
 					parentElement = (self._idToElement:get(parentID) :: any) :: Element
@@ -1043,13 +987,8 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 				if _G.__DEV__ then
 					local childElement: Element? = self._idToElement:get(childID)
 
-					if
-						childElement == nil
-						or (childElement :: Element).parentID ~= id
-					then
-						console.error(
-							"Children cannot be added or removed during a reorder operation."
-						)
+					if childElement == nil or (childElement :: Element).parentID ~= id then
+						console.error("Children cannot be added or removed during a reorder operation.")
 					end
 				end
 			end
@@ -1057,14 +996,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 			i = i + numChildren
 
 			if _G.__DEBUG__ then
-				debug_(
-					"Re-order",
-					string.format(
-						"Node %s children %s",
-						tostring(id),
-						Array.join(children, ",")
-					)
-				)
+				debug_("Re-order", string.format("Node %s children %s", tostring(id), Array.join(children, ",")))
 			end
 		elseif operation == TREE_OPERATION_UPDATE_TREE_BASE_DURATION then
 			-- Base duration updates are only sent while profiling is in progress.
@@ -1085,8 +1017,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 		self._supportsProfiling = false
 
 		for _, capabilities in self._rootIDToCapabilities do
-			local hasOwnerMetadata, supportsProfiling =
-				capabilities.hasOwnerMetadata, capabilities.supportsProfiling
+			local hasOwnerMetadata, supportsProfiling = capabilities.hasOwnerMetadata, capabilities.supportsProfiling
 
 			if hasOwnerMetadata then
 				self._hasOwnerMetadata = true
@@ -1112,9 +1043,7 @@ function Store:onBridgeOperations(operations: Array<number>): ()
 	self:emit("mutated", { addedElementIDs, removedElementIDs })
 end
 
-function Store:onBridgeOverrideComponentFilters(
-	componentFilters: Array<ComponentFilter>
-): ()
+function Store:onBridgeOverrideComponentFilters(componentFilters: Array<ComponentFilter>): ()
 	self._componentFilters = componentFilters
 
 	saveComponentFilters(componentFilters)
@@ -1127,10 +1056,7 @@ function Store:onBridgeShutdown(): ()
 
 	self._bridge:removeListener("operations", self.onBridgeOperations)
 	self._bridge:removeListener("shutdown", self.onBridgeShutdown)
-	self._bridge:removeListener(
-		"isBackendStorageAPISupported",
-		self.onBridgeStorageSupported
-	)
+	self._bridge:removeListener("isBackendStorageAPISupported", self.onBridgeStorageSupported)
 end
 
 function Store:onBridgeStorageSupported(isBackendStorageAPISupported: boolean): ()

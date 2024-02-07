@@ -1,5 +1,4 @@
-<<<<<<< HEAD
--- ROBLOX upstream: https://github.com/facebook/react/blob/d13f5b9538e48f74f7c571ef3cde652ca887cca0/packages/react-reconciler/src/__tests__/ReactSuspense-test.internal.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactSuspense-test.internal.js
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
 --  * This source code is licensed under the MIT license found in the
@@ -8,18 +7,6 @@
 --  * @emails react-core
 --  * @jest-environment node
 --  */
-
-=======
--- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactSuspense-test.internal.js
-local Packages --[[ ROBLOX comment: must define Packages module ]]
-local LuauPolyfill = require(Packages.LuauPolyfill)
-local Array = LuauPolyfill.Array
-local Boolean = LuauPolyfill.Boolean
-local Error = LuauPolyfill.Error
-local setTimeout = LuauPolyfill.setTimeout
-type Object = LuauPolyfill.Object
-local Promise = require(Packages.Promise)
->>>>>>> upstream-apply
 local React
 local ReactTestRenderer
 local ReactFeatureFlags
@@ -29,7 +16,6 @@ local Suspense
 local _act
 local TextResource
 local textResourceShouldFail
-<<<<<<< HEAD
 
 local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
@@ -48,8 +34,6 @@ local setTimeout = LuauPolyfill.setTimeout
 local Error = LuauPolyfill.Error
 -- Additional tests can be found in ReactSuspenseWithNoopRenderer. Plan is
 -- to gradually migrate those to this file.
-=======
->>>>>>> upstream-apply
 describe("ReactSuspense", function()
 	-- ROBLOX deviation START: add afterEach to reset to using useRealTimers()
 	afterEach(function()
@@ -62,7 +46,6 @@ describe("ReactSuspense", function()
 
 		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
-<<<<<<< HEAD
 		ReactFeatureFlags.enableSchedulerTracing = true
 		React = require("@pkg/@jsdotlua/react")
 		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
@@ -70,13 +53,6 @@ describe("ReactSuspense", function()
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		SchedulerTracing = Scheduler.tracing
 		ReactCache = require("@pkg/@jsdotlua/react-cache")
-=======
-		React = require_("react")
-		ReactTestRenderer = require_("react-test-renderer")
-		act = require_("jest-react").act
-		Scheduler = require_("scheduler")
-		ReactCache = require_("react-cache")
->>>>>>> upstream-apply
 		Suspense = React.Suspense
 		TextResource = ReactCache.unstable_createResource(function(input)
 			local text, ms = input[1], (input[2] or 0)
@@ -202,21 +178,8 @@ describe("ReactSuspense", function()
 
 		-- Navigate the shell to now render the child content.
 		-- This should suspend.
-<<<<<<< HEAD
 		root.update(React.createElement(Foo, { renderBar = true }))
 		jestExpect(Scheduler).toFlushAndYield({
-=======
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				root:update(React.createElement(Foo, { renderBar = true }))
-			end)
-		else
-			root:update(React.createElement(Foo, { renderBar = true }))
-		end
-		expect(Scheduler).toFlushAndYield({
->>>>>>> upstream-apply
 			"Foo",
 			"Bar",
 			-- A suspends
@@ -308,101 +271,14 @@ describe("ReactSuspense", function()
 		-- Advance time by enough that the second Suspense's promise resolves
 		-- and switches back to the normal view
 		jest.advanceTimersByTime(1000)
-<<<<<<< HEAD
 		jestExpect(Scheduler).toHaveYielded({
 			"Promise resolved [B]",
-=======
-		expect(Scheduler).toHaveYielded({ "Promise resolved [B]" })
-		expect(Scheduler).toFlushAndYield({ "B" })
-		expect(root).toMatchRenderedOutput("AB")
-	end)
-	it("interrupts current render if promise resolves before current render phase", function()
-		local didResolve = false
-		local listeners = {}
-		local thenable = {
-			["then"] = function(self, resolve)
-				if not Boolean.toJSBoolean(didResolve) then
-					table.insert(listeners, resolve) --[[ ROBLOX CHECK: check if 'listeners' is an Array ]]
-				else
-					resolve()
-				end
-			end,
-		}
-		local function resolveThenable()
-			didResolve = true
-			Array.forEach(listeners, function(l)
-				return l()
-			end) --[[ ROBLOX CHECK: check if 'listeners' is an Array ]]
-		end
-		local function Async()
-			if not Boolean.toJSBoolean(didResolve) then
-				Scheduler:unstable_yieldValue("Suspend!")
-				error(thenable)
-			end
-			Scheduler:unstable_yieldValue("Async")
-			return "Async"
-		end
-		local root = ReactTestRenderer.create(
-			React.createElement(
-				React.Fragment,
-				nil,
-				React.createElement(Suspense, { fallback = React.createElement(Text, { text = "Loading..." }) }),
-				React.createElement(Text, { text = "Initial" })
-			),
-			{ unstable_isConcurrent = true }
-		)
-		expect(Scheduler).toFlushAndYield({ "Initial" })
-		expect(root).toMatchRenderedOutput("Initial") -- The update will suspend.
-		if Boolean.toJSBoolean(gate(function(flags)
-			return flags.enableSyncDefaultUpdates
-		end)) then
-			React.startTransition(function()
-				root:update(
-					React.createElement(
-						React.Fragment,
-						nil,
-						React.createElement(
-							Suspense,
-							{ fallback = React.createElement(Text, { text = "Loading..." }) },
-							React.createElement(Async, nil)
-						),
-						React.createElement(Text, { text = "After Suspense" }),
-						React.createElement(Text, { text = "Sibling" })
-					)
-				)
-			end)
-		else
-			root:update(
-				React.createElement(
-					React.Fragment,
-					nil,
-					React.createElement(
-						Suspense,
-						{ fallback = React.createElement(Text, { text = "Loading..." }) },
-						React.createElement(Async, nil)
-					),
-					React.createElement(Text, { text = "After Suspense" }),
-					React.createElement(Text, { text = "Sibling" })
-				)
-			)
-		end -- Yield past the Suspense boundary but don't complete the last sibling.
-		expect(Scheduler).toFlushAndYieldThrough({ "Suspend!", "Loading...", "After Suspense" }) -- The promise resolves before the current render phase has completed
-		resolveThenable()
-		expect(Scheduler).toHaveYielded({})
-		expect(root).toMatchRenderedOutput("Initial") -- Start over from the root, instead of continuing.
-		expect(Scheduler).toFlushAndYield({
-			-- Async renders again *before* Sibling
-			"Async",
-			"After Suspense",
-			"Sibling",
->>>>>>> upstream-apply
 		})
 		jestExpect(Scheduler).toFlushAndYield({
 			"B",
 		})
 		jestExpect(root).toMatchRenderedOutput("AB")
 	end)
-<<<<<<< HEAD
 	it(
 		"interrupts current render if promise resolves before current render phase",
 		function()
@@ -859,142 +735,10 @@ describe("ReactSuspense", function()
 			jestExpect(root).toMatchRenderedOutput("A0B0C0")
 
 			-- After suspending, should abort the first update and switch to the
-=======
-	it("throttles fallback committing globally", function()
-		local function Foo()
-			Scheduler:unstable_yieldValue("Foo")
-			return React.createElement(
-				Suspense,
-				{ fallback = React.createElement(Text, { text = "Loading..." }) },
-				React.createElement(AsyncText, { text = "A", ms = 200 }),
-				React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading more..." }) },
-					React.createElement(AsyncText, { text = "B", ms = 300 })
-				)
-			)
-		end -- Committing fallbacks should be throttled.
-		-- First, advance some time to skip the first threshold.
-		jest.advanceTimersByTime(600)
-		Scheduler:unstable_advanceTime(600)
-		local root = ReactTestRenderer.create(React.createElement(Foo, nil), { unstable_isConcurrent = true })
-		expect(Scheduler).toFlushAndYield({
-			"Foo",
-			"Suspend! [A]",
-			"Suspend! [B]",
-			"Loading more...",
-			"Loading...",
-		})
-		expect(root).toMatchRenderedOutput("Loading...") -- Resolve A.
-		jest.advanceTimersByTime(200)
-		Scheduler:unstable_advanceTime(200)
-		expect(Scheduler).toHaveYielded({ "Promise resolved [A]" })
-		expect(Scheduler).toFlushAndYield({ "A", "Suspend! [B]", "Loading more..." }) -- By this point, we have enough info to show "A" and "Loading more..."
-		-- However, we've just shown the outer fallback. So we'll delay
-		-- showing the inner fallback hoping that B will resolve soon enough.
-		expect(root).toMatchRenderedOutput("Loading...") -- Resolve B.
-		jest.advanceTimersByTime(100)
-		Scheduler:unstable_advanceTime(100)
-		expect(Scheduler).toHaveYielded({ "Promise resolved [B]" }) -- By this point, B has resolved.
-		-- We're still showing the outer fallback.
-		expect(root).toMatchRenderedOutput("Loading...")
-		expect(Scheduler).toFlushAndYield({ "A", "B" }) -- Then contents of both should pop in together.
-		expect(root).toMatchRenderedOutput("AB")
-	end)
-	it("does not throttle fallback committing for too long", function()
-		local function Foo()
-			Scheduler:unstable_yieldValue("Foo")
-			return React.createElement(
-				Suspense,
-				{ fallback = React.createElement(Text, { text = "Loading..." }) },
-				React.createElement(AsyncText, { text = "A", ms = 200 }),
-				React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading more..." }) },
-					React.createElement(AsyncText, { text = "B", ms = 1200 })
-				)
-			)
-		end -- Committing fallbacks should be throttled.
-		-- First, advance some time to skip the first threshold.
-		jest.advanceTimersByTime(600)
-		Scheduler:unstable_advanceTime(600)
-		local root = ReactTestRenderer.create(React.createElement(Foo, nil), { unstable_isConcurrent = true })
-		expect(Scheduler).toFlushAndYield({
-			"Foo",
-			"Suspend! [A]",
-			"Suspend! [B]",
-			"Loading more...",
-			"Loading...",
-		})
-		expect(root).toMatchRenderedOutput("Loading...") -- Resolve A.
-		jest.advanceTimersByTime(200)
-		Scheduler:unstable_advanceTime(200)
-		expect(Scheduler).toHaveYielded({ "Promise resolved [A]" })
-		expect(Scheduler).toFlushAndYield({ "A", "Suspend! [B]", "Loading more..." }) -- By this point, we have enough info to show "A" and "Loading more..."
-		-- However, we've just shown the outer fallback. So we'll delay
-		-- showing the inner fallback hoping that B will resolve soon enough.
-		expect(root).toMatchRenderedOutput("Loading...") -- Wait some more. B is still not resolving.
-		jest.advanceTimersByTime(500)
-		Scheduler:unstable_advanceTime(500) -- Give up and render A with a spinner for B.
-		expect(root).toMatchRenderedOutput("ALoading more...") -- Resolve B.
-		jest.advanceTimersByTime(500)
-		Scheduler:unstable_advanceTime(500)
-		expect(Scheduler).toHaveYielded({ "Promise resolved [B]" })
-		expect(Scheduler).toFlushAndYield({ "B" })
-		expect(root).toMatchRenderedOutput("AB")
-	end) -- @gate !enableSyncDefaultUpdates
-	it(
-		"interrupts current render when something suspends with a "
-			.. "delay and we've already skipped over a lower priority update in "
-			.. "a parent",
-		function()
-			local function interrupt()
-				-- React has a heuristic to batch all updates that occur within the same
-				-- event. This is a trick to circumvent that heuristic.
-				ReactTestRenderer.create("whatever")
-			end
-			local function App(ref0)
-				local shouldSuspend, step = ref0.shouldSuspend, ref0.step
-				return React.createElement(
-					React.Fragment,
-					nil,
-					React.createElement(Text, { text = ("A%s"):format(tostring(step)) }),
-					React.createElement(
-						Suspense,
-						{ fallback = React.createElement(Text, { text = "Loading..." }) },
-						if Boolean.toJSBoolean(shouldSuspend)
-							then React.createElement(AsyncText, { text = "Async", ms = 2000 })
-							else nil
-					),
-					React.createElement(Text, { text = ("B%s"):format(tostring(step)) }),
-					React.createElement(Text, { text = ("C%s"):format(tostring(step)) })
-				)
-			end
-			local root = ReactTestRenderer.create(nil, { unstable_isConcurrent = true })
-			root:update(React.createElement(App, { shouldSuspend = false, step = 0 }))
-			expect(Scheduler).toFlushAndYield({ "A0", "B0", "C0" })
-			expect(root).toMatchRenderedOutput("A0B0C0") -- This update will suspend.
-			root:update(React.createElement(App, { shouldSuspend = true, step = 1 })) -- Do a bit of work
-			expect(Scheduler).toFlushAndYieldThrough({ "A1" }) -- Schedule another update. This will have lower priority because it's
-			-- a transition.
-			React.startTransition(function()
-				root:update(React.createElement(App, { shouldSuspend = false, step = 2 }))
-			end) -- Interrupt to trigger a restart.
-			interrupt()
-			expect(Scheduler).toFlushAndYieldThrough({
-				-- Should have restarted the first update, because of the interruption
-				"A1",
-				"Suspend! [Async]",
-				"Loading...",
-				"B1",
-			}) -- Should not have committed loading state
-			expect(root).toMatchRenderedOutput("A0B0C0") -- After suspending, should abort the first update and switch to the
->>>>>>> upstream-apply
 			-- second update. So, C1 should not appear in the log.
 			-- TODO: This should work even if React does not yield to the main
 			-- thread. Should use same mechanism as selective hydration to interrupt
 			-- the render before the end of the current slice of work.
-<<<<<<< HEAD
 			-- ROBLOX FIXME: currently failing right here, gets empty
 			jestExpect(Scheduler).toFlushAndYield({
 				"A2",
@@ -1002,10 +746,6 @@ describe("ReactSuspense", function()
 				"C2",
 			})
 			jestExpect(root).toMatchRenderedOutput("A2B2C2")
-=======
-			expect(Scheduler).toFlushAndYield({ "A2", "B2", "C2" })
-			expect(root).toMatchRenderedOutput("A2B2C2")
->>>>>>> upstream-apply
 		end
 	)
 
@@ -1017,7 +757,6 @@ describe("ReactSuspense", function()
 			return Promise.delay(0):andThen(function()
 				return { default = result }
 			end)
-<<<<<<< HEAD
 		end
 		local Class = React.Component:extend("Class")
 
@@ -1035,20 +774,6 @@ describe("ReactSuspense", function()
 
 		local LazyClass = React.lazy(function()
 			return fakeImport(Class)
-=======
-			local root = ReactTestRenderer.create(
-				React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(LazyClass, { label = "Hi" })
-				)
-			)
-			expect(Scheduler).toHaveYielded({ "Loading..." })
-			expect(root).toMatchRenderedOutput("Loading...")
-			LazyClass:expect()
-			expect(Scheduler).toFlushUntilNextPaint({ "Hi", "Did mount: Hi" })
-			expect(root).toMatchRenderedOutput("Hi")
->>>>>>> upstream-apply
 		end)
 		local root = ReactTestRenderer.create(React.createElement(
 			Suspense,
@@ -1076,7 +801,6 @@ describe("ReactSuspense", function()
 		})
 		jestExpect(root).toMatchRenderedOutput("Hi")
 	end)
-<<<<<<< HEAD
 
 	it("only captures if `fallback` is defined", function()
 		-- ROBLOX deviation START: add useFakeTimers()
@@ -1125,39 +849,6 @@ describe("ReactSuspense", function()
 		"throws if tree suspends and none of the Suspense ancestors have a fallback",
 		function()
 			ReactTestRenderer.create(
-=======
-	it("updates memoized child of suspense component when context updates (simple memo)", function()
-		local useContext, createContext, useState, memo =
-			React.useContext, React.createContext, React.useState, React.memo
-		local ValueContext = createContext(nil)
-		local MemoizedChild = memo(function()
-			local text = useContext(ValueContext)
-			do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-				local ok, result, hasReturned = xpcall(function()
-					TextResource:read({ text, 1000 })
-					Scheduler:unstable_yieldValue(text)
-					return text, true
-				end, function(promise)
-					if typeof(promise["then"]) == "function" then
-						Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-					else
-						Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-					end
-					error(promise)
-				end)
-				if hasReturned then
-					return result
-				end
-			end
-		end)
-		local setValue
-		local function App()
-			local value, _setValue = table.unpack(useState("default"), 1, 2)
-			setValue = _setValue
-			return React.createElement(
-				ValueContext.Provider,
-				{ value = value },
->>>>>>> upstream-apply
 				React.createElement(
 					Suspense,
 					nil,
@@ -1205,147 +896,10 @@ describe("ReactSuspense", function()
 					end
 					error(result)
 				end
-<<<<<<< HEAD
 				return text
 			end)
 			local value, setValue
 
-=======
-			end
-		end)
-		local setValue
-		local function App(ref0)
-			local children = ref0.children
-			local value, _setValue = table.unpack(useState("default"), 1, 2)
-			setValue = _setValue
-			return React.createElement(ValueContext.Provider, { value = value }, children)
-		end
-		local root = ReactTestRenderer.create(
-			React.createElement(
-				App,
-				nil,
-				React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(MemoizedChild, nil)
-				)
-			),
-			{ unstable_isConcurrent = true }
-		)
-		expect(Scheduler).toFlushAndYield({ "Suspend! [default]", "Loading..." })
-		jest.advanceTimersByTime(1000)
-		expect(Scheduler).toHaveYielded({ "Promise resolved [default]" })
-		expect(Scheduler).toFlushAndYield({ "default" })
-		expect(root).toMatchRenderedOutput("default")
-		act(function()
-			return setValue("new value")
-		end)
-		expect(Scheduler).toHaveYielded({ "Suspend! [new value]", "Loading..." })
-		jest.advanceTimersByTime(1000)
-		expect(Scheduler).toHaveYielded({ "Promise resolved [new value]" })
-		expect(Scheduler).toFlushAndYield({ "new value" })
-		expect(root).toMatchRenderedOutput("new value")
-	end) -- @gate enableSuspenseLayoutEffectSemantics
-	it("re-fires layout effects when re-showing Suspense", function()
-		local function TextWithLayout(props)
-			Scheduler:unstable_yieldValue(props.text)
-			React.useLayoutEffect(function()
-				Scheduler:unstable_yieldValue("create layout")
-				return function()
-					Scheduler:unstable_yieldValue("destroy layout")
-				end
-			end, {})
-			return props.text
-		end
-		local _setShow
-		local function App(props)
-			local show, setShow = table.unpack(React.useState(false), 1, 2)
-			_setShow = setShow
-			return React.createElement(
-				Suspense,
-				{ fallback = React.createElement(Text, { text = "Loading..." }) },
-				React.createElement(TextWithLayout, { text = "Child 1" }),
-				if Boolean.toJSBoolean(show)
-					then React.createElement(AsyncText, { ms = 1000, text = "Child 2" })
-					else show
-			)
-		end
-		local root = ReactTestRenderer.create(React.createElement(App, nil), { unstable_isConcurrent = true })
-		expect(Scheduler).toFlushAndYield({ "Child 1", "create layout" })
-		expect(root).toMatchRenderedOutput("Child 1")
-		act(function()
-			_setShow(true)
-		end)
-		expect(Scheduler).toHaveYielded({ "Child 1", "Suspend! [Child 2]", "Loading..." })
-		jest.advanceTimersByTime(1000)
-		expect(Scheduler).toHaveYielded({ "destroy layout", "Promise resolved [Child 2]" })
-		expect(Scheduler).toFlushAndYield({ "Child 1", "Child 2", "create layout" })
-		expect(root).toMatchRenderedOutput(Array.join({ "Child 1", "Child 2" }, ""))
-	end)
-	describe("outside concurrent mode", function()
-		it("a mounted class component can suspend without losing state", function()
-			type TextWithLifecycle = React_Component<any, any> & {}
-			type TextWithLifecycle_statics = {}
-			local TextWithLifecycle =
-				React.Component:extend("TextWithLifecycle") :: TextWithLifecycle & TextWithLifecycle_statics
-			function TextWithLifecycle.componentDidMount(self: TextWithLifecycle)
-				Scheduler:unstable_yieldValue(("Mount [%s]"):format(tostring(self.props.text)))
-			end
-			function TextWithLifecycle.componentDidUpdate(self: TextWithLifecycle)
-				Scheduler:unstable_yieldValue(("Update [%s]"):format(tostring(self.props.text)))
-			end
-			function TextWithLifecycle.componentWillUnmount(self: TextWithLifecycle)
-				Scheduler:unstable_yieldValue(("Unmount [%s]"):format(tostring(self.props.text)))
-			end
-			function TextWithLifecycle.render(self: TextWithLifecycle)
-				return React.createElement(Text, self.props)
-			end
-			local instance
-			type AsyncTextWithLifecycle = React_Component<any, any> & { state: Object }
-			type AsyncTextWithLifecycle_statics = {}
-			local AsyncTextWithLifecycle =
-				React.Component:extend("AsyncTextWithLifecycle") :: AsyncTextWithLifecycle & AsyncTextWithLifecycle_statics
-			function AsyncTextWithLifecycle.init(self: AsyncTextWithLifecycle)
-				self.state = { step = 1 }
-			end
-			function AsyncTextWithLifecycle.componentDidMount(self: AsyncTextWithLifecycle)
-				Scheduler:unstable_yieldValue(
-					("Mount [%s:%s]"):format(tostring(self.props.text), tostring(self.state.step))
-				)
-			end
-			function AsyncTextWithLifecycle.componentDidUpdate(self: AsyncTextWithLifecycle)
-				Scheduler:unstable_yieldValue(
-					("Update [%s:%s]"):format(tostring(self.props.text), tostring(self.state.step))
-				)
-			end
-			function AsyncTextWithLifecycle.componentWillUnmount(self: AsyncTextWithLifecycle)
-				Scheduler:unstable_yieldValue(
-					("Unmount [%s:%s]"):format(tostring(self.props.text), tostring(self.state.step))
-				)
-			end
-			function AsyncTextWithLifecycle.render(self: AsyncTextWithLifecycle)
-				instance = self
-				local text = ("%s:%s"):format(tostring(self.props.text), tostring(self.state.step))
-				local ms = self.props.ms
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ text, ms })
-						Scheduler:unstable_yieldValue(text)
-						return text, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
-				end
-			end
->>>>>>> upstream-apply
 			local function App()
 				value, setValue = useState("default")
 
@@ -1369,7 +923,6 @@ describe("ReactSuspense", function()
 				"Suspend! [default]",
 				"Loading...",
 			})
-<<<<<<< HEAD
 			jest.advanceTimersByTime(1000)
 			jestExpect(Scheduler).toHaveYielded({
 				"Promise resolved [default]",
@@ -1747,31 +1300,6 @@ describe("ReactSuspense", function()
 			-- ROBLOX deviation START: add useFakeTimers()
 			jest.useFakeTimers()
 			-- ROBLOX deviation END
-=======
-			expect(root).toMatchRenderedOutput("Loading...")
-			jest.advanceTimersByTime(100)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [B:1]" })
-			expect(Scheduler).toFlushUntilNextPaint({
-				"B:1",
-				"Unmount [Loading...]",
-				-- Should be a mount, not an update
-				"Mount [B:1]",
-			})
-			expect(root).toMatchRenderedOutput("AB:1C")
-			instance:setState({ step = 2 })
-			expect(Scheduler).toHaveYielded({ "Suspend! [B:2]", "Loading...", "Mount [Loading...]" })
-			expect(root).toMatchRenderedOutput("Loading...")
-			jest.advanceTimersByTime(100)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [B:2]" })
-			expect(Scheduler).toFlushUntilNextPaint({
-				"B:2",
-				"Unmount [Loading...]",
-				"Update [B:2]",
-			})
-			expect(root).toMatchRenderedOutput("AB:2C")
-		end)
-		it("bails out on timed-out primary children even if they receive an update", function()
->>>>>>> upstream-apply
 			local instance
 			local Stateful = React.Component:extend("Stateful")
 			function Stateful:init()
@@ -1779,51 +1307,10 @@ describe("ReactSuspense", function()
 			end
 			function Stateful:render()
 				instance = self
-<<<<<<< HEAD
 
 				return React.createElement(Text, {
 					text = string.format("Stateful: %s", self.state.step),
 				})
-=======
-				return React.createElement(Text, { text = ("Stateful: %s"):format(tostring(self.state.step)) })
-			end
-			local function App(props)
-				return React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(Stateful, nil),
-					React.createElement(AsyncText, { ms = 1000, text = props.text })
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, { text = "A" }))
-			expect(Scheduler).toHaveYielded({ "Stateful: 1", "Suspend! [A]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [A]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "A" })
-			expect(root).toMatchRenderedOutput("Stateful: 1A")
-			root:update(React.createElement(App, { text = "B" }))
-			expect(Scheduler).toHaveYielded({ "Stateful: 1", "Suspend! [B]", "Loading..." })
-			expect(root).toMatchRenderedOutput("Loading...")
-			instance:setState({ step = 2 })
-			expect(Scheduler).toHaveYielded({ "Stateful: 2", "Suspend! [B]" })
-			expect(root).toMatchRenderedOutput("Loading...")
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [B]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "B" })
-			expect(root).toMatchRenderedOutput("Stateful: 2B")
-		end)
-		it("when updating a timed-out tree, always retries the suspended component", function()
-			local instance
-			type Stateful = React_Component<any, any> & { state: Object }
-			type Stateful_statics = {}
-			local Stateful = React.Component:extend("Stateful") :: Stateful & Stateful_statics
-			function Stateful.init(self: Stateful)
-				self.state = { step = 1 }
-			end
-			function Stateful.render(self: Stateful)
-				instance = self
-				return React.createElement(Text, { text = ("Stateful: %s"):format(tostring(self.state.step)) })
->>>>>>> upstream-apply
 			end
 
 			local Indirection = React.Fragment
@@ -1866,7 +1353,6 @@ describe("ReactSuspense", function()
 				"Loading...",
 			})
 			jest.advanceTimersByTime(1000)
-<<<<<<< HEAD
 			jestExpect(Scheduler).toHaveYielded({
 				"Promise resolved [A]",
 			})
@@ -1884,14 +1370,6 @@ describe("ReactSuspense", function()
 			})
 			-- ROBLOX FIXME: test fails here, rendered output is empty
 			jestExpect(root).toMatchRenderedOutput("Loading...")
-=======
-			expect(Scheduler).toHaveYielded({ "Promise resolved [A]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "A" })
-			expect(root).toMatchRenderedOutput("Stateful: 1A")
-			root:update(React.createElement(App, { text = "B" }))
-			expect(Scheduler).toHaveYielded({ "Stateful: 1", "Suspend! [B]", "Loading..." })
-			expect(root).toMatchRenderedOutput("Loading...")
->>>>>>> upstream-apply
 			instance:setState({ step = 2 })
 			jestExpect(Scheduler).toHaveYielded({
 				"Stateful: 2",
@@ -1899,141 +1377,12 @@ describe("ReactSuspense", function()
 			})
 			jestExpect(root).toMatchRenderedOutput("Loading...")
 			jest.advanceTimersByTime(1000)
-<<<<<<< HEAD
 			jestExpect(Scheduler).toHaveYielded({
 				"Promise resolved [B]",
-=======
-			expect(Scheduler).toHaveYielded({ "Promise resolved [B]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "B" })
-			expect(root).toMatchRenderedOutput("Stateful: 2B")
-		end)
-		it("suspends in a class that has componentWillUnmount and is then deleted", function()
-			type AsyncTextWithUnmount = React_Component<any, any> & {}
-			type AsyncTextWithUnmount_statics = {}
-			local AsyncTextWithUnmount =
-				React.Component:extend("AsyncTextWithUnmount") :: AsyncTextWithUnmount & AsyncTextWithUnmount_statics
-			function AsyncTextWithUnmount.componentWillUnmount(self: AsyncTextWithUnmount)
-				Scheduler:unstable_yieldValue("will unmount")
-			end
-			function AsyncTextWithUnmount.render(self: AsyncTextWithUnmount)
-				local text = self.props.text
-				local ms = self.props.ms
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ text, ms })
-						Scheduler:unstable_yieldValue(text)
-						return text, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
-				end
-			end
-			local function App(ref0)
-				local text = ref0.text
-				return React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(AsyncTextWithUnmount, { text = text, ms = 100 })
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, { text = "A" }))
-			expect(Scheduler).toHaveYielded({ "Suspend! [A]", "Loading..." })
-			root:update(React.createElement(Text, { text = "B" })) -- Should not fire componentWillUnmount
-			expect(Scheduler).toHaveYielded({ "B" })
-			expect(root).toMatchRenderedOutput("B")
-		end)
-		it("suspends in a component that also contains useEffect", function()
-			local useLayoutEffect = React.useLayoutEffect
-			local function AsyncTextWithEffect(props)
-				local text = props.text
-				useLayoutEffect(function()
-					Scheduler:unstable_yieldValue("Did commit: " .. tostring(text))
-				end, { text })
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ props.text, props.ms })
-						Scheduler:unstable_yieldValue(text)
-						return text, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
-				end
-			end
-			local function App(ref0)
-				local text = ref0.text
-				return React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(AsyncTextWithEffect, { text = text, ms = 100 })
-				)
-			end
-			ReactTestRenderer.create(React.createElement(App, { text = "A" }))
-			expect(Scheduler).toHaveYielded({ "Suspend! [A]", "Loading..." })
-			jest.advanceTimersByTime(500)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [A]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "A", "Did commit: A" })
-		end)
-		it("retries when an update is scheduled on a timed out tree", function()
-			local instance
-			type Stateful = React_Component<any, any> & { state: Object }
-			type Stateful_statics = {}
-			local Stateful = React.Component:extend("Stateful") :: Stateful & Stateful_statics
-			function Stateful.init(self: Stateful)
-				self.state = { step = 1 }
-			end
-			function Stateful.render(self: Stateful)
-				instance = self
-				return React.createElement(
-					AsyncText,
-					{ ms = 1000, text = ("Step: %s"):format(tostring(self.state.step)) }
-				)
-			end
-			local function App(props)
-				return React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(Stateful, nil)
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, nil), { unstable_isConcurrent = true }) -- Initial render
-			expect(Scheduler).toFlushAndYield({ "Suspend! [Step: 1]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Step: 1]" })
-			expect(Scheduler).toFlushAndYield({ "Step: 1" })
-			expect(root).toMatchRenderedOutput("Step: 1") -- Update that suspends
-			instance:setState({ step = 2 })
-			expect(Scheduler).toFlushAndYield({ "Suspend! [Step: 2]", "Loading..." })
-			jest.advanceTimersByTime(500)
-			expect(root).toMatchRenderedOutput("Loading...") -- Update while still suspended
-			instance:setState({ step = 3 })
-			expect(Scheduler).toFlushAndYield({ "Suspend! [Step: 3]" })
-			expect(root).toMatchRenderedOutput("Loading...")
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({
-				"Promise resolved [Step: 2]",
-				"Promise resolved [Step: 3]",
->>>>>>> upstream-apply
 			})
 			jestExpect(Scheduler).toFlushExpired({
 				"B",
 			})
-<<<<<<< HEAD
 			jestExpect(root).toMatchRenderedOutput("Stateful: 2B")
 		end
 	)
@@ -2056,112 +1405,6 @@ describe("ReactSuspense", function()
 					Scheduler.unstable_yieldValue(string.format("Suspend! [%s]", text))
 				else
 					Scheduler.unstable_yieldValue(string.format("Error! [%s]", text))
-=======
-			expect(Scheduler).toFlushAndYield({})
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Child 1]" })
-			expect(Scheduler).toFlushUntilNextPaint({
-				"Child 1",
-				"Suspend! [Child 2]",
-				"Suspend! [Child 3]",
-			})
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Child 2]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "Child 2", "Suspend! [Child 3]" })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Child 3]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "Child 3" })
-			expect(root).toMatchRenderedOutput(Array.join({ "Child 1", "Child 2", "Child 3" }, ""))
-			expect(mounts).toBe(1)
-		end)
-		it("does not get stuck with fallback in concurrent mode for a large delay", function()
-			local function App(props)
-				return React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(AsyncText, { ms = 1000, text = "Child 1" }),
-					React.createElement(AsyncText, { ms = 7000, text = "Child 2" })
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, nil), { unstable_isConcurrent = true })
-			expect(Scheduler).toFlushAndYield({
-				"Suspend! [Child 1]",
-				"Suspend! [Child 2]",
-				"Loading...",
-			})
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Child 1]" })
-			expect(Scheduler).toFlushAndYield({ "Child 1", "Suspend! [Child 2]" })
-			jest.advanceTimersByTime(6000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Child 2]" })
-			expect(Scheduler).toFlushAndYield({ "Child 1", "Child 2" })
-			expect(root).toMatchRenderedOutput(Array.join({ "Child 1", "Child 2" }, ""))
-		end)
-		it("reuses effects, including deletions, from the suspended tree", function()
-			local useState = React.useState
-			local setTab
-			local function App()
-				local tab, _setTab = table.unpack(useState(0), 1, 2)
-				setTab = _setTab
-				return React.createElement(
-					Suspense,
-					{ fallback = React.createElement(Text, { text = "Loading..." }) },
-					React.createElement(AsyncText, { key = tab, text = "Tab: " .. tostring(tab), ms = 1000 }),
-					React.createElement(Text, { key = tostring(tab) .. "sibling", text = " + sibling" })
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, nil))
-			expect(Scheduler).toHaveYielded({ "Suspend! [Tab: 0]", " + sibling", "Loading..." })
-			expect(root).toMatchRenderedOutput("Loading...")
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Tab: 0]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "Tab: 0" })
-			expect(root).toMatchRenderedOutput("Tab: 0 + sibling")
-			act(function()
-				return setTab(1)
-			end)
-			expect(Scheduler).toHaveYielded({ "Suspend! [Tab: 1]", " + sibling", "Loading..." })
-			expect(root).toMatchRenderedOutput("Loading...")
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Tab: 1]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "Tab: 1" })
-			expect(root).toMatchRenderedOutput("Tab: 1 + sibling")
-			act(function()
-				return setTab(2)
-			end)
-			expect(Scheduler).toHaveYielded({ "Suspend! [Tab: 2]", " + sibling", "Loading..." })
-			expect(root).toMatchRenderedOutput("Loading...")
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [Tab: 2]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "Tab: 2" })
-			expect(root).toMatchRenderedOutput("Tab: 2 + sibling")
-		end)
-		it("does not warn if an mounted component is pinged", function()
-			local useState = React.useState
-			local root = ReactTestRenderer.create(nil)
-			local setStep
-			local function UpdatingText(ref0)
-				local text, ms = ref0.text, ref0.ms
-				local step, _setStep = table.unpack(useState(0), 1, 2)
-				setStep = _setStep
-				local fullText = ("%s:%s"):format(tostring(text), tostring(step))
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ fullText, ms })
-						Scheduler:unstable_yieldValue(fullText)
-						return fullText, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(fullText)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(fullText)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
->>>>>>> upstream-apply
 				end
 				error(promise)
 			end
@@ -2183,7 +1426,6 @@ describe("ReactSuspense", function()
 					ms = 100,
 				})
 			)
-<<<<<<< HEAD
 		end
 
 		local root = ReactTestRenderer.create(React.createElement(App, {
@@ -2220,15 +1462,6 @@ describe("ReactSuspense", function()
 				TextResource.read({ props.text, props.ms })
 				Scheduler.unstable_yieldValue(text)
 				return text
-=======
-			expect(Scheduler).toHaveYielded({ "Suspend! [A:0]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [A:0]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "A:0" })
-			expect(root).toMatchRenderedOutput("A:0")
-			act(function()
-				return setStep(1)
->>>>>>> upstream-apply
 			end)
 			if not ok then
 				local promise = result
@@ -2705,15 +1938,10 @@ describe("ReactSuspense", function()
 
 			-- Resolve A
 			jest.advanceTimersByTime(1000)
-<<<<<<< HEAD
 			jestExpect(Scheduler).toHaveYielded({
 				"Promise resolved [A]",
 			})
 			jestExpect(Scheduler).toFlushExpired({
-=======
-			expect(Scheduler).toHaveYielded({ "Promise resolved [A]" })
-			expect(Scheduler).toFlushUntilNextPaint({
->>>>>>> upstream-apply
 				"A",
 				-- The promises for B and C have now been thrown twice
 				"Suspend! [B]",
@@ -2722,15 +1950,10 @@ describe("ReactSuspense", function()
 
 			-- Resolve B
 			jest.advanceTimersByTime(1000)
-<<<<<<< HEAD
 			jestExpect(Scheduler).toHaveYielded({
 				"Promise resolved [B]",
 			})
 			jestExpect(Scheduler).toFlushExpired({
-=======
-			expect(Scheduler).toHaveYielded({ "Promise resolved [B]" })
-			expect(Scheduler).toFlushUntilNextPaint({
->>>>>>> upstream-apply
 				-- Even though the promise for B was thrown twice, we should only
 				-- re-render once.
 				"B",
@@ -2740,328 +1963,18 @@ describe("ReactSuspense", function()
 
 			-- Resolve C
 			jest.advanceTimersByTime(1000)
-<<<<<<< HEAD
 			jestExpect(Scheduler).toHaveYielded({
 				"Promise resolved [C]",
 			})
 			jestExpect(Scheduler).toFlushAndYield({
-=======
-			expect(Scheduler).toHaveYielded({ "Promise resolved [C]" })
-			expect(Scheduler).toFlushUntilNextPaint({
->>>>>>> upstream-apply
 				-- Even though the promise for C was thrown three times, we should only
 				-- re-render once.
 				"C",
 			})
 		end)
-<<<<<<< HEAD
 		jestExpect(subscriber.onInteractionScheduledWorkCompleted).toHaveBeenCalledTimes(
 			1
 		)
-=======
-		it("#14162", function()
-			local lazy = React.lazy
-			local function Hello()
-				return React.createElement("span", nil, "hello")
-			end
-			local function fetchComponent()
-				return Promise.resolve():andThen(function()
-					return Promise.new(function(r)
-						-- simulating a delayed import() call
-						setTimeout(r, 1000, { default = Hello })
-					end)
-				end)
-			end
-			local LazyHello = lazy(fetchComponent)
-			type App = React_Component<any, any> & { state: Object }
-			type App_statics = {}
-			local App = React.Component:extend("App") :: App & App_statics
-			function App.init(self: App)
-				self.state = { render = false }
-			end
-			function App.componentDidMount(self: App)
-				setTimeout(function()
-					return self:setState({ render = true })
-				end)
-			end
-			function App.render(self: App)
-				return React.createElement(
-					Suspense,
-					{ fallback = React.createElement("span", nil, "loading...") },
-					if Boolean.toJSBoolean(self.state.render)
-						then React.createElement(LazyHello, nil)
-						else self.state.render
-				)
-			end
-			local root = ReactTestRenderer.create(nil)
-			root:update(React.createElement(App, { name = "world" }))
-			jest.advanceTimersByTime(1000)
-		end)
-		it("updates memoized child of suspense component when context updates (simple memo)", function()
-			local useContext, createContext, useState, memo =
-				React.useContext, React.createContext, React.useState, React.memo
-			local ValueContext = createContext(nil)
-			local MemoizedChild = memo(function()
-				local text = useContext(ValueContext)
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ text, 1000 })
-						Scheduler:unstable_yieldValue(text)
-						return text, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
-				end
-			end)
-			local setValue
-			local function App()
-				local value, _setValue = table.unpack(useState("default"), 1, 2)
-				setValue = _setValue
-				return React.createElement(
-					ValueContext.Provider,
-					{ value = value },
-					React.createElement(
-						Suspense,
-						{ fallback = React.createElement(Text, { text = "Loading..." }) },
-						React.createElement(MemoizedChild, nil)
-					)
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, nil))
-			expect(Scheduler).toHaveYielded({ "Suspend! [default]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [default]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "default" })
-			expect(root).toMatchRenderedOutput("default")
-			act(function()
-				return setValue("new value")
-			end)
-			expect(Scheduler).toHaveYielded({ "Suspend! [new value]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [new value]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "new value" })
-			expect(root).toMatchRenderedOutput("new value")
-		end)
-		it("updates memoized child of suspense component when context updates (manual memo)", function()
-			local useContext, createContext, useState, memo =
-				React.useContext, React.createContext, React.useState, React.memo
-			local ValueContext = createContext(nil)
-			local MemoizedChild = memo(function()
-				local text = useContext(ValueContext)
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ text, 1000 })
-						Scheduler:unstable_yieldValue(text)
-						return text, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
-				end
-			end, function(prevProps, nextProps)
-				return true
-			end)
-			local setValue
-			local function App()
-				local value, _setValue = table.unpack(useState("default"), 1, 2)
-				setValue = _setValue
-				return React.createElement(
-					ValueContext.Provider,
-					{ value = value },
-					React.createElement(
-						Suspense,
-						{ fallback = React.createElement(Text, { text = "Loading..." }) },
-						React.createElement(MemoizedChild, nil)
-					)
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, nil))
-			expect(Scheduler).toHaveYielded({ "Suspend! [default]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [default]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "default" })
-			expect(root).toMatchRenderedOutput("default")
-			act(function()
-				return setValue("new value")
-			end)
-			expect(Scheduler).toHaveYielded({ "Suspend! [new value]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [new value]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "new value" })
-			expect(root).toMatchRenderedOutput("new value")
-		end)
-		it("updates memoized child of suspense component when context updates (function)", function()
-			local useContext, createContext, useState = React.useContext, React.createContext, React.useState
-			local ValueContext = createContext(nil)
-			local function MemoizedChild()
-				local text = useContext(ValueContext)
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ text, 1000 })
-						Scheduler:unstable_yieldValue(text)
-						return text, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
-				end
-			end
-			local setValue
-			local function App(ref0)
-				local children = ref0.children
-				local value, _setValue = table.unpack(useState("default"), 1, 2)
-				setValue = _setValue
-				return React.createElement(ValueContext.Provider, { value = value }, children)
-			end
-			local root = ReactTestRenderer.create(
-				React.createElement(
-					App,
-					nil,
-					React.createElement(
-						Suspense,
-						{ fallback = React.createElement(Text, { text = "Loading..." }) },
-						React.createElement(MemoizedChild, nil)
-					)
-				)
-			)
-			expect(Scheduler).toHaveYielded({ "Suspend! [default]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [default]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "default" })
-			expect(root).toMatchRenderedOutput("default")
-			act(function()
-				return setValue("new value")
-			end)
-			expect(Scheduler).toHaveYielded({ "Suspend! [new value]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [new value]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "new value" })
-			expect(root).toMatchRenderedOutput("new value")
-		end)
-		it("updates memoized child of suspense component when context updates (forwardRef)", function()
-			local forwardRef, useContext, createContext, useState =
-				React.forwardRef, React.useContext, React.createContext, React.useState
-			local ValueContext = createContext(nil)
-			local MemoizedChild = forwardRef(function()
-				local text = useContext(ValueContext)
-				do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-					local ok, result, hasReturned = xpcall(function()
-						TextResource:read({ text, 1000 })
-						Scheduler:unstable_yieldValue(text)
-						return text, true
-					end, function(promise)
-						if typeof(promise["then"]) == "function" then
-							Scheduler:unstable_yieldValue(("Suspend! [%s]"):format(tostring(text)))
-						else
-							Scheduler:unstable_yieldValue(("Error! [%s]"):format(tostring(text)))
-						end
-						error(promise)
-					end)
-					if hasReturned then
-						return result
-					end
-				end
-			end)
-			local setValue
-			local function App()
-				local value, _setValue = table.unpack(useState("default"), 1, 2)
-				setValue = _setValue
-				return React.createElement(
-					ValueContext.Provider,
-					{ value = value },
-					React.createElement(
-						Suspense,
-						{ fallback = React.createElement(Text, { text = "Loading..." }) },
-						React.createElement(MemoizedChild, nil)
-					)
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, nil))
-			expect(Scheduler).toHaveYielded({ "Suspend! [default]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [default]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "default" })
-			expect(root).toMatchRenderedOutput("default")
-			act(function()
-				return setValue("new value")
-			end)
-			expect(Scheduler).toHaveYielded({ "Suspend! [new value]", "Loading..." })
-			jest.advanceTimersByTime(1000)
-			expect(Scheduler).toHaveYielded({ "Promise resolved [new value]" })
-			expect(Scheduler).toFlushUntilNextPaint({ "new value" })
-			expect(root).toMatchRenderedOutput("new value")
-		end)
-		it("updates context consumer within child of suspended suspense component when context updates", function()
-			local createContext, useState = React.createContext, React.useState
-			local ValueContext = createContext(nil)
-			local promiseThatNeverResolves = Promise.new(function() end)
-			local function Child()
-				return React.createElement(ValueContext.Consumer, nil, function(value)
-					Scheduler:unstable_yieldValue(("Received context value [%s]"):format(tostring(value)))
-					if value == "default" then
-						return React.createElement(Text, { text = "default" })
-					end
-					error(promiseThatNeverResolves)
-				end)
-			end
-			local setValue
-			local function Wrapper(ref0)
-				local children = ref0.children
-				local value, _setValue = table.unpack(useState("default"), 1, 2)
-				setValue = _setValue
-				return React.createElement(ValueContext.Provider, { value = value }, children)
-			end
-			local function App()
-				return React.createElement(
-					Wrapper,
-					nil,
-					React.createElement(
-						Suspense,
-						{ fallback = React.createElement(Text, { text = "Loading..." }) },
-						React.createElement(Child, nil)
-					)
-				)
-			end
-			local root = ReactTestRenderer.create(React.createElement(App, nil))
-			expect(Scheduler).toHaveYielded({ "Received context value [default]", "default" })
-			expect(root).toMatchRenderedOutput("default")
-			act(function()
-				return setValue("new value")
-			end)
-			expect(Scheduler).toHaveYielded({
-				"Received context value [new value]",
-				"Loading...",
-			})
-			expect(root).toMatchRenderedOutput("Loading...")
-			act(function()
-				return setValue("default")
-			end)
-			expect(Scheduler).toHaveYielded({ "Received context value [default]", "default" })
-			expect(root).toMatchRenderedOutput("default")
-		end)
->>>>>>> upstream-apply
 	end)
 	--     it('#14162', function()
 	--         local fetchComponent = _async(function()

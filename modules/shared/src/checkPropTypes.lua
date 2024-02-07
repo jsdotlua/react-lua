@@ -19,8 +19,7 @@ local console = require("./console")
 local loggedTypeFailures = {}
 
 local ReactComponentStackFrame = require("./ReactComponentStackFrame")
-local describeUnknownElementTypeFrameInDEV =
-	ReactComponentStackFrame.describeUnknownElementTypeFrameInDEV
+local describeUnknownElementTypeFrameInDEV = ReactComponentStackFrame.describeUnknownElementTypeFrameInDEV
 
 local ReactSharedInternals = require("./ReactSharedInternals")
 
@@ -63,10 +62,7 @@ local function checkPropTypes<P>(
 
 		-- ROBLOX deviation: warns if both propType and validateProps defined.
 		if propTypes and validateProps then
-			console.warn(
-				"You've defined both propTypes and validateProps on "
-					.. (componentName or "a component")
-			)
+			console.warn("You've defined both propTypes and validateProps on " .. (componentName or "a component"))
 		end
 
 		-- ROBLOX deviation: also checks validateProps if present
@@ -82,8 +78,7 @@ local function checkPropTypes<P>(
 				local success, failureReason = validateProps(props)
 
 				if not success then
-					failureReason = failureReason
-						or "<Validator function did not supply a message>"
+					failureReason = failureReason or "<Validator function did not supply a message>"
 					local message = string.format(
 						"validateProps failed on a %s type in %s: %s",
 						location,
@@ -163,21 +158,12 @@ local function checkPropTypes<P>(
 				end
 
 				-- ROBLOX FIXME: Luau analyze doesn't understand isErrorObject's effect as a predicate meaning result ~= nil
-				if
-					isErrorObject
-					and loggedTypeFailures[(result :: any).message] == nil
-				then
+				if isErrorObject and loggedTypeFailures[(result :: any).message] == nil then
 					-- Only monitor this failure once because there tends to be a lot of the
 					-- same error.
 					loggedTypeFailures[tostring((result :: any).message)] = true
 					setCurrentlyValidatingElement(element)
-					console.warn(
-						string.format(
-							"Failed %s type: %s",
-							location,
-							tostring((result :: any).message)
-						)
-					)
+					console.warn(string.format("Failed %s type: %s", location, tostring((result :: any).message)))
 					setCurrentlyValidatingElement(nil)
 				end
 			end

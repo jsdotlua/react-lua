@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/69060e1da6061af845162dcf6854a5d9af28350a/packages/react-reconciler/src/__tests__/ReactTopLevelFragment-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactTopLevelFragment-test.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -69,11 +69,7 @@ it("should preserve state when switching from a single child", function()
 		else
 			return {
 				React.createElement(Stateful, { key = "a" }),
-				React.createElement(
-					"Frame",
-					{ key = "b" },
-					React.createElement("TextLabel", { Text = "World" })
-				),
+				React.createElement("Frame", { key = "b" }, React.createElement("TextLabel", { Text = "World" })),
 			}
 		end
 	end
@@ -110,11 +106,7 @@ it("should not preserve state when switching to a nested array", function()
 			return {
 				{
 					React.createElement(Stateful, { key = "a" }),
-					React.createElement(
-						"Frame",
-						{ key = "b" },
-						React.createElement("TextLabel", { Text = "World" })
-					),
+					React.createElement("Frame", { key = "b" }, React.createElement("TextLabel", { Text = "World" })),
 				},
 				React.createElement("Frame", { key = "c" }),
 			}
@@ -153,11 +145,7 @@ it("preserves state if an implicit key slot switches from/to nil", function()
 			} :: Array<any>
 		else
 			return {
-				React.createElement(
-					"Frame",
-					{ key = "b" },
-					React.createElement("TextLabel", { Text = "Hello" })
-				),
+				React.createElement("Frame", { key = "b" }, React.createElement("TextLabel", { Text = "Hello" })),
 				React.createElement(Stateful, { key = "a" }),
 				-- ROBLOX FIXME Luau: Luau *must* infer mixed arrays
 			} :: Array<any>
@@ -200,11 +188,7 @@ it("should preserve state in a reorder", function()
 			return {
 				{
 					-- ROBLOX FIXME Luau: Luau needs to allow mixed arrays and/or normalize these two things to a common ancestor
-					React.createElement(
-						"Frame",
-						{ key = "b" },
-						React.createElement("TextLabel", { Text = "World" })
-					) :: any,
+					React.createElement("Frame", { key = "b" }, React.createElement("TextLabel", { Text = "World" })) :: any,
 					React.createElement(Stateful, { key = "a" }),
 				},
 			}
@@ -213,11 +197,7 @@ it("should preserve state in a reorder", function()
 				{
 					-- ROBLOX FIXME Luau: Luau needs to allow mixed arrays and/or normalize these two things to a common ancestor
 					React.createElement(Stateful, { key = "a" }) :: any,
-					React.createElement(
-						"Frame",
-						{ key = "b" },
-						React.createElement("TextLabel", { Text = "World" })
-					),
+					React.createElement("Frame", { key = "b" }, React.createElement("TextLabel", { Text = "World" })),
 				} :: any,
 				React.createElement("Frame", { key = "c" }),
 			}

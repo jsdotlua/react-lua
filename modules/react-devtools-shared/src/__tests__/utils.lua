@@ -200,8 +200,7 @@ end
 exports.exportImportHelper = function(bridge: FrontendBridge, store: Store): ()
 	local utils = require("./devtools/views/Profiler/utils")
 	local prepareProfilingDataExport = utils.prepareProfilingDataExport
-	local prepareProfilingDataFrontendFromExport =
-		utils.prepareProfilingDataFrontendFromExport
+	local prepareProfilingDataFrontendFromExport = utils.prepareProfilingDataFrontendFromExport
 	local profilerStore = store._profilerStore
 
 	local profilingDataFrontendInitial = profilerStore:profilingData()
@@ -215,17 +214,13 @@ exports.exportImportHelper = function(bridge: FrontendBridge, store: Store): ()
 
 	-- Simulate writing/reading to disk.
 	local serializedProfilingDataExport = HttpService:JSONEncode(profilingDataExport)
-	local parsedProfilingDataExport =
-		HttpService:JSONDecode(serializedProfilingDataExport)
+	local parsedProfilingDataExport = HttpService:JSONDecode(serializedProfilingDataExport)
 
-	local profilingDataFrontend =
-		prepareProfilingDataFrontendFromExport(parsedProfilingDataExport)
+	local profilingDataFrontend = prepareProfilingDataFrontendFromExport(parsedProfilingDataExport)
 	jestExpect(profilingDataFrontend.imported).toBe(true)
 
 	-- Sanity check that profiling snapshots are serialized correctly.
-	jestExpect(profilingDataFrontendInitial.dataForRoots).toEqual(
-		profilingDataFrontend.dataForRoots
-	)
+	jestExpect(profilingDataFrontendInitial.dataForRoots).toEqual(profilingDataFrontend.dataForRoots)
 
 	-- Snapshot the JSON-parsed object, rather than the raw string, because Jest formats the diff nicer.
 	jestExpect(parsedProfilingDataExport).toMatchSnapshot("imported data")

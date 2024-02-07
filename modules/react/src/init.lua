@@ -23,15 +23,11 @@ local ReactLazy = require("./ReactLazy")
 export type LazyComponent<T, P> = ReactLazy.LazyComponent<T, P>
 
 local SharedModule = require("@pkg/@jsdotlua/shared")
-export type StatelessFunctionalComponent<P> =
-	SharedModule.React_StatelessFunctionalComponent<P>
+export type StatelessFunctionalComponent<P> = SharedModule.React_StatelessFunctionalComponent<P>
 -- ROBLOX deviation START: we use the definitely-typed version of this, which appears to work for flowtype in VirtualizedList, etc
 export type ComponentType<P> = ComponentClass<P> | FC<P>
 -- ROBLOX deviation END
-export type AbstractComponent<Config, Instance> = SharedModule.React_AbstractComponent<
-	Config,
-	Instance
->
+export type AbstractComponent<Config, Instance> = SharedModule.React_AbstractComponent<Config, Instance>
 export type ElementType = SharedModule.React_ElementType
 export type Element<C> = SharedModule.React_Element<C>
 export type Key = SharedModule.React_Key
@@ -51,10 +47,7 @@ export type PureComponent<Props, State = nil> = React.PureComponent<Props, State
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: definitelytyped typescript exports
-export type ReactElement<Props = Object, ElementType = any> = SharedModule.ReactElement<
-	Props,
-	ElementType
->
+export type ReactElement<Props = Object, ElementType = any> = SharedModule.ReactElement<Props, ElementType>
 -- we don't include ReactText in ReactChild since roblox renderer doesn't support raw text nodes
 export type ReactChild = SharedModule.ReactElement<any, string> | string | number
 export type FC<P> = SharedModule.React_StatelessFunctionalComponent<P>
@@ -62,10 +55,7 @@ export type ReactNode = SharedModule.React_Node
 -- ROBLOX deviation END
 
 -- ROBLOX deviation START: export React types that are flowtype built-ins and used by VirtualizedList, etc
-export type React_AbstractComponent<Props, Instance> = SharedModule.React_Component<
-	Props,
-	Instance
->
+export type React_AbstractComponent<Props, Instance> = SharedModule.React_Component<Props, Instance>
 export type React_Component<Props, State> = SharedModule.React_Component<Props, State>
 export type React_ComponentType<P> = SharedModule.React_ComponentType<P>
 export type React_Context<T> = SharedModule.React_Context<T>

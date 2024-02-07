@@ -79,41 +79,27 @@ describe("DebugTracing", function()
 	end)
 
 	-- @gate experimental
-	it(
-		"should not log anything for sync render without suspends or state updates",
-		function()
-			jestExpect(function()
-				ReactTestRenderer.create(
-					React.createElement(
-						React.unstable_DebugTracingMode,
-						nil,
-						React.createElement("div")
-					)
-				)
-			end).toLogDev({})
-		end
-	)
+	it("should not log anything for sync render without suspends or state updates", function()
+		jestExpect(function()
+			ReactTestRenderer.create(
+				React.createElement(React.unstable_DebugTracingMode, nil, React.createElement("div"))
+			)
+		end).toLogDev({})
+	end)
 
 	-- @gate experimental
-	it(
-		"should not log anything for concurrent render without suspends or state updates",
-		function()
-			jestExpect(function()
-				ReactTestRenderer.create(
-					React.createElement(
-						React.unstable_DebugTracingMode,
-						nil,
-						React.createElement("div")
-					),
-					{ unstable_isConcurrent = true }
-				)
-			end).toLogDev({})
+	it("should not log anything for concurrent render without suspends or state updates", function()
+		jestExpect(function()
+			ReactTestRenderer.create(
+				React.createElement(React.unstable_DebugTracingMode, nil, React.createElement("div")),
+				{ unstable_isConcurrent = true }
+			)
+		end).toLogDev({})
 
-			jestExpect(function()
-				jestExpect(Scheduler).toFlushUntilNextPaint({})
-			end).toLogDev({})
-		end
-	)
+		jestExpect(function()
+			jestExpect(Scheduler).toFlushUntilNextPaint({})
+		end).toLogDev({})
+	end)
 
 	-- ROBLOX FIXME: we never receive "Example resolved", might be a Promise emulation issue
 	-- @gate experimental && build === 'development' && enableDebugTracing
@@ -131,11 +117,7 @@ describe("DebugTracing", function()
 				React.createElement(
 					React.unstable_DebugTracingMode,
 					nil,
-					React.createElement(
-						React.Suspense,
-						{ fallback = {} },
-						React.createElement(Example)
-					)
+					React.createElement(React.Suspense, { fallback = {} }, React.createElement(Example))
 				)
 			)
 		end).toLogDev({
@@ -210,11 +192,7 @@ describe("DebugTracing", function()
 				React.createElement(
 					React.unstable_DebugTracingMode,
 					nil,
-					React.createElement(
-						React.Suspense,
-						{ fallback = {} },
-						React.createElement(Example)
-					)
+					React.createElement(React.Suspense, { fallback = {} }, React.createElement(Example))
 				),
 				{ unstable_isConcurrent = true }
 			)
@@ -297,11 +275,7 @@ describe("DebugTracing", function()
 
 		jestExpect(function()
 			ReactTestRenderer.create(
-				React.createElement(
-					React.unstable_DebugTracingMode,
-					nil,
-					React.createElement(Example)
-				),
+				React.createElement(React.unstable_DebugTracingMode, nil, React.createElement(Example)),
 				{ unstable_isConcurrent = true }
 			)
 		end).toLogDev({})
@@ -332,11 +306,7 @@ describe("DebugTracing", function()
 
 		jestExpect(function()
 			ReactTestRenderer.create(
-				React.createElement(
-					React.unstable_DebugTracingMode,
-					nil,
-					React.createElement(Example)
-				),
+				React.createElement(React.unstable_DebugTracingMode, nil, React.createElement(Example)),
 				{ unstable_isConcurrent = true }
 			)
 		end).toLogDev({})
@@ -364,11 +334,7 @@ describe("DebugTracing", function()
 
 		jestExpect(function()
 			ReactTestRenderer.create(
-				React.createElement(
-					React.unstable_DebugTracingMode,
-					nil,
-					React.createElement(Example)
-				),
+				React.createElement(React.unstable_DebugTracingMode, nil, React.createElement(Example)),
 				{ unstable_isConcurrent = true }
 			)
 		end).toLogDev({})
@@ -397,11 +363,7 @@ describe("DebugTracing", function()
 		jestExpect(function()
 			ReactTestRenderer.act(function()
 				ReactTestRenderer.create(
-					React.createElement(
-						React.unstable_DebugTracingMode,
-						nil,
-						React.createElement(Example)
-					),
+					React.createElement(React.unstable_DebugTracingMode, nil, React.createElement(Example)),
 					{ unstable_isConcurrent = true }
 				)
 			end)
@@ -425,11 +387,7 @@ describe("DebugTracing", function()
 		jestExpect(function()
 			ReactTestRenderer.act(function()
 				ReactTestRenderer.create(
-					React.createElement(
-						React.unstable_DebugTracingMode,
-						nil,
-						React.createElement(Example)
-					),
+					React.createElement(React.unstable_DebugTracingMode, nil, React.createElement(Example)),
 					{ unstable_isConcurrent = true }
 				)
 			end)
@@ -465,11 +423,7 @@ describe("DebugTracing", function()
 
 		jestExpect(function()
 			ReactTestRenderer.create(
-				React.createElement(
-					React.unstable_DebugTracingMode,
-					nil,
-					React.createElement(Example)
-				),
+				React.createElement(React.unstable_DebugTracingMode, nil, React.createElement(Example)),
 				{ unstable_isConcurrent = true }
 			)
 		end).toLogDev({})
@@ -484,48 +438,41 @@ describe("DebugTracing", function()
 	end)
 
 	-- @gate experimental
-	it(
-		"should not log anything outside of a unstable_DebugTracingMode subtree",
-		function()
-			local function ExampleThatCascades()
-				local didMount, setDidMount = React.useState(false)
-				React.useLayoutEffect(function()
-					setDidMount(true)
-				end, {})
-				return didMount
-			end
-
-			local fakeSuspensePromise = Promise.new(function()
-				return {}
-			end)
-			local function ExampleThatSuspends()
-				error(fakeSuspensePromise)
-			end
-
-			local function Example()
-				return nil
-			end
-
-			jestExpect(function()
-				ReactTestRenderer.create(
-					React.createElement(
-						React.Fragment,
-						nil,
-						React.createElement(ExampleThatCascades),
-						React.createElement(
-							React.Suspense,
-							{ fallback = {} },
-							nil,
-							React.createElement(ExampleThatSuspends)
-						),
-						React.createElement(
-							React.unstable_DebugTracingMode,
-							nil,
-							React.createElement(Example)
-						)
-					)
-				)
-			end).toLogDev({})
+	it("should not log anything outside of a unstable_DebugTracingMode subtree", function()
+		local function ExampleThatCascades()
+			local didMount, setDidMount = React.useState(false)
+			React.useLayoutEffect(function()
+				setDidMount(true)
+			end, {})
+			return didMount
 		end
-	)
+
+		local fakeSuspensePromise = Promise.new(function()
+			return {}
+		end)
+		local function ExampleThatSuspends()
+			error(fakeSuspensePromise)
+		end
+
+		local function Example()
+			return nil
+		end
+
+		jestExpect(function()
+			ReactTestRenderer.create(
+				React.createElement(
+					React.Fragment,
+					nil,
+					React.createElement(ExampleThatCascades),
+					React.createElement(
+						React.Suspense,
+						{ fallback = {} },
+						nil,
+						React.createElement(ExampleThatSuspends)
+					),
+					React.createElement(React.unstable_DebugTracingMode, nil, React.createElement(Example))
+				)
+			)
+		end).toLogDev({})
+	end)
 end)

@@ -17,9 +17,7 @@ type Source = ReactElementType.Source
 
 -- ROBLOX deviation: Needed to properly type class components
 local flowtypes = require("./flowtypes.roblox.lua")
-type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<
-	P
->
+type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<P>
 type React_ComponentType<P> = flowtypes.React_ComponentType<P>
 type ReactComponent<P> = React_StatelessFunctionalComponent<P> | React_ComponentType<P>
 
@@ -189,11 +187,7 @@ local function describeNativeComponentFrame(
 		local sampleIndex = #sampleLines - 1
 		local controlIndex = #controlLines - 1
 
-		while
-			sampleIndex >= 2
-			and controlIndex >= 0
-			and sampleLines[sampleIndex] ~= controlLines[controlIndex]
-		do
+		while sampleIndex >= 2 and controlIndex >= 0 and sampleLines[sampleIndex] ~= controlLines[controlIndex] do
 			-- // We expect at least one stack frame to be shared.
 			-- // Typically this will be the root most one. However, stack frames may be
 			-- // cut off due to maximum stack limits. In this case, one maybe cut off
@@ -220,10 +214,7 @@ local function describeNativeComponentFrame(
 						controlIndex = controlIndex - 1
 						-- // We may still have similar intermediate frames from the construct call.
 						-- // The next one that isn't the same should be our match though.
-						if
-							controlIndex < 0
-							or sampleLines[sampleIndex] ~= controlLines[controlIndex]
-						then
+						if controlIndex < 0 or sampleLines[sampleIndex] ~= controlLines[controlIndex] then
 							-- deviation: add the '    in ' prefix to format the component stack
 							-- similar to React
 							local frame = "\n" .. prefix .. sampleLines[sampleIndex]
@@ -280,11 +271,7 @@ end
 -- ROBLOX deviation: Lua's patterns work slightly differently than regexes
 local BEFORE_SLASH_PATTERN = "^(.*)[\\/]"
 
-function describeComponentFrame(
-	name: string | nil,
-	source: Source | nil,
-	ownerName: string | nil
-): string
+function describeComponentFrame(name: string | nil, source: Source | nil, ownerName: string | nil): string
 	local sourceInfo = ""
 
 	if _G.__DEV__ and source then
@@ -365,9 +352,7 @@ function describeFunctionComponentFrame(
 	end
 	-- ROBLOX deviation: use debug.info to discover function names
 	-- ROBLOX FIXME: find out how non-functions are getting into here, they pollute test output
-	local name = if type(fn) == "function"
-		then debug.info(fn :: Function, "n")
-		else tostring(fn)
+	local name = if type(fn) == "function" then debug.info(fn :: Function, "n") else tostring(fn)
 	local ownerName = nil
 	if _G.__DEV__ and ownerFn then
 		-- ROBLOX deviation: owner may be a function or a table

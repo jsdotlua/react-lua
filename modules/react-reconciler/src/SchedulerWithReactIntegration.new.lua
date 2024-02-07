@@ -21,8 +21,7 @@ local Scheduler = require("@pkg/@jsdotlua/scheduler")
 -- local __interactionsRef = require(Packages.Scheduler.tracing).__interactionsRef
 local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 -- local enableSchedulerTracing = ReactFeatureFlags.enableSchedulerTracing
-local decoupleUpdatePriorityFromScheduler =
-	ReactFeatureFlags.decoupleUpdatePriorityFromScheduler
+local decoupleUpdatePriorityFromScheduler = ReactFeatureFlags.decoupleUpdatePriorityFromScheduler
 local invariant = require("@pkg/@jsdotlua/shared").invariant
 local describeError = require("@pkg/@jsdotlua/shared").describeError
 local ReactFiberLane = require("./ReactFiberLane")
@@ -46,8 +45,7 @@ local Scheduler_IdlePriority = Scheduler.unstable_IdlePriority
 -- deviation: Instead of defining these here, we require them from a small file
 -- with _just_ these constant definitions; it helps us avoid a circular require
 -- issue with `ReactFiberLanes`
-local ReactFiberSchedulerPriorities =
-	require("./ReactFiberSchedulerPriorities.roblox.lua")
+local ReactFiberSchedulerPriorities = require("./ReactFiberSchedulerPriorities.roblox.lua")
 local ImmediatePriority = ReactFiberSchedulerPriorities.ImmediatePriority
 local UserBlockingPriority = ReactFiberSchedulerPriorities.UserBlockingPriority
 local NormalPriority = ReactFiberSchedulerPriorities.NormalPriority
@@ -155,10 +153,7 @@ function reactPriorityToSchedulerPriority(reactPriorityLevel)
 end
 
 -- ROBLOX FIXME Luau: should be T... but hits CLI-50289: failure to unify
-local function runWithPriority<T...>(
-	reactPriorityLevel: ReactPriorityLevel,
-	fn: () -> T...
-): ...any
+local function runWithPriority<T...>(reactPriorityLevel: ReactPriorityLevel, fn: () -> T...): ...any
 	local priorityLevel = reactPriorityToSchedulerPriority(reactPriorityLevel)
 	return Scheduler_runWithPriority(priorityLevel, fn)
 end
@@ -178,10 +173,7 @@ local function scheduleSyncCallback(callback: SchedulerCallback)
 	if syncQueue == nil then
 		syncQueue = { callback }
 		-- Flush the queue in the next tick, at the earliest.
-		immediateQueueCallbackNode = Scheduler_scheduleCallback(
-			Scheduler_ImmediatePriority,
-			flushSyncCallbackQueueImpl
-		)
+		immediateQueueCallbackNode = Scheduler_scheduleCallback(Scheduler_ImmediatePriority, flushSyncCallbackQueueImpl)
 	else
 		-- Push onto existing queue. Don't need to schedule a callback because
 		-- we already scheduled one when we created the queue.
@@ -268,10 +260,7 @@ flushSyncCallbackQueueImpl = function()
 					syncQueue = Array.slice(syncQueue, i + 1)
 				end
 				-- Resume flushing in the next tick
-				Scheduler_scheduleCallback(
-					Scheduler_ImmediatePriority,
-					flushSyncCallbackQueue
-				)
+				Scheduler_scheduleCallback(Scheduler_ImmediatePriority, flushSyncCallbackQueue)
 				error(result)
 			end
 		else
@@ -324,10 +313,7 @@ flushSyncCallbackQueueImpl = function()
 					syncQueue = Array.slice(syncQueue, i + 1)
 				end
 				-- Resume flushing in the next tick
-				Scheduler_scheduleCallback(
-					Scheduler_ImmediatePriority,
-					flushSyncCallbackQueue
-				)
+				Scheduler_scheduleCallback(Scheduler_ImmediatePriority, flushSyncCallbackQueue)
 				error(result)
 			end
 		end

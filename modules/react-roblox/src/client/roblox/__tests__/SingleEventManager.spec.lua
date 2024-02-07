@@ -149,27 +149,24 @@ describe("connectEvent", function()
 		jestExpect(recordedValues).toEqual({ 1, 2, 3, 4 })
 	end)
 
-	it(
-		"should not invoke events fired during suspension but disconnected before resumption",
-		function()
-			local instance = Instance.new("BindableEvent")
-			local manager = SingleEventManager.new(instance)
-			local eventSpy = jest.fn()
+	it("should not invoke events fired during suspension but disconnected before resumption", function()
+		local instance = Instance.new("BindableEvent")
+		local manager = SingleEventManager.new(instance)
+		local eventSpy = jest.fn()
 
-			manager:connectEvent("Event", function(...)
-				eventSpy(...)
-			end)
-			manager:suspend()
+		manager:connectEvent("Event", function(...)
+			eventSpy(...)
+		end)
+		manager:suspend()
 
-			instance:Fire(1)
-			waitForEvents()
+		instance:Fire(1)
+		waitForEvents()
 
-			manager:connectEvent("Event")
+		manager:connectEvent("Event")
 
-			manager:resume()
-			jestExpect(eventSpy).never.toBeCalled()
-		end
-	)
+		manager:resume()
+		jestExpect(eventSpy).never.toBeCalled()
+	end)
 
 	it("should not yield events through the SingleEventManager when resuming", function()
 		local instance = Instance.new("BindableEvent")
@@ -233,37 +230,34 @@ describe("connectEvent", function()
 		-- jestExpect(logInfo.warnings[1]:find(errorText)).to.be.ok()
 	end)
 
-	it(
-		"should not overflow with events if manager:resume() is invoked when resuming a suspended event",
-		function()
-			local instance = Instance.new("BindableEvent")
-			local manager = SingleEventManager.new(instance)
+	it("should not overflow with events if manager:resume() is invoked when resuming a suspended event", function()
+		local instance = Instance.new("BindableEvent")
+		local manager = SingleEventManager.new(instance)
 
-			-- This connection emulates what happens if reconciliation is
-			-- triggered again in response to reconciliation. Without
-			-- appropriate guards, the inner resume() call will process the
-			-- Fire(1) event again, causing a nasty stack overflow.
-			local eventSpy = jest.fn(function(_, value)
-				if value == 1 then
-					manager:suspend()
-					instance:Fire(2)
-					manager:resume()
-				end
-			end)
+		-- This connection emulates what happens if reconciliation is
+		-- triggered again in response to reconciliation. Without
+		-- appropriate guards, the inner resume() call will process the
+		-- Fire(1) event again, causing a nasty stack overflow.
+		local eventSpy = jest.fn(function(_, value)
+			if value == 1 then
+				manager:suspend()
+				instance:Fire(2)
+				manager:resume()
+			end
+		end)
 
-			manager:connectEvent("Event", function(...)
-				eventSpy(...)
-			end)
+		manager:connectEvent("Event", function(...)
+			eventSpy(...)
+		end)
 
-			manager:suspend()
-			instance:Fire(1)
-			manager:resume()
-			waitForEvents()
-			waitForEvents()
+		manager:suspend()
+		instance:Fire(1)
+		manager:resume()
+		waitForEvents()
+		waitForEvents()
 
-			jestExpect(eventSpy).toBeCalledTimes(2)
-		end
-	)
+		jestExpect(eventSpy).toBeCalledTimes(2)
+	end)
 end)
 
 describe("connectPropertyChange", function()

@@ -133,10 +133,7 @@ describe("SchedulingProfiler", function()
 
 	-- @gate enableSchedulingProfiler
 	it("should mark concurrent render without suspends or state updates", function()
-		ReactTestRenderer.create(
-			React.createElement("div"),
-			{ unstable_isConcurrent = true }
-		)
+		ReactTestRenderer.create(React.createElement("div"), { unstable_isConcurrent = true })
 
 		jestExpect(marks).toEqual({
 			"--react-init-" .. tostring(ReactVersion),
@@ -365,10 +362,7 @@ describe("SchedulingProfiler", function()
 			return nil
 		end
 
-		ReactTestRenderer.create(
-			React.createElement(Example),
-			{ unstable_isConcurrent = true }
-		)
+		ReactTestRenderer.create(React.createElement(Example), { unstable_isConcurrent = true })
 
 		jestExpect(marks).toEqual({
 			"--react-init-" .. tostring(ReactVersion),
@@ -404,10 +398,7 @@ describe("SchedulingProfiler", function()
 			return nil
 		end
 
-		ReactTestRenderer.create(
-			React.createElement(Example),
-			{ unstable_isConcurrent = true }
-		)
+		ReactTestRenderer.create(React.createElement(Example), { unstable_isConcurrent = true })
 
 		jestExpect(marks).toEqual({
 			"--react-init-" .. tostring(ReactVersion),
@@ -446,10 +437,7 @@ describe("SchedulingProfiler", function()
 			return nil
 		end
 
-		ReactTestRenderer.create(
-			React.createElement(Example),
-			{ unstable_isConcurrent = true }
-		)
+		ReactTestRenderer.create(React.createElement(Example), { unstable_isConcurrent = true })
 
 		jestExpect(marks).toEqual({
 			"--react-init-" .. tostring(ReactVersion),
@@ -485,10 +473,7 @@ describe("SchedulingProfiler", function()
 			return nil
 		end
 
-		ReactTestRenderer.create(
-			React.createElement(Example),
-			{ unstable_isConcurrent = true }
-		)
+		ReactTestRenderer.create(React.createElement(Example), { unstable_isConcurrent = true })
 
 		jestExpect(marks).toEqual({
 			"--react-init-" .. tostring(ReactVersion),
@@ -519,10 +504,7 @@ describe("SchedulingProfiler", function()
 			return didMount
 		end
 
-		ReactTestRenderer.create(
-			React.createElement(Example),
-			{ unstable_isConcurrent = true }
-		)
+		ReactTestRenderer.create(React.createElement(Example), { unstable_isConcurrent = true })
 
 		jestExpect(marks).toEqual({
 			"--react-init-" .. tostring(ReactVersion),
@@ -559,10 +541,7 @@ describe("SchedulingProfiler", function()
 		end
 
 		ReactTestRenderer.unstable_concurrentAct(function()
-			ReactTestRenderer.create(
-				React.createElement(Example),
-				{ unstable_isConcurrent = true }
-			)
+			ReactTestRenderer.create(React.createElement(Example), { unstable_isConcurrent = true })
 		end)
 
 		jestExpect(marks).toEqual({
@@ -595,10 +574,7 @@ describe("SchedulingProfiler", function()
 		end
 
 		ReactTestRenderer.unstable_concurrentAct(function()
-			ReactTestRenderer.create(
-				React.createElement(Example),
-				{ unstable_isConcurrent = true }
-			)
+			ReactTestRenderer.create(React.createElement(Example), { unstable_isConcurrent = true })
 		end)
 
 		-- ROBLOX TODO: we don't have a way to gate tests based on features like upstream does

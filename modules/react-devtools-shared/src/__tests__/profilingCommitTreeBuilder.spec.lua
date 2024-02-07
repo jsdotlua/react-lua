@@ -91,9 +91,7 @@ xdescribe("commit tree", function()
 				rootID = rootID,
 			})
 
-			jestExpect(commitTree).toMatchSnapshot(
-				string.format("%d: CommitTree", commitIndex - 1)
-			)
+			jestExpect(commitTree).toMatchSnapshot(string.format("%d: CommitTree", commitIndex - 1))
 		end
 	end)
 end)

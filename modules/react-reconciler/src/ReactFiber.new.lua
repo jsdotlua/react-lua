@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 --!strict
--- ROBLOX upstream: https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactFiber.new.js
-=======
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/ReactFiber.new.js
->>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -16,7 +12,6 @@
 local __DEV__ = _G.__DEV__
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
-<<<<<<< HEAD
 local Array = LuauPolyfill.Array
 local inspect = LuauPolyfill.util.inspect
 
@@ -153,189 +148,6 @@ local debugCounter = 1
 -- ROBLOX deviation END
 
 -- This is a constructor function, rather than a POJO constructor, still
-=======
-local Set = LuauPolyfill.Set
-local console = LuauPolyfill.console
-local exports = {}
-local sharedReactElementTypeModule = require(Packages.shared.ReactElementType)
-type ReactElement = sharedReactElementTypeModule.ReactElement
-local sharedReactTypesModule = require(Packages.shared.ReactTypes)
-type ReactFragment = sharedReactTypesModule.ReactFragment
-type ReactPortal = sharedReactTypesModule.ReactPortal
-type ReactScope = sharedReactTypesModule.ReactScope
-local reactInternalTypesModule = require(script.Parent.ReactInternalTypes)
-type Fiber = reactInternalTypesModule.Fiber
-local reactRootTagsModule = require(script.Parent.ReactRootTags)
-type RootTag = reactRootTagsModule.RootTag
-local reactWorkTagsModule = require(script.Parent.ReactWorkTags)
-type WorkTag = reactWorkTagsModule.WorkTag
-local reactTypeOfModeModule = require(script.Parent.ReactTypeOfMode)
-type TypeOfMode = reactTypeOfModeModule.TypeOfMode
-local reactFiberLaneNewModule = require(script.Parent["ReactFiberLane.new"])
-type Lanes = reactFiberLaneNewModule.Lanes
-local reactFiberHostConfigModule = require(script.Parent.ReactFiberHostConfig)
-type SuspenseInstance = reactFiberHostConfigModule.SuspenseInstance
-local reactFiberOffscreenComponentModule = require(script.Parent.ReactFiberOffscreenComponent)
-type OffscreenProps = reactFiberOffscreenComponentModule.OffscreenProps
-type OffscreenInstance = reactFiberOffscreenComponentModule.OffscreenInstance
-local sharedReactFeatureFlagsModule = require(Packages.shared.ReactFeatureFlags)
-local createRootStrictEffectsByDefault = sharedReactFeatureFlagsModule.createRootStrictEffectsByDefault
-local enableCache = sharedReactFeatureFlagsModule.enableCache
-local enableStrictEffects = sharedReactFeatureFlagsModule.enableStrictEffects
-local enableProfilerTimer = sharedReactFeatureFlagsModule.enableProfilerTimer
-local enableScopeAPI = sharedReactFeatureFlagsModule.enableScopeAPI
-local enableLegacyHidden = sharedReactFeatureFlagsModule.enableLegacyHidden
-local enableSyncDefaultUpdates = sharedReactFeatureFlagsModule.enableSyncDefaultUpdates
-local allowConcurrentByDefault = sharedReactFeatureFlagsModule.allowConcurrentByDefault
-local enableTransitionTracing = sharedReactFeatureFlagsModule.enableTransitionTracing
-local enableDebugTracing = sharedReactFeatureFlagsModule.enableDebugTracing
-local reactFiberFlagsModule = require(script.Parent.ReactFiberFlags)
-local NoFlags = reactFiberFlagsModule.NoFlags
-local Placement = reactFiberFlagsModule.Placement
-local StaticMask = reactFiberFlagsModule.StaticMask
-local ConcurrentRoot = require(script.Parent.ReactRootTags).ConcurrentRoot
-local reactWorkTagsModule = require(script.Parent.ReactWorkTags)
-local IndeterminateComponent = reactWorkTagsModule.IndeterminateComponent
-local ClassComponent = reactWorkTagsModule.ClassComponent
-local HostRoot = reactWorkTagsModule.HostRoot
-local HostComponent = reactWorkTagsModule.HostComponent
-local HostText = reactWorkTagsModule.HostText
-local HostPortal = reactWorkTagsModule.HostPortal
-local ForwardRef = reactWorkTagsModule.ForwardRef
-local Fragment = reactWorkTagsModule.Fragment
-local Mode = reactWorkTagsModule.Mode
-local ContextProvider = reactWorkTagsModule.ContextProvider
-local ContextConsumer = reactWorkTagsModule.ContextConsumer
-local Profiler = reactWorkTagsModule.Profiler
-local SuspenseComponent = reactWorkTagsModule.SuspenseComponent
-local SuspenseListComponent = reactWorkTagsModule.SuspenseListComponent
-local DehydratedFragment = reactWorkTagsModule.DehydratedFragment
-local FunctionComponent = reactWorkTagsModule.FunctionComponent
-local MemoComponent = reactWorkTagsModule.MemoComponent
-local SimpleMemoComponent = reactWorkTagsModule.SimpleMemoComponent
-local LazyComponent = reactWorkTagsModule.LazyComponent
-local ScopeComponent = reactWorkTagsModule.ScopeComponent
-local OffscreenComponent = reactWorkTagsModule.OffscreenComponent
-local LegacyHiddenComponent = reactWorkTagsModule.LegacyHiddenComponent
-local CacheComponent = reactWorkTagsModule.CacheComponent
-local TracingMarkerComponent = reactWorkTagsModule.TracingMarkerComponent
-local getComponentNameFromFiber = require(Packages["react-reconciler"].src.getComponentNameFromFiber).default
-local isDevToolsPresent = require(script.Parent["ReactFiberDevToolsHook.new"]).isDevToolsPresent
-local reactFiberHotReloadingNewModule = require(script.Parent["ReactFiberHotReloading.new"])
-local resolveClassForHotReloading = reactFiberHotReloadingNewModule.resolveClassForHotReloading
-local resolveFunctionForHotReloading = reactFiberHotReloadingNewModule.resolveFunctionForHotReloading
-local resolveForwardRefForHotReloading = reactFiberHotReloadingNewModule.resolveForwardRefForHotReloading
-local NoLanes = require(script.Parent["ReactFiberLane.new"]).NoLanes
-local reactTypeOfModeModule = require(script.Parent.ReactTypeOfMode)
-local NoMode = reactTypeOfModeModule.NoMode
-local ConcurrentMode = reactTypeOfModeModule.ConcurrentMode
-local DebugTracingMode = reactTypeOfModeModule.DebugTracingMode
-local ProfileMode = reactTypeOfModeModule.ProfileMode
-local StrictLegacyMode = reactTypeOfModeModule.StrictLegacyMode
-local StrictEffectsMode = reactTypeOfModeModule.StrictEffectsMode
-local ConcurrentUpdatesByDefaultMode = reactTypeOfModeModule.ConcurrentUpdatesByDefaultMode
-local sharedReactSymbolsModule = require(Packages.shared.ReactSymbols)
-local REACT_FORWARD_REF_TYPE = sharedReactSymbolsModule.REACT_FORWARD_REF_TYPE
-local REACT_FRAGMENT_TYPE = sharedReactSymbolsModule.REACT_FRAGMENT_TYPE
-local REACT_DEBUG_TRACING_MODE_TYPE = sharedReactSymbolsModule.REACT_DEBUG_TRACING_MODE_TYPE
-local REACT_STRICT_MODE_TYPE = sharedReactSymbolsModule.REACT_STRICT_MODE_TYPE
-local REACT_PROFILER_TYPE = sharedReactSymbolsModule.REACT_PROFILER_TYPE
-local REACT_PROVIDER_TYPE = sharedReactSymbolsModule.REACT_PROVIDER_TYPE
-local REACT_CONTEXT_TYPE = sharedReactSymbolsModule.REACT_CONTEXT_TYPE
-local REACT_SUSPENSE_TYPE = sharedReactSymbolsModule.REACT_SUSPENSE_TYPE
-local REACT_SUSPENSE_LIST_TYPE = sharedReactSymbolsModule.REACT_SUSPENSE_LIST_TYPE
-local REACT_MEMO_TYPE = sharedReactSymbolsModule.REACT_MEMO_TYPE
-local REACT_LAZY_TYPE = sharedReactSymbolsModule.REACT_LAZY_TYPE
-local REACT_SCOPE_TYPE = sharedReactSymbolsModule.REACT_SCOPE_TYPE
-local REACT_OFFSCREEN_TYPE = sharedReactSymbolsModule.REACT_OFFSCREEN_TYPE
-local REACT_LEGACY_HIDDEN_TYPE = sharedReactSymbolsModule.REACT_LEGACY_HIDDEN_TYPE
-local REACT_CACHE_TYPE = sharedReactSymbolsModule.REACT_CACHE_TYPE
-local REACT_TRACING_MARKER_TYPE = sharedReactSymbolsModule.REACT_TRACING_MARKER_TYPE
-exports.Fiber = Fiber
-local hasBadMapPolyfill
-if Boolean.toJSBoolean(__DEV__) then
-	hasBadMapPolyfill = false
-	do --[[ ROBLOX COMMENT: try-catch block conversion ]]
-		local ok, result, hasReturned = xpcall(function()
-			local nonExtensibleObject = Object.preventExtensions({})
-			--[[ eslint-disable no-new ]]
-			Map.new({ { nonExtensibleObject, nil } })
-			Set.new({ nonExtensibleObject })
-			--[[ eslint-enable no-new ]]
-		end, function(e)
-			-- TODO: Consider warning about bad polyfills
-			hasBadMapPolyfill = true
-		end)
-		if hasReturned then
-			return result
-		end
-	end
-end
-local function FiberNode(
-	tag: WorkTag,
-	pendingProps: mixed,
-	key: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | string,
-	mode: TypeOfMode
-)
-	-- Instance
-	self.tag = tag
-	self.key = key
-	self.elementType = nil
-	self.type = nil
-	self.stateNode = nil -- Fiber
-	self["return"] = nil
-	self.child = nil
-	self.sibling = nil
-	self.index = 0
-	self.ref = nil
-	self.pendingProps = pendingProps
-	self.memoizedProps = nil
-	self.updateQueue = nil
-	self.memoizedState = nil
-	self.dependencies = nil
-	self.mode = mode -- Effects
-	self.flags = NoFlags
-	self.subtreeFlags = NoFlags
-	self.deletions = nil
-	self.lanes = NoLanes
-	self.childLanes = NoLanes
-	self.alternate = nil
-	if Boolean.toJSBoolean(enableProfilerTimer) then
-		-- Note: The following is done to avoid a v8 performance cliff.
-		--
-		-- Initializing the fields below to smis and later updating them with
-		-- double values will cause Fibers to end up having separate shapes.
-		-- This behavior/bug has something to do with Object.preventExtension().
-		-- Fortunately this only impacts DEV builds.
-		-- Unfortunately it makes React unusably slow for some applications.
-		-- To work around this, initialize the fields below with doubles.
-		--
-		-- Learn more about this here:
-		-- https://github.com/facebook/react/issues/14365
-		-- https://bugs.chromium.org/p/v8/issues/detail?id=8538
-		self.actualDuration = Number.NaN
-		self.actualStartTime = Number.NaN
-		self.selfBaseDuration = Number.NaN
-		self.treeBaseDuration = Number.NaN -- It's okay to replace the initial doubles with smis after initialization.
-		-- This won't trigger the performance cliff mentioned above,
-		-- and it simplifies other profiler code (including DevTools).
-		self.actualDuration = 0
-		self.actualStartTime = -1
-		self.selfBaseDuration = 0
-		self.treeBaseDuration = 0
-	end
-	if Boolean.toJSBoolean(__DEV__) then
-		-- This isn't directly used but is handy for debugging internals:
-		self._debugSource = nil
-		self._debugOwner = nil
-		self._debugNeedsRemount = false
-		self._debugHookTypes = nil
-		if not Boolean.toJSBoolean(hasBadMapPolyfill) and typeof(Object.preventExtensions) == "function" then
-			Object.preventExtensions(self)
-		end
-	end
-end -- This is a constructor function, rather than a POJO constructor, still
->>>>>>> upstream-apply
 -- please ensure we do the following:
 -- 1) Nobody should add any instance methods on this. Instance methods can be
 --    more difficult to predict when they get optimized and they are almost
@@ -516,7 +328,6 @@ local function createWorkInProgress(current: Fiber, pendingProps: any): Fiber
 		workInProgress.alternate = current
 		current.alternate = workInProgress
 	else
-<<<<<<< HEAD
 		workInProgress.pendingProps = pendingProps
 		-- Needed because Blocks store data on type.
 		workInProgress.type = current.type
@@ -526,12 +337,6 @@ local function createWorkInProgress(current: Fiber, pendingProps: any): Fiber
 		workInProgress.flags = NoFlags
 
 		-- The current effects are no longer valid
-=======
-		workInProgress.pendingProps = pendingProps -- Needed because Blocks store data on type.
-		workInProgress.type = current.type -- We already have an alternate.
-		-- Reset the effect tag.
-		workInProgress.flags = NoFlags -- The effects are no longer valid.
->>>>>>> upstream-apply
 		workInProgress.subtreeFlags = NoFlags
 		workInProgress.deletions = nil
 
@@ -605,7 +410,6 @@ local function resetWorkInProgress(workInProgress: Fiber, renderLanes: Lanes)
 
 	-- We assume pendingProps, index, key, ref, return are still untouched to
 	-- avoid doing another reconciliation.
-<<<<<<< HEAD
 
 	-- Reset the effect tag but keep any Placement tags, since that's something
 	-- that child fiber is setting, not the reconciliation.
@@ -614,14 +418,6 @@ local function resetWorkInProgress(workInProgress: Fiber, renderLanes: Lanes)
 
 	-- The effects are no longer valid
 
-=======
-	-- Reset the effect flags but keep any Placement tags, since that's something
-	-- that child fiber is setting, not the reconciliation.
-	workInProgress.flags = bit32.band(
-		workInProgress.flags,
-		bit32.bor(StaticMask, Placement) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
-	) --[[ ROBLOX CHECK: `bit32.band` clamps arguments and result to [0,2^32 - 1] ]] -- The effects are no longer valid.
->>>>>>> upstream-apply
 	local current = workInProgress.alternate
 	if current == nil then
 		-- Reset to createFiber's initial values.
@@ -680,7 +476,6 @@ local function resetWorkInProgress(workInProgress: Fiber, renderLanes: Lanes)
 
 	return workInProgress
 end
-<<<<<<< HEAD
 
 local function createHostRootFiber(tag: RootTag): Fiber
 	local mode
@@ -688,49 +483,6 @@ local function createHostRootFiber(tag: RootTag): Fiber
 		mode = bit32.bor(ConcurrentMode, BlockingMode, StrictMode)
 	elseif tag == BlockingRoot then
 		mode = bit32.bor(BlockingMode, StrictMode)
-=======
-exports.resetWorkInProgress = resetWorkInProgress
-local function createHostRootFiber(
-	tag: RootTag,
-	isStrictMode: boolean,
-	concurrentUpdatesByDefaultOverride: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | boolean
-): Fiber
-	local mode
-	if tag == ConcurrentRoot then
-		mode = ConcurrentMode
-		if isStrictMode == true then
-			mode = bit32.bor(mode, StrictLegacyMode) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
-			if Boolean.toJSBoolean(enableStrictEffects) then
-				mode = bit32.bor(mode, StrictEffectsMode) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
-			end
-		elseif
-			Boolean.toJSBoolean(
-				if Boolean.toJSBoolean(enableStrictEffects)
-					then createRootStrictEffectsByDefault
-					else enableStrictEffects
-			)
-		then
-			mode = bit32.bor(
-				mode,
-				bit32.bor(StrictLegacyMode, StrictEffectsMode) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
-			) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
-		end
-		if
-			Boolean.toJSBoolean( -- We only use this flag for our repo tests to check both behaviors.
-					-- TODO: Flip this flag and rename it something like "forceConcurrentByDefaultForTesting"
-					-- We only use this flag for our repo tests to check both behaviors.
-					-- TODO: Flip this flag and rename it something like "forceConcurrentByDefaultForTesting"
-				not Boolean.toJSBoolean(enableSyncDefaultUpdates)
-					or (
-						if Boolean.toJSBoolean(allowConcurrentByDefault)
-							then concurrentUpdatesByDefaultOverride
-							else allowConcurrentByDefault
-					)
-			)
-		then
-			mode = bit32.bor(mode, ConcurrentUpdatesByDefaultMode) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
-		end
->>>>>>> upstream-apply
 	else
 		mode = NoMode
 	end
@@ -857,7 +609,6 @@ local function createFiberFromTypeAndProps(
 					end
 				end
 
-<<<<<<< HEAD
 				-- ROBLOX deviation: make output logic consistent across ReactFiber, ElementValidator, Memo, Context, and Lazy
 				local typeString
 				if type_ == nil then
@@ -883,118 +634,6 @@ local function createFiberFromTypeAndProps(
 				)
 			end
 		end
-=======
-      case REACT_STRICT_MODE_TYPE:
-        fiberTag = Mode;
-        mode |= StrictLegacyMode;
-
-        if (enableStrictEffects && (mode & ConcurrentMode) !== NoMode) {
-          // Strict effects should never run on legacy roots
-          mode |= StrictEffectsMode;
-        }
-
-        break;
-
-      case REACT_PROFILER_TYPE:
-        return createFiberFromProfiler(pendingProps, mode, lanes, key);
-
-      case REACT_SUSPENSE_TYPE:
-        return createFiberFromSuspense(pendingProps, mode, lanes, key);
-
-      case REACT_SUSPENSE_LIST_TYPE:
-        return createFiberFromSuspenseList(pendingProps, mode, lanes, key);
-
-      case REACT_OFFSCREEN_TYPE:
-        return createFiberFromOffscreen(pendingProps, mode, lanes, key);
-
-      case REACT_LEGACY_HIDDEN_TYPE:
-        if (enableLegacyHidden) {
-          return createFiberFromLegacyHidden(pendingProps, mode, lanes, key);
-        }
-
-      // eslint-disable-next-line no-fallthrough
-
-      case REACT_SCOPE_TYPE:
-        if (enableScopeAPI) {
-          return createFiberFromScope(type, pendingProps, mode, lanes, key);
-        }
-
-      // eslint-disable-next-line no-fallthrough
-
-      case REACT_CACHE_TYPE:
-        if (enableCache) {
-          return createFiberFromCache(pendingProps, mode, lanes, key);
-        }
-
-      // eslint-disable-next-line no-fallthrough
-
-      case REACT_TRACING_MARKER_TYPE:
-        if (enableTransitionTracing) {
-          return createFiberFromTracingMarker(pendingProps, mode, lanes, key);
-        }
-
-      // eslint-disable-next-line no-fallthrough
-
-      case REACT_DEBUG_TRACING_MODE_TYPE:
-        if (enableDebugTracing) {
-          fiberTag = Mode;
-          mode |= DebugTracingMode;
-          break;
-        }
-
-      // eslint-disable-next-line no-fallthrough
-
-      default:
-        {
-          if (typeof type === 'object' && type !== null) {
-            switch (type.$$typeof) {
-              case REACT_PROVIDER_TYPE:
-                fiberTag = ContextProvider;
-                break getTag;
-
-              case REACT_CONTEXT_TYPE:
-                // This is a consumer
-                fiberTag = ContextConsumer;
-                break getTag;
-
-              case REACT_FORWARD_REF_TYPE:
-                fiberTag = ForwardRef;
-
-                if (__DEV__) {
-                  resolvedType = resolveForwardRefForHotReloading(resolvedType);
-                }
-
-                break getTag;
-
-              case REACT_MEMO_TYPE:
-                fiberTag = MemoComponent;
-                break getTag;
-
-              case REACT_LAZY_TYPE:
-                fiberTag = LazyComponent;
-                resolvedType = null;
-                break getTag;
-            }
-          }
-
-          let info = '';
-
-          if (__DEV__) {
-            if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
-              info += ' You likely forgot to export your component from the file ' + "it's defined in, or you might have mixed up default and " + 'named imports.';
-            }
-
-            const ownerName = owner ? getComponentNameFromFiber(owner) : null;
-
-            if (ownerName) {
-              info += '\n\nCheck the render method of `' + ownerName + '`.';
-            }
-          }
-
-          throw new Error('Element type is invalid: expected a string (for built-in ' + 'components) or a class/function (for composite components) ' + `but got: ${type == null ? type : typeof type}.${info}`);
-        }
-    } ]]
->>>>>>> upstream-apply
 	end
 
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
@@ -1053,7 +692,6 @@ function createFiberFromFragment(
 	-- ROBLOX deviation END
 	return fiber
 end
-<<<<<<< HEAD
 
 function createFiberFromFundamental(
 	fundamentalComponent: ReactFundamentalComponent<any, any>,
@@ -1081,10 +719,6 @@ function createFiberFromFundamental(
 end
 
 function createFiberFromScope(
-=======
-exports.createFiberFromFragment = createFiberFromFragment
-local function createFiberFromScope(
->>>>>>> upstream-apply
 	scope: ReactScope,
 	pendingProps: any,
 	mode: TypeOfMode,
@@ -1121,7 +755,6 @@ function createFiberFromProfiler(
 		Profiler,
 		pendingProps,
 		key,
-<<<<<<< HEAD
 		bit32.bor(mode, ProfileMode),
 		REACT_PROFILER_TYPE,
 		REACT_PROFILER_TYPE,
@@ -1146,15 +779,6 @@ function createFiberFromProfiler(
 	-- 	}
 	-- end
 
-=======
-		bit32.bor(mode, ProfileMode) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
-	)
-	fiber.elementType = REACT_PROFILER_TYPE
-	fiber.lanes = lanes
-	if Boolean.toJSBoolean(enableProfilerTimer) then
-		fiber.stateNode = { effectDuration = 0, passiveEffectDuration = 0 }
-	end
->>>>>>> upstream-apply
 	return fiber
 end
 
@@ -1162,7 +786,6 @@ function createFiberFromSuspense(
 	pendingProps: any,
 	mode: TypeOfMode,
 	lanes: Lanes,
-<<<<<<< HEAD
 	key: string?
 ): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
@@ -1185,13 +808,6 @@ function createFiberFromSuspense(
 
 	-- fiber.lanes = lanes
 	-- ROBLOX deviation END
-=======
-	key: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | string
-)
-	local fiber = createFiber(SuspenseComponent, pendingProps, key, mode)
-	fiber.elementType = REACT_SUSPENSE_TYPE
-	fiber.lanes = lanes
->>>>>>> upstream-apply
 	return fiber
 end
 
@@ -1199,7 +815,6 @@ function createFiberFromSuspenseList(
 	pendingProps: any,
 	mode: TypeOfMode,
 	lanes: Lanes,
-<<<<<<< HEAD
 	key: string?
 ): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
@@ -1222,13 +837,6 @@ function createFiberFromSuspenseList(
 	-- fiber.elementType = REACT_SUSPENSE_LIST_TYPE
 	-- fiber.lanes = lanes
 	-- ROBLOX deviation END
-=======
-	key: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | string
-)
-	local fiber = createFiber(SuspenseListComponent, pendingProps, key, mode)
-	fiber.elementType = REACT_SUSPENSE_LIST_TYPE
-	fiber.lanes = lanes
->>>>>>> upstream-apply
 	return fiber
 end
 
@@ -1236,7 +844,6 @@ function createFiberFromOffscreen(
 	pendingProps: OffscreenProps,
 	mode: TypeOfMode,
 	lanes: Lanes,
-<<<<<<< HEAD
 	key: string?
 ): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
@@ -1259,15 +866,6 @@ function createFiberFromOffscreen(
 	-- fiber.elementType = REACT_OFFSCREEN_TYPE
 	-- fiber.lanes = lanes
 	-- ROBLOX deviation END
-=======
-	key: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | string
-)
-	local fiber = createFiber(OffscreenComponent, pendingProps, key, mode)
-	fiber.elementType = REACT_OFFSCREEN_TYPE
-	fiber.lanes = lanes
-	local primaryChildInstance: OffscreenInstance = { isHidden = false }
-	fiber.stateNode = primaryChildInstance
->>>>>>> upstream-apply
 	return fiber
 end
 
@@ -1275,7 +873,6 @@ function createFiberFromLegacyHidden(
 	pendingProps: OffscreenProps,
 	mode: TypeOfMode,
 	lanes: Lanes,
-<<<<<<< HEAD
 	key: string?
 ): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
@@ -1301,40 +898,6 @@ function createFiberFromLegacyHidden(
 	return fiber
 end
 
-=======
-	key: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | string
-)
-	local fiber = createFiber(LegacyHiddenComponent, pendingProps, key, mode)
-	fiber.elementType = REACT_LEGACY_HIDDEN_TYPE
-	fiber.lanes = lanes
-	return fiber
-end
-exports.createFiberFromLegacyHidden = createFiberFromLegacyHidden
-local function createFiberFromCache(
-	pendingProps: any,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | string
-)
-	local fiber = createFiber(CacheComponent, pendingProps, key, mode)
-	fiber.elementType = REACT_CACHE_TYPE
-	fiber.lanes = lanes
-	return fiber
-end
-exports.createFiberFromCache = createFiberFromCache
-local function createFiberFromTracingMarker(
-	pendingProps: any,
-	mode: TypeOfMode,
-	lanes: Lanes,
-	key: nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]] | string
-)
-	local fiber = createFiber(TracingMarkerComponent, pendingProps, key, mode)
-	fiber.elementType = REACT_TRACING_MARKER_TYPE
-	fiber.lanes = lanes
-	return fiber
-end
-exports.createFiberFromTracingMarker = createFiberFromTracingMarker
->>>>>>> upstream-apply
 local function createFiberFromText(content: string, mode: TypeOfMode, lanes: Lanes): Fiber
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(HostText, content, nil, mode, nil, nil, nil, lanes)
@@ -1344,17 +907,12 @@ local function createFiberFromText(content: string, mode: TypeOfMode, lanes: Lan
 end
 
 local function createFiberFromHostInstanceForDeletion(): Fiber
-<<<<<<< HEAD
 	-- ROBLOX deviation START: we pass in all needed values so the table creation+field assignment is a one-shot
 	local fiber = createFiber(HostComponent, nil, nil, NoMode, "DELETED", "DELETED")
 	-- TODO: These should not need a type.
 	-- fiber.elementType = "DELETED"
 	-- fiber.type = "DELETED"
 	-- ROBLOX deviation END
-=======
-	local fiber = createFiber(HostComponent, nil, nil, NoMode)
-	fiber.elementType = "DELETED"
->>>>>>> upstream-apply
 	return fiber
 end
 

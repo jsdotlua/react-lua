@@ -55,11 +55,7 @@ type RejectedPayload = {
 	_result: any,
 }
 
-type Payload<T> =
-	UninitializedPayload<T>
-	| PendingPayload
-	| ResolvedPayload<T>
-	| RejectedPayload
+type Payload<T> = UninitializedPayload<T> | PendingPayload | ResolvedPayload<T> | RejectedPayload
 
 export type LazyComponent<T, P> = {
 	["$$typeof"]: number,
@@ -115,9 +111,7 @@ end
 
 local exports = {}
 
-exports.lazy = function<T>(
-	ctor: () -> Thenable<{ default: T, [string]: any }>
-): LazyComponent<T, Payload<T>>
+exports.lazy = function<T>(ctor: () -> Thenable<{ default: T, [string]: any }>): LazyComponent<T, Payload<T>>
 	local payload: Payload<T> = {
 		-- We use these fields to store the result.
 		_status = -1,

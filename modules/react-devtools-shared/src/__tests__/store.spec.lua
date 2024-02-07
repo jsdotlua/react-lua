@@ -301,9 +301,7 @@ describe("Store", function()
 			-- ROBLOX deviation: Use Frame instance rather than DOM element
 			local root = ReactRoblox.createRoot(Instance.new("Frame"))
 			act(function()
-				return root:render(
-					React.createElement(Wrapper, { shouldSuspense = true })
-				)
+				return root:render(React.createElement(Wrapper, { shouldSuspense = true }))
 			end)
 			jestExpect(devtoolsUtils.printStore(store)).toBe([[[root]
   ▾ <Wrapper>
@@ -1035,9 +1033,7 @@ describe("Store", function()
 			local root = ReactRoblox.createRoot(Instance.new("Frame"))
 
 			act(function()
-				return root:render(
-					React.createElement(Wrapper, { shouldSuspense = true })
-				)
+				return root:render(React.createElement(Wrapper, { shouldSuspense = true }))
 			end)
 			jestExpect(devtoolsUtils.printStore(store)).toBe([[[root]
   ▸ <Wrapper>]])
@@ -1386,9 +1382,7 @@ describe("Store", function()
 			end)
 
 			for i = 0, store:getNumElements() - 1 do
-				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(
-					i
-				)
+				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(i)
 			end
 		end)
 		it("should support multiple roots with one children each", function()
@@ -1410,9 +1404,7 @@ describe("Store", function()
 			end)
 
 			for i = 0, store:getNumElements() - 1 do
-				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(
-					i
-				)
+				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(i)
 			end
 		end)
 		it("should support a single root with multiple top level children", function()
@@ -1441,9 +1433,7 @@ describe("Store", function()
 			end)
 
 			for i = 0, store:getNumElements() - 1 do
-				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(
-					i
-				)
+				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(i)
 			end
 		end)
 		it("should support multiple roots with multiple top level children", function()
@@ -1472,9 +1462,7 @@ describe("Store", function()
 			end)
 
 			for i = 0, store:getNumElements() - 1 do
-				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(
-					i
-				)
+				jestExpect(store:getIndexOfElementID(store:getElementIDAtIndex(i))).toBe(i)
 			end
 		end)
 	end)
@@ -1557,8 +1545,7 @@ describe("Store", function()
 		-- FakeHigherOrderComponent.displayName = 'withFoo(withBar(Baz))'
 
 		local MemoizedFakeHigherOrderComponent = React.memo(FakeHigherOrderComponent)
-		local ForwardRefFakeHigherOrderComponent =
-			React.forwardRef(FakeHigherOrderComponent)
+		local ForwardRefFakeHigherOrderComponent = React.forwardRef(FakeHigherOrderComponent)
 		local function App()
 			return React.createElement(
 				React.Fragment,
