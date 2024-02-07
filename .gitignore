@@ -1,11 +1,5 @@
 sourcemap.json
-rotriever.lock
-Packages/*
-!Packages/.robloxrc
-!Packages/_Workspace/
-Packages/_Workspace/*
-!Packages/_Workspace/.robloxrc
-standalone/Packages
+Packages/
 **/*.rbx[lm]*
 .DS_Store
 .vscode
