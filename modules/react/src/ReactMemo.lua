@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/41694201988c5e651f0c3bc69921d5c9717be88b/packages/react/src/ReactMemo.js
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/ReactMemo.js
+>>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -104,6 +108,7 @@ exports.memo = function<Props, T>(
 				end
 				return rawget(self, key)
 			end,
+<<<<<<< HEAD
 			__newindex = function(self, key, value)
 				if key == "displayName" then
 					name = value
@@ -117,6 +122,18 @@ exports.memo = function<Props, T>(
 					end
 				else
 					rawset(self, key, value)
+=======
+			set = function(self, name)
+				ownName = name -- The inner component shouldn't inherit this display name in most cases,
+				-- because the component may be used elsewhere.
+				-- But it's nice for anonymous functions to inherit the name,
+				-- so that our component-stack generation logic will display their frames.
+				-- An anonymous function generally suggests a pattern like:
+				--   React.memo((props) => {...});
+				-- This kind of inner function is not used elsewhere so the side effect is okay.
+				if not Boolean.toJSBoolean(type_.name) and not Boolean.toJSBoolean(type_.displayName) then
+					type_.displayName = name
+>>>>>>> upstream-apply
 				end
 			end,
 		})

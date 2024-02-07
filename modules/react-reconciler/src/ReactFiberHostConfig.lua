@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/9ac42dd074c42b66ecc0334b75200b1d2989f892/packages/react-reconciler/src/ReactFiberHostConfig.js
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/ReactFiberHostConfig.js
+>>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -7,6 +11,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @flow
+<<<<<<< HEAD
 ]]
 
 --[[ eslint-disable react-internal/invariant-args ]]
@@ -46,3 +51,18 @@ return exports
 -- -- deviation: FIXME (roblox): is there a way to configure luau to account for this module
 -- -- being shimmed?
 -- error('This module must be shimmed by a specific renderer.')
+=======
+ ]]
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Error = LuauPolyfill.Error
+--[[ eslint-disable react-internal/prod-error-codes ]]
+-- We expect that our Rollup, Jest, and Flow configurations
+-- always shim this module with the corresponding host config
+-- (either provided by a renderer, or a generic shim for npm).
+--
+-- We should never resolve to this file, but it exists to make
+-- sure that if we *do* accidentally break the configuration,
+-- the failure isn't silent.
+error(Error.new("This module must be shimmed by a specific renderer."))
+>>>>>>> upstream-apply

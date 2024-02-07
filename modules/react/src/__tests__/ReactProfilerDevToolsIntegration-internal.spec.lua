@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react/src/__tests__/ReactProfilerDevToolsIntegration-test.internal.js
 local Packages = script.Parent.Parent.Parent
 local React
@@ -6,6 +7,21 @@ local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Set = LuauPolyfill.Set
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/__tests__/ReactProfilerDevToolsIntegration-test.internal.js
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @emails react-core
+ * @jest-environment node
+ ]]
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Boolean = LuauPolyfill.Boolean
+>>>>>>> upstream-apply
 
 describe("ReactProfiler DevTools integration", function()
 	local jestExpect = JestGlobals.expect
@@ -15,7 +31,11 @@ describe("ReactProfiler DevTools integration", function()
 	local afterEach = JestGlobals.afterEach
 	local ReactFeatureFlags
 	local ReactTestRenderer
+<<<<<<< HEAD
 	local SchedulerTracing
+=======
+	local Scheduler
+>>>>>>> upstream-apply
 	local AdvanceTime
 	local hook
 	local originalDevtoolsState
@@ -34,12 +54,23 @@ describe("ReactProfiler DevTools integration", function()
 
 		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.enableProfilerTimer = true
+<<<<<<< HEAD
 		ReactFeatureFlags.enableSchedulerTracing = true
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- ROBLOX deviation: import tracing from top-level Scheduler export to avoid direct file access
 		SchedulerTracing = Scheduler.tracing
 		React = require("@pkg/@jsdotlua/react")
 		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
+=======
+		Scheduler = require_("scheduler")
+		React = require_("react")
+		ReactTestRenderer = require_("react-test-renderer")
+		AdvanceTime = error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: ClassExpression ]] --[[ class extends React.Component {
+      static defaultProps = {
+        byAmount: 10,
+        shouldComponentUpdate: true
+      };
+>>>>>>> upstream-apply
 
 		AdvanceTime = React.Component:extend("AdvanceTime")
 		AdvanceTime.defaultProps = {
@@ -93,6 +124,7 @@ describe("ReactProfiler DevTools integration", function()
 		-- Measure observable timing using the Profiler component.
 		-- The time spent in App (above the Profiler) won't be included in the durations,
 		-- But needs to be accounted for in the offset times.
+<<<<<<< HEAD
 		jestExpect(onRender).toHaveBeenCalledTimes(1)
 		jestExpect(onRender).toHaveBeenCalledWith(
 			"Profiler",
@@ -106,6 +138,11 @@ describe("ReactProfiler DevTools integration", function()
 		onRender.mockClear()
 
 		-- Measure unobservable timing required by the DevTools profiler.
+=======
+		expect(onRender).toHaveBeenCalledTimes(1)
+		expect(onRender).toHaveBeenCalledWith("Profiler", "mount", 10, 10, 2, 12)
+		onRender:mockClear() -- Measure unobservable timing required by the DevTools profiler.
+>>>>>>> upstream-apply
 		-- At this point, the base time should include both:
 		-- The time 2ms in the App component itself, and
 		-- The 10ms spend in the Profiler sub-tree beneath.
@@ -118,6 +155,7 @@ describe("ReactProfiler DevTools integration", function()
 		-- Measure observable timing using the Profiler component.
 		-- The time spent in App (above the Profiler) won't be included in the durations,
 		-- But needs to be accounted for in the offset times.
+<<<<<<< HEAD
 		jestExpect(onRender).toHaveBeenCalledTimes(1)
 		jestExpect(onRender).toHaveBeenCalledWith(
 			"Profiler",
@@ -130,6 +168,10 @@ describe("ReactProfiler DevTools integration", function()
 		)
 
 		-- Measure unobservable timing required by the DevTools profiler.
+=======
+		expect(onRender).toHaveBeenCalledTimes(1)
+		expect(onRender).toHaveBeenCalledWith("Profiler", "update", 6, 13, 14, 20) -- Measure unobservable timing required by the DevTools profiler.
+>>>>>>> upstream-apply
 		-- At this point, the base time should include both:
 		-- The initial 9ms for the components that do not re-render, and
 		-- The updated 6ms for the component that does.
@@ -150,6 +192,7 @@ describe("ReactProfiler DevTools integration", function()
 					React.createElement(AdvanceTime, { byAmount = 2 })
 				)
 			)
+<<<<<<< HEAD
 
 			Scheduler.unstable_advanceTime(20)
 
@@ -207,6 +250,16 @@ describe("ReactProfiler DevTools integration", function()
 		end
 	)
 
+=======
+		end).toThrow()
+		Scheduler:unstable_advanceTime(20) -- But this should render correctly, if the profiler's fiber stack has been reset.
+		rendered:update(React.createElement("div", nil, React.createElement(AdvanceTime, { byAmount = 7 }))) -- Measure unobservable timing required by the DevTools profiler.
+		-- At this point, the base time should include only the most recent (not failed) render.
+		-- It should not include time spent on the initial render,
+		-- Or time that elapsed between any of the above renders.
+		expect(rendered.root:findByType("div"):_currentFiber().treeBaseDuration).toBe(7)
+	end)
+>>>>>>> upstream-apply
 	it("regression test: #17159", function()
 		local function Text(props)
 			local text = props.text
@@ -229,6 +282,7 @@ describe("ReactProfiler DevTools integration", function()
 
 		-- Advance time by many seconds, larger than the default expiration time
 		-- for updates.
+<<<<<<< HEAD
 		Scheduler.unstable_advanceTime(10000)
 		root.update(React.createElement(Text, {
 			text = "B",
@@ -240,5 +294,20 @@ describe("ReactProfiler DevTools integration", function()
 			"B",
 		})
 		jestExpect(root).toMatchRenderedOutput("B")
+=======
+		Scheduler:unstable_advanceTime(10000) -- Schedule an update.
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			React.startTransition(function()
+				root:update(React.createElement(Text, { text = "B" }))
+			end)
+		else
+			root:update(React.createElement(Text, { text = "B" }))
+		end -- Update B should not instantly expire.
+		expect(Scheduler).toFlushAndYieldThrough({})
+		expect(Scheduler).toFlushAndYield({ "B" })
+		expect(root).toMatchRenderedOutput("B")
+>>>>>>> upstream-apply
 	end)
 end)

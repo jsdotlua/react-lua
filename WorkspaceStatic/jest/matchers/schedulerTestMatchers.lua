@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/scripts/jest/matchers/schedulerTestMatchers.js
 local Packages = script.Parent.Parent.Parent.TestRunner
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/scripts/jest/matchers/schedulerTestMatchers.js
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+>>>>>>> upstream-apply
 -- ROBLOX deviation START: fix import
 -- local LuauPolyfill = require(Packages.LuauPolyfill)
 local LuauPolyfill = require(Packages.Dev.LuauPolyfill)

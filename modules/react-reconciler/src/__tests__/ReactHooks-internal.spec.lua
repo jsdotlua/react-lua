@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/d13f5b9538e48f74f7c571ef3cde652ca887cca0/packages/react-reconciler/src/__tests__/ReactHooks-test.internal.js
 --  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -8,11 +9,32 @@
 --  * @emails react-core
 --  * @jest-environment node
 --  */
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactHooks-test.internal.js
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @emails react-core
+ * @jest-environment node
+ ]]
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
+local Error = LuauPolyfill.Error
+type Object = LuauPolyfill.Object
+local Promise = require(Packages.Promise)
+--[[ eslint-disable no-func-assign ]]
+>>>>>>> upstream-apply
 
 local React
 local ReactFeatureFlags
 local ReactTestRenderer
 local Scheduler
+<<<<<<< HEAD
 -- local ReactDOMServer
 local act
 local Packages = script.Parent.Parent.Parent
@@ -23,6 +45,10 @@ local jest = JestGlobals.jest
 local it = JestGlobals.it
 local xit = JestGlobals.xit
 local describe = JestGlobals.describe
+=======
+local ReactDOMServer
+local act
+>>>>>>> upstream-apply
 describe("ReactHooks", function()
 	local Promise = require("@pkg/@jsdotlua/promise")
 	local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
@@ -33,12 +59,21 @@ describe("ReactHooks", function()
 
 	beforeEach(function()
 		jest.resetModules()
+<<<<<<< HEAD
 		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		React = require("@pkg/@jsdotlua/react")
 		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- ReactDOMServer = require("react-dom/server")
 		act = ReactTestRenderer.unstable_concurrentAct
+=======
+		ReactFeatureFlags = require_("shared/ReactFeatureFlags")
+		React = require_("react")
+		ReactTestRenderer = require_("react-test-renderer")
+		Scheduler = require_("scheduler")
+		ReactDOMServer = require_("react-dom/server")
+		act = require_("jest-react").act
+>>>>>>> upstream-apply
 	end)
 	if _G.__DEV__ then
 		it("useDebugValue throws when used in a class component", function()
@@ -1458,6 +1493,7 @@ describe("ReactHooks", function()
 			useRefHelper,
 			useStateHelper,
 		}
+<<<<<<< HEAD
 		-- ROBLOX TODO: unflag this when we implement useTransition and useDeferredValueHelper
 		if _G.__EXPERIMENTAL__ then
 			-- local function useTransitionHelper()
@@ -1470,6 +1506,19 @@ describe("ReactHooks", function()
 			-- table.insert(orderedHooks, useDeferredValueHelper)
 			-- table.insert(hooksInList, useTransitionHelper)
 			-- table.insert(hooksInList, useDeferredValueHelper)
+=======
+		if Boolean.toJSBoolean(__EXPERIMENTAL__) then
+			local function useTransitionHelper()
+				return React.useTransition()
+			end
+			local function useDeferredValueHelper()
+				return React.useDeferredValue(0, { timeoutMs = 1000 })
+			end
+			table.insert(orderedHooks, useTransitionHelper) --[[ ROBLOX CHECK: check if 'orderedHooks' is an Array ]]
+			table.insert(orderedHooks, useDeferredValueHelper) --[[ ROBLOX CHECK: check if 'orderedHooks' is an Array ]]
+			table.insert(hooksInList, useTransitionHelper) --[[ ROBLOX CHECK: check if 'hooksInList' is an Array ]]
+			table.insert(hooksInList, useDeferredValueHelper) --[[ ROBLOX CHECK: check if 'hooksInList' is an Array ]]
+>>>>>>> upstream-apply
 		end
 		local function formatHookNamesToMatchErrorMessage(hookNameA, hookNameB)
 			return string.format(
@@ -1556,10 +1605,16 @@ describe("ReactHooks", function()
 				end
 			)
 			it(
+<<<<<<< HEAD
 				string.format(
 					"warns when more hooks (%s, %s) are used during update than mount",
 					hookNameA,
 					hookNameB
+=======
+				("warns when more hooks (%s, %s) are used during update than mount"):format(
+					tostring(hookNameA),
+					tostring(hookNameB)
+>>>>>>> upstream-apply
 				),
 				function()
 					local function App(props)
@@ -1606,6 +1661,7 @@ describe("ReactHooks", function()
 				if
 					index
 					> 0 --[[ ROBLOX CHECK: operator '>' works only if either both arguments are strings or both are a number ]]
+<<<<<<< HEAD
 				then
 					return hooksInList[index]
 				else
@@ -1626,6 +1682,16 @@ describe("ReactHooks", function()
 					"warns when fewer hooks (%s, %s) are used during update than mount",
 					hookNameA,
 					hookNameB
+=======
+				then hooksInList[tostring(index - 1)]
+				else hooksInList[tostring(hooksInList.length - 1)]
+			local hookNameA = firstHelper.name:replace("use", ""):replace("Helper", "")
+			local hookNameB = secondHelper.name:replace("use", ""):replace("Helper", "")
+			it(
+				("warns when fewer hooks (%s, %s) are used during update than mount"):format(
+					tostring(hookNameA),
+					tostring(hookNameB)
+>>>>>>> upstream-apply
 				),
 				function()
 					local function App(props)
@@ -1743,19 +1809,33 @@ describe("ReactHooks", function()
 				end)
 				return nil
 			end
+<<<<<<< HEAD
 			jestExpect(function()
 				act(function()
+=======
+			act(function()
+				return Promise.resolve():andThen(function()
+>>>>>>> upstream-apply
 					ReactTestRenderer.unstable_batchedUpdates(function()
 						ReactTestRenderer.create(
 							React.createElement(
 								React.Fragment,
 								nil,
+<<<<<<< HEAD
 								React.createElement(A),
 								React.createElement(B)
 							)
 						)
 						jestExpect(function()
 							Scheduler.unstable_flushAll()
+=======
+								React.createElement(A, nil),
+								React.createElement(B, nil)
+							)
+						)
+						expect(function()
+							return Scheduler:unstable_flushAll()
+>>>>>>> upstream-apply
 						end).toThrow("Hello")
 					end)
 				end)

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-debug-tools/src/__tests__/ReactHooksInspectionIntegration-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-debug-tools/src/__tests__/ReactHooksInspectionIntegration-test.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -42,7 +42,11 @@ describe("ReactHooksInspectionIntegration", function()
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		React = require("@pkg/@jsdotlua/react")
 		-- ROBLOX deviation END
+<<<<<<< HEAD
 		act = ReactTestRenderer.unstable_concurrentAct
+=======
+		act = require_("jest-react").act
+>>>>>>> upstream-apply
 		-- ROBLOX deviation START: fix requires
 		-- ReactDebugTools = require_("react-debug-tools")
 		ReactDebugTools = require("@pkg/@jsdotlua/react-debug-tools")
@@ -401,6 +405,123 @@ describe("ReactHooksInspectionIntegration", function()
 			},
 		})
 	end)
+	it("should inspect the current state of all stateful hooks, including useInsertionEffect", function()
+		local useInsertionEffect = React.useInsertionEffect
+		local outsideRef = React.createRef()
+		local function effect() end
+		local function Foo(props)
+			local state1, setState = table.unpack(React.useState("a"), 1, 2)
+			local state2, dispatch = table.unpack(
+				React.useReducer(function(s, a)
+					return a.value
+				end, "b"),
+				1,
+				2
+			)
+			local ref = React.useRef("c")
+			useInsertionEffect(effect)
+			React.useLayoutEffect(effect)
+			React.useEffect(effect)
+			React.useImperativeHandle(outsideRef, function()
+				-- Return a function so that jest treats them as non-equal.
+				return function() end
+			end, {})
+			React.useMemo(function()
+				return state1 + state2
+			end, { state1 })
+			local function update()
+				act(function()
+					setState("A")
+				end)
+				act(function()
+					dispatch({ value = "B" })
+				end)
+				ref.current = "C"
+			end
+			local memoizedUpdate = React.useCallback(update, {})
+			return React.createElement("div", { onClick = memoizedUpdate }, state1, " ", state2)
+		end
+		local renderer
+		act(function()
+			renderer = ReactTestRenderer.create(React.createElement(Foo, { prop = "prop" }))
+		end)
+		local childFiber = renderer.root:findByType(Foo):_currentFiber()
+		local updateStates = renderer.root:findByType("div").props.onClick
+		local tree = ReactDebugTools:inspectHooksOfFiber(childFiber)
+		expect(tree).toEqual({
+			{ isStateEditable = true, id = 0, name = "State", value = "a", subHooks = {} },
+			{ isStateEditable = true, id = 1, name = "Reducer", value = "b", subHooks = {} },
+			{ isStateEditable = false, id = 2, name = "Ref", value = "c", subHooks = {} },
+			{
+				isStateEditable = false,
+				id = 3,
+				name = "InsertionEffect",
+				value = effect,
+				subHooks = {},
+			},
+			{
+				isStateEditable = false,
+				id = 4,
+				name = "LayoutEffect",
+				value = effect,
+				subHooks = {},
+			},
+			{ isStateEditable = false, id = 5, name = "Effect", value = effect, subHooks = {} },
+			{
+				isStateEditable = false,
+				id = 6,
+				name = "ImperativeHandle",
+				value = outsideRef.current,
+				subHooks = {},
+			},
+			{ isStateEditable = false, id = 7, name = "Memo", value = "ab", subHooks = {} },
+			{
+				isStateEditable = false,
+				id = 8,
+				name = "Callback",
+				value = updateStates,
+				subHooks = {},
+			},
+		})
+		updateStates()
+		childFiber = renderer.root:findByType(Foo):_currentFiber()
+		tree = ReactDebugTools:inspectHooksOfFiber(childFiber)
+		expect(tree).toEqual({
+			{ isStateEditable = true, id = 0, name = "State", value = "A", subHooks = {} },
+			{ isStateEditable = true, id = 1, name = "Reducer", value = "B", subHooks = {} },
+			{ isStateEditable = false, id = 2, name = "Ref", value = "C", subHooks = {} },
+			{
+				isStateEditable = false,
+				id = 3,
+				name = "InsertionEffect",
+				value = effect,
+				subHooks = {},
+			},
+			{
+				isStateEditable = false,
+				id = 4,
+				name = "LayoutEffect",
+				value = effect,
+				subHooks = {},
+			},
+			{ isStateEditable = false, id = 5, name = "Effect", value = effect, subHooks = {} },
+			{
+				isStateEditable = false,
+				id = 6,
+				name = "ImperativeHandle",
+				value = outsideRef.current,
+				subHooks = {},
+			},
+			{ isStateEditable = false, id = 7, name = "Memo", value = "Ab", subHooks = {} },
+			{
+				isStateEditable = false,
+				id = 8,
+				name = "Callback",
+				value = updateStates,
+				subHooks = {},
+			},
+		})
+	end)
 	it("should inspect the value of the current provider in useContext", function()
 		local MyContext = React.createContext("default")
 		local function Foo(props)
@@ -535,15 +656,13 @@ describe("ReactHooksInspectionIntegration", function()
 				},
 			},
 		})
-	end) -- @gate experimental
+	end)
 	-- ROBLOX deviation START: unstable_useTransition is not implemented
 	-- it("should support composite useTransition hook", function()
 	it.skip("should support composite useTransition hook", function()
 		-- ROBLOX deviation END
 		local function Foo(props)
-			-- ROBLOX deviation START: not supported
-			-- React.unstable_useTransition()
-			-- ROBLOX deviation END
+			React.useTransition()
 			local memoizedValue = React.useMemo(function()
 				return "hello"
 			end, {})
@@ -582,15 +701,13 @@ describe("ReactHooksInspectionIntegration", function()
 				subHooks = {},
 			},
 		})
-	end) -- @gate experimental
+	end)
 	-- ROBLOX deviation START: unstable_useDeferredValue not implemented
 	-- it("should support composite useDeferredValue hook", function()
 	it.skip("should support composite useDeferredValue hook", function()
 		-- ROBLOX deviation END
 		local function Foo(props)
-			-- ROBLOX deviation START: not implemented
-			-- React.unstable_useDeferredValue("abc", { timeoutMs = 500 })
-			-- ROBLOX deviation END
+			React.useDeferredValue("abc", { timeoutMs = 500 })
 			local state = React.useState(function()
 				return "hello"
 				-- ROBLOX deviation START: useState returns 2 values
@@ -630,12 +747,10 @@ describe("ReactHooksInspectionIntegration", function()
 				subHooks = {},
 			},
 		})
-	end) -- @gate experimental
-	-- ROBLOX deviation START: unstable_useOpaqueIdentifier not implemented
-	-- it("should support composite useOpaqueIdentifier hook", function()
-	it.skip("should support composite useOpaqueIdentifier hook", function()
-		-- ROBLOX deviation END
+	end)
+	it("should support useId hook", function()
 		local function Foo(props)
+<<<<<<< HEAD
 			-- ROBLOX deviation START: not implemented
 			-- local id = React.unstable_useOpaqueIdentifier()
 			local id = nil
@@ -645,6 +760,14 @@ describe("ReactHooksInspectionIntegration", function()
 				-- ROBLOX deviation START: useState returns 2 values
 				-- end, {})[1]
 			end, {})
+=======
+			local id = React.useId()
+			local state = React.useState("hello")[1]
+			-- ROBLOX deviation START: use Frame instead
+			-- ROBLOX deviation START: use Frame instead
+			-- -- return React.createElement("div", { id = id }, state)
+				return React.createElement("Frame", { id = id }, state)
+>>>>>>> upstream-apply
 			-- ROBLOX deviation END
 			-- ROBLOX deviation START: use Frame instead
 			-- return React.createElement("div", { id = id }, state)
@@ -669,6 +792,7 @@ describe("ReactHooksInspectionIntegration", function()
 		].isStateEditable).toEqual(false)
 		expect(tree[
 			1 --[[ ROBLOX adaptation: added 1 to array index ]]
+<<<<<<< HEAD
 		].name).toEqual("OpaqueIdentifier")
 		-- ROBLOX deviation START: use String.startsWith
 		-- expect((tostring(tree[
@@ -683,11 +807,22 @@ describe("ReactHooksInspectionIntegration", function()
 			-- id = 1,
 			id = 2,
 			-- ROBLOX deviation END
+=======
+		].name).toEqual("Id")
+		expect(String(tree[
+			1 --[[ ROBLOX adaptation: added 1 to array index ]]
+		].value):startsWith(":r")).toBe(true)
+		expect(tree[
+			2 --[[ ROBLOX adaptation: added 1 to array index ]]
+		]).toEqual({
+			id = 1,
+>>>>>>> upstream-apply
 			isStateEditable = true,
 			name = "State",
 			value = "hello",
 			subHooks = {},
 		})
+<<<<<<< HEAD
 	end) -- @gate experimental
 	-- ROBLOX deviation START: unstable_useOpaqueIdentifier not implemented
 	-- it("should support composite useOpaqueIdentifier hook in concurrent mode", function()
@@ -752,6 +887,9 @@ describe("ReactHooksInspectionIntegration", function()
 			})
 		end
 	)
+=======
+	end)
+>>>>>>> upstream-apply
 	describe("useDebugValue", function()
 		it("should support inspectable values for multiple custom hooks", function()
 			local function useLabeledValue(label)
@@ -1165,19 +1303,31 @@ describe("ReactHooksInspectionIntegration", function()
 		-- ROBLOX deviation END
 		local renderer = ReactTestRenderer.create(React.createElement(Foo, nil))
 		local childFiber = renderer.root:_currentFiber()
-		expect(function()
-			-- ROBLOX deviation START: use dot notation
-			-- ReactDebugTools:inspectHooksOfFiber(childFiber, FakeDispatcherRef)
+		local didCatch = false
+		do --[[ ROBLOX COMMENT: try-catch block conversion ]]
+			local ok, result, hasReturned = xpcall(function()
+				-- ROBLOX deviation START: use dot notation
+				-- ReactDebugTools:inspectHooksOfFiber(childFiber, FakeDispatcherRef)
 			ReactDebugTools.inspectHooksOfFiber(childFiber, FakeDispatcherRef)
-			-- ROBLOX deviation END
-		end).toThrow(
-			"Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for"
-				.. " one of the following reasons:\n"
-				.. "1. You might have mismatching versions of React and the renderer (such as React DOM)\n"
-				.. "2. You might be breaking the Rules of Hooks\n"
-				.. "3. You might have more than one copy of React in the same app\n"
-				.. "See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem."
-		)
+				-- ROBLOX deviation END
+			end, function(error_)
+				expect(error_.message).toBe("Error rendering inspected component")
+				expect(error_.cause).toBeInstanceOf(Error)
+				expect(error_.cause.message).toBe(
+					"Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for"
+						.. " one of the following reasons:\n"
+						.. "1. You might have mismatching versions of React and the renderer (such as React DOM)\n"
+						.. "2. You might be breaking the Rules of Hooks\n"
+						.. "3. You might have more than one copy of React in the same app\n"
+						.. "See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem."
+				)
+				didCatch = true
+			end)
+			if hasReturned then
+				return result
+			end
+		end -- avoid false positive if no error was thrown at all
+		expect(didCatch).toBe(true)
 		expect(getterCalls).toBe(1)
 		expect(setterCalls).toHaveLength(2)
 		expect(setterCalls[
@@ -1190,7 +1340,7 @@ describe("ReactHooksInspectionIntegration", function()
 			2 --[[ ROBLOX adaptation: added 1 to array index ]]
 		]).toBe(initial)
 	end) -- This test case is based on an open source bug report:
-	-- facebookincubator/redux-react-hook/issues/34#issuecomment-466693787
+	-- https://github.com/facebookincubator/redux-react-hook/issues/34#issuecomment-466693787
 	it("should properly advance the current hook for useContext", function()
 		local MyContext = React.createContext(1)
 		local incrementCount
@@ -1259,6 +1409,7 @@ describe("ReactHooksInspectionIntegration", function()
 				subHooks = {},
 			},
 		})
+<<<<<<< HEAD
 	end)
 	-- ROBLOX deviation START: no experimental features
 	-- if Boolean.toJSBoolean(__EXPERIMENTAL__) then
@@ -1297,4 +1448,65 @@ describe("ReactHooksInspectionIntegration", function()
 	-- 	end)
 	-- end
 	-- ROBLOX deviation END
+=======
+	end) -- @gate enableUseMutableSource
+	it("should support composite useMutableSource hook", function()
+		local createMutableSource = Boolean.toJSBoolean(React.createMutableSource) and React.createMutableSource
+			or React.unstable_createMutableSource
+		local useMutableSource = Boolean.toJSBoolean(React.useMutableSource) and React.useMutableSource
+			or React.unstable_useMutableSource
+		local mutableSource = createMutableSource({}, function()
+			return 1
+		end)
+		local function Foo(props)
+			useMutableSource(mutableSource, function()
+				return "snapshot"
+			end, function() end)
+			React.useMemo(function()
+				return "memo"
+			end, {})
+			return React.createElement("div", nil)
+		end
+		local renderer = ReactTestRenderer.create(React.createElement(Foo, nil))
+		local childFiber = renderer.root:findByType(Foo):_currentFiber()
+		local tree = ReactDebugTools:inspectHooksOfFiber(childFiber)
+		expect(tree).toEqual({
+			{
+				id = 0,
+				isStateEditable = false,
+				name = "MutableSource",
+				value = "snapshot",
+				subHooks = {},
+			},
+			{ id = 1, isStateEditable = false, name = "Memo", value = "memo", subHooks = {} },
+		})
+	end)
+	it("should support composite useSyncExternalStore hook", function()
+		local useSyncExternalStore = React.useSyncExternalStore
+		local function Foo()
+			local value = useSyncExternalStore(function()
+				return function() end
+			end, function()
+				return "snapshot"
+			end)
+			React.useMemo(function()
+				return "memo"
+			end, {})
+			return value
+		end
+		local renderer = ReactTestRenderer.create(React.createElement(Foo, nil))
+		local childFiber = renderer.root:findByType(Foo):_currentFiber()
+		local tree = ReactDebugTools:inspectHooksOfFiber(childFiber)
+		expect(tree).toEqual({
+			{
+				id = 0,
+				isStateEditable = false,
+				name = "SyncExternalStore",
+				value = "snapshot",
+				subHooks = {},
+			},
+			{ id = 1, isStateEditable = false, name = "Memo", value = "memo", subHooks = {} },
+		})
+	end)
+>>>>>>> upstream-apply
 end)

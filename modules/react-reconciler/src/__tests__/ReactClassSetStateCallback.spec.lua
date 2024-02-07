@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/d7dce572c7453737a685e791e7afcbc7e2b2fe16/packages/react-reconciler/src/__tests__/ReactClassSetStateCallback-test.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -11,6 +12,13 @@
 
 --[[ eslint-disable no-func-assign ]]
 local Packages = script.Parent.Parent.Parent
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactClassSetStateCallback-test.js
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+type Object = LuauPolyfill.Object
+local Promise = require(Packages.Promise)
+>>>>>>> upstream-apply
 local React
 
 local ReactNoop

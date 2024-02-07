@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-debug-tools/src/__tests__/ReactDevToolsHooksIntegration-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-debug-tools/src/__tests__/ReactDevToolsHooksIntegration-test.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -14,6 +14,7 @@ local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
 local Error = LuauPolyfill.Error
+<<<<<<< HEAD
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 -- ROBLOX deviation START: add additional import
 local afterEach = JestGlobals.afterEach
@@ -23,6 +24,9 @@ local describe = JestGlobals.describe
 local expect = JestGlobals.expect
 local it = JestGlobals.it
 local jest = JestGlobals.jest
+=======
+local Promise = require(Packages.Promise)
+>>>>>>> upstream-apply
 
 describe("React hooks DevTools integration", function()
 	local React
@@ -33,6 +37,7 @@ describe("React hooks DevTools integration", function()
 	local overrideHookState
 	local scheduleUpdate
 	local setSuspenseHandler
+	global.IS_REACT_ACT_ENVIRONMENT = true
 	beforeEach(function()
 		-- ROBLOX deviation START: use _G instead of global
 		-- global.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
@@ -111,7 +116,9 @@ describe("React hooks DevTools integration", function()
 		-- if Boolean.toJSBoolean(__DEV__) then
 		if _G.__DEV__ then
 			-- ROBLOX deviation END
-			overrideHookState(fiber, stateHook.id, {}, 10)
+			act(function()
+				return overrideHookState(fiber, stateHook.id, {}, 10)
+			end)
 			expect(renderer:toJSON()).toEqual({
 				-- ROBLOX deviation START: use Frame instead
 				-- type = "div",
@@ -203,11 +210,18 @@ describe("React hooks DevTools integration", function()
 			1 --[[ ROBLOX adaptation: added 1 to array index ]]
 		]
 		expect(reducerHook.isStateEditable).toBe(true)
+<<<<<<< HEAD
 		-- ROBLOX deviation START: use _G.__DEV__
 		-- if Boolean.toJSBoolean(__DEV__) then
 		if _G.__DEV__ then
 			-- ROBLOX deviation END
 			overrideHookState(fiber, reducerHook.id, { "foo" }, "def")
+=======
+		if Boolean.toJSBoolean(__DEV__) then
+			act(function()
+				return overrideHookState(fiber, reducerHook.id, { "foo" }, "def")
+			end)
+>>>>>>> upstream-apply
 			expect(renderer:toJSON()).toEqual({
 				-- ROBLOX deviation START: use Frame instead
 				-- type = "div",
@@ -245,6 +259,7 @@ describe("React hooks DevTools integration", function()
 			})
 		end
 	end) -- This test case is based on an open source bug report:
+<<<<<<< HEAD
 	-- facebookincubator/redux-react-hook/issues/34#issuecomment-466693787
 	it(
 		"should handle interleaved stateful hooks (e.g. useState) and non-stateful hooks (e.g. useContext)",
@@ -284,11 +299,55 @@ describe("React hooks DevTools integration", function()
 				props = {},
 				-- ROBLOX deviation START: use TextLabels instead
 				-- children = { "count:", "1" },
+=======
+	-- https://github.com/facebookincubator/redux-react-hook/issues/34#issuecomment-466693787
+	it("should handle interleaved stateful hooks (e.g. useState) and non-stateful hooks (e.g. useContext)", function()
+		local MyContext = React.createContext(1)
+		local setStateFn
+		local function useCustomHook()
+			local context = React.useContext(MyContext)
+			local state, setState = table.unpack(React.useState({ count = context }), 1, 2)
+			React.useDebugValue(state.count)
+			setStateFn = setState
+			return state.count
+		end
+		local function MyComponent()
+			local count = useCustomHook()
+			return React.createElement("div", nil, "count:", count)
+		end
+		local renderer = ReactTestRenderer.create(React.createElement(MyComponent, nil))
+		expect(renderer:toJSON()).toEqual({
+			type = "div",
+			props = {},
+			-- ROBLOX deviation START: use TextLabels instead
+			-- children = { "count:", "1" },
+>>>>>>> upstream-apply
 				children = {
 					{ type = "TextLabel", props = { Text = "count:" } },
 					{ type = "TextLabel", props = { Text = "1" } },
 				},
+<<<<<<< HEAD
 				-- ROBLOX deviation END
+=======
+		-- ROBLOX deviation END
+		})
+		local fiber = renderer.root:findByType(MyComponent):_currentFiber()
+		local tree = ReactDebugTools:inspectHooksOfFiber(fiber)
+		local stateHook = tree[
+			1 --[[ ROBLOX adaptation: added 1 to array index ]]
+		].subHooks[
+			2 --[[ ROBLOX adaptation: added 1 to array index ]]
+		]
+		expect(stateHook.isStateEditable).toBe(true)
+		if Boolean.toJSBoolean(__DEV__) then
+			act(function()
+				return overrideHookState(fiber, stateHook.id, { "count" }, 10)
+			end)
+			expect(renderer:toJSON()).toEqual({
+				type = "div",
+				props = {},
+				children = { "count:", "10" },
+>>>>>>> upstream-apply
 			})
 			local fiber = renderer.root:findByType(MyComponent):_currentFiber()
 			-- ROBLOX deviation START: use dot notation
@@ -387,8 +446,36 @@ describe("React hooks DevTools integration", function()
 					props = { Text = "Loading" },
 				},
 			})
+<<<<<<< HEAD
 			-- ROBLOX deviation END
 			scheduleUpdate(fiber) -- Re-render
+=======
+				-- ROBLOX deviation END
+			expect(renderer:toJSON().children).toEqual({
+				{
+					type = "TextLabel",
+					props = { Text = "Loading" },
+				},
+			})
+				-- ROBLOX deviation END
+			expect(renderer:toJSON().children).toEqual({
+				{
+					type = "TextLabel",
+					props = { Text = "Loading" },
+				},
+			})
+				-- ROBLOX deviation END
+			expect(renderer:toJSON().children).toEqual({
+				{
+					type = "TextLabel",
+					props = { Text = "Loading" },
+				},
+			})
+			-- ROBLOX deviation END
+			act(function()
+				return scheduleUpdate(fiber)
+			end) -- Re-render
+>>>>>>> upstream-apply
 			-- ROBLOX deviation START: use TextLabel instead
 			-- expect(renderer:toJSON().children).toEqual({ "Loading" }) -- Release the lock
 			expect(renderer:toJSON().children).toEqual({
@@ -401,7 +488,9 @@ describe("React hooks DevTools integration", function()
 			setSuspenseHandler(function()
 				return false
 			end)
-			scheduleUpdate(fiber) -- Re-render
+			act(function()
+				return scheduleUpdate(fiber)
+			end) -- Re-render
 			-- ROBLOX deviation START: use TextLabel instead
 			-- expect(renderer:toJSON().children).toEqual({ "Done" })
 			expect(renderer:toJSON().children).toEqual({
@@ -410,8 +499,43 @@ describe("React hooks DevTools integration", function()
 					props = { Text = "Done" },
 				},
 			})
+<<<<<<< HEAD
 			-- ROBLOX deviation END
 			scheduleUpdate(fiber) -- Re-render
+=======
+				-- ROBLOX deviation END
+			expect(renderer:toJSON().children).toEqual({
+				{
+					type = "TextLabel",
+					props = { Text = "Done" },
+				},
+			})
+				-- ROBLOX deviation END
+			expect(renderer:toJSON().children).toEqual({
+				{
+					type = "TextLabel",
+					props = { Text = "Done" },
+				},
+			})
+				-- ROBLOX deviation END
+			expect(renderer:toJSON().children).toEqual({
+				{
+					type = "TextLabel",
+					props = { Text = "Done" },
+				},
+			})
+				-- ROBLOX deviation END
+			expect(renderer:toJSON().children).toEqual({
+				{
+					type = "TextLabel",
+					props = { Text = "Done" },
+				},
+			})
+			-- ROBLOX deviation END
+			act(function()
+				return scheduleUpdate(fiber)
+			end) -- Re-render
+>>>>>>> upstream-apply
 			-- ROBLOX deviation START: use TextLabel instead
 			-- expect(renderer:toJSON().children).toEqual({ "Done" }) -- Lock again
 			expect(renderer:toJSON().children).toEqual({
@@ -424,7 +548,9 @@ describe("React hooks DevTools integration", function()
 			setSuspenseHandler(function()
 				return true
 			end)
-			scheduleUpdate(fiber) -- Re-render
+			act(function()
+				return scheduleUpdate(fiber)
+			end) -- Re-render
 			-- ROBLOX deviation START: use TextLabel instead
 			-- expect(renderer:toJSON().children).toEqual({ "Loading" }) -- Release the lock again
 			expect(renderer:toJSON().children).toEqual({
@@ -437,7 +563,9 @@ describe("React hooks DevTools integration", function()
 			setSuspenseHandler(function()
 				return false
 			end)
-			scheduleUpdate(fiber) -- Re-render
+			act(function()
+				return scheduleUpdate(fiber)
+			end) -- Re-render
 			-- ROBLOX deviation START: use TextLabel instead
 			-- expect(renderer:toJSON().children).toEqual({ "Done" }) -- Ensure it checks specific fibers.
 			expect(renderer:toJSON().children).toEqual({
@@ -450,6 +578,7 @@ describe("React hooks DevTools integration", function()
 			setSuspenseHandler(function(f)
 				return f == fiber or f == fiber.alternate
 			end)
+<<<<<<< HEAD
 			scheduleUpdate(fiber) -- Re-render
 			-- ROBLOX deviation START: use TextLabel instead
 			-- expect(renderer:toJSON().children).toEqual({ "Loading" })
@@ -473,6 +602,19 @@ describe("React hooks DevTools integration", function()
 				},
 			})
 			-- ROBLOX deviation END
+=======
+			act(function()
+				return scheduleUpdate(fiber)
+			end) -- Re-render
+			expect(renderer:toJSON().children).toEqual({ "Loading" })
+			setSuspenseHandler(function(f)
+				return f ~= fiber and f ~= fiber.alternate
+			end)
+			act(function()
+				return scheduleUpdate(fiber)
+			end) -- Re-render
+			expect(renderer:toJSON().children).toEqual({ "Done" })
+>>>>>>> upstream-apply
 		else
 			-- ROBLOX deviation START: use TextLabel instead
 			-- expect(renderer:toJSON().children).toEqual({ "Done" })
@@ -484,8 +626,9 @@ describe("React hooks DevTools integration", function()
 			})
 			-- ROBLOX deviation END
 		end
-	end)
+	end) -- @gate __DEV__
 	it("should support overriding suspense in concurrent mode", function()
+<<<<<<< HEAD
 		-- ROBLOX deviation START: add useFakeTimers
 		jest.useFakeTimers()
 		-- ROBLOX deviation END
@@ -638,5 +781,94 @@ describe("React hooks DevTools integration", function()
 		-- ROBLOX deviation START: add useRealTimers
 		jest.useRealTimers()
 		-- ROBLOX deviation END
+=======
+		return Promise.resolve():andThen(function()
+			if Boolean.toJSBoolean(__DEV__) then
+				-- Lock the first render
+				setSuspenseHandler(function()
+					return true
+				end)
+			end
+			local function MyComponent()
+				return "Done"
+			end
+			local renderer = act(function()
+				return ReactTestRenderer.create(
+					React.createElement(
+						"div",
+						nil,
+						React.createElement(
+							React.Suspense,
+							-- ROBLOX deviation START: use TextLabel instead
+							-- ROBLOX deviation START: use TextLabel instead
+							-- -- { fallback = "Loading" },
+					{ fallback = React.createElement("TextLabel", { Text = "Loading" }) },
+				-- ROBLOX deviation END
+				{ fallback = React.createElement("TextLabel", { Text = "Loading" }) },
+							-- ROBLOX deviation END
+							React.createElement(MyComponent, nil)
+						)
+					),
+					{ unstable_isConcurrent = true }
+				)
+			end):expect()
+			expect(Scheduler).toFlushAndYield({}) -- Ensure we timeout any suspense time.
+			jest.advanceTimersByTime(1000)
+			local fiber = renderer.root:_currentFiber().child
+			if Boolean.toJSBoolean(__DEV__) then
+				-- First render was locked
+				expect(renderer:toJSON().children).toEqual({ "Loading" })
+				act(function()
+					return scheduleUpdate(fiber)
+				end) -- Re-render
+				expect(renderer:toJSON().children).toEqual({ "Loading" }) -- Release the lock
+				setSuspenseHandler(function()
+					return false
+				end)
+				act(function()
+					return scheduleUpdate(fiber)
+				end) -- Re-render
+				-- ROBLOX deviation START: use dot notation
+				-- Scheduler:unstable_flushAll()
+			Scheduler.unstable_flushAll()
+					-- ROBLOX deviation END
+				expect(renderer:toJSON().children).toEqual({ "Done" })
+				act(function()
+					return scheduleUpdate(fiber)
+				end) -- Re-render
+				expect(renderer:toJSON().children).toEqual({ "Done" }) -- Lock again
+				setSuspenseHandler(function()
+					return true
+				end)
+				act(function()
+					return scheduleUpdate(fiber)
+				end) -- Re-render
+				expect(renderer:toJSON().children).toEqual({ "Loading" }) -- Release the lock again
+				setSuspenseHandler(function()
+					return false
+				end)
+				act(function()
+					return scheduleUpdate(fiber)
+				end) -- Re-render
+				expect(renderer:toJSON().children).toEqual({ "Done" }) -- Ensure it checks specific fibers.
+				setSuspenseHandler(function(f)
+					return f == fiber or f == fiber.alternate
+				end)
+				act(function()
+					return scheduleUpdate(fiber)
+				end) -- Re-render
+				expect(renderer:toJSON().children).toEqual({ "Loading" })
+				setSuspenseHandler(function(f)
+					return f ~= fiber and f ~= fiber.alternate
+				end)
+				act(function()
+					return scheduleUpdate(fiber)
+				end) -- Re-render
+				expect(renderer:toJSON().children).toEqual({ "Done" })
+			else
+				expect(renderer:toJSON().children).toEqual({ "Done" })
+			end
+		end)
+>>>>>>> upstream-apply
 	end)
 end)

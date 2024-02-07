@@ -1,15 +1,21 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/jest-react/src/JestReact.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/jest-react/src/JestReact.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  ]]
+<<<<<<< HEAD
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
+=======
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+>>>>>>> upstream-apply
 -- ROBLOX deviation START: not used
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
+local Error = LuauPolyfill.Error
 local Object = LuauPolyfill.Object
 local exports = {}
 -- ROBLOX deviation START: fix import
@@ -23,6 +29,7 @@ local sharedReactSymbolsModule = require("@pkg/@jsdotlua/shared").ReactSymbols
 -- ROBLOX deviation END
 local REACT_ELEMENT_TYPE = sharedReactSymbolsModule.REACT_ELEMENT_TYPE
 local REACT_FRAGMENT_TYPE = sharedReactSymbolsModule.REACT_FRAGMENT_TYPE
+<<<<<<< HEAD
 -- ROBLOX deviation START: fix import
 -- local invariant = require("@pkg/@jsdotlua/shared").default
 local invariant = require("@pkg/@jsdotlua/shared").invariant
@@ -30,6 +37,10 @@ local invariant = require("@pkg/@jsdotlua/shared").invariant
 -- ROBLOX deviation START: predeclare variables
 local jsonChildToJSXChild, jsonChildrenToJSXChildren
 -- ROBLOX deviation END
+=======
+local isArray = require(Packages.shared.isArray).default
+exports.act = require(script.Parent.internalAct).act
+>>>>>>> upstream-apply
 local function captureAssertion(fn)
 	-- Trick to use a Jest matcher inside another Jest matcher. `fn` contains an
 	-- assertion; if it throws, we capture the error and return it, so the stack
@@ -75,6 +86,7 @@ local function assertYieldsWereCleared(root)
 	-- local actualYields = Scheduler:unstable_clearYields()
 	local actualYields = Scheduler.unstable_clearYields()
 	-- ROBLOX deviation END
+<<<<<<< HEAD
 	invariant(
 		-- ROBLOX deviation START: fix .length
 		-- actualYields.length == 0,
@@ -83,6 +95,16 @@ local function assertYieldsWereCleared(root)
 		"Log of yielded values is not empty. "
 			.. "Call expect(ReactTestRenderer).unstable_toHaveYielded(...) first."
 	)
+=======
+	if actualYields.length ~= 0 then
+		error(
+			Error.new(
+				"Log of yielded values is not empty. "
+					.. "Call expect(ReactTestRenderer).unstable_toHaveYielded(...) first."
+			)
+		)
+	end
+>>>>>>> upstream-apply
 end
 local function unstable_toMatchRenderedOutput(root, expectedJSX)
 	assertYieldsWereCleared(root)
@@ -93,10 +115,14 @@ local function unstable_toMatchRenderedOutput(root, expectedJSX)
 	local actualJSX
 	if actualJSON == nil or typeof(actualJSON) == "string" then
 		actualJSX = actualJSON
+<<<<<<< HEAD
 		-- ROBLOX deviation START: remove toJSBoolean
 		-- elseif Boolean.toJSBoolean(Array.isArray(actualJSON)) then
 	elseif Array.isArray(actualJSON) then
 		-- ROBLOX deviation END
+=======
+	elseif Boolean.toJSBoolean(isArray(actualJSON)) then
+>>>>>>> upstream-apply
 		-- ROBLOX deviation START: fix .length
 		-- if actualJSON.length == 0 then
 		if #actualJSON == 0 then

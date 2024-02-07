@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/8e5adfbd7e605bda9c5e96c10e015b3dc0df688e/packages/react-reconciler/src/__tests__/ReactNewContext-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactNewContext-test.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -18,6 +18,7 @@ local React
 local useContext
 local ReactNoop
 local Scheduler
+<<<<<<< HEAD
 -- local gen
 
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
@@ -26,6 +27,82 @@ local beforeEach = JestGlobals.beforeEach
 local jest = JestGlobals.jest
 local it = JestGlobals.it
 local describe = JestGlobals.describe
+=======
+local gen
+describe("ReactNewContext", function()
+	beforeEach(function()
+		jest.resetModules()
+		React = require_("react")
+		useContext = React.useContext
+		ReactNoop = require_("react-noop-renderer")
+		Scheduler = require_("scheduler")
+		gen = require_("random-seed")
+	end)
+	local function Text(props)
+		Scheduler:unstable_yieldValue(props.text)
+		return React.createElement("span", { prop = props.text })
+	end
+	local function span(prop)
+		return { type = "span", children = {}, prop = prop, hidden = false }
+	end
+	local function readContext(Context)
+		local dispatcher = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current
+		return dispatcher:readContext(Context)
+	end -- Note: This is based on a similar component we use in www. We can delete
+	-- once the extra div wrapper is no longer necessary.
+	local function LegacyHiddenDiv(ref0)
+		local children, mode = ref0.children, ref0.mode
+		return React.createElement(
+			"div",
+			{ hidden = mode == "hidden" },
+			React.createElement(React.unstable_LegacyHidden, {
+				mode = if mode == "hidden" then "unstable-defer-without-hiding" else mode,
+			}, children)
+		)
+	end -- We have several ways of reading from context. sharedContextTests runs
+	-- a suite of tests for a given context consumer implementation.
+	sharedContextTests("Context.Consumer", function(Context)
+		return Context.Consumer
+	end)
+	sharedContextTests("useContext inside function component", function(Context)
+		return function(props)
+			local contextValue = useContext(Context)
+			local render = props.children
+			return render(contextValue)
+		end
+	end)
+	sharedContextTests("useContext inside forwardRef component", function(Context)
+		return React.forwardRef(function(props, ref)
+			local contextValue = useContext(Context)
+			local render = props.children
+			return render(contextValue)
+		end)
+	end)
+	sharedContextTests("useContext inside memoized function component", function(Context)
+		return React.memo(function(props)
+			local contextValue = useContext(Context)
+			local render = props.children
+			return render(contextValue)
+		end)
+	end)
+	sharedContextTests("readContext(Context) inside class component", function(Context)
+		return error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: ClassExpression ]] --[[ class Consumer extends React.Component {
+    render() {
+      const contextValue = readContext(Context);
+      const render = this.props.children;
+      return render(contextValue);
+    }
+
+  } ]]
+	end)
+	sharedContextTests("readContext(Context) inside pure class component", function(Context)
+		return error("not implemented") --[[ ROBLOX TODO: Unhandled node for type: ClassExpression ]] --[[ class Consumer extends React.PureComponent {
+    render() {
+      const contextValue = readContext(Context);
+      const render = this.props.children;
+      return render(contextValue);
+    }
+>>>>>>> upstream-apply
 
 beforeEach(function()
 	jest.resetModules()
@@ -420,6 +497,7 @@ local function sharedContextTests(label, getConsumer)
 							React.createElement(
 								Provider,
 								nil,
+<<<<<<< HEAD
 								React.createElement(Consumer, nil, function(value)
 									return React.createElement(
 										"span",
@@ -677,6 +755,26 @@ local function sharedContextTests(label, getConsumer)
 		it(
 			"consumer bails out if value is unchanged and something above bailed out",
 			function()
+=======
+								React.createElement(
+									Context.Provider,
+									{ value = "Unwinds after BadRender throws" },
+									React.createElement(BadRender, nil)
+								)
+							),
+							React.createElement(Consumer, nil)
+						)
+					)
+				end
+				ReactNoop:render(React.createElement(App, { value = "A" }))
+				expect(Scheduler).toFlushWithoutYielding()
+				expect(ReactNoop:getChildren()).toEqual({
+					-- The second provider should use the default value.
+					span("Result: Does not unwind"),
+				})
+			end)
+			it("does not re-render if there's an update in a child", function()
+>>>>>>> upstream-apply
 				local Context = React.createContext(0)
 				local Consumer = getConsumer(Context)
 
@@ -731,6 +829,7 @@ local function sharedContextTests(label, getConsumer)
 					"ChildWithCachedRenderCallback",
 					"Consumer",
 				})
+<<<<<<< HEAD
 				jestExpect(ReactNoop.getChildren()).toEqual({ span(1), span(1) })
 
 				-- Update (bailout)
@@ -775,6 +874,31 @@ local function sharedContextTests(label, getConsumer)
 								text = value,
 							})
 						end)
+=======
+				expect(ReactNoop:getChildren()).toEqual({ span(1), span(1) }) -- Update (bailout)
+				ReactNoop:render(React.createElement(App, { value = 1 }))
+				expect(Scheduler).toFlushAndYield({ "App" })
+				expect(ReactNoop:getChildren()).toEqual({ span(1), span(1) }) -- Update (no bailout)
+				ReactNoop:render(React.createElement(App, { value = 2 }))
+				expect(Scheduler).toFlushAndYield({ "App", "Consumer", "Consumer" })
+				expect(ReactNoop:getChildren()).toEqual({ span(2), span(2) })
+			end) -- @gate www
+			it("context consumer doesn't bail out inside hidden subtree", function()
+				local Context = React.createContext("dark")
+				local Consumer = getConsumer(Context)
+				local function App(ref0)
+					local theme = ref0.theme
+					return React.createElement(
+						Context.Provider,
+						{ value = theme },
+						React.createElement(
+							LegacyHiddenDiv,
+							{ mode = "hidden" },
+							React.createElement(Consumer, nil, function(value)
+								return React.createElement(Text, { text = value })
+							end)
+						)
+>>>>>>> upstream-apply
 					)
 				)
 			end
@@ -875,6 +999,7 @@ local function sharedContextTests(label, getConsumer)
 						Scheduler.unstable_yieldValue("Consumer")
 						return React.createElement("span", { prop = value })
 					end)
+<<<<<<< HEAD
 				)
 			end
 
@@ -917,15 +1042,604 @@ local function sharedContextTests(label, getConsumer)
 
 			local Indirection = React.Fragment
 
+=======
+				end -- Initial mount
+				local inst
+				ReactNoop:render(React.createElement(App, {
+					ref = function(ref)
+						inst = ref
+						return inst
+					end,
+				}))
+				expect(Scheduler).toFlushAndYield({ "App" })
+				expect(ReactNoop:getChildren()).toEqual({ span("static 1"), span("static 2") }) -- Update the first time
+				inst:setState({ step = 1 })
+				expect(Scheduler).toFlushAndYield({ "App", "Consumer" })
+				expect(ReactNoop:getChildren()).toEqual({
+					span("static 1"),
+					span("static 2"),
+					span(1),
+				}) -- Update the second time
+				inst:setState({ step = 2 })
+				expect(Scheduler).toFlushAndYield({ "App", "Consumer" })
+				expect(ReactNoop:getChildren()).toEqual({
+					span("static 1"),
+					span("static 2"),
+					span(2),
+				})
+			end)
+		end)
+	end
+	describe("Context.Provider", function()
+		it("warns if no value prop provided", function()
+			local Context = React.createContext()
+			ReactNoop:render(
+				React.createElement(Context.Provider, { anyPropNameOtherThanValue = "value could be anything" })
+			)
+			expect(function()
+				return expect(Scheduler).toFlushWithoutYielding()
+			end).toErrorDev(
+				"The `value` prop is required for the `<Context.Provider>`. Did you misspell it or forget to pass it?",
+				{ withoutStack = true }
+			)
+		end)
+		it("warns if multiple renderers concurrently render the same context", function()
+			spyOnDev(console, "error")
+			local Context = React.createContext(0)
+			local function Foo(props)
+				Scheduler:unstable_yieldValue("Foo")
+				return nil
+			end
+>>>>>>> upstream-apply
 			local function App(props)
 				return React.createElement(
 					Context.Provider,
 					{ value = props.value },
+<<<<<<< HEAD
 					React.createElement(
 						Indirection,
 						nil,
 						React.createElement(
 							Indirection,
+=======
+					React.createElement(Foo, nil),
+					React.createElement(Foo, nil)
+				)
+			end
+			if Boolean.toJSBoolean(gate(function(flags)
+				return flags.enableSyncDefaultUpdates
+			end)) then
+				React.startTransition(function()
+					ReactNoop:render(React.createElement(App, { value = 1 }))
+				end)
+			else
+				ReactNoop:render(React.createElement(App, { value = 1 }))
+			end -- Render past the Provider, but don't commit yet
+			expect(Scheduler).toFlushAndYieldThrough({ "Foo" }) -- Get a new copy of ReactNoop
+			jest.resetModules()
+			React = require_("react")
+			ReactNoop = require_("react-noop-renderer")
+			Scheduler = require_("scheduler") -- Render the provider again using a different renderer
+			ReactNoop:render(React.createElement(App, { value = 1 }))
+			expect(Scheduler).toFlushAndYield({ "Foo", "Foo" })
+			if Boolean.toJSBoolean(__DEV__) then
+				expect(console.error.calls:argsFor(0)[
+					1 --[[ ROBLOX adaptation: added 1 to array index ]]
+				]).toContain(
+					"Detected multiple renderers concurrently rendering the same "
+						.. "context provider. This is currently unsupported"
+				)
+			end
+		end)
+		it("provider bails out if children and value are unchanged (like sCU)", function()
+			local Context = React.createContext(0)
+			local function Child()
+				Scheduler:unstable_yieldValue("Child")
+				return React.createElement("span", { prop = "Child" })
+			end
+			local children = React.createElement(Child, nil)
+			local function App(props)
+				Scheduler:unstable_yieldValue("App")
+				return React.createElement(Context.Provider, { value = props.value }, children)
+			end -- Initial mount
+			ReactNoop:render(React.createElement(App, { value = 1 }))
+			expect(Scheduler).toFlushAndYield({ "App", "Child" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Child") }) -- Update
+			ReactNoop:render(React.createElement(App, { value = 1 }))
+			expect(Scheduler).toFlushAndYield({
+				"App", -- Child does not re-render
+			})
+			expect(ReactNoop:getChildren()).toEqual({ span("Child") })
+		end)
+		it("provider does not bail out if legacy context changed above", function()
+			local Context = React.createContext(0)
+			local function Child()
+				Scheduler:unstable_yieldValue("Child")
+				return React.createElement("span", { prop = "Child" })
+			end
+			local children = React.createElement(Child, nil)
+			type LegacyProvider =
+				React_Component<any, any>
+				& { state: Object, getChildContext: (self: LegacyProvider) -> any }
+			type LegacyProvider_statics = {}
+			local LegacyProvider = React.Component:extend("LegacyProvider") :: LegacyProvider & LegacyProvider_statics
+			LegacyProvider.childContextTypes = { legacyValue = function() end }
+			function LegacyProvider.init(self: LegacyProvider)
+				self.state = { legacyValue = 1 }
+			end
+			function LegacyProvider:getChildContext()
+				return { legacyValue = self.state.legacyValue }
+			end
+			function LegacyProvider.render(self: LegacyProvider)
+				Scheduler:unstable_yieldValue("LegacyProvider")
+				return self.props.children
+			end
+			type App = React_Component<any, any> & { state: Object }
+			type App_statics = {}
+			local App = React.Component:extend("App") :: App & App_statics
+			function App.init(self: App)
+				self.state = { value = 1 }
+			end
+			function App.render(self: App)
+				Scheduler:unstable_yieldValue("App")
+				return React.createElement(Context.Provider, { value = self.state.value }, self.props.children)
+			end
+			local legacyProviderRef = React.createRef()
+			local appRef = React.createRef() -- Initial mount
+			ReactNoop:render(
+				React.createElement(
+					LegacyProvider,
+					{ ref = legacyProviderRef },
+					React.createElement(App, { ref = appRef, value = 1 }, children)
+				)
+			)
+			expect(Scheduler).toFlushAndYield({ "LegacyProvider", "App", "Child" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Child") }) -- Update App with same value (should bail out)
+			appRef.current:setState({ value = 1 })
+			expect(Scheduler).toFlushAndYield({ "App" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Child") }) -- Update LegacyProvider (should not bail out)
+			legacyProviderRef.current:setState({ value = 1 })
+			expect(Scheduler).toFlushAndYield({ "LegacyProvider", "App", "Child" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Child") }) -- Update App with same value (should bail out)
+			appRef.current:setState({ value = 1 })
+			expect(Scheduler).toFlushAndYield({ "App" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Child") })
+		end)
+	end)
+	describe("Context.Consumer", function()
+		it("warns if child is not a function", function()
+			spyOnDev(console, "error")
+			local Context = React.createContext(0)
+			ReactNoop:render(React.createElement(Context.Consumer, nil))
+			expect(Scheduler).toFlushAndThrow("is not a function")
+			if Boolean.toJSBoolean(__DEV__) then
+				expect(console.error.calls:argsFor(0)[
+					1 --[[ ROBLOX adaptation: added 1 to array index ]]
+				]).toContain(
+					"A context consumer was rendered with multiple children, or a child " .. "that isn't a function"
+				)
+			end
+		end)
+		it("can read other contexts inside consumer render prop", function()
+			local FooContext = React.createContext(0)
+			local BarContext = React.createContext(0)
+			local function FooAndBar()
+				return React.createElement(FooContext.Consumer, nil, function(foo)
+					local bar = readContext(BarContext)
+					return React.createElement(
+						Text,
+						{ text = ("Foo: %s, Bar: %s"):format(tostring(foo), tostring(bar)) }
+					)
+				end)
+			end
+			type Indirection = React_Component<any, any> & {}
+			type Indirection_statics = {}
+			local Indirection = React.Component:extend("Indirection") :: Indirection & Indirection_statics
+			function Indirection.shouldComponentUpdate(self: Indirection)
+				return false
+			end
+			function Indirection.render(self: Indirection)
+				return self.props.children
+			end
+			local function App(props)
+				return React.createElement(
+					FooContext.Provider,
+					{ value = props.foo },
+					React.createElement(
+						BarContext.Provider,
+						{ value = props.bar },
+						React.createElement(Indirection, nil, React.createElement(FooAndBar, nil))
+					)
+				)
+			end
+			ReactNoop:render(React.createElement(App, { foo = 1, bar = 1 }))
+			expect(Scheduler).toFlushAndYield({ "Foo: 1, Bar: 1" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Foo: 1, Bar: 1") }) -- Update foo
+			ReactNoop:render(React.createElement(App, { foo = 2, bar = 1 }))
+			expect(Scheduler).toFlushAndYield({ "Foo: 2, Bar: 1" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Foo: 2, Bar: 1") }) -- Update bar
+			ReactNoop:render(React.createElement(App, { foo = 2, bar = 2 }))
+			expect(Scheduler).toFlushAndYield({ "Foo: 2, Bar: 2" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Foo: 2, Bar: 2") })
+		end) -- Context consumer bails out on propagating "deep" updates when `value` hasn't changed.
+		-- However, it doesn't bail out from rendering if the component above it re-rendered anyway.
+		-- If we bailed out on referential equality, it would be confusing that you
+		-- can call this.setState(), but an autobound render callback "blocked" the update.
+		-- https://github.com/facebook/react/pull/12470#issuecomment-376917711
+		it("consumer does not bail out if there were no bailouts above it", function()
+			local Context = React.createContext(0)
+			local Consumer = Context.Consumer
+			type App = React_Component<any, any> & { state: Object, renderConsumer: any }
+			type App_statics = {}
+			local App = React.Component:extend("App") :: App & App_statics
+			function App.init(self: App)
+				self.state = { text = "hello" }
+				self.renderConsumer = function(context)
+					Scheduler:unstable_yieldValue("App#renderConsumer")
+					return React.createElement("span", { prop = self.state.text })
+				end
+			end
+			function App.render(self: App)
+				Scheduler:unstable_yieldValue("App")
+				return React.createElement(
+					Context.Provider,
+					{ value = self.props.value },
+					React.createElement(Consumer, nil, self.renderConsumer)
+				)
+			end -- Initial mount
+			local inst
+			ReactNoop:render(React.createElement(App, {
+				value = 1,
+				ref = function(ref)
+					inst = ref
+					return inst
+				end,
+			}))
+			expect(Scheduler).toFlushAndYield({ "App", "App#renderConsumer" })
+			expect(ReactNoop:getChildren()).toEqual({ span("hello") }) -- Update
+			inst:setState({ text = "goodbye" })
+			expect(Scheduler).toFlushAndYield({ "App", "App#renderConsumer" })
+			expect(ReactNoop:getChildren()).toEqual({ span("goodbye") })
+		end)
+	end)
+	describe("readContext", function()
+		-- Unstable changedBits API was removed. Port this test to context selectors
+		-- once that exists.
+		-- @gate FIXME
+		it("can read the same context multiple times in the same function", function()
+			local Context = React.createContext({ foo = 0, bar = 0, baz = 0 }, function(a, b)
+				local result = 0
+				if a.foo ~= b.foo then
+					result = bit32.bor(result, 0b001) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
+				end
+				if a.bar ~= b.bar then
+					result = bit32.bor(result, 0b010) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
+				end
+				if a.baz ~= b.baz then
+					result = bit32.bor(result, 0b100) --[[ ROBLOX CHECK: `bit32.bor` clamps arguments and result to [0,2^32 - 1] ]]
+				end
+				return result
+			end)
+			local function Provider(props)
+				return React.createElement(
+					Context.Provider,
+					{ value = { foo = props.foo, bar = props.bar, baz = props.baz } },
+					props.children
+				)
+			end
+			local function FooAndBar()
+				local foo = readContext(Context, 0b001).foo
+				local bar = readContext(Context, 0b010).bar
+				return React.createElement(Text, { text = ("Foo: %s, Bar: %s"):format(tostring(foo), tostring(bar)) })
+			end
+			local function Baz()
+				local baz = readContext(Context, 0b100).baz
+				return React.createElement(Text, { text = "Baz: " .. tostring(baz) })
+			end
+			type Indirection = React_Component<any, any> & {}
+			type Indirection_statics = {}
+			local Indirection = React.Component:extend("Indirection") :: Indirection & Indirection_statics
+			function Indirection.shouldComponentUpdate(self: Indirection)
+				return false
+			end
+			function Indirection.render(self: Indirection)
+				return self.props.children
+			end
+			local function App(props)
+				return React.createElement(
+					Provider,
+					{ foo = props.foo, bar = props.bar, baz = props.baz },
+					React.createElement(
+						Indirection,
+						nil,
+						React.createElement(Indirection, nil, React.createElement(FooAndBar, nil)),
+						React.createElement(Indirection, nil, React.createElement(Baz, nil))
+					)
+				)
+			end
+			ReactNoop:render(React.createElement(App, { foo = 1, bar = 1, baz = 1 }))
+			expect(Scheduler).toFlushAndYield({ "Foo: 1, Bar: 1", "Baz: 1" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Foo: 1, Bar: 1"), span("Baz: 1") }) -- Update only foo
+			ReactNoop:render(React.createElement(App, { foo = 2, bar = 1, baz = 1 }))
+			expect(Scheduler).toFlushAndYield({ "Foo: 2, Bar: 1" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Foo: 2, Bar: 1"), span("Baz: 1") }) -- Update only bar
+			ReactNoop:render(React.createElement(App, { foo = 2, bar = 2, baz = 1 }))
+			expect(Scheduler).toFlushAndYield({ "Foo: 2, Bar: 2" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Foo: 2, Bar: 2"), span("Baz: 1") }) -- Update only baz
+			ReactNoop:render(React.createElement(App, { foo = 2, bar = 2, baz = 2 }))
+			expect(Scheduler).toFlushAndYield({ "Baz: 2" })
+			expect(ReactNoop:getChildren()).toEqual({ span("Foo: 2, Bar: 2"), span("Baz: 2") })
+		end) -- Context consumer bails out on propagating "deep" updates when `value` hasn't changed.
+		-- However, it doesn't bail out from rendering if the component above it re-rendered anyway.
+		-- If we bailed out on referential equality, it would be confusing that you
+		-- can call this.setState(), but an autobound render callback "blocked" the update.
+		-- https://github.com/facebook/react/pull/12470#issuecomment-376917711
+		it("does not bail out if there were no bailouts above it", function()
+			local Context = React.createContext(0)
+			type Consumer = React_Component<any, any> & {}
+			type Consumer_statics = {}
+			local Consumer = React.Component:extend("Consumer") :: Consumer & Consumer_statics
+			function Consumer.render(self: Consumer)
+				local contextValue = readContext(Context)
+				return self.props:children(contextValue)
+			end
+			type App = React_Component<any, any> & { state: Object, renderConsumer: any }
+			type App_statics = {}
+			local App = React.Component:extend("App") :: App & App_statics
+			function App.init(self: App)
+				self.state = { text = "hello" }
+				self.renderConsumer = function(context)
+					Scheduler:unstable_yieldValue("App#renderConsumer")
+					return React.createElement("span", { prop = self.state.text })
+				end
+			end
+			function App.render(self: App)
+				Scheduler:unstable_yieldValue("App")
+				return React.createElement(
+					Context.Provider,
+					{ value = self.props.value },
+					React.createElement(Consumer, nil, self.renderConsumer)
+				)
+			end -- Initial mount
+			local inst
+			ReactNoop:render(React.createElement(App, {
+				value = 1,
+				ref = function(ref)
+					inst = ref
+					return inst
+				end,
+			}))
+			expect(Scheduler).toFlushAndYield({ "App", "App#renderConsumer" })
+			expect(ReactNoop:getChildren()).toEqual({ span("hello") }) -- Update
+			inst:setState({ text = "goodbye" })
+			expect(Scheduler).toFlushAndYield({ "App", "App#renderConsumer" })
+			expect(ReactNoop:getChildren()).toEqual({ span("goodbye") })
+		end)
+		it("warns when reading context inside render phase class setState updater", function()
+			local ThemeContext = React.createContext("light")
+			type Cls = React_Component<any, any> & { state: Object }
+			type Cls_statics = {}
+			local Cls = React.Component:extend("Cls") :: Cls & Cls_statics
+			function Cls.init(self: Cls)
+				self.state = {}
+			end
+			function Cls.render(self: Cls)
+				self:setState(function()
+					readContext(ThemeContext)
+				end)
+				return nil
+			end
+			ReactNoop:render(React.createElement(Cls, nil))
+			expect(function()
+				return expect(Scheduler).toFlushWithoutYielding()
+			end).toErrorDev({
+				"Context can only be read while React is rendering",
+				"Cannot update during an existing state transition",
+			})
+		end)
+	end)
+	describe("useContext", function()
+		it("throws when used in a class component", function()
+			local Context = React.createContext(0)
+			type Foo = React_Component<any, any> & {}
+			type Foo_statics = {}
+			local Foo = React.Component:extend("Foo") :: Foo & Foo_statics
+			function Foo.render(self: Foo)
+				return useContext(Context)
+			end
+			ReactNoop:render(React.createElement(Foo, nil))
+			expect(Scheduler).toFlushAndThrow(
+				"Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen"
+					.. " for one of the following reasons:\n"
+					.. "1. You might have mismatching versions of React and the renderer (such as React DOM)\n"
+					.. "2. You might be breaking the Rules of Hooks\n"
+					.. "3. You might have more than one copy of React in the same app\n"
+					.. "See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem."
+			)
+		end)
+		it("warns when passed a consumer", function()
+			local Context = React.createContext(0)
+			local function Foo()
+				return useContext(Context.Consumer)
+			end
+			ReactNoop:render(React.createElement(Foo, nil))
+			expect(function()
+				return expect(Scheduler).toFlushWithoutYielding()
+			end).toErrorDev(
+				"Calling useContext(Context.Consumer) is not supported, may cause bugs, "
+					.. "and will be removed in a future major release. "
+					.. "Did you mean to call useContext(Context) instead?"
+			)
+		end)
+		it("warns when passed a provider", function()
+			local Context = React.createContext(0)
+			local function Foo()
+				useContext(Context.Provider)
+				return nil
+			end
+			ReactNoop:render(React.createElement(Foo, nil))
+			expect(function()
+				return expect(Scheduler).toFlushWithoutYielding()
+			end).toErrorDev(
+				"Calling useContext(Context.Provider) is not supported. "
+					.. "Did you mean to call useContext(Context) instead?"
+			)
+		end) -- Context consumer bails out on propagating "deep" updates when `value` hasn't changed.
+		-- However, it doesn't bail out from rendering if the component above it re-rendered anyway.
+		-- If we bailed out on referential equality, it would be confusing that you
+		-- can call this.setState(), but an autobound render callback "blocked" the update.
+		-- https://github.com/facebook/react/pull/12470#issuecomment-376917711
+		it("does not bail out if there were no bailouts above it", function()
+			local Context = React.createContext(0)
+			local function Consumer(ref0)
+				local children = ref0.children
+				local contextValue = useContext(Context)
+				return children(contextValue)
+			end
+			type App = React_Component<any, any> & { state: Object, renderConsumer: any }
+			type App_statics = {}
+			local App = React.Component:extend("App") :: App & App_statics
+			function App.init(self: App)
+				self.state = { text = "hello" }
+				self.renderConsumer = function(context)
+					Scheduler:unstable_yieldValue("App#renderConsumer")
+					return React.createElement("span", { prop = self.state.text })
+				end
+			end
+			function App.render(self: App)
+				Scheduler:unstable_yieldValue("App")
+				return React.createElement(
+					Context.Provider,
+					{ value = self.props.value },
+					React.createElement(Consumer, nil, self.renderConsumer)
+				)
+			end -- Initial mount
+			local inst
+			ReactNoop:render(React.createElement(App, {
+				value = 1,
+				ref = function(ref)
+					inst = ref
+					return inst
+				end,
+			}))
+			expect(Scheduler).toFlushAndYield({ "App", "App#renderConsumer" })
+			expect(ReactNoop:getChildren()).toEqual({ span("hello") }) -- Update
+			inst:setState({ text = "goodbye" })
+			expect(Scheduler).toFlushAndYield({ "App", "App#renderConsumer" })
+			expect(ReactNoop:getChildren()).toEqual({ span("goodbye") })
+		end)
+	end)
+	it("unwinds after errors in complete phase", function()
+		local Context = React.createContext(0) -- This is a regression test for stack misalignment
+		-- caused by unwinding the context from wrong point.
+		ReactNoop:render(
+			React.createElement("errorInCompletePhase", nil, React.createElement(Context.Provider, { value = nil }))
+		)
+		expect(Scheduler).toFlushAndThrow("Error in host config.")
+		ReactNoop:render(
+			React.createElement(
+				Context.Provider,
+				{ value = 10 },
+				React.createElement(Context.Consumer, nil, function(value)
+					return React.createElement("span", { prop = value })
+				end)
+			)
+		)
+		expect(Scheduler).toFlushWithoutYielding()
+		expect(ReactNoop:getChildren()).toEqual({ span(10) })
+	end)
+	describe("fuzz test", function()
+		local contextKeys = { "A", "B", "C", "D", "E", "F", "G" }
+		local FLUSH_ALL = "FLUSH_ALL"
+		local function flushAll()
+			return {
+				type = FLUSH_ALL,
+				toString = function(self)
+					return "flushAll()"
+				end,
+			}
+		end
+		local FLUSH = "FLUSH"
+		local function flush(unitsOfWork)
+			return {
+				type = FLUSH,
+				unitsOfWork = unitsOfWork,
+				toString = function(self)
+					return ("flush(%s)"):format(tostring(unitsOfWork))
+				end,
+			}
+		end
+		local UPDATE = "UPDATE"
+		local function update(key, value)
+			return {
+				type = UPDATE,
+				key = key,
+				value = value,
+				toString = function(self)
+					return ("update('%s', %s)"):format(tostring(key), tostring(value))
+				end,
+			}
+		end
+		local function randomInteger(min, max)
+			min = math.ceil(min)
+			max = math.floor(max)
+			return math.floor(math.random() * (max - min)) + min
+		end
+		local function randomAction()
+			local condition_ = randomInteger(0, 3)
+			if condition_ == 0 then
+				return flushAll()
+			elseif condition_ == 1 then
+				return flush(randomInteger(0, 500))
+			elseif condition_ == 2 then
+				local key = contextKeys[tostring(randomInteger(0, contextKeys.length))]
+				local value = randomInteger(1, 10)
+				return update(key, value)
+			else
+				error(Error.new("Switch statement should be exhaustive"))
+			end
+		end
+		local function randomActions(n)
+			local actions = {}
+			do
+				local i = 0
+				while
+					i
+					< n --[[ ROBLOX CHECK: operator '<' works only if either both arguments are strings or both are a number ]]
+				do
+					table.insert(actions, randomAction()) --[[ ROBLOX CHECK: check if 'actions' is an Array ]]
+					i += 1
+				end
+			end
+			return actions
+		end
+		local function ContextSimulator(maxDepth)
+			local contexts = Map.new(Array.map(contextKeys, function(key)
+				local Context = React.createContext(0)
+				Context.displayName = "Context" .. tostring(key)
+				return { key, Context }
+			end) --[[ ROBLOX CHECK: check if 'contextKeys' is an Array ]])
+			type ConsumerTree = React_Component<any, any> & {}
+			type ConsumerTree_statics = {}
+			local ConsumerTree = React.Component:extend("ConsumerTree") :: ConsumerTree & ConsumerTree_statics
+			function ConsumerTree.shouldComponentUpdate(self: ConsumerTree)
+				return false
+			end
+			function ConsumerTree.render(self: ConsumerTree)
+				Scheduler:unstable_yieldValue()
+				if
+					self.props.depth
+					>= self.props.maxDepth --[[ ROBLOX CHECK: operator '>=' works only if either both arguments are strings or both are a number ]]
+				then
+					return nil
+				end
+				local consumers = Array.map({ 0, 1, 2 }, function(i)
+					local randomKey = contextKeys[tostring(self.props.rand:intBetween(0, contextKeys.length - 1))]
+					local Context = contexts:get(randomKey)
+					return React.createElement(Context.Consumer, { key = i }, function(value)
+						return React.createElement(
+							React.Fragment,
+>>>>>>> upstream-apply
 							nil,
 							React.createElement(Consumer, {
 								render = function(value)

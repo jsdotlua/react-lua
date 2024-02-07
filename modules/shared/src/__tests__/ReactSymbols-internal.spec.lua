@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/cdbfa6b5dd692220e5996ec453d46fc10aff046a/packages/shared/__tests__/ReactSymbols-test.internal.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/shared/__tests__/ReactSymbols-test.internal.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -28,7 +28,41 @@ local function expectToBeUnique(keyValuePairs)
 					tostring(value),
 					map[value] :: any
 				)
+<<<<<<< HEAD
 			)
+=======
+			end
+			map:set(value, key)
+		end) --[[ ROBLOX CHECK: check if 'keyValuePairs' is an Array ]]
+	end
+	it("Symbol values should be unique", function()
+		expectToBeUnique(Object.entries(require_("shared/ReactSymbols")))
+	end) -- @gate enableSymbolFallbackForWWW
+	it("numeric values should be unique", function()
+		local originalSymbolFor = global.Symbol["for"]
+		global.Symbol["for"] = nil
+		do --[[ ROBLOX COMMENT: try-finally block conversion ]]
+			local ok, result, hasReturned = pcall(function()
+				local entries = Array.filter(
+					Object.entries(require_("shared/ReactSymbols.www")), -- REACT_ASYNC_MODE_TYPE and REACT_CONCURRENT_MODE_TYPE have the same numeric value
+					-- for legacy backwards compatibility
+					function(ref0)
+						local key = ref0[1]
+						return key ~= "REACT_ASYNC_MODE_TYPE"
+					end
+				) --[[ ROBLOX CHECK: check if 'Object.entries(require('shared/ReactSymbols.www'))' is an Array ]]
+				expectToBeUnique(entries)
+			end)
+			do
+				global.Symbol["for"] = originalSymbolFor
+			end
+			if hasReturned then
+				return result
+			end
+			if not ok then
+				error(result)
+			end
+>>>>>>> upstream-apply
 		end
 		-- ROBLOX TODO: workaround for Luau false positive nil-ability
 		map[value] = key :: any

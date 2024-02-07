@@ -1,8 +1,24 @@
+<<<<<<< HEAD
 --!nonstrict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/6d50a9d090a2a672fc3dea5ce77a3a05332a6caa/fixtures/legacy-jsx-runtimes/setupTests.js
 local Packages = script.Parent.Parent.Parent.TestRunner
 local JestDiff = require(Packages.Dev.JestDiff)
 
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/fixtures/legacy-jsx-runtimes/setupTests.js
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
+local Error = LuauPolyfill.Error
+type Object = LuauPolyfill.Object
+local RegExp = require(Packages.RegExp)
+-- This is mostly copypasta from toWarnDev.js matchers
+-- that we use in the main repo Jest configuration.
+local expect = global.expect
+local jestDiff = require_("jest-diff").default
+local util = require_("util")
+>>>>>>> upstream-apply
 local function shouldIgnoreConsoleError(format, args)
 	-- deviation: instead of checking if `process.env.NODE_ENV ~= "production"`
 	-- we use the __DEV__ global
@@ -32,6 +48,7 @@ local function shouldIgnoreConsoleError(format, args)
 			-- // They are noisy too so we'll try to ignore them.
 			return true
 		end
+<<<<<<< HEAD
 		if
 			string.find(format, "act(...) is not supported in production builds of React")
 			== 0
@@ -43,6 +60,9 @@ local function shouldIgnoreConsoleError(format, args)
 		end
 	end
 
+=======
+	end -- Looks legit
+>>>>>>> upstream-apply
 	return false
 end
 

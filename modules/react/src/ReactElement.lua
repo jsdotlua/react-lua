@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react/src/ReactElement.js
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/ReactElement.js
+>>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
+<<<<<<< HEAD
 ]]
 local __DEV__ = _G.__DEV__ :: boolean
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
@@ -48,6 +53,23 @@ local RESERVED_PROPS = {
 }
 -- ROBLOX deviation END
 
+=======
+ ]]
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Boolean = LuauPolyfill.Boolean
+local Error = LuauPolyfill.Error
+local Object = LuauPolyfill.Object
+local console = LuauPolyfill.console
+local exports = {}
+local getComponentNameFromType = require(Packages.shared.getComponentNameFromType).default
+local REACT_ELEMENT_TYPE = require(Packages.shared.ReactSymbols).REACT_ELEMENT_TYPE
+local assign = require(Packages.shared.assign).default
+local hasOwnProperty = require(Packages.shared.hasOwnProperty).default
+local checkKeyStringCoercion = require(Packages.shared.CheckStringCoercion).checkKeyStringCoercion
+local ReactCurrentOwner = require(script.Parent.ReactCurrentOwner).default
+local RESERVED_PROPS = { key = true, ref = true, __self = true, __source = true }
+>>>>>>> upstream-apply
 local specialPropKeyWarningShown, specialPropRefWarningShown, didWarnAboutStringRefs
 
 if __DEV__ then
@@ -163,6 +185,7 @@ local function warnIfStringRefCannotBeAutoConverted(config)
 			-- and config.__self
 			-- and ReactCurrentOwner.current.stateNode ~= config.__self
 		then
+<<<<<<< HEAD
 			local componentName = getComponentName(ReactCurrentOwner.current.type)
 
 			-- ROBLOX deviation: we don't support string refs and hard error instead of warn
@@ -177,6 +200,19 @@ local function warnIfStringRefCannotBeAutoConverted(config)
 						componentName or "Unknown",
 						config.ref
 					)
+=======
+			local componentName = getComponentNameFromType(ReactCurrentOwner.current.type)
+			if not Boolean.toJSBoolean(didWarnAboutStringRefs[tostring(componentName)]) then
+				console.error(
+					'Component "%s" contains the string ref "%s". '
+						.. "Support for string refs will be removed in a future major release. "
+						.. "This case cannot be automatically converted to an arrow function. "
+						.. "We ask you to manually fix this case by using useRef() or createRef() instead. "
+						.. "Learn more about using refs safely here: "
+						.. "https://reactjs.org/link/strict-mode-string-ref",
+					componentName,
+					config.ref
+>>>>>>> upstream-apply
 				)
 				-- didWarnAboutStringRefs[componentName] = true
 			end
@@ -323,6 +359,7 @@ exports.jsx = function(type, config, maybeKey)
 end
 
 --[[*
+<<<<<<< HEAD
 -- * https://github.com/reactjs/rfcs/pull/107
 -- * @param *} type
 -- * @param object} props
@@ -396,6 +433,134 @@ exports.jsxDEV = function(type, config, maybeKey, source, self)
 	-- ROBLOX deviation END
 end
 
+=======
+ * https://github.com/reactjs/rfcs/pull/107
+ * @param {*} type
+ * @param {object} props
+ * @param {string} key
+ ]]
+local function jsx(type_, config, maybeKey)
+	local propName -- Reserved names are extracted
+	local props = {}
+	local key = nil
+	local ref = nil -- Currently, key can be spread in as a prop. This causes a potential
+	-- issue if key is also explicitly declared (ie. <div {...props} key="Hi" />
+	-- or <div key="Hi" {...props} /> ). We want to deprecate key spread,
+	-- but as an intermediary step, we will use jsxDEV for everything except
+	-- <div {...props} key="Hi" />, because we aren't currently able to tell if
+	-- key is explicitly declared to be undefined or not.
+	if maybeKey ~= nil then
+		if Boolean.toJSBoolean(__DEV__) then
+			checkKeyStringCoercion(maybeKey)
+		end
+		key = "" .. tostring(maybeKey)
+	end
+	if Boolean.toJSBoolean(hasValidKey(config)) then
+		if Boolean.toJSBoolean(__DEV__) then
+			checkKeyStringCoercion(config.key)
+		end
+		key = "" .. tostring(config.key)
+	end
+	if Boolean.toJSBoolean(hasValidRef(config)) then
+		ref = config.ref
+	end -- Remaining properties are added to a new props object
+	for ref in config do
+		propName = ref
+		if
+			Boolean.toJSBoolean((function()
+				local ref = hasOwnProperty(config, propName)
+				return if Boolean.toJSBoolean(ref)
+					then not Boolean.toJSBoolean(RESERVED_PROPS:hasOwnProperty(propName))
+					else ref
+			end)())
+		then
+			props[tostring(propName)] = config[tostring(propName)]
+		end
+	end -- Resolve default props
+	if Boolean.toJSBoolean(if Boolean.toJSBoolean(type_) then type_.defaultProps else type_) then
+		local defaultProps = type_.defaultProps
+		for ref in defaultProps do
+			propName = ref
+			if props[tostring(propName)] == nil then
+				props[tostring(propName)] = defaultProps[tostring(propName)]
+			end
+		end
+	end
+	return ReactElement(type_, key, ref, nil, nil, ReactCurrentOwner.current, props)
+end
+exports.jsx = jsx
+--[[*
+ * https://github.com/reactjs/rfcs/pull/107
+ * @param {*} type
+ * @param {object} props
+ * @param {string} key
+ ]]
+local function jsxDEV(type_, config, maybeKey, source, self)
+	local propName -- Reserved names are extracted
+	local props = {}
+	local key = nil
+	local ref = nil -- Currently, key can be spread in as a prop. This causes a potential
+	-- issue if key is also explicitly declared (ie. <div {...props} key="Hi" />
+	-- or <div key="Hi" {...props} /> ). We want to deprecate key spread,
+	-- but as an intermediary step, we will use jsxDEV for everything except
+	-- <div {...props} key="Hi" />, because we aren't currently able to tell if
+	-- key is explicitly declared to be undefined or not.
+	if maybeKey ~= nil then
+		if Boolean.toJSBoolean(__DEV__) then
+			checkKeyStringCoercion(maybeKey)
+		end
+		key = "" .. tostring(maybeKey)
+	end
+	if Boolean.toJSBoolean(hasValidKey(config)) then
+		if Boolean.toJSBoolean(__DEV__) then
+			checkKeyStringCoercion(config.key)
+		end
+		key = "" .. tostring(config.key)
+	end
+	if Boolean.toJSBoolean(hasValidRef(config)) then
+		ref = config.ref
+		warnIfStringRefCannotBeAutoConverted(config)
+	end -- Remaining properties are added to a new props object
+	for ref in config do
+		propName = ref
+		if
+			Boolean.toJSBoolean((function()
+				local ref = hasOwnProperty(config, propName)
+				return if Boolean.toJSBoolean(ref)
+					then not Boolean.toJSBoolean(RESERVED_PROPS:hasOwnProperty(propName))
+					else ref
+			end)())
+		then
+			props[tostring(propName)] = config[tostring(propName)]
+		end
+	end -- Resolve default props
+	if Boolean.toJSBoolean(if Boolean.toJSBoolean(type_) then type_.defaultProps else type_) then
+		local defaultProps = type_.defaultProps
+		for ref in defaultProps do
+			propName = ref
+			if props[tostring(propName)] == nil then
+				props[tostring(propName)] = defaultProps[tostring(propName)]
+			end
+		end
+	end
+	if Boolean.toJSBoolean(Boolean.toJSBoolean(key) and key or ref) then
+		local displayName = if typeof(type_) == "function"
+			then (function()
+				local ref = Boolean.toJSBoolean(type_.displayName) and type_.displayName or type_.name
+				return Boolean.toJSBoolean(ref) and ref or "Unknown"
+			end)()
+			else type_
+		if Boolean.toJSBoolean(key) then
+			defineKeyPropWarningGetter(props, displayName)
+		end
+		if Boolean.toJSBoolean(ref) then
+			defineRefPropWarningGetter(props, displayName)
+		end
+	end
+	return ReactElement(type_, key, ref, self, source, ReactCurrentOwner.current, props)
+end
+exports.jsxDEV = jsxDEV
+>>>>>>> upstream-apply
 --[[*
  * Create and return a new ReactElement of the given type.
  * See https://reactjs.org/docs/react-api.html#createelement
@@ -430,6 +595,7 @@ local function createElement<P, T>(
 				)
 			end
 		end
+<<<<<<< HEAD
 
 		-- ROBLOX FIXME Luau: when configKey is inline: Type 'P & React_ElementProps<T>' could not be converted into 'React_ElementProps<T>'; none of the intersection parts are compatible
 		if hasValidKey(config :: any) then
@@ -443,6 +609,13 @@ local function createElement<P, T>(
 				-- ROBLOX FIXME Luau: narrowing bug: Type 'string' could not be converted into 'number'
 				key = tostring(configKey :: any)
 			end
+=======
+		if Boolean.toJSBoolean(hasValidKey(config)) then
+			if Boolean.toJSBoolean(__DEV__) then
+				checkKeyStringCoercion(config.key)
+			end
+			key = "" .. tostring(config.key)
+>>>>>>> upstream-apply
 		end
 		-- ROBLOX deviation END
 
@@ -598,6 +771,7 @@ exports.cloneAndReplaceKey =
 	end
 
 --[[*
+<<<<<<< HEAD
 * Clone and return a new ReactElement using element as the starting point.
 * See https://reactjs.org/docs/react-api.html#cloneelement
 ]]
@@ -624,6 +798,52 @@ exports.cloneElement = function<P, T>(
 		else {} :: P & React_ElementProps<T>
 
 	-- Reserved names are extracted
+=======
+ * Return a function that produces ReactElements of a given type.
+ * See https://reactjs.org/docs/react-api.html#createfactory
+ ]]
+local function createFactory(type_)
+	local factory = function(...)
+		return createElement(nil, type_, ...)
+	end -- Expose the type on the factory and the prototype so that it can be
+	-- easily accessed on elements. E.g. `<Foo />.type === Foo`.
+	-- This should not be named `constructor` since this may not be the function
+	-- that created the element, and it may not even be a constructor.
+	-- Legacy hook: remove it
+	factory.type = type_
+	return factory
+end
+exports.createFactory = createFactory
+local function cloneAndReplaceKey(oldElement, newKey)
+	local newElement = ReactElement(
+		oldElement.type,
+		newKey,
+		oldElement.ref,
+		oldElement._self,
+		oldElement._source,
+		oldElement._owner,
+		oldElement.props
+	)
+	return newElement
+end
+exports.cloneAndReplaceKey = cloneAndReplaceKey
+--[[*
+ * Clone and return a new ReactElement using element as the starting point.
+ * See https://reactjs.org/docs/react-api.html#cloneelement
+ ]]
+local function cloneElement(element, config, children)
+	if element == nil or element == nil then
+		error(
+			Error.new(
+				("React.cloneElement(...): The argument must be a React element, but you passed %s."):format(
+					tostring(element)
+				)
+			)
+		)
+	end
+	local propName -- Original props are copied
+	local props = assign({}, element.props) -- Reserved names are extracted
+>>>>>>> upstream-apply
 	local key = element.key
 	local ref = element.ref
 
@@ -649,6 +869,7 @@ exports.cloneElement = function<P, T>(
 		else
 			hasValidRef(config)
 		end
+<<<<<<< HEAD
 
 		local configKey = config.key
 		-- ROBLOX FIXME Luau: needs normalization, generic subtype escaping scope
@@ -661,6 +882,19 @@ exports.cloneElement = function<P, T>(
 			end
 		else
 			hasValidKey((config :: any) :: React_ElementProps<T>)
+=======
+		if Boolean.toJSBoolean(hasValidKey(config)) then
+			if Boolean.toJSBoolean(__DEV__) then
+				checkKeyStringCoercion(config.key)
+			end
+			key = "" .. tostring(config.key)
+		end -- Remaining properties override existing props
+		local defaultProps
+		if
+			Boolean.toJSBoolean(if Boolean.toJSBoolean(element.type) then element.type.defaultProps else element.type)
+		then
+			defaultProps = element.type.defaultProps
+>>>>>>> upstream-apply
 		end
 		-- ROBLOX deviation END
 	end

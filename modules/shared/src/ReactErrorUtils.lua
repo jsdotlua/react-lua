@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/shared/ReactErrorUtils.js
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/shared/ReactErrorUtils.js
+>>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -7,6 +11,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @flow
+<<<<<<< HEAD
 ]]
 local invariant = require("./invariant")
 local invokeGuardedCallbackImpl = require("./invokeGuardedCallbackImpl")
@@ -21,6 +26,19 @@ local caughtError = nil
 -- Used by event system to capture/rethrow the first error.
 local hasRethrowError = false
 local rethrowError = nil
+=======
+ ]]
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Boolean = LuauPolyfill.Boolean
+local Error = LuauPolyfill.Error
+local exports = {}
+local invokeGuardedCallbackImpl = require(script.Parent.invokeGuardedCallbackImpl).default -- Used by Fiber to simulate a try-catch.
+local hasError: boolean = false
+local caughtError: mixed = nil -- Used by event system to capture/rethrow the first error.
+local hasRethrowError: boolean = false
+local rethrowError: mixed = nil
+>>>>>>> upstream-apply
 local reporter = {
 	onError = function(err)
 		hasError = true
@@ -97,10 +115,11 @@ clearCaughtError = function()
 		caughtError = nil
 		return err
 	else
-		invariant(
-			false,
-			"clearCaughtError was called but no error was captured. This error "
-				.. "is likely caused by a bug in React. Please file an issue."
+		error(
+			Error.new(
+				"clearCaughtError was called but no error was captured. This error "
+					.. "is likely caused by a bug in React. Please file an issue."
+			)
 		)
 		-- deviation: luau doesn't know that invariant throws, so we return nil
 		return nil

@@ -1,4 +1,4 @@
--- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/__tests__/bridge-test.js
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-devtools-shared/src/__tests__/bridge-test.js
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -17,11 +17,16 @@ describe("bridge", function()
 	local Bridge
 
 	beforeEach(function()
+<<<<<<< HEAD
 		jest.resetModules()
 		jest.useFakeTimers()
 		Bridge = require("./bridge")
 	end)
 
+=======
+		Bridge = require_("react-devtools-shared/src/bridge").default
+	end) -- @reactVersion >=16.0
+>>>>>>> upstream-apply
 	it("should shutdown properly", function()
 		local wall = {
 			listen = jest.fn(function()

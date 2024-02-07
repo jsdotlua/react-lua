@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/storage.js
 -- /*
 --  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -7,6 +8,17 @@
 --  *
 --  */
 
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-devtools-shared/src/storage.js
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow
+ ]]
+>>>>>>> upstream-apply
 local exports = {}
 if _G.__LOCALSTORAGE__ == nil then
 	_G.__LOCALSTORAGE__ = {}

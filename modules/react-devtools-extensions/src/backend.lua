@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.2/packages/react-devtools-extensions/src/backend.js
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-devtools-extensions/src/backend.js
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+>>>>>>> upstream-apply
 -- ROBLOX deviation START: not needed
 -- local Boolean = LuauPolyfill.Boolean
 -- ROBLOX deviation END
+local console = LuauPolyfill.console
 type Array<T> = LuauPolyfill.Array<T>
 -- Do not use imports or top-level requires here!
 -- Running module factories is intentionally delayed until we know the hook exists.
 -- This is to avoid issues like: https://github.com/facebook/react-devtools/issues/1039
+<<<<<<< HEAD
 --[[* @flow ]]
 
 -- ROBLOX deviation START: not needed
@@ -27,6 +35,32 @@ type BridgeEvent = {
 }
 type BridgeListener = (BridgeEvent) -> ()
 -- ROBLOX deviation END
+=======
+-- @flow strict-local
+local welcomeHasInitialized = false
+local function welcome(event)
+	if event.source ~= window or event.data.source ~= "react-devtools-content-script" then
+		return
+	end -- In some circumstances, this method is called more than once for a single welcome message.
+	-- The exact circumstances of this are unclear, though it seems related to 3rd party event batching code.
+	--
+	-- Regardless, call this method multiple times can cause DevTools to add duplicate elements to the Store
+	-- (and throw an error) or worse yet, choke up entirely and freeze the browser.
+	--
+	-- The simplest solution is to ignore the duplicate events.
+	-- To be clear, this SHOULD NOT BE NECESSARY, since we remove the event handler below.
+	--
+	-- See https://github.com/facebook/react/issues/24162
+	if Boolean.toJSBoolean(welcomeHasInitialized) then
+		console.warn('React DevTools detected duplicate welcome "message" events from the content script.')
+		return
+	end
+	welcomeHasInitialized = true
+	window:removeEventListener("message", welcome)
+	setup(window.__REACT_DEVTOOLS_GLOBAL_HOOK__)
+end
+window:addEventListener("message", welcome)
+>>>>>>> upstream-apply
 local function setup(hook)
 	-- ROBLOX deviation START: add bridgeListeners instead of listening to messages
 	local bridgeListeners: Array<BridgeListener> = {}

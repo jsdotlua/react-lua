@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/shared/invokeGuardedCallbackImpl.js
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/shared/invokeGuardedCallbackImpl.js
+>>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -8,6 +12,7 @@
  *
  * @flow
  ]]
+<<<<<<< HEAD
 -- local invariant = require("./invariant")
 local describeError = require("./ErrorHandling.roblox.lua").describeError
 
@@ -33,6 +38,42 @@ local function invokeGuardedCallbackProd(reporter, name, func, context, ...)
 			func(...)
 		else
 			func(context, ...)
+=======
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
+local Error = LuauPolyfill.Error
+local Object = LuauPolyfill.Object
+local exports = {}
+local function invokeGuardedCallbackProd<A, B, C, D, E, F, Context>(
+	name: string | nil --[[ ROBLOX CHECK: verify if `null` wasn't used differently than `undefined` ]],
+	func: (
+		a: A,
+		b: B,
+		c: C,
+		d: D,
+		e: E,
+		f: F
+	) -> mixed,
+	context: Context,
+	a: A,
+	b: B,
+	c: C,
+	d: D,
+	e: E,
+	f: F
+)
+	local funcArgs = Array.slice(arguments, 3) --[[ ROBLOX CHECK: check if 'Array.prototype' is an Array ]]
+	do --[[ ROBLOX COMMENT: try-catch block conversion ]]
+		local ok, result, hasReturned = xpcall(function()
+			func(context, table.unpack(funcArgs))
+		end, function(error_)
+			self:onError(error_)
+		end)
+		if hasReturned then
+			return result
+>>>>>>> upstream-apply
 		end
 	end
 
@@ -77,11 +118,29 @@ if _G.__DEV__ then
 		invokeGuardedCallbackImpl = function invokeGuardedCallbackDev(name, func, context, a, b, c, d, e, f) {
 			-- If document doesn't exist we know for sure we will crash in this method
 			-- when we call document.createEvent(). However this can cause confusing
-			-- errors: https://github.com/facebookincubator/create-react-app/issues/3482
+			-- errors: https://github.com/facebook/create-react-app/issues/3482
 			-- So we preemptively throw with a better message instead.
+<<<<<<< HEAD
 			invariant(typeof document ~= 'undefined', 'The `document` global was defined when React was initialized, but is not ' + 'defined anymore. This can happen in a test environment if a component ' + 'schedules an update from an asynchronous callback, but the test has already ' + 'finished running. To solve this, you can either unmount the component at ' + 'the end of your test (and ensure that any asynchronous operations get ' + 'canceled in `componentWillUnmount`), or you can change the test itself ' + 'to be asynchronous.')
 			local evt = document.createEvent('Event')
 			local didCall = false; -- Keeps track of whether the user-provided callback threw an error. We
+=======
+			if typeof(document) == "undefined" or document == nil then
+				error(
+					Error.new(
+						"The `document` global was defined when React was initialized, but is not "
+							.. "defined anymore. This can happen in a test environment if a component "
+							.. "schedules an update from an asynchronous callback, but the test has already "
+							.. "finished running. To solve this, you can either unmount the component at "
+							.. "the end of your test (and ensure that any asynchronous operations get "
+							.. "canceled in `componentWillUnmount`), or you can change the test itself "
+							.. "to be asynchronous."
+					)
+				)
+			end
+			local evt = document:createEvent("Event")
+			local didCall = false -- Keeps track of whether the user-provided callback threw an error. We
+>>>>>>> upstream-apply
 			-- set this to true at the beginning, then set it to false right after
 			-- calling the function. If the function errors, `didError` will never be
 			-- set to false. This strategy works even if the browser is flaky and
@@ -184,6 +243,7 @@ if _G.__DEV__ then
 			if didCall and didError then
 				if !didSetError then
 					-- The callback errored, but the error event never fired.
+<<<<<<< HEAD
 					error = new Error('An error was thrown inside one of your components, but React ' + "doesn't know what it was. This is likely due to browser " + 'flakiness. React does its best to preserve the "Pause on ' + 'exceptions" behavior of the DevTools, which requires some ' + "DEV-mode only tricks. It's possible that these don't work in " + 'your browser. Try triggering the error in production mode, ' + 'or switching to a modern browser. If you suspect that this is ' + 'actually an issue with React, please file an issue.')
 				} else if isCrossOriginError then
 					error = new Error("A cross-origin error was thrown. React doesn't have access to " + 'the actual error object in development. ' + 'See https://reactjs.org/link/crossorigin-error for more information.')
@@ -196,6 +256,31 @@ if _G.__DEV__ then
 			window.removeEventListener('error', handleWindowError)
 
 			if !didCall then
+=======
+					-- eslint-disable-next-line react-internal/prod-error-codes
+					error_ = Error.new(
+						"An error was thrown inside one of your components, but React "
+							.. "doesn't know what it was. This is likely due to browser "
+							.. 'flakiness. React does its best to preserve the "Pause on '
+							.. 'exceptions" behavior of the DevTools, which requires some '
+							.. "DEV-mode only tricks. It's possible that these don't work in "
+							.. "your browser. Try triggering the error in production mode, "
+							.. "or switching to a modern browser. If you suspect that this is "
+							.. "actually an issue with React, please file an issue."
+					)
+				elseif Boolean.toJSBoolean(isCrossOriginError) then
+					-- eslint-disable-next-line react-internal/prod-error-codes
+					error_ = Error.new(
+						"A cross-origin error was thrown. React doesn't have access to "
+							.. "the actual error object in development. "
+							.. "See https://reactjs.org/link/crossorigin-error for more information."
+					)
+				end
+				self:onError(error_)
+			end -- Remove our event listeners
+			window:removeEventListener("error", handleWindowError)
+			if not Boolean.toJSBoolean(didCall) then
+>>>>>>> upstream-apply
 				-- Something went really wrong, and our event was not dispatched.
 				-- https://github.com/facebook/react/issues/16734
 				-- https://github.com/facebook/react/issues/16585

@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/75955bf1d7ff6c2c1f4052f4a84dd2ce6944c62e/packages/shared/formatProdErrorMessage.js
 --!strict
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/shared/formatProdErrorMessage.js
+>>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *

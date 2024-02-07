@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/d13f5b9538e48f74f7c571ef3cde652ca887cca0/packages/react-reconciler/src/__tests__/ReactIncrementalUpdates-test.js
 --  * Copyright (c) Facebook, Inc. and its affiliates.
 --  *
@@ -7,6 +8,25 @@
 --  * @emails react-core
 --  * @jest-environment node
 --  */
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/__tests__/ReactIncrementalUpdates-test.js
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @emails react-core
+ * @jest-environment node
+ ]]
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+local Array = LuauPolyfill.Array
+local Boolean = LuauPolyfill.Boolean
+local Object = LuauPolyfill.Object
+type Object = LuauPolyfill.Object
+local Promise = require(Packages.Promise)
+>>>>>>> upstream-apply
 
 local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
@@ -15,6 +35,7 @@ local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local React
 local ReactNoop
 local Scheduler
+<<<<<<< HEAD
 local InputContinuousLanePriority = 10
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
@@ -45,6 +66,29 @@ describe("ReactIncrementalUpdates", function()
 		}
 	end
 
+=======
+local ContinuousEventPriority
+local act
+describe("ReactIncrementalUpdates", function()
+	beforeEach(function()
+		jest.resetModuleRegistry()
+		React = require_("react")
+		ReactNoop = require_("react-noop-renderer")
+		Scheduler = require_("scheduler")
+		act = require_("jest-react").act
+		ContinuousEventPriority = require_("react-reconciler/constants").ContinuousEventPriority
+	end)
+	local function span(prop)
+		return { type = "span", children = {}, prop = prop, hidden = false }
+	end
+	local function flushNextRenderIfExpired()
+		-- This will start rendering the next level of work. If the work hasn't
+		-- expired yet, React will exit without doing anything. If it has expired,
+		-- it will schedule a sync task.
+		Scheduler:unstable_flushExpired() -- Flush the sync task.
+		ReactNoop:flushSync()
+	end
+>>>>>>> upstream-apply
 	it("applies updates in order of priority", function()
 		local state
 		local Foo = React.Component:extend("Foo")
@@ -204,6 +248,7 @@ describe("ReactIncrementalUpdates", function()
 				Scheduler.unstable_yieldValue(letter)
 				return { [letter] = letter }
 			end
+<<<<<<< HEAD
 		end
 		-- Schedule some async updates
 
@@ -245,6 +290,210 @@ describe("ReactIncrementalUpdates", function()
 		})
 		jestExpect(ReactNoop.getChildren()).toEqual({
 			span("abcdefg"),
+=======
+		end -- Schedule some async updates
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			React.startTransition(function()
+				instance:setState(createUpdate("a"))
+				instance:setState(createUpdate("b"))
+				instance:setState(createUpdate("c"))
+			end)
+		else
+			instance:setState(createUpdate("a"))
+			instance:setState(createUpdate("b"))
+			instance:setState(createUpdate("c"))
+		end -- Begin the updates but don't flush them yet
+		expect(Scheduler).toFlushAndYieldThrough({ "a", "b", "c" })
+		expect(ReactNoop:getChildren()).toEqual({ span("") }) -- Schedule some more updates at different priorities
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			instance:setState(createUpdate("d"))
+			ReactNoop:flushSync(function()
+				instance:setState(createUpdate("e"))
+				instance:setState(createUpdate("f"))
+			end)
+			React.startTransition(function()
+				instance:setState(createUpdate("g"))
+			end) -- The sync updates should have flushed, but not the async ones
+			expect(Scheduler).toHaveYielded({ "e", "f" })
+			expect(ReactNoop:getChildren()).toEqual({ span("ef") }) -- Now flush the remaining work. Even though e and f were already processed,
+			-- they should be processed again, to ensure that the terminal state
+			-- is deterministic.
+			expect(Scheduler).toFlushAndYield({
+				-- Since 'g' is in a transition, we'll process 'd' separately first.
+				-- That causes us to process 'd' with 'e' and 'f' rebased.
+				"d",
+				"e",
+				"f",
+				-- Then we'll re-process everything for 'g'.
+				"a",
+				"b",
+				"c",
+				"d",
+				"e",
+				"f",
+				"g",
+			})
+			expect(ReactNoop:getChildren()).toEqual({ span("abcdefg") })
+		else
+			instance:setState(createUpdate("d"))
+			ReactNoop:flushSync(function()
+				instance:setState(createUpdate("e"))
+				instance:setState(createUpdate("f"))
+			end)
+			instance:setState(createUpdate("g")) -- The sync updates should have flushed, but not the async ones
+			expect(Scheduler).toHaveYielded({ "e", "f" })
+			expect(ReactNoop:getChildren()).toEqual({ span("ef") }) -- Now flush the remaining work. Even though e and f were already processed,
+			-- they should be processed again, to ensure that the terminal state
+			-- is deterministic.
+			expect(Scheduler).toFlushAndYield({ "a", "b", "c", "d", "e", "f", "g" })
+			expect(ReactNoop:getChildren()).toEqual({ span("abcdefg") })
+		end
+	end)
+	it("can abort an update, schedule a replaceState, and resume", function()
+		local instance
+		type Foo = React_Component<any, any> & { state: Object }
+		type Foo_statics = {}
+		local Foo = React.Component:extend("Foo") :: Foo & Foo_statics
+		function Foo.init(self: Foo)
+			self.state = {}
+		end
+		function Foo.render(self: Foo)
+			instance = self
+			return React.createElement("span", {
+				prop = Array.join(
+					Array.sort(Object.keys(self.state)), --[[ ROBLOX CHECK: check if 'Object.keys(this.state)' is an Array ]]
+					""
+				),
+			})
+		end
+		ReactNoop:render(React.createElement(Foo, nil))
+		expect(Scheduler).toFlushWithoutYielding()
+		local function createUpdate(letter)
+			return function()
+				Scheduler:unstable_yieldValue(letter)
+				return { [tostring(letter)] = letter }
+			end
+		end -- Schedule some async updates
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			React.startTransition(function()
+				instance:setState(createUpdate("a"))
+				instance:setState(createUpdate("b"))
+				instance:setState(createUpdate("c"))
+			end)
+		else
+			instance:setState(createUpdate("a"))
+			instance:setState(createUpdate("b"))
+			instance:setState(createUpdate("c"))
+		end -- Begin the updates but don't flush them yet
+		expect(Scheduler).toFlushAndYieldThrough({ "a", "b", "c" })
+		expect(ReactNoop:getChildren()).toEqual({ span("") }) -- Schedule some more updates at different priorities
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			instance:setState(createUpdate("d"))
+			ReactNoop:flushSync(function()
+				instance:setState(createUpdate("e")) -- No longer a public API, but we can test that it works internally by
+				-- reaching into the updater.
+				instance.updater:enqueueReplaceState(instance, createUpdate("f"))
+			end)
+			React.startTransition(function()
+				instance:setState(createUpdate("g"))
+			end) -- The sync updates should have flushed, but not the async ones.
+			expect(Scheduler).toHaveYielded({ "e", "f" })
+			expect(ReactNoop:getChildren()).toEqual({ span("f") }) -- Now flush the remaining work. Even though e and f were already processed,
+			-- they should be processed again, to ensure that the terminal state
+			-- is deterministic.
+			expect(Scheduler).toFlushAndYield({
+				-- Since 'g' is in a transition, we'll process 'd' separately first.
+				-- That causes us to process 'd' with 'e' and 'f' rebased.
+				"d",
+				"e",
+				"f",
+				-- Then we'll re-process everything for 'g'.
+				"a",
+				"b",
+				"c",
+				"d",
+				"e",
+				"f",
+				"g",
+			})
+			expect(ReactNoop:getChildren()).toEqual({ span("fg") })
+		else
+			instance:setState(createUpdate("d"))
+			ReactNoop:flushSync(function()
+				instance:setState(createUpdate("e")) -- No longer a public API, but we can test that it works internally by
+				-- reaching into the updater.
+				instance.updater:enqueueReplaceState(instance, createUpdate("f"))
+			end)
+			instance:setState(createUpdate("g")) -- The sync updates should have flushed, but not the async ones. Update d
+			-- was dropped and replaced by e.
+			expect(Scheduler).toHaveYielded({ "e", "f" })
+			expect(ReactNoop:getChildren()).toEqual({ span("f") }) -- Now flush the remaining work. Even though e and f were already processed,
+			-- they should be processed again, to ensure that the terminal state
+			-- is deterministic.
+			expect(Scheduler).toFlushAndYield({ "a", "b", "c", "d", "e", "f", "g" })
+			expect(ReactNoop:getChildren()).toEqual({ span("fg") })
+		end
+	end)
+	it("passes accumulation of previous updates to replaceState updater function", function()
+		local instance
+		type Foo = React_Component<any, any> & { state: Object }
+		type Foo_statics = {}
+		local Foo = React.Component:extend("Foo") :: Foo & Foo_statics
+		function Foo.init(self: Foo)
+			self.state = {}
+		end
+		function Foo.render(self: Foo)
+			instance = self
+			return React.createElement("span", nil)
+		end
+		ReactNoop:render(React.createElement(Foo, nil))
+		expect(Scheduler).toFlushWithoutYielding()
+		instance:setState({ a = "a" })
+		instance:setState({ b = "b" }) -- No longer a public API, but we can test that it works internally by
+		-- reaching into the updater.
+		instance.updater:enqueueReplaceState(instance, function(previousState)
+			return { previousState = previousState }
+		end)
+		expect(Scheduler).toFlushWithoutYielding()
+		expect(instance.state).toEqual({ previousState = { a = "a", b = "b" } })
+	end)
+	it("does not call callbacks that are scheduled by another callback until a later commit", function()
+		type Foo = React_Component<any, any> & { state: Object }
+		type Foo_statics = {}
+		local Foo = React.Component:extend("Foo") :: Foo & Foo_statics
+		function Foo.init(self: Foo)
+			self.state = {}
+		end
+		function Foo.componentDidMount(self: Foo)
+			Scheduler:unstable_yieldValue("did mount")
+			self:setState({ a = "a" }, function()
+				Scheduler:unstable_yieldValue("callback a")
+				self:setState({ b = "b" }, function()
+					Scheduler:unstable_yieldValue("callback b")
+				end)
+			end)
+		end
+		function Foo.render(self: Foo)
+			Scheduler:unstable_yieldValue("render")
+			return React.createElement("div", nil)
+		end
+		ReactNoop:render(React.createElement(Foo, nil))
+		expect(Scheduler).toFlushAndYield({
+			"render",
+			"did mount",
+			"render",
+			"callback a",
+			"render",
+			"callback b",
+>>>>>>> upstream-apply
 		})
 	end)
 	-- Test fails due to update priority bug
@@ -264,6 +513,7 @@ describe("ReactIncrementalUpdates", function()
 				prop = table.concat(keylist, ""),
 			})
 		end
+<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(Foo))
 		jestExpect(Scheduler).toFlushWithoutYielding()
@@ -321,6 +571,22 @@ describe("ReactIncrementalUpdates", function()
 		jestExpect(ReactNoop.getChildren()).toEqual({
 			span("fg"),
 		})
+=======
+		ReactNoop:render(React.createElement(Foo, nil))
+		expect(Scheduler).toFlushAndYield({ "render" })
+		ReactNoop:flushSync(function()
+			instance:setState({ a = "a" })
+			ReactNoop:render(React.createElement(Foo, nil)) -- Trigger componentWillReceiveProps
+		end)
+		expect(instance.state).toEqual({ a = "a", b = "b" })
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.deferRenderPhaseUpdateToNextBatch
+		end)) then
+			expect(Scheduler).toHaveYielded({ "componentWillReceiveProps", "render", "render" })
+		else
+			expect(Scheduler).toHaveYielded({ "componentWillReceiveProps", "render" })
+		end
+>>>>>>> upstream-apply
 	end)
 	-- ROBLOX deviation START: same as above, but tests > 1000 updates
 	it("can abort an update, schedule a replaceState, and resume many times", function()
@@ -677,7 +943,85 @@ describe("ReactIncrementalUpdates", function()
 				jestExpect(Scheduler).toFlushExpired({})
 			end)
 		end
+<<<<<<< HEAD
 	)
+=======
+		function Foo.render(self: Foo)
+			foo = self
+			return React.createElement(
+				React.Fragment,
+				nil,
+				React.createElement("span", { prop = self.state.value }),
+				React.createElement(Bar, nil)
+			)
+		end
+		local bar
+		type Bar = React_Component<any, any> & {}
+		type Bar_statics = {}
+		local Bar = React.Component:extend("Bar") :: Bar & Bar_statics
+		function Bar.render(self: Bar)
+			bar = self
+			return nil
+		end
+		ReactNoop:flushSync(function()
+			ReactNoop:render(React.createElement(Foo, nil))
+		end)
+		expect(ReactNoop:getChildren()).toEqual({ span("derived state") })
+		ReactNoop:flushSync(function()
+			-- Triggers getDerivedStateFromProps again
+			ReactNoop:render(React.createElement(Foo, nil)) -- The noop callback is needed to trigger the specific internal path that
+			-- led to this bug. Removing it causes it to "accidentally" work.
+			foo:setState({ value = "update state" }, function() end)
+		end)
+		expect(ReactNoop:getChildren()).toEqual({ span("derived state") })
+		ReactNoop:flushSync(function()
+			bar:setState({})
+		end)
+		expect(ReactNoop:getChildren()).toEqual({ span("derived state") })
+	end)
+	it("regression: does not expire soon due to layout effects in the last batch", function()
+		local useState, useLayoutEffect = React.useState, React.useLayoutEffect
+		local setCount
+		local function App()
+			local count, _setCount = table.unpack(useState(0), 1, 2)
+			setCount = _setCount
+			Scheduler:unstable_yieldValue("Render: " .. tostring(count))
+			useLayoutEffect(function()
+				setCount(function(prevCount)
+					return prevCount + 1
+				end)
+				Scheduler:unstable_yieldValue("Commit: " .. tostring(count))
+			end, {})
+			return nil
+		end
+		act(function()
+			if Boolean.toJSBoolean(gate(function(flags)
+				return flags.enableSyncDefaultUpdates
+			end)) then
+				React.startTransition(function()
+					ReactNoop:render(React.createElement(App, nil))
+				end)
+			else
+				ReactNoop:render(React.createElement(App, nil))
+			end
+			flushNextRenderIfExpired()
+			expect(Scheduler).toHaveYielded({})
+			expect(Scheduler).toFlushAndYield({ "Render: 0", "Commit: 0", "Render: 1" })
+			Scheduler:unstable_advanceTime(10000)
+			if Boolean.toJSBoolean(gate(function(flags)
+				return flags.enableSyncDefaultUpdates
+			end)) then
+				React.startTransition(function()
+					setCount(2)
+				end)
+			else
+				setCount(2)
+			end
+			flushNextRenderIfExpired()
+			expect(Scheduler).toHaveYielded({})
+		end)
+	end)
+>>>>>>> upstream-apply
 	it("regression: does not expire soon due to previous flushSync", function()
 		local function Text(_ref)
 			local text = _ref.text
@@ -690,6 +1034,7 @@ describe("ReactIncrementalUpdates", function()
 				text = "A",
 			}))
 		end)
+<<<<<<< HEAD
 		jestExpect(Scheduler).toHaveYielded({
 			"A",
 		})
@@ -698,6 +1043,21 @@ describe("ReactIncrementalUpdates", function()
 			text = "B",
 		}))
 		jestExpect(Scheduler).toFlushExpired({})
+=======
+		expect(Scheduler).toHaveYielded({ "A" })
+		Scheduler:unstable_advanceTime(10000)
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			React.startTransition(function()
+				ReactNoop:render(React.createElement(Text, { text = "B" }))
+			end)
+		else
+			ReactNoop:render(React.createElement(Text, { text = "B" }))
+		end
+		flushNextRenderIfExpired()
+		expect(Scheduler).toHaveYielded({})
+>>>>>>> upstream-apply
 	end)
 	it("regression: does not expire soon due to previous expired work", function()
 		local function Text(_ref2)
@@ -707,6 +1067,7 @@ describe("ReactIncrementalUpdates", function()
 
 			return text
 		end
+<<<<<<< HEAD
 
 		ReactNoop.render(React.createElement(Text, {
 			text = "A",
@@ -720,6 +1081,32 @@ describe("ReactIncrementalUpdates", function()
 			text = "B",
 		}))
 		jestExpect(Scheduler).toFlushExpired({})
+=======
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			React.startTransition(function()
+				ReactNoop:render(React.createElement(Text, { text = "A" }))
+			end)
+		else
+			ReactNoop:render(React.createElement(Text, { text = "A" }))
+		end
+		Scheduler:unstable_advanceTime(10000)
+		flushNextRenderIfExpired()
+		expect(Scheduler).toHaveYielded({ "A" })
+		Scheduler:unstable_advanceTime(10000)
+		if Boolean.toJSBoolean(gate(function(flags)
+			return flags.enableSyncDefaultUpdates
+		end)) then
+			React.startTransition(function()
+				ReactNoop:render(React.createElement(Text, { text = "B" }))
+			end)
+		else
+			ReactNoop:render(React.createElement(Text, { text = "B" }))
+		end
+		flushNextRenderIfExpired()
+		expect(Scheduler).toHaveYielded({})
+>>>>>>> upstream-apply
 	end)
 
 	it(
@@ -742,6 +1129,7 @@ describe("ReactIncrementalUpdates", function()
 
 					if log == "B" then
 						-- Right after B commits, schedule additional updates.
+<<<<<<< HEAD
 						-- TODO: Double wrapping is temporary while we remove Scheduler runWithPriority.
 						ReactNoop.unstable_runWithPriority(
 							InputContinuousLanePriority,
@@ -754,6 +1142,11 @@ describe("ReactIncrementalUpdates", function()
 								)
 							end
 						)
+=======
+						ReactNoop:unstable_runWithPriority(ContinuousEventPriority, function()
+							return pushToLog("C")
+						end)
+>>>>>>> upstream-apply
 						setLog(function(prevLog)
 							return prevLog .. "D"
 						end)
@@ -764,6 +1157,7 @@ describe("ReactIncrementalUpdates", function()
 
 				return log
 			end
+<<<<<<< HEAD
 
 			local root = ReactNoop.createRoot()
 			ReactNoop.act(function()
@@ -786,6 +1180,32 @@ describe("ReactIncrementalUpdates", function()
 							pushToLog("B")
 						end
 					)
+=======
+			local root = ReactNoop:createRoot()
+			act(function()
+				return Promise.resolve():andThen(function()
+					root:render(React.createElement(App, nil))
+				end)
+			end):expect()
+			expect(Scheduler).toHaveYielded({ "Committed: " })
+			expect(root).toMatchRenderedOutput(nil)
+			act(function()
+				return Promise.resolve():andThen(function()
+					if
+						Boolean.toJSBoolean(gate(function(flags)
+							return flags.enableSyncDefaultUpdates
+						end))
+					then
+						React.startTransition(function()
+							pushToLog("A")
+						end)
+					else
+						pushToLog("A")
+					end
+					ReactNoop:unstable_runWithPriority(ContinuousEventPriority, function()
+						return pushToLog("B")
+					end)
+>>>>>>> upstream-apply
 				end)
 			end)
 			jestExpect(Scheduler).toHaveYielded({
@@ -811,6 +1231,7 @@ describe("ReactIncrementalUpdates", function()
 	xit(
 		"when rebasing, does not exclude updates that were already committed, regardless of priority (classes)",
 		function()
+<<<<<<< HEAD
 			local instance
 			local App = React.Component:extend("App")
 			function App:init()
@@ -852,6 +1273,77 @@ describe("ReactIncrementalUpdates", function()
 			-- ROBLOX FIXME: fails probably due to this not being as Promise as in upstream
 			ReactNoop.act(function()
 				root.render(app)
+=======
+			return Promise.resolve():andThen(function()
+				local pushToLog
+				type App = React_Component<any, any> & { state: Object, pushToLog: any }
+				type App_statics = {}
+				local App = React.Component:extend("App") :: App & App_statics
+				function App.init(self: App)
+					self.state = { log = "" }
+					self.pushToLog = function(msg)
+						self:setState(function(prevState)
+							return { log = prevState.log + msg }
+						end)
+					end
+				end
+				function App.componentDidUpdate(self: App)
+					Scheduler:unstable_yieldValue("Committed: " .. tostring(self.state.log))
+					if self.state.log == "B" then
+						-- Right after B commits, schedule additional updates.
+						ReactNoop:unstable_runWithPriority(ContinuousEventPriority, function()
+							return self:pushToLog("C")
+						end)
+						self:pushToLog("D")
+					end
+				end
+				function App.render(self: App)
+					pushToLog = self.pushToLog
+					return self.state.log
+				end
+				local root = ReactNoop:createRoot()
+				act(function()
+					return Promise.resolve():andThen(function()
+						root:render(React.createElement(App, nil))
+					end)
+				end):expect()
+				expect(Scheduler).toHaveYielded({})
+				expect(root).toMatchRenderedOutput(nil)
+				act(function()
+					return Promise.resolve():andThen(function()
+						if
+							Boolean.toJSBoolean(gate(function(flags)
+								return flags.enableSyncDefaultUpdates
+							end))
+						then
+							React.startTransition(function()
+								pushToLog("A")
+							end)
+						else
+							pushToLog("A")
+						end
+						ReactNoop:unstable_runWithPriority(ContinuousEventPriority, function()
+							return pushToLog("B")
+						end)
+					end)
+				end):expect()
+				expect(Scheduler).toHaveYielded({
+					-- A and B are pending. B is higher priority, so we'll render that first.
+					"Committed: B",
+					-- Because A comes first in the queue, we're now in rebase mode. B must
+					-- be rebased on top of A. Also, in a layout effect, we received two new
+					-- updates: C and D. C is user-blocking and D is synchronous.
+					--
+					-- First render the synchronous update. What we're testing here is that
+					-- B *is not dropped* even though it has lower than sync priority. That's
+					-- because we already committed it. However, this render should not
+					-- include C, because that update wasn't already committed.
+					"Committed: BD",
+					"Committed: BCD",
+					"Committed: ABCD",
+				})
+				expect(root).toMatchRenderedOutput("ABCD")
+>>>>>>> upstream-apply
 			end)
 			jestExpect(Scheduler).toHaveYielded({})
 
@@ -917,6 +1409,7 @@ describe("ReactIncrementalUpdates", function()
 				app = self
 				return self.state.count
 			end
+<<<<<<< HEAD
 
 			local root = ReactNoop.createRoot()
 			ReactNoop.act(function()
@@ -938,6 +1431,28 @@ describe("ReactIncrementalUpdates", function()
 					return {
 						count = state.count + 1,
 					}
+=======
+			local root = ReactNoop:createRoot()
+			act(function()
+				return Promise.resolve():andThen(function()
+					root:render(React.createElement(App, { prop = "A" }))
+				end)
+			end):expect()
+			expect(root).toMatchRenderedOutput("0") -- Changing the prop causes the count to increase by 100
+			act(function()
+				return Promise.resolve():andThen(function()
+					root:render(React.createElement(App, { prop = "B" }))
+				end)
+			end):expect()
+			expect(root).toMatchRenderedOutput("100") -- Now increment the count by 1 with a state update. And, in the same
+			-- batch, change the prop back to its original value.
+			act(function()
+				return Promise.resolve():andThen(function()
+					root:render(React.createElement(App, { prop = "A" }))
+					app:setState(function(state)
+						return { count = state.count + 1 }
+					end)
+>>>>>>> upstream-apply
 				end)
 			end) -- There were two total prop changes, plus an increment
 

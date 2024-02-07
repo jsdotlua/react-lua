@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react-devtools-shared/src/__tests__/storeOwners-test.js
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react-devtools-shared/src/__tests__/storeOwners-test.js
+>>>>>>> upstream-apply
 --[[*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -23,15 +27,20 @@ local ReactRoblox
 local describeIfDev = _G.DEV and describe or describe.skip :: any
 describeIfDev("Store owners list", function()
 	local React
+<<<<<<< HEAD
 	local LuauPolyfill
 	local Boolean
+=======
+>>>>>>> upstream-apply
 	local act
+	local legacyRender
 	local store
 	local devtoolsUtils
 	local printOwnersList
 
 	beforeEach(function()
 		store = global.store
+<<<<<<< HEAD
 		store:setCollapseNodesByDefault(false)
 
 		LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
@@ -45,6 +54,18 @@ describeIfDev("Store owners list", function()
 		act = utils.act
 	end)
 
+=======
+		store.collapseNodesByDefault = false
+		React = require_("react")
+		local utils = require_("./utils")
+		act = utils.act
+		legacyRender = utils.legacyRender
+	end)
+	local function getFormattedOwnersList(elementID)
+		local ownersList = store:getOwnersListForElement(elementID)
+		return printOwnersList(ownersList)
+	end
+>>>>>>> upstream-apply
 	it("should drill through intermediate components", function()
 		local Wrapper, Intermediate, Leaf
 		local function Root()
@@ -58,7 +79,95 @@ describeIfDev("Store owners list", function()
 			local children = ref.children
 			return children
 		end
+<<<<<<< HEAD
 		function Leaf()
+=======
+		local function Leaf()
+			return React.createElement("div", nil, "Leaf")
+		end
+		local function Intermediate(ref0)
+			local children = ref0.children
+			return React.createElement(Wrapper, nil, children)
+		end
+		act(function()
+			return legacyRender(React.createElement(Root, nil), document:createElement("div"))
+		end)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+        ▾ <Root>
+          ▾ <Intermediate>
+            ▾ <Wrapper>
+                <Leaf>
+    ]])
+		local rootID = store:getElementIDAtIndex(0)
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Root>
+          ▾ <Intermediate>
+              <Leaf>"
+    ]])
+		local intermediateID = store:getElementIDAtIndex(1)
+		expect(getFormattedOwnersList(intermediateID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Intermediate>
+          ▾ <Wrapper>"
+    ]])
+	end)
+	it("should drill through interleaved intermediate components", function()
+		local function Root()
+			return {
+				React.createElement(Intermediate, { key = "intermediate" }, React.createElement(Leaf, nil)),
+				React.createElement(Leaf, { key = "leaf" }),
+			}
+		end
+		local function Wrapper(ref0)
+			local children = ref0.children
+			return children
+		end
+		local function Leaf()
+			return React.createElement("div", nil, "Leaf")
+		end
+		local function Intermediate(ref0)
+			local children = ref0.children
+			return {
+				React.createElement(Leaf, { key = "leaf" }),
+				React.createElement(Wrapper, { key = "wrapper" }, children),
+			}
+		end
+		act(function()
+			return legacyRender(React.createElement(Root, nil), document:createElement("div"))
+		end)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+        ▾ <Root>
+          ▾ <Intermediate key="intermediate">
+              <Leaf key="leaf">
+            ▾ <Wrapper key="wrapper">
+                <Leaf>
+            <Leaf key="leaf">
+    ]])
+		local rootID = store:getElementIDAtIndex(0)
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Root>
+          ▾ <Intermediate key="intermediate">
+              <Leaf>
+            <Leaf key="leaf">"
+    ]])
+		local intermediateID = store:getElementIDAtIndex(1)
+		expect(getFormattedOwnersList(intermediateID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Intermediate key="intermediate">
+            <Leaf key="leaf">
+          ▾ <Wrapper key="wrapper">"
+    ]])
+	end)
+	it("should show the proper owners list order and contents after insertions and deletions", function()
+		local function Root(ref0)
+			local includeDirect, includeIndirect = ref0.includeDirect, ref0.includeIndirect
+>>>>>>> upstream-apply
 			return React.createElement(
 				"Frame",
 				nil,
@@ -72,6 +181,7 @@ describeIfDev("Store owners list", function()
 
 		-- ROBLOX deviation: use root:render to render instead of ReactDOM.render
 		act(function()
+<<<<<<< HEAD
 			local root = ReactRoblox.createRoot(Instance.new("Frame"))
 			return root:render(React.createElement(Root, nil))
 		end)
@@ -87,6 +197,70 @@ describeIfDev("Store owners list", function()
 		jestExpect(printOwnersList(store:getOwnersListForElement(intermediateID))).toMatchSnapshot(
 			"3: components owned by <Intermediate>"
 		)
+=======
+			return legacyRender(React.createElement(Root, { includeDirect = false, includeIndirect = true }), container)
+		end)
+		local rootID = store:getElementIDAtIndex(0)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+        ▾ <Root>
+          ▾ <Intermediate>
+            ▾ <Wrapper>
+                <Leaf>
+    ]])
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Root>
+          ▾ <Intermediate>
+              <Leaf>"
+    ]])
+		act(function()
+			return legacyRender(React.createElement(Root, { includeDirect = true, includeIndirect = true }), container)
+		end)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+        ▾ <Root>
+            <Leaf>
+          ▾ <Intermediate>
+            ▾ <Wrapper>
+                <Leaf>
+    ]])
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Root>
+            <Leaf>
+          ▾ <Intermediate>
+              <Leaf>"
+    ]])
+		act(function()
+			return legacyRender(React.createElement(Root, { includeDirect = true, includeIndirect = false }), container)
+		end)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+        ▾ <Root>
+            <Leaf>
+    ]])
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Root>
+            <Leaf>"
+    ]])
+		act(function()
+			return legacyRender(
+				React.createElement(Root, { includeDirect = false, includeIndirect = false }),
+				container
+			)
+		end)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+          <Root>
+    ]])
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot('"    <Root>"')
+>>>>>>> upstream-apply
 	end)
 
 	it("should drill through interleaved intermediate components", function()
@@ -285,6 +459,7 @@ describeIfDev("Store owners list", function()
 
 		-- ROBLOX deviation: use root:render to render instead of ReactDOM.render
 		act(function()
+<<<<<<< HEAD
 			return root:render(React.createElement(Root, { ascending = true }))
 		end)
 		-- ROBLOX deviation: we use devtoolsUtils.printStore, upstream uses a jest serializer (storeSerializer) instead
@@ -307,5 +482,43 @@ describeIfDev("Store owners list", function()
 		jestExpect(printOwnersList(store:getOwnersListForElement(rootID))).toMatchSnapshot(
 			"4: components owned by <Root>"
 		)
+=======
+			return legacyRender(React.createElement(Root, { ascending = true }), container)
+		end)
+		local rootID = store:getElementIDAtIndex(0)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+        ▾ <Root>
+            <Leaf key="A">
+            <Leaf key="B">
+            <Leaf key="C">
+    ]])
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Root>
+            <Leaf key="A">
+            <Leaf key="B">
+            <Leaf key="C">"
+    ]])
+		act(function()
+			return legacyRender(React.createElement(Root, { ascending = false }), container)
+		end)
+		expect(store).toMatchInlineSnapshot([[
+
+      [root]
+        ▾ <Root>
+            <Leaf key="C">
+            <Leaf key="B">
+            <Leaf key="A">
+    ]])
+		expect(getFormattedOwnersList(rootID)).toMatchInlineSnapshot([[
+
+      "  ▾ <Root>
+            <Leaf key="C">
+            <Leaf key="B">
+            <Leaf key="A">"
+    ]])
+>>>>>>> upstream-apply
 	end)
 end)

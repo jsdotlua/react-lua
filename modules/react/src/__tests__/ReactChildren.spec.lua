@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- ROBLOX upstream: https://github.com/facebook/react/blob/7516bdfce3f0f8c675494b5c5d0e7ae441bef1d9/packages/react/src/__tests__/ReactChildren-test.js
 --!nonstrict
 --[[
@@ -11,6 +12,19 @@
 ]]
 local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
+=======
+-- ROBLOX upstream: https://github.com/facebook/react/blob/v18.2.0/packages/react/src/__tests__/ReactChildren-test.js
+--[[*
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @emails react-core
+ ]]
+local Packages --[[ ROBLOX comment: must define Packages module ]]
+local LuauPolyfill = require(Packages.LuauPolyfill)
+>>>>>>> upstream-apply
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
 type Object = LuauPolyfill.Object
@@ -441,10 +455,17 @@ describe("ReactChildren", function()
 			return kid
 		end)
 		local function assertCalls()
+<<<<<<< HEAD
 			expect(callback).toHaveBeenCalledTimes(2, 0)
 			expect(callback).toHaveBeenCalledWith("a", 1)
 			expect(callback).toHaveBeenCalledWith(13, 2)
 			callback.mockClear()
+=======
+			expect(callback).toHaveBeenCalledTimes(2)
+			expect(callback).toHaveBeenCalledWith("a", 0)
+			expect(callback).toHaveBeenCalledWith(13, 1)
+			callback:mockClear()
+>>>>>>> upstream-apply
 		end
 		React.Children.forEach(instance.props.children, callback, context)
 		assertCalls()
@@ -1040,8 +1061,14 @@ describe("ReactChildren", function()
 					.. "\n    in ComponentReturningArray (at **)"
 			)
 		end)
+<<<<<<< HEAD
 
 		it("does not warn when there are keys on  elements in a fragment", function()
+=======
+		it("does not warn when there are keys on elements in a fragment", function()
+			type ComponentReturningArray = React_Component<any, any> & {}
+			type ComponentReturningArray_statics = {}
+>>>>>>> upstream-apply
 			local ComponentReturningArray =
 				React.Component:extend("ComponentReturningArray")
 
