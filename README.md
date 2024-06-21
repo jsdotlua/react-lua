@@ -9,7 +9,7 @@
 
 ---
 
-## TL;DR
+## About the Project
 
 React Lua is a comprehensive translation of upstream [ReactJS](https://github.com/facebook/react) from JavaScript into Lua, and is highly-turned for both performance and correctness.
 
@@ -21,19 +21,18 @@ This repository is a fork of [`roblox/react-lua`](https://github.com/roblox/reac
 
 ### Original Project Authors
 
-Roblox has removed commit author history in their public mirror, which means the original project authors cannot be properly credited. Below is a list of people who originally worked on React Lua, extracted from the `rotriever.toml` file in Roblox's repository.
+Roblox has removed commit author history in their public mirror, which removes credit for the original project authors. Below is a non-exhaustive list of those who originally worked on the project, in no particular order:
 
-Please note that many of these emails may be inactive, as much of the original team working on React Lua are no longer at Roblox.
-
-```
-"Paul Doyle <pdoyle@roblox.com>",
-"Matt Hargett <mhargett@roblox.com>",
-"Max Mines <mmines@roblox.com>",
-"Carlo Conte <cconte@roblox.com>",
-"Henry Allen <hallen@roblox.com>",
-"Olivier Trepanier <otrepanier@roblox.com>",
-"Hugh Collins <hcollins@roblox.com>"
-```
+- [Paul Doyle](https://www.linkedin.com/in/pauldoyle22/)
+- [Matt Hargett](https://www.linkedin.com/in/matthargett/)
+- [Max Mines](https://www.linkedin.com/in/max-mines-591556144/)
+- [Jamie Kuppens](https://www.jamiekuppens.com/)
+- [Carlo Conte](https://www.linkedin.com/in/carloandreaconte/)
+- [Henry Allen](https://www.linkedin.com/in/henry-allen-3bb745150/)
+- [Oliver Trepanier](https://www.linkedin.com/in/olivier-trepanier/)
+- [Ignacio Falk](https://www.linkedin.com/in/ignacio-falk-58a74a57/)
+- [Chris Trześniewski](https://www.linkedin.com/in/ktrzesniewski/)
+- [Kyle Mitofsky](https://www.linkedin.com/in/kylemit/)
 
 ## Status
 
