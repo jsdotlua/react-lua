@@ -1,0 +1,2356 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jsdotlua.github.io/react-lua/api-reference/react/">
+      
+      
+        <link rel="prev" href="../../migrating-from-legacy/convert-legacy-conventions/">
+      
+      
+        <link rel="next" href="../react-roblox/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>React - React Lua Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#react" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="React Lua Documentation" class="md-header__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            React Lua Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              React
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="React Lua Documentation" class="md-nav__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    React Lua Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deviations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deviations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Migrating From Legacy Roact
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Migrating From Legacy Roact
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrating-from-legacy/minimum-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Minimum Requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrating-from-legacy/upgrading-to-react-lua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Add React Lua Dependency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrating-from-legacy/adopt-new-features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adopt New Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrating-from-legacy/convert-legacy-conventions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Convert Legacy Conventions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    React
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    React
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-deviations" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Deviations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Deviations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#not-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      Not Supported
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#undocumented" class="md-nav__link">
+    <span class="md-ellipsis">
+      Undocumented
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unique-to-roblox" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unique to Roblox
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcomponent" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Component
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactpurecomponent" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.PureComponent
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactmemo" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.memo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreateelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createElement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcloneelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.cloneElement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactisvalidelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.isValidElement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.Children">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrenmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrenforeach" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.forEach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrencount" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrenonly" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrentoarray" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.toArray
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Fragment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreateref" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createRef
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactforwardref" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.forwardRef
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreatecontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createContext
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.createContext">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contextprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context.Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contextconsumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context.Consumer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactlazy" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.lazy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactsuspense" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Suspense
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactusestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useState
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuseeffect" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useEffect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusecontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useContext
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusereducer" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useReducer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useCallback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusememo" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useMemo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuseref" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useRef
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuseimperativehandle" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useImperativeHandle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuselayouteffect" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useLayoutEffect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusebinding" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useBinding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.useBinding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      getValue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map" class="md-nav__link">
+    <span class="md-ellipsis">
+      map
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactprofiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Profiler
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactstrictmode" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.StrictMode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreatemutablesource" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createMutableSource
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactusemutablesource" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useMutableSource
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roblox-and-luau" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roblox and Luau
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roblox and Luau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.None
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Event
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Change
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reacttag" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Tag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactcreatebinding" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createBinding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactjoinbindings" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.joinBindings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-roblox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReactRoblox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roact-compat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RoactCompat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../additional-libraries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Additional Libraries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bench/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmarks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-deviations" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Deviations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Deviations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#not-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      Not Supported
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#undocumented" class="md-nav__link">
+    <span class="md-ellipsis">
+      Undocumented
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unique-to-roblox" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unique to Roblox
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcomponent" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Component
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactpurecomponent" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.PureComponent
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactmemo" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.memo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreateelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createElement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcloneelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.cloneElement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactisvalidelement" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.isValidElement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.Children">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrenmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrenforeach" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.forEach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrencount" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrenonly" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildrentoarray" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children.toArray
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Fragment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreateref" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createRef
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactforwardref" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.forwardRef
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreatecontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createContext
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.createContext">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contextprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context.Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contextconsumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context.Consumer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactlazy" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.lazy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactsuspense" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Suspense
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactusestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useState
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuseeffect" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useEffect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusecontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useContext
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusereducer" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useReducer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useCallback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusememo" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useMemo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuseref" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useRef
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuseimperativehandle" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useImperativeHandle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactuselayouteffect" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useLayoutEffect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactusebinding" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useBinding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.useBinding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      getValue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map" class="md-nav__link">
+    <span class="md-ellipsis">
+      map
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactprofiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Profiler
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactstrictmode" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.StrictMode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactcreatemutablesource" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createMutableSource
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactusemutablesource" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useMutableSource
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roblox-and-luau" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roblox and Luau
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roblox and Luau">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.None
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Event
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Change
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reacttag" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Tag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactcreatebinding" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.createBinding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactjoinbindings" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.joinBindings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="react">React<a class="headerlink" href="#react" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This page is intended to provide <em>brief</em> descriptions, examples, and notes about deviations in behavior or API. For complete feature documentation of upstream-aligned features, follow the <code>View React Docs</code> link and consult the React JS docs.</p>
+</div>
+<p>The <code>React</code> package is the entry point for most React logic and behavior. Most of its API members align directly to their equivalents in <a href="https://reactjs.org/docs/react-api.html">React JS</a>. Some API members have slightly different behavior, different guidance around their usage, or slightly different function signatures to better accommodate Luau functionality and idioms.</p>
+<h2 id="api-deviations">API Deviations<a class="headerlink" href="#api-deviations" title="Permanent link">&para;</a></h2>
+<h3 id="not-supported">Not Supported<a class="headerlink" href="#not-supported" title="Permanent link">&para;</a></h3>
+<p>The following API members are notable absences relative to React JS 17.0.1:</p>
+<ul>
+<li><code>React.createFactory</code> - Considered legacy and will likely not be included</li>
+<li><code>React.useDebugValue</code> - Not yet implemented</li>
+</ul>
+<p>Additionally, the following APIs are implemented, but have blocking issues that prevent them from being fully supported or usable:</p>
+<ul>
+<li><a href="#reactlazy"><code>React.lazy</code></a></li>
+<li><a href="#reactsuspense"><code>React.Suspense</code></a></li>
+</ul>
+<h3 id="undocumented">Undocumented<a class="headerlink" href="#undocumented" title="Permanent link">&para;</a></h3>
+<p>The <code>React</code> packages includes some features that are undocumented in React JS 17.0.1, but are present in its implementation. The following API members may be less stable than the features that are fully documented upstream:</p>
+<ul>
+<li><a href="#reactcreatemutablesource"><code>React.createMutableSource</code></a></li>
+<li><a href="#reactusemutablesource"><code>React.useMutableSource</code></a></li>
+</ul>
+<h3 id="unique-to-roblox">Unique to Roblox<a class="headerlink" href="#unique-to-roblox" title="Permanent link">&para;</a></h3>
+<p><code>React</code> also exports a small collection of <a href="#roblox-and-luau">Lua-exclusive APIs</a> which have no upstream equivalent. These are designed to facilitate better integration with the Luau language and the Roblox engine functionality.</p>
+<ul>
+<li><a href="#reactnone"><code>React.None</code></a></li>
+<li><a href="#reactevent"><code>React.Event</code></a></li>
+<li><a href="#reactchange"><code>React.Change</code></a></li>
+<li><a href="#reacttag"><code>React.Tag</code></a></li>
+<li><a href="#reactusebinding"><code>React.useBinding</code></a></li>
+<li><a href="#reactcreatebinding"><code>React.createBinding</code></a></li>
+<li><a href="#reactjoinbindings"><code>React.joinBindings</code></a></li>
+</ul>
+<h2 id="reactcomponent"><code>React.Component</code><a class="headerlink" href="#reactcomponent" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/Component' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='API Change' src='../../images/apichange.svg'/></p>
+<p>Luau does not have ES6's class semantics, so class components work slightly differently from React JS in the following ways:</p>
+<ul>
+<li>Use <code>Component:extend</code> in place of ES6 class semantics</li>
+<li>Implement an <code>init</code> method on components instead of a constructor</li>
+</ul>
+<p>React-lua also includes the following deviations:</p>
+<ul>
+<li>Instead of initializing component state by assigning a value to <code>self.state</code> in the <code>init</code> method, use <code>setState</code> as you would elsewhere (this is inherited from Legacy Roact for compatibility and consistency)</li>
+<li>Error boundaries are not fully supported in React-lua at this time due to a limitation in recursive <code>pcall</code> depth</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">MyComponent</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;MyComponent&quot;</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">init</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">:</span><span class="n">setState</span><span class="p">({</span> <span class="n">expanded</span> <span class="o">=</span> <span class="kc">true</span> <span class="p">})</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="kr">if</span> <span class="n">expanded</span>
+            <span class="kr">then</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">.</span><span class="n">text</span>
+            <span class="kr">else</span> <span class="s2">&quot;Click to Expand&quot;</span><span class="p">,</span>
+        <span class="n">Size</span> <span class="o">=</span> <span class="kr">if</span> <span class="n">expanded</span>
+            <span class="kr">then</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="kr">else</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+        <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+            <span class="n">self</span><span class="p">:</span><span class="n">setState</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">expanded</span><span class="p">)</span>
+                <span class="kr">return</span> <span class="p">{</span> <span class="n">expanded</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">expanded</span> <span class="p">}</span>
+            <span class="kr">end</span><span class="p">)</span>
+        <span class="kr">end</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Check the <a href="../../deviations/#class-components">deviations guide</a> for more detailed information.</p>
+<h2 id="reactpurecomponent"><code>React.PureComponent</code><a class="headerlink" href="#reactpurecomponent" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/PureComponent' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='API Change' src='../../images/apichange.svg'/></p>
+<p>The same deviations to <code>React.Component</code> apply equivalently to <code>React.PureComponent</code>. Check the <a href="../../deviations/#class-components">deviations guide</a> for more detailed information.</p>
+<h2 id="reactmemo"><code>React.memo</code><a class="headerlink" href="#reactmemo" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/memo' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">MyComponent</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">memo</span><span class="p">(</span><span class="kr">function</span> <span class="nf">MyComponent</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="cm">--[[ render using props ]]</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>Guidance specified in the <a href="https://beta.reactjs.org/reference/react/memo#usage">React documentation</a> applies for React Lua as well. Use this only as a performance optimization, and only when relevant to the use case.</p>
+<h2 id="reactcreateelement"><code>React.createElement</code><a class="headerlink" href="#reactcreateelement" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/createElement' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>While the <code>createElement</code> API is aligned to React JS, current tooling in Luau does not support an equivalent for JSX. When writing React Lua code, you'll use <code>createElement</code> directly much more often than in React JS.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">--[[</span>
+<span class="cm">React.createElement(</span>
+<span class="cm">    type,</span>
+<span class="cm">    [props],</span>
+<span class="cm">    [...children]</span>
+<span class="cm">)</span>
+<span class="cm">]]</span>
+<span class="kd">local</span> <span class="n">element</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+    <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+    <span class="p">{</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">},</span>
+    <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Child1&quot;</span> <span class="p">})</span>
+    <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Child2&quot;</span> <span class="p">})</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="reactcloneelement"><code>React.cloneElement</code><a class="headerlink" href="#reactcloneelement" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/cloneElement' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Clone an existing element, using its provided config values (props, <code>ref</code>, and <code>key</code>) as a starting point.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">onlyChild</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">only</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">cloned</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">cloneElement</span><span class="p">(</span><span class="n">onlyChild</span><span class="p">,</span> <span class="p">{</span> <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Cloned&quot;</span> <span class="p">})</span>
+</code></pre></div>
+<h2 id="reactisvalidelement"><code>React.isValidElement</code><a class="headerlink" href="#reactisvalidelement" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/isValidElement' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Returns <code>true</code> if the provided value is a React element; otherwise, returns <code>false</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span> <span class="n">React</span><span class="p">.</span><span class="n">isValidElement</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">frameContents</span><span class="p">)</span> <span class="kr">then</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">},</span> <span class="n">props</span><span class="p">.</span><span class="n">frameContents</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="reactchildren"><code>React.Children</code><a class="headerlink" href="#reactchildren" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/Children' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Deviation' src='../../images/deviation.svg'/></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This field can often be confused with a Legacy Roact API called <code>Roact.Children</code>. In the legacy API, <code>Roact.Children</code> was a special opaque prop key that could be used to pass children through props tables. In React Lua, the <code>children</code> string key is reserved and used instead. Learn more about how to migrate away from <code>Roact.Children</code> in the <a href="../../migrating-from-legacy/convert-legacy-conventions/#reserved-keys">migration guide</a>.</p>
+</div>
+<p>A collection of utilities for manipulating the children provided to a React component via <code>props.children</code> or <code>self.props.children</code>. The <code>children</code> property should always be used as an opaque data structure; manipulate it via <code>React.Children</code> utilities rather than accessing it directly.</p>
+<p>There are a few notable deviations:</p>
+<ul>
+<li>React Children values with type "userdata" will be treated as nil in callbacks. This means that a <code>React.None</code> child passed to <code>React.Children.forEach</code> or <code>React.Children.map</code> will be treated the same as a nil value or boolean in the callbacks. <code>React.Children.count</code> will not include userdata children in the count.</li>
+<li>The <code>context</code> argument for mapChildren is not passed to the callback. This is typically used to pass <code>this</code> in javascript, but does not have an equivalent in Lua.</li>
+<li>React Children utilities work with tables with string keys as well as arrays</li>
+</ul>
+<h3 id="reactchildrenmap"><code>React.Children.map</code><a class="headerlink" href="#reactchildrenmap" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/Children#children-map' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Use <code>React.Children.map</code> to transform each member child of the <code>children</code> property.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">ListItem</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">script</span><span class="p">.</span><span class="n">Parent</span><span class="p">.</span><span class="n">ListItem</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">OrderedList</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+        <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+        <span class="p">{</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">ListItem</span><span class="p">,</span> <span class="p">{</span> <span class="n">layoutOrder</span> <span class="o">=</span> <span class="n">i</span> <span class="p">},</span> <span class="n">child</span><span class="p">)</span>
+        <span class="kr">end</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactchildrenforeach"><code>React.Children.forEach</code><a class="headerlink" href="#reactchildrenforeach" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/Children#children-foreach' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Accepts a function that will be called with each member child of the <code>children</code> property. Similar to <code>React.Children.map</code>, but the provided callback does not return a new child.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">ListItem</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">script</span><span class="p">.</span><span class="n">Parent</span><span class="p">.</span><span class="n">ListItem</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">Separator</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">script</span><span class="p">.</span><span class="n">Parent</span><span class="p">.</span><span class="n">Separator</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">SeparatorList</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">listItems</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">React</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">forEach</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">table.insert</span><span class="p">(</span><span class="n">listItems</span><span class="p">,</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">ListItem</span><span class="p">,</span> <span class="p">{</span> <span class="n">layoutOrder</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span> <span class="p">},</span> <span class="n">child</span><span class="p">))</span>
+        <span class="nb">table.insert</span><span class="p">(</span><span class="n">listItems</span><span class="p">,</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">Separator</span><span class="p">,</span> <span class="p">{</span> <span class="n">layoutOrder</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}))</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+        <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+        <span class="p">{</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">listItems</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactchildrencount"><code>React.Children.count</code><a class="headerlink" href="#reactchildrencount" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/Children#children-count' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Returns the number of child members in the provided <code>children</code> object.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">List</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;Render list with %d children&quot;</span><span class="p">,</span> <span class="n">React</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">)))</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+        <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+        <span class="p">{</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactchildrenonly"><code>React.Children.only</code><a class="headerlink" href="#reactchildrenonly" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/Children#children-only' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Asserts that the provided object is a single React element. If the provided object is an array or table of elements, this function will throw; otherwise, it returns the element that was passed into it.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">Box</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">element</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">only</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+        <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+        <span class="p">{</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromOffset</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">element</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactchildrentoarray"><code>React.Children.toArray</code><a class="headerlink" href="#reactchildrentoarray" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/Children#children-toarray' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Converts the opaque <code>children</code> prop into an array. The resulting value can then be manipulated with typical Lua array semantics or using utility methods that operate on array-like Lua tables.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">Array</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">Collections</span><span class="p">).</span><span class="n">Array</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">FilteredList</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">children</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">Children</span><span class="p">.</span><span class="n">toArray</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+        <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+        <span class="p">{</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">Array</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="n">props</span><span class="p">.</span><span class="n">filterFn</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="reactfragment"><code>React.Fragment</code><a class="headerlink" href="#reactfragment" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/Fragment' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Renders multiple components using a special component called a <code>Fragment</code>. Fragments are useful for returning multiple elements from a single component without creating additional UI elements.</p>
+<div class="highlight"><pre><span></span><code><span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">Fragment</span><span class="p">,</span>
+        <span class="kc">nil</span><span class="p">,</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Some text.&quot;</span> <span class="p">}),</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Button&quot;</span> <span class="p">}),</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="reactcreateref"><code>React.createRef</code><a class="headerlink" href="#reactcreateref" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/createRef' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Creates a Ref object which can be used to access underlying Instances in the DataModel. Use this as an escape hatch when you need to interact directly with Roblox Instances (or equivalent in other environments).</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">MyComponent</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;MyComponent&quot;</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">init</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">inputRef</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createRef</span><span class="p">()</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextBox&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">inputRef</span> <span class="p">})</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">componentDidMount</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">inputRef</span><span class="p">.</span><span class="n">current</span><span class="p">:</span><span class="n">CaptureFocus</span><span class="p">()</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="reactforwardref"><code>React.forwardRef</code><a class="headerlink" href="#reactforwardref" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/forwardRef' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>In some cases, you may want your component to accept a ref and forward it to a child, typically a Roblox host component.</p>
+<p><code>React.forwardRef</code> accepts a render function that receives <code>props</code> (just like a function component) as well as a <code>ref</code> object, and can then assign its ref within the render callback.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">FancyButton</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">forwardRef</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span><span class="p">,</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">text</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">onActivated</span><span class="p">,</span>
+    <span class="p">},</span> <span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="c1">-- You can now get a ref directly to the TextButton Instance:</span>
+<span class="kd">local</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createRef</span><span class="p">()</span>
+<span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">FancyButton</span><span class="p">,</span> <span class="p">{</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Click me!&quot;</span> <span class="p">})</span>
+</code></pre></div>
+<h2 id="reactcreatecontext"><code>React.createContext</code><a class="headerlink" href="#reactcreatecontext" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/createContext' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>Creates a Context object. Context is a mechanism for passing information through many levels of the React component tree without needing to explicitly pass it down at each level.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">MyContext</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createContext</span><span class="p">(</span><span class="n">defaultValue</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="contextprovider"><code>Context.Provider</code><a class="headerlink" href="#contextprovider" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/createContext#provider' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>The Context object returned from <code>createContext</code> includes a <code>Provider</code> component, which can be used to pass a context value into the component tree.</p>
+<div class="highlight"><pre><span></span><code><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">MyContext</span><span class="p">.</span><span class="n">Provider</span><span class="p">,</span> <span class="p">{</span> <span class="n">value</span> <span class="o">=</span> <span class="n">someValue</span> <span class="p">})</span>
+</code></pre></div>
+<h3 id="contextconsumer"><code>Context.Consumer</code><a class="headerlink" href="#contextconsumer" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/createContext#consumer' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p>The Context object returned from <code>createContext</code> includes a <code>Consumer</code> component, which can be used to retrieve a context value that was provided higher up in the tree.</p>
+<div class="highlight"><pre><span></span><code><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">MyContext</span><span class="p">.</span><span class="n">Consumer</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1">-- render something based on the context value</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="reactlazy"><code>React.lazy</code><a class="headerlink" href="#reactlazy" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/lazy' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Though <code>React.lazy</code>'s functionality is implemented, it may not be especially useful without complete support for <a href="#reactsuspense"><code>React.Suspense</code></a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code>lazy</code> utility is designed for an ecosystem where loading modules can be expensive. <strong>This is rarely a concern in the context of Luau projects.</strong> Since <code>lazy</code> relies upon a dynamic call to <code>require</code>, tooling like type checking may not work correctly. Use <code>React.lazy</code> with caution and intent, and only if it has a measurable performance impact.</p>
+</div>
+<p>Wraps a component in a lazy-loading container that waits until the component is used in a render before calling the function to load it.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">Component</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">lazy</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="nb">require</span><span class="p">(</span><span class="n">script</span><span class="p">.</span><span class="n">Parent</span><span class="p">.</span><span class="n">Component</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="reactsuspense"><code>React.Suspense</code><a class="headerlink" href="#reactsuspense" title="Permanent link">&para;</a></h2>
+<p><a href='https://beta.reactjs.org/reference/react/Suspense' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Deviation' src='../../images/deviation.svg'/></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>While <code>React.Suspense</code> is technically implemented, it should be considered unusable as of version <code>17.0.1</code>.</strong> This is due to a limitation in Luau around recursive <code>pcall</code> depth. Future updates to React will unravel the recursive traversal and enable these features.
+Future version of React eliminate this recursive structure and should enable full use of <code>Suspense</code> and error boundaries.</p>
+</div>
+<p>Renders a subtree of children that can yield. If the children suspend while rendering, the <code>fallback</code> field provided will be used until the children have resolved their render.</p>
+<div class="highlight"><pre><span></span><code><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+    <span class="n">React</span><span class="p">.</span><span class="n">Suspense</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="n">fallback</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Loading...&quot;</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="p">},</span>
+    <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">SomeContents</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="hooks">Hooks<a class="headerlink" href="#hooks" title="Permanent link">&para;</a></h2>
+<p>Hooks allow simple function components to introduce stateful behaviors without incurring the overhead or complexity of the full <a href="#reactcomponent">Component</a> lifecycle.</p>
+<h3 id="reactusestate"><code>React.useState</code><a class="headerlink" href="#reactusestate" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useState' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='API Change' src='../../images/apichange.svg'/></p>
+<p><code>useState</code> is a React Hook that creates a state variable that can be used and updated by your component. Updating the state will cause the component to re-render.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">ClickCounter</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">count</span><span class="p">,</span> <span class="n">setCount</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;Clicked %d times&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="c1">-- Clicking the button updates the count, which re-renders the component</span>
+        <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+            <span class="n">setCount</span><span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="kr">end</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Note that Luau does not have syntactic sugar for destructuring like javascript:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">setValue</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+</code></pre></div>
+<p>However, it <em>does</em> support multiple return values, so React Lua supports a very similar usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">value</span><span class="p">,</span> <span class="n">setValue</span> <span class="o">=</span> <span class="n">useState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="reactuseeffect"><code>React.useEffect</code><a class="headerlink" href="#reactuseeffect" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useEffect' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useEffect</code> is a React Hook that causes a side effect to run after a component's render has completed, allowing synchronization with external systems.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">UserInputService</span> <span class="o">=</span> <span class="n">game</span><span class="p">:</span><span class="n">GetService</span><span class="p">(</span><span class="s2">&quot;UserInputService&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">LastInputTypeChanged</span> <span class="o">=</span> <span class="n">UserInputService</span><span class="p">.</span><span class="n">LastInputTypeChanged</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">LastInputLabel</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">lastInput</span><span class="p">,</span> <span class="n">setLastInput</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useState</span><span class="p">(</span><span class="n">Enum</span><span class="p">.</span><span class="n">UserInputType</span><span class="p">.</span><span class="n">None</span><span class="p">)</span>
+
+    <span class="n">React</span><span class="p">.</span><span class="n">useEffect</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="c1">-- Update `lastInput` state when the engine signal fires</span>
+        <span class="kd">local</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">LastInputTypeChanged</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">setLastInput</span><span class="p">)</span>
+
+        <span class="kr">return</span> <span class="kr">function</span><span class="p">()</span>
+            <span class="n">connection</span><span class="p">:</span><span class="n">Disconnect</span><span class="p">()</span>
+        <span class="kr">end</span>
+    <span class="kr">end</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;Last input: %s&quot;</span><span class="p">,</span> <span class="n">lastInput</span><span class="p">)</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactusecontext"><code>React.useContext</code><a class="headerlink" href="#reactusecontext" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useContext' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useContext</code> is a React Hook that allows a component to read from and subscribe to context values provided from <a href="#reactcreatecontext"><code>createContext</code></a>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">ThemeContext</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(...)</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">ThemedLabel</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">theme</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useContext</span><span class="p">(</span><span class="n">ThemeContext</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">TextSize</span> <span class="o">=</span> <span class="n">theme</span><span class="p">.</span><span class="n">TextSize</span><span class="p">,</span>
+        <span class="n">TextColor3</span> <span class="o">=</span> <span class="n">theme</span><span class="p">.</span><span class="n">TextColor3</span><span class="p">,</span>
+        <span class="c1">-- ...</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactusereducer"><code>React.useReducer</code><a class="headerlink" href="#reactusereducer" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useReducer' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useReducer</code> is a React Hook that introduces a reducer function to your component for managing complex state. See the <a href="https://roblox.github.io/rodux/introduction/reducers/"><code>Rodux</code> documentation</a> for detailed examples of the reducer pattern in Lua.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">reducer</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="n">action</span><span class="p">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span> <span class="kr">then</span>
+        <span class="kr">return</span> <span class="p">{</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">action</span><span class="p">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">ops</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">ops</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="kr">elseif</span> <span class="n">action</span><span class="p">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;multiply&quot;</span> <span class="kr">then</span>
+        <span class="kr">return</span> <span class="p">{</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">action</span><span class="p">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">ops</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">ops</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">Calculator</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatch</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useReducer</span><span class="p">(</span><span class="n">reducer</span><span class="p">,</span> <span class="p">{</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ops</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">})</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">Fragment</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;value: %d - ops: %d&quot;</span><span class="p">,</span> <span class="n">state</span><span class="p">.</span><span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">.</span><span class="n">ops</span><span class="p">)</span>
+        <span class="p">})</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Add 4&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+                <span class="n">dispatch</span><span class="p">({</span> <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">4</span> <span class="p">})</span>
+            <span class="kr">end</span>
+        <span class="p">})</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Multiply by 3&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+                <span class="n">dispatch</span><span class="p">({</span> <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;multiply&quot;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">})</span>
+            <span class="kr">end</span>
+        <span class="p">})</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Just like the <code>useState</code> hook, we use Luau's multiple returns to approximate JavaScript's destructuring. The following JS:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">state</span><span class="p">,</span><span class="w"> </span><span class="nx">dispatch</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useReducer</span><span class="p">(</span><span class="nx">reducer</span><span class="p">,</span><span class="w"> </span><span class="nx">initialState</span><span class="p">);</span>
+</code></pre></div>
+<p>Becomes:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatch</span> <span class="o">=</span> <span class="n">useReducer</span><span class="p">(</span><span class="n">reducer</span><span class="p">,</span> <span class="n">initialState</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="reactusecallback"><code>React.useCallback</code><a class="headerlink" href="#reactusecallback" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useCallback' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useCallback</code> is a React Hook that allows a component to cache a function definition between re-renders.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">ItemTile</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(...)</span>
+<span class="kd">local</span> <span class="n">equipItem</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(...)</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">EquippableItemTile</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">onClick</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useCallback</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="n">equipItem</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">itemId</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">,</span> <span class="p">{</span> <span class="n">props</span><span class="p">.</span><span class="n">itemId</span> <span class="p">})</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">ItemTile</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">itemName</span><span class="p">,</span>
+        <span class="n">onTileClicked</span> <span class="o">=</span> <span class="n">onClick</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactusememo"><code>React.useMemo</code><a class="headerlink" href="#reactusememo" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useMemo' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useMemo</code> is a React Hook that caches a computed value between re-renders.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">filterByCategory</span><span class="p">(</span><span class="n">todos</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    <span class="c1">-- ...</span>
+    <span class="kr">return</span> <span class="n">filteredTodos</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">FilteredTodoList</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">filteredTodos</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useMemo</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="kr">return</span> <span class="n">filterByCategory</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">todos</span><span class="p">,</span> <span class="n">props</span><span class="p">.</span><span class="n">selectedCategory</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">,</span> <span class="p">{</span> <span class="n">props</span><span class="p">.</span><span class="n">todos</span><span class="p">,</span> <span class="n">props</span><span class="p">.</span><span class="n">selectedCategory</span> <span class="p">})</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">TodoList</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">filteredTodos</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactuseref"><code>React.useRef</code><a class="headerlink" href="#reactuseref" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useRef' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useRef</code> is a React Hook that stores a value that's not needed for rendering. In other words, refs are arbitrary value containers that do no invoke re-renders when they change.</p>
+<p>Refs can be used for a variety of purposes, including assigning them to the <code>ref</code> field of an element to get a reference to the underlying Roblox <code>Instance</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">TextBoxWithButton</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">textBoxRef</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useRef</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">Fragment</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextBox&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">textBoxRef</span> <span class="p">}),</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+                <span class="n">textBoxRef</span><span class="p">.</span><span class="n">current</span><span class="p">:</span><span class="n">CaptureFocus</span><span class="p">()</span>
+            <span class="kr">end</span>
+        <span class="p">}),</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactuseimperativehandle"><code>React.useImperativeHandle</code><a class="headerlink" href="#reactuseimperativehandle" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useImperativeHandle' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useImperativeHandle</code> is a React Hook that provides a way to customize a handle that's exposed as a ref.</p>
+<p>This allows a ref to be defined around a narrower or more convenient interface rather than a direct reference to the underlying <code>Instance</code>, and can be used to expose a customized ref interface from a function or class component.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">ControllableScrollingFrame</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">forwardRef</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">innerRef</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useRef</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+
+    <span class="n">React</span><span class="p">.</span><span class="n">useImperativeHandle</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="kr">function</span><span class="p">()</span>
+        <span class="kr">return</span> <span class="p">{</span>
+            <span class="n">scrollToTop</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+                <span class="n">innerRef</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">CanvasPosition</span> <span class="o">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="kr">end</span>
+        <span class="p">}</span>
+    <span class="kr">end</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ScrollingFrame&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">innerRef</span>
+        <span class="c1">-- ...</span>
+    <span class="p">})</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="c1">-- Another component will be able to access this interface via a ref:</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">TodoListApp</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">scrollingFrameRef</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useRef</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">ControllableScrollingFrame</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">scrollingFrameRef</span>
+        <span class="p">},</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">TodoList</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">todoItems</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Back to top&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+                <span class="n">scrollingFrameRef</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">scrollToTop</span><span class="p">()</span>
+            <span class="kr">end</span>
+        <span class="p">})</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactuselayouteffect"><code>React.useLayoutEffect</code><a class="headerlink" href="#reactuselayouteffect" title="Permanent link">&para;</a></h3>
+<p><a href='https://beta.reactjs.org/reference/react/useLayoutEffect' target="_blank"><img alt='React' src='../../images/reactjs.svg'/></a> <img alt='Aligned' src='../../images/aligned.svg'/></p>
+<p><code>useLayoutEffect</code> is an alternative version of <code>useEffect</code> that fires after the component runs its render function, but before the Roblox <code>Instance</code> hierarchy is reconciled with the new properties.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Use this hook sparingly. While <code>useEffect</code> runs asynchronously after a render operation is completed, <code>useLayoutEffect</code> runs <em>during</em> an update in between rendering and reconciliation: this can introduce performance issues if used carelessly.</p>
+<p>In React JS, <code>useLayoutEffect</code> is most often used to measure and position elements before the browser repaints them. It's not yet clear how this use case translates to Roblox usage, and this hook should be used with caution until performance is investigated in detail and best practices emerge.</p>
+</div>
+<h3 id="reactusebinding"><code>React.useBinding</code><a class="headerlink" href="#reactusebinding" title="Permanent link">&para;</a></h3>
+<p><img alt='Roblox' src='../../images/roblox.svg'/></p>
+<p>A hook introduced in React Lua that creates a <code>Binding</code> object. Bindings are isolated containers that automatically update. Creates and returns a binding and its associated updater function as multiple return values, <a href="#reactusestate">similar to <code>useState</code></a>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">DisplaysSize</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">absSize</span><span class="p">,</span> <span class="n">setAbsSize</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useBinding</span><span class="p">(</span><span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">Fragment</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ImageLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Image</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">image</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Change</span><span class="p">.</span><span class="n">AbsoluteSize</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">rbx</span><span class="p">)</span>
+                <span class="n">setAbsSize</span><span class="p">(</span><span class="n">rbx</span><span class="p">.</span><span class="n">AbsoluteSize</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="n">absSize</span><span class="p">:</span><span class="n">map</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="kr">return</span> <span class="s2">&quot;X = &quot;</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">X</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&quot;; Y = &quot;</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">Y</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>A <code>Binding</code> has the following API:</p>
+<h4 id="getvalue"><code>getValue</code><a class="headerlink" href="#getvalue" title="Permanent link">&para;</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using <code>getValue</code> inside a component's <code>render</code> method is likely to result in using stale values! Using the unwrapped value directly won't allow React to subscribe to a binding's updates. To guarantee that a bound value will update, use the binding itself for your prop value or use the <code>map</code> method to map the value to a new one.</p>
+</div>
+<p>Returns the internal value of the binding. This is helpful when updating a binding relative to its current value.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">UpdateOnClick</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">count</span><span class="p">,</span> <span class="n">setCount</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useBinding</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="n">count</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+            <span class="n">setCount</span><span class="p">(</span><span class="n">count</span><span class="p">:</span><span class="n">getValue</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="kr">end</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h4 id="map"><code>map</code><a class="headerlink" href="#map" title="Permanent link">&para;</a></h4>
+<p>Returns a new binding that maps the existing binding's value to something else. For example, <code>map</code> can be used to transform an animation progress value like <code>0.4</code> into a property that can be consumed by a Roblox Instance like <code>UDim2.new(0.4, 0, 1, 0)</code>.</p>
+<p>In function components, the <code>useBinding</code> hook provides equivalent functionality, and guarantees that it will return the same binding and updater objects on subsequent calls (just like <code>useRef</code> does).</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">UpdateOnClick</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">count</span><span class="p">,</span> <span class="n">setCount</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useBinding</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="n">count</span><span class="p">:</span><span class="n">map</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="kr">return</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;Clicked %d times&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="kr">end</span><span class="p">),</span>
+        <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+            <span class="n">setCount</span><span class="p">(</span><span class="n">count</span><span class="p">:</span><span class="n">getValue</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="kr">end</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="reactprofiler"><code>React.Profiler</code><a class="headerlink" href="#reactprofiler" title="Permanent link">&para;</a></h2>
+<p>Refer to <a href="https://beta.reactjs.org/reference/react/Profiler">React Profiler API documentation</a>.</p>
+<h2 id="reactstrictmode"><code>React.StrictMode</code><a class="headerlink" href="#reactstrictmode" title="Permanent link">&para;</a></h2>
+<p>Refer to <a href="https://beta.reactjs.org/reference/react/StrictMode">React StrictMode API documentation</a>.</p>
+<h2 id="reactcreatemutablesource"><code>React.createMutableSource</code><a class="headerlink" href="#reactcreatemutablesource" title="Permanent link">&para;</a></h2>
+<p>Refer to <a href="https://github.com/reactjs/rfcs/pull/147">relevant React RFC</a>.</p>
+<h2 id="reactusemutablesource"><code>React.useMutableSource</code><a class="headerlink" href="#reactusemutablesource" title="Permanent link">&para;</a></h2>
+<p>Refer to <a href="https://github.com/reactjs/rfcs/pull/147">relevant React RFC</a>.</p>
+<h2 id="roblox-and-luau">Roblox and Luau<a class="headerlink" href="#roblox-and-luau" title="Permanent link">&para;</a></h2>
+<p>The <code>React</code> package shipped from React Lua includes certain APIs designed specifically to account for nuances of the Luau language and to more easily leverage Roblox engine features.</p>
+<p>These APIs are unique to React Lua and do not have equivalents in React JS.</p>
+<h3 id="reactnone"><code>React.None</code><a class="headerlink" href="#reactnone" title="Permanent link">&para;</a></h3>
+<p><img alt='Roblox' src='../../images/roblox.svg'/></p>
+<p>A placeholder value that can be used to remove fields from a table (by changing the value to nil) when merging tables. This allows state fields to be nil-able despite lua treating table fields with <code>nil</code> values as semantically equivalent to absent fields.</p>
+<p><code>React.None</code> can be used to remove values from React class component state via these uses:</p>
+<ul>
+<li>When returning a table from the updater function passed to a class component's <a href=""><code>setState</code></a> method
+    <div class="highlight"><pre><span></span><code><span class="n">self</span><span class="p">:</span><span class="n">setState</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">_prevState</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="p">{</span> <span class="n">myStateValue</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">None</span> <span class="p">}</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div></li>
+<li>When passing a table directly to a class component's <code>setState</code> method
+    <div class="highlight"><pre><span></span><code><span class="n">self</span><span class="p">:</span><span class="n">setState</span><span class="p">({</span> <span class="n">myStateValue</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">None</span> <span class="p">})</span>
+</code></pre></div></li>
+<li>When returning a table from a component's <code>getDerivedStateFromProps</code> implementation
+    <div class="highlight"><pre><span></span><code><span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">.</span><span class="nf">getDerivedStateFromProps</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="p">{</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="kr">if</span> <span class="n">props</span><span class="p">.</span><span class="n">someCondition</span>
+            <span class="kr">then</span> <span class="n">state</span><span class="p">.</span><span class="n">value</span>
+            <span class="kr">else</span> <span class="n">React</span><span class="p">.</span><span class="n">None</span>
+    <span class="p">}</span>
+<span class="kr">end</span>
+</code></pre></div></li>
+</ul>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p><code>React.None</code> should be used sparingly; component state fields can generally be expressed more clearly with enumerated values or reasonable defaults than with nil-able values.</p>
+<p>Additionally, <code>React.None</code> is not intended to be used as a prop value, and may be reverted to nil by internal React logic in some cases if it's provided as one.</p>
+</div>
+<h3 id="reactevent"><code>React.Event</code><a class="headerlink" href="#reactevent" title="Permanent link">&para;</a></h3>
+<p><img alt='Roblox' src='../../images/roblox.svg'/></p>
+<p>A special key that can be used to interact with <a href="https://developer.roblox.com/en-us/api-reference/function/Instance/GetPropertyChangedSignal">events on Roblox Instance objects</a>. Index into <code>React.Event</code> with the name of an Event that's defined for the given host Instance class in order to get a special prop key that connects to that event:</p>
+<div class="highlight"><pre><span></span><code><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ImageButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">MouseButton1Click</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">rbx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">rbx</span><span class="p">,</span> <span class="s2">&quot;clicked at position&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">,</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>The event connection will be automatically created when the host element is mounted and automatically disconnected when the element is unmounted.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Event callbacks receive the Roblox Instance as the first parameter, followed by any parameters yielded by the event.</p>
+</div>
+<h3 id="reactchange"><code>React.Change</code><a class="headerlink" href="#reactchange" title="Permanent link">&para;</a></h3>
+<p><img alt='Roblox' src='../../images/roblox.svg'/></p>
+<p>A special key that can be used to interact with the <a href="https://developer.roblox.com/en-us/api-reference/function/Instance/GetPropertyChangedSignal"><code>GetPropertyChangedSignal</code> method on Roblox Instance objects</a>. Index into <code>React.Change</code> with the name of the property to get a special prop key that connects to the change signal of an Instance with that property:</p>
+<div class="highlight"><pre><span></span><code><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ScrollingFrame&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Change</span><span class="p">.</span><span class="n">CanvasPosition</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">rbx</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ScrollingFrame scrolled to&quot;</span><span class="p">,</span> <span class="n">rbx</span><span class="p">.</span><span class="n">CanvasPosition</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">,</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>The change signal connection will be automatically created when the host element is mounted and automatically disconnected when the element is unmounted.</p>
+<h3 id="reacttag"><code>React.Tag</code><a class="headerlink" href="#reacttag" title="Permanent link">&para;</a></h3>
+<p><img alt='Roblox' src='../../images/roblox.svg'/></p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">button</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Tag</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;confirm-button&quot;</span>
+    <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Confirm&quot;</span><span class="p">,</span>
+    <span class="c1">-- ...</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>A special key that can be used to apply <a href="https://developer.roblox.com/en-us/api-reference/class/CollectionService"><code>CollectionService</code></a> tags to a host component.</p>
+<p>Multiple tags can be provided as a single space-delimited string. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Tag</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;some-tag some-other-tag&quot;</span>
+</code></pre></div>
+<p>will apply "some-tag" and "some-other-tag" as <code>CollectionService</code> tags to the underlying Roblox Instance when the component is mounted.</p>
+<h3 id="reactcreatebinding"><code>React.createBinding</code><a class="headerlink" href="#reactcreatebinding" title="Permanent link">&para;</a></h3>
+<p><img alt='Roblox' src='../../images/roblox.svg'/></p>
+<p>Creates a binding object. This function can be used outside of React function components and works similarly to <a href="#reactusebinding"><code>useBinding</code></a>.</p>
+<p>Use <code>createBinding</code> when you'd like to use a binding within a class component:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">DisplaysSize</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;DisplaysSize&quot;</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nc">DisplaysSize</span><span class="p">:</span><span class="nf">init</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">absSize</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">setAbsSize</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createBinding</span><span class="p">(</span><span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">DisplaysSize</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">Fragment</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ImageLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">.</span><span class="n">image</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Change</span><span class="p">.</span><span class="n">AbsoluteSize</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">rbx</span><span class="p">)</span>
+                <span class="n">self</span><span class="p">.</span><span class="n">setAbsSize</span><span class="p">(</span><span class="n">rbx</span><span class="p">.</span><span class="n">AbsoluteSize</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">absSize</span><span class="p">:</span><span class="n">map</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="kr">return</span> <span class="s2">&quot;X = &quot;</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">X</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&quot;; Y = &quot;</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">Y</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactjoinbindings"><code>React.joinBindings</code><a class="headerlink" href="#reactjoinbindings" title="Permanent link">&para;</a></h3>
+<p><img alt='Roblox' src='../../images/roblox.svg'/></p>
+<p>Combines a map or array of bindings into a single binding. The new binding's value will have the same keys as the input table of bindings. Each time any of the input bindings update, the resulting binding will update as well with a new value.</p>
+<p>This capability can be used to create a single binding value that responds to changes from several input bindings:
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">Flex</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">aSize</span><span class="p">,</span> <span class="n">setASize</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useBinding</span><span class="p">(</span><span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">())</span>
+    <span class="kd">local</span> <span class="n">bSize</span><span class="p">,</span> <span class="n">setBSize</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useBinding</span><span class="p">(</span><span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">())</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span>
+        <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="n">Size</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">joinBindings</span><span class="p">({</span><span class="n">aSize</span><span class="p">,</span> <span class="n">bSize</span><span class="p">}):</span><span class="n">map</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
+                <span class="kd">local</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+
+                <span class="kr">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">size</span> <span class="kr">in</span> <span class="n">sizes</span> <span class="kr">do</span>
+                    <span class="n">sum</span> <span class="o">+=</span> <span class="n">size</span>
+                <span class="kr">end</span>
+
+                <span class="kr">return</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sum</span><span class="p">.</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sum</span><span class="p">.</span><span class="n">Y</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Change</span><span class="p">.</span><span class="n">AbsoluteSize</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+                <span class="n">setASize</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">Size</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+            <span class="n">Position</span> <span class="o">=</span> <span class="n">aSize</span><span class="p">:</span><span class="n">map</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+                <span class="kr">return</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">Y</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">),</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Change</span><span class="p">.</span><span class="n">AbsoluteSize</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+                <span class="n">setBSize</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">Size</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,849 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jsdotlua.github.io/react-lua/align-files-guide/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Aligning files guide - React Lua Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#aligning-files-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="React Lua Documentation" class="md-header__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            React Lua Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Aligning files guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="React Lua Documentation" class="md-nav__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    React Lua Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deviations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deviations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Migrating From Legacy Roact
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Migrating From Legacy Roact
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/minimum-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Minimum Requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/upgrading-to-react-lua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Add React Lua Dependency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/adopt-new-features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adopt New Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/convert-legacy-conventions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Convert Legacy Conventions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/react/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    React
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/react-roblox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReactRoblox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/roact-compat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RoactCompat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/additional-libraries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Additional Libraries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmarks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tools-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tools installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aligning-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aligning process
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snippets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Snippets
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="aligning-files-guide">Aligning files guide<a class="headerlink" href="#aligning-files-guide" title="Permanent link">&para;</a></h1>
+<p>We are aligning files by going through them module by module.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>In this guide we assume that you have the following project cloned inside of the common directory:</p>
+<ul>
+<li>js-to-lua <a href="https://github.com/roblox/js-to-lua">repo link</a></li>
+<li>checkout <code>main</code> branch</li>
+<li>react-lua <a href="https://github.com/jsdotlua/react-lua">repo link</a></li>
+<li>your working branch on top of <code>main</code> branch</li>
+<li>react <a href="https://github.com/facebook/react">repo link</a></li>
+<li>checkout <code>v17.0.2</code> tag</li>
+</ul>
+<h2 id="tools-installation">Tools installation<a class="headerlink" href="#tools-installation" title="Permanent link">&para;</a></h2>
+<p>First follow the <a href="https://github.com/Roblox/js-to-lua/blob/main/README.md">README</a> instructions to set up js-to-lua. The easiest way is to build the tool by running <code>npx nx build convert-js-to-lua</code> (from within <code>js-to-lua</code> directory)</p>
+<h2 id="aligning-process">Aligning process<a class="headerlink" href="#aligning-process" title="Permanent link">&para;</a></h2>
+<p>I will show you the process based on the <code>react-devtools-shared</code> module. All the commands shown below are to be executed from <code>js-to-lua</code> directory</p>
+<p>Depending on the size of the module and/or your preference you can either align all the files at once or do it file by file. In order to convert the whole module at once you can run the following command</p>
+<div class="highlight"><pre><span></span><code>dist/apps/convert-js-to-lua/index.js<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span>../react/packages/react-devtools-shared/src/**/*.js<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>../react-lua/modules/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--rootDir<span class="w"> </span>../react/packages<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--plugin<span class="o">=</span>knownImports<span class="w"> </span>--plugin<span class="o">=</span>jestGlobals<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--babelTransformConfig<span class="w"> </span>babel-flow-transform-react.config.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--babelConfig<span class="w"> </span>babel-flow.config.json
+</code></pre></div>
+<p>This will run the conversion on all the files in the <code>react-devtools-shared</code> which in our case is a bit too much as this module contains a lot of files that haven't been converted yet. That's why for this particular module I chose to go file by file:</p>
+<div class="highlight"><pre><span></span><code>dist/apps/convert-js-to-lua/index.js<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span>../react/packages/react-devtools-shared/src/&lt;path_to_a_js_file&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>../react-lua/modules/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--rootDir<span class="w"> </span>../react/packages<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--plugin<span class="o">=</span>knownImports<span class="w"> </span>--plugin<span class="o">=</span>jestGlobals<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--babelTransformConfig<span class="w"> </span>babel-flow-transform-react.config.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--babelConfig<span class="w"> </span>babel-flow.config.json
+</code></pre></div>
+<p>eg.</p>
+<div class="highlight"><pre><span></span><code>dist/apps/convert-js-to-lua/index.js<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span>../react/packages/react-devtools-shared/src/utils.js<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>../react-lua/modules/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--rootDir<span class="w"> </span>../react/packages<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--plugin<span class="o">=</span>knownImports<span class="w"> </span>--plugin<span class="o">=</span>jestGlobals<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--babelTransformConfig<span class="w"> </span>babel-flow-transform-react.config.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--babelConfig<span class="w"> </span>babel-flow.config.json
+</code></pre></div>
+<p>After we run the automatic conversion the file will contain a lot of changes. Please additionally run <code>stylua module</code> in the react-lua directory to make sure all the files are converted according to the StyLua configuration.</p>
+<p>Now our job is to capture the deviations that the original code has made and mark them with appropriate <code>ROBLOX deviation START</code> / <code>ROBLOX deviation END</code> comments.</p>
+<p>There are some special cases which fast-follow treats separately and you don't need to wrap them in a deviation comment:</p>
+<ul>
+<li>upstream comment - with the command shown above there is a small issue with part of the upstream comment not being included. In this case we need to add the missing <code>packages/</code> part of the path.
+  <img alt="Upstream comment diff" src="../diff-upstream-comment.png" /></li>
+<li>Packages - js-to-lua can't automatically assign a proper path to <code>Packages</code> variable right now. However, fast-follow will treat conflicts resulting from this line separately so there is no need to wrap it with deviation comment.
+  <img alt="Packages local diff" src="../diff-packages.png" /></li>
+</ul>
+<p>We've added a bunch of improvements in js-to-lua to the output code so be mindful that new types might be better left as is straight from the conversion. Also you might encounter a lot of diff when it comes to class conversion. I suggest leaving the class conversion structure as is and only mark deviation inside of the class's methods body.</p>
+<p>For example the following diff should not be a deviation anymore:
+<img alt="Spread type diff" src="../diff-spread-flow-type-no-deviation-anymore.png" /></p>
+<p>And with class conversion the following example shows how js-to-lua handles class "methods" which are defined as arrow functions. The body of the function might still need to be marked with deviation blocks but the structure should most probably stay the same</p>
+<p><img alt="Class arrow function new conversion" src="../diff-class-arrow-function-method-new.png" /> <img alt="Class arrow function old conversion" src="../diff-class-arrow-function-method-old.png" /></p>
+<p>As for the actual deviations that need to be marked let's look at the following example. We can see that the call to <code>Boolean.toJSBoolean</code> is unnecessary in this case so we can comment-out that line, wrap it with <code>-- ROBLOX deviation START:</code> and <code>-- ROBLOX deviation END</code> comments and follow the commented out line with the proper implementation.</p>
+<p><img alt="Bridge shutdown method's diff before marking a deviation" src="../diff-bridge-shutdown-method-before.png" />
+<img alt="Bridge shutdown method's diff after marking a deviation" src="../diff-bridge-shutdown-method-after.png" /></p>
+<p>In order to make that process a little bit easier we've created a set of VSCode snippets that you can use - <a href="#snippets">link</a> to snippets section.</p>
+<h2 id="snippets">Snippets<a class="headerlink" href="#snippets" title="Permanent link">&para;</a></h2>
+<p>You can configure your snippets by invoking <code>Snippets: Configure User Snippets</code> command from VSCode's command pallette and choosing <code>.lua</code> extension. Below you can find all of the snippets we've used.</p>
+<p>In order to use the snippets you should configure a hot key (keyboard shortcut) for <code>Snippets: Insert Snippet</code> action. Then you can just select a piece of code that you need to mark with deviation, press the hot key and choose the appropriate snippet:</p>
+<ul>
+<li><code>deviation-block</code> - will comment out the currently selected code, wrap it with deviation START/END comments and insert a duplicated version of the same code for you to tweak</li>
+<li><code>deviation-block-skipped</code> - will do the same as <code>deviation-block</code> but won't insert a duplicated code as it's meant for blocks of code that should be skipped</li>
+<li><code>deviation-block-add</code> - will wrap the currently selected block of code with deviation START/END comments and allow you to put an additional code inside. It's intended for some additional blocks of code that were not included in the original conversion. We use a convention of <code>-- ROBLOX deviation START: add &lt;your_description&gt;</code> to easily distinguish added and changes sections</li>
+<li><code>deviation-start</code> and <code>deviation-end</code> - will only insert a proper deviation start/end comment. We use those to avoid typos.</li>
+</ul>
+<p>There are couple more utility snippets for special cases that were occurring more often:</p>
+<ul>
+<li><code>deviation-block-type</code> - it will wrap a block with deviation comments, comment out the block and insert a duplicate but change <code>local</code> for <code>type</code>. It's useful when js-to-lua imported locals from a module when it should actually import types</li>
+<li><code>deviation-line</code> and <code>deviation-line-skipped</code> are similar to their block equivalents but will use the current line instead of selected block of code</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Deviation block - start&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-start&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-- ROBLOX deviation START: ${0:description}&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation start marker&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Deviation block - end&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-end&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-- ROBLOX deviation END&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation end marker&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Deviation block&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-block&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation START: ${0:changed because}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;-- ${TM_SELECTED_TEXT/\n/\n-- /g}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;$TM_SELECTED_TEXT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation END&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation end marker&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Deviation block - type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-block-type&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation START: ${0:import as type instead of local}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;-- ${TM_SELECTED_TEXT/\n/\n-- /g}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;${TM_SELECTED_TEXT/^local /type /gm}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation END&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation end marker&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Deviation block - add&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-block-add&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation START: ${0:add some code}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;${TM_SELECTED_TEXT}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;${1}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation END&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation end marker&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Deviation block - skip&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-block-skipped&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation START: ${0:changed because}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;-- ${TM_SELECTED_TEXT/\n/\n-- /g}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;-- ROBLOX deviation END&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation end marker&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Deviation line&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-line&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;-- ROBLOX deviation START: ${0:changed because}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-- $TM_CURRENT_LINE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;$TM_CURRENT_LINE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-- ROBLOX deviation END&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation end marker&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Deviation line - skipped&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deviation-line-skipped&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;-- ROBLOX deviation START: ${0:changed because}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-- $TM_CURRENT_LINE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-- ROBLOX deviation END&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Roblox deviation end marker&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>

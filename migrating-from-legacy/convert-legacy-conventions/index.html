@@ -1,0 +1,1388 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jsdotlua.github.io/react-lua/migrating-from-legacy/convert-legacy-conventions/">
+      
+      
+        <link rel="prev" href="../adopt-new-features/">
+      
+      
+        <link rel="next" href="../../api-reference/react/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Convert Legacy Conventions - React Lua Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#updating-conventions-and-apis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="React Lua Documentation" class="md-header__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            React Lua Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Convert Legacy Conventions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="React Lua Documentation" class="md-nav__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    React Lua Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deviations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deviations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Migrating From Legacy Roact
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Migrating From Legacy Roact
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../minimum-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Minimum Requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrading-to-react-lua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Add React Lua Dependency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adopt-new-features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adopt New Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Convert Legacy Conventions
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Convert Legacy Conventions
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Conversions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Conversions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mounting-updating-and-unmounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mounting, Updating, and Unmounting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mounting, Updating, and Unmounting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-lifecycle-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component Lifecycle Names
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reserved-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reserved Keys
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reserved Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contextconsumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context.Consumer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context.Consumer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Fragment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.Fragment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactrobloxcreateportal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReactRoblox.createPortal
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReactRoblox.createPortal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roactonechild" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roact.oneChild
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eliminating-roactcompat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eliminating RoactCompat
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/react/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    React
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/react-roblox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReactRoblox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/roact-compat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RoactCompat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/additional-libraries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Additional Libraries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bench/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmarks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Conversions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Conversions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mounting-updating-and-unmounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mounting, Updating, and Unmounting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mounting, Updating, and Unmounting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-lifecycle-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component Lifecycle Names
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reserved-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reserved Keys
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reserved Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contextconsumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context.Consumer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context.Consumer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Fragment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="React.Fragment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactrobloxcreateportal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReactRoblox.createPortal
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReactRoblox.createPortal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roact_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legacy Roact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-lua_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Lua
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roactonechild" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roact.oneChild
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eliminating-roactcompat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eliminating RoactCompat
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="updating-conventions-and-apis">Updating Conventions and APIs<a class="headerlink" href="#updating-conventions-and-apis" title="Permanent link">&para;</a></h1>
+<p>Almost all legacy Roact code can be patched to React Lua using the <code>RoactCompat</code> library. However, while <code>RoactCompat</code> is backwards compatible with with Legacy Roact, it does not export new React Lua features like hooks.</p>
+<p>When writing code exclusively for React Lua, you should access the primary APIs of React Lua through the <code>React</code> and <code>ReactRoblox</code> APIs, instead of through <code>RoactCompat</code>.</p>
+<ul>
+<li><code>React</code> exposes:<ul>
+<li>some core legacy Roact APIs unchanged (<code>createElement</code>, <code>createContext</code>, <code>Component</code>, <code>Change</code>/<code>Event</code>, etc.)</li>
+<li>some React-JS-aligned updates to other legacy Roact APIs (<code>createFragment</code> -&gt; <code>Fragment</code>, <code>oneChild</code> -&gt; <code>Children.only</code>, etc.)</li>
+<li>and several brand new APIs (<code>useState</code>, <code>useRef</code>, <code>memo</code>, <code>cloneElement</code>, etc.)</li>
+</ul>
+</li>
+<li><code>ReactRoblox</code> exposes:<ul>
+<li>the <code>createRoot</code> API, which replaces the <code>mount</code>/<code>update</code>/<code>unmount</code> APIs</li>
+<li>the <code>createPortal</code> API, which replaces the <code>Roact.Portal</code> component</li>
+</ul>
+</li>
+</ul>
+<p>To reduce confusion, try to avoid using <code>RoactCompat</code> and <code>React</code>/<code>ReactRoblox</code> in the same file. If you are adding new React features to code that uses <code>RoactCompat</code> syntax, take the following steps to align conventions:</p>
+<ol>
+<li>Replace the <code>Roact</code> import with the <code>React</code> import</li>
+<li>Swap all uses of <code>Roact</code> with <code>React</code></li>
+<li>If the module uses any <code>Roact.Portal</code> instances, import the <code>ReactRoblox</code> package and replace them with <code>ReactRoblox.createPortal</code></li>
+<li>If the module uses <code>mount</code>/<code>update</code>/<code>unmount</code>, import the <code>ReactRoblox</code> package to replace them<ul>
+<li>Replace <code>Roact.mount</code> with <code>ReactRoblox.createRoot</code> followed by <code>root:render</code></li>
+<li>Replace <code>Roact.update</code> with subsequent calls to <code>root:render</code></li>
+<li>Replace <code>Roact.unmount</code> by calling <code>root:unmount</code></li>
+</ul>
+</li>
+<li>Begin adopting new features exported from the <code>React</code> package as needed</li>
+</ol>
+<h2 id="api-conversions">API Conversions<a class="headerlink" href="#api-conversions" title="Permanent link">&para;</a></h2>
+<p>React Lua adopts the naming conventions and API shape of React JS wherever possible, with small deviations made to accommodate the distinct features of the Luau language. Using new naming conventions and APIs helps to align with the React JS ecosystem and reduce friction and mental overhead when troubleshooting or browsing documentation.</p>
+<p><strong>Even though React Lua is designed to be largely compatible with legacy Roact, updating these conventions when adopting new features is highly encouraged.</strong></p>
+<h3 id="mounting-updating-and-unmounting">Mounting, Updating, and Unmounting<a class="headerlink" href="#mounting-updating-and-unmounting" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact uses three functions to manage the lifecycle of an entire Roact tree composed of numerous components. This is typically the entry point into Roact-managed UI.</p>
+<p>In React Lua, the equivalent mechanisms use a new concept called a "root" to more clearly encapsulate this behavior.</p>
+<ul>
+<li><code>ReactRoblox.createRoot</code></li>
+<li><code>ReactRoblox.createBlockingRoot</code></li>
+<li><code>ReactRoblox.createLegacyRoot</code></li>
+</ul>
+<p>Since the root needs to access a Roblox <code>Instance</code> in order to attach to it, these functions are exported through the <code>ReactRoblox</code> package, also known as a "renderer". A renderer takes the abstract descriptions of UI generated by React components and turns them into a concrete UI element tree. You can think of the <code>ReactRoblox</code> package as the semantic equivalent of the <code>react-dom</code> package in the React JS ecosystem.</p>
+<h4 id="legacy-roact">Legacy Roact<a class="headerlink" href="#legacy-roact" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">PlayerGui</span> <span class="o">=</span> <span class="n">game</span><span class="p">:</span><span class="n">GetService</span><span class="p">(</span><span class="s2">&quot;Players&quot;</span><span class="p">).</span><span class="n">LocalPlayer</span><span class="p">.</span><span class="n">PlayerGui</span>
+<span class="kd">local</span> <span class="n">Roact</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">Roact</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">roactTree</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">mount</span><span class="p">(</span><span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">,</span>
+<span class="p">},</span> <span class="n">PlayerGui</span><span class="p">)</span>
+
+<span class="n">task</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">roactTree</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">roactTree</span><span class="p">,</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Hello Roblox!&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="n">task</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">Roact</span><span class="p">.</span><span class="n">unmount</span><span class="p">(</span><span class="n">roactTree</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="react-lua">React Lua<a class="headerlink" href="#react-lua" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">PlayerGui</span> <span class="o">=</span> <span class="n">game</span><span class="p">:</span><span class="n">GetService</span><span class="p">(</span><span class="s2">&quot;Players&quot;</span><span class="p">).</span><span class="n">LocalPlayer</span><span class="p">.</span><span class="n">PlayerGui</span>
+<span class="hll"><span class="kd">local</span> <span class="n">React</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">React</span><span class="p">)</span>
+</span><span class="hll"><span class="kd">local</span> <span class="n">ReactRoblox</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">ReactRoblox</span><span class="p">)</span>
+</span>
+<span class="hll"><span class="c1">-- React Lua roots will take full ownership of the instance provided to them,</span>
+</span><span class="hll"><span class="c1">-- so we should not create a root using PlayerGui directly</span>
+</span><span class="hll"><span class="kd">local</span> <span class="n">container</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Folder&quot;</span><span class="p">)</span>
+</span><span class="hll"><span class="n">container</span><span class="p">.</span><span class="n">Parent</span> <span class="o">=</span> <span class="n">PlayerGui</span>
+</span>
+<span class="hll"><span class="kd">local</span> <span class="n">root</span> <span class="o">=</span> <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">createRoot</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+</span><span class="hll"><span class="n">root</span><span class="p">:</span><span class="n">render</span><span class="p">(</span><span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span>    <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">,</span>
+<span class="hll"><span class="p">})</span>
+</span>
+<span class="n">task</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="hll"><span class="n">root</span><span class="p">:</span><span class="n">render</span><span class="p">(</span><span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span>    <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Hello Roblox!&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="n">task</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="hll"><span class="n">root</span><span class="p">:</span><span class="n">render</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code>createBlockingRoot</code> and <code>createLegacyRoot</code> functions will opt out of concurrent rendering, a feature of React Lua that allows smooth, scalable UI by dividing units of work across multiple frames when large amounts of UI changes are needed. We always recommend using <code>createRoot</code> unless you know what you're doing.</p>
+</div>
+<h3 id="component-lifecycle-names">Component Lifecycle Names<a class="headerlink" href="#component-lifecycle-names" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact used simplified names for component lifecycle functions to alleviate redundancy when defining lifecycle methods with syntax like <code>function MyComponent:didMount() ... end</code>.</p>
+<p>However, React Lua prefers to align as close as possible to React JS to reduce friction when referring to resources from the React JS ecosystem (questions, tutorials, examples, documentation, etc.). It's recommended to update class component lifecycle names to match React JS.</p>
+<ul>
+<li><code>didMount</code> ➡ <code>componentDidMount</code></li>
+<li><code>shouldUpdate</code> ➡ <code>shouldComponentUpdate</code></li>
+<li><code>didUpdate</code> ➡ <code>componentDidUpdate</code></li>
+<li><code>didMount</code> ➡ <code>componentDidMount</code></li>
+<li><code>willUpdate</code> ➡ <code>UNSTABLE_componentWillUpdate</code><ul>
+<li>It's recommended to use the <code>UNSTABLE_</code> prefix here, since the <code>componentWillUpdate</code> method is deprecated</li>
+</ul>
+</li>
+<li><code>willUnmount</code> ➡ <code>componentWillUnmount</code></li>
+</ul>
+<h3 id="reserved-keys">Reserved Keys<a class="headerlink" href="#reserved-keys" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact went out of its way to let all prop keys be valid for component developers to use. In React Lua, a small subset of prop keys are reserved for internal use to make them simple to provide.</p>
+<ul>
+<li><code>[Roact.Ref]</code> becomes <code>ref</code></li>
+<li><code>[Roact.Children]</code> becomes <code>children</code></li>
+</ul>
+<p>You can index <code>props.children</code> to refer to the children provided to a component, and use <code>ref</code> as a key to an element to provide a ref to it.</p>
+<h4 id="legacy-roact_1">Legacy Roact<a class="headerlink" href="#legacy-roact_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">FocusButton</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;FocusButton&quot;</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nc">FocusButton</span><span class="p">:</span><span class="nf">init</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createRef</span><span class="p">()</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">FocusButton</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Button&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Size</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">.</span><span class="n">Size</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Ref</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">ref</span>
+    <span class="p">},</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Children</span><span class="p">])</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">FocusButton</span><span class="p">:</span><span class="nf">didMount</span><span class="p">()</span>
+    <span class="n">GuiService</span><span class="p">.</span><span class="n">SelectedObject</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">ref</span><span class="p">.</span><span class="n">current</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h4 id="react-lua_1">React Lua<a class="headerlink" href="#react-lua_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">FocusButton</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;FocusButton&quot;</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nc">FocusButton</span><span class="p">:</span><span class="nf">init</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createRef</span><span class="p">()</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">FocusButton</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Button&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Size</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">.</span><span class="n">Size</span><span class="p">,</span>
+<span class="hll">        <span class="n">ref</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">ref</span>
+</span><span class="hll">    <span class="p">},</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+</span><span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">FocusButton</span><span class="p">:</span><span class="nf">didMount</span><span class="p">()</span>
+    <span class="n">GuiService</span><span class="p">.</span><span class="n">SelectedObject</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">ref</span><span class="p">.</span><span class="n">current</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="contextconsumer">Context.Consumer<a class="headerlink" href="#contextconsumer" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact treats the special <code>Context.Consumer</code> component generated by <code>createContext</code> more like a typical component with a single prop (<code>render</code>) as its prop interface. React JS, on the other hand, uses a slightly abbreviated structure.</p>
+<p>The <code>Context.Consumer</code> component expects <em>no</em> props and a <em>single</em> child, where the child is the same mapping function that would be provided as the <code>render</code> prop in legacy Roact.</p>
+<h4 id="legacy-roact_2">Legacy Roact<a class="headerlink" href="#legacy-roact_2" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">ThemeContext</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createContext</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+
+<span class="c1">-- ...</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">Button</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">ThemeContext</span><span class="p">.</span><span class="n">Consumer</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">render</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">theme</span><span class="p">)</span>
+            <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="n">BackgroundColor3</span> <span class="o">=</span> <span class="n">theme</span><span class="p">.</span><span class="n">ButtonColor</span><span class="p">,</span>
+                <span class="n">Text</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">text</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">onActivated</span><span class="p">,</span>
+            <span class="p">})</span>
+        <span class="kr">end</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h4 id="react-lua_2">React Lua<a class="headerlink" href="#react-lua_2" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">ThemeContext</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createContext</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+
+<span class="c1">-- ...</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">Button</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+<span class="hll">    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">ThemeContext</span><span class="p">.</span><span class="n">Consumer</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span>
+</span><span class="hll">        <span class="kr">function</span><span class="p">(</span><span class="n">theme</span><span class="p">)</span>
+</span>            <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="n">BackgroundColor3</span> <span class="o">=</span> <span class="n">theme</span><span class="p">.</span><span class="n">ButtonColor</span><span class="p">,</span>
+                <span class="n">Text</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">text</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">onActivated</span><span class="p">,</span>
+            <span class="p">})</span>
+        <span class="kr">end</span>
+<span class="hll">    <span class="p">)</span>
+</span><span class="kr">end</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>React Lua has a compatibility layer that will allow either structure to work as expected. If you'd like to see warnings that will help you migrate, enable the <a href="../../configuration/#compatwarnings"><code>__COMPAT_WARNINGS__</code> global</a>.</p>
+</div>
+<h3 id="reactfragment">React.Fragment<a class="headerlink" href="#reactfragment" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact treats fragments as a special kind of rendered object, distinct from a Roact element, using the <code>Roact.createFragment</code> function.</p>
+<p>In React Lua, however, fragments are nothing more than a special component type. Your component should return a single element with the <code>React.Fragment</code> component type, with the children provided as the element's children.</p>
+<h4 id="legacy-roact_3">Legacy Roact<a class="headerlink" href="#legacy-roact_3" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">LabeledButton</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createFragment</span><span class="p">({</span>
+        <span class="n">Button</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ImageButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Image</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">buttonIcon</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">Label</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">labelText</span><span class="p">,</span>
+        <span class="p">}),</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h4 id="react-lua_3">React Lua<a class="headerlink" href="#react-lua_3" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">LabeledButton</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+<span class="hll">    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">Fragment</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="p">{</span>
+</span>        <span class="n">Button</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ImageButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Image</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">buttonIcon</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">Label</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">labelText</span><span class="p">,</span>
+        <span class="p">}),</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reactrobloxcreateportal">ReactRoblox.createPortal<a class="headerlink" href="#reactrobloxcreateportal" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact uses a special <code>Roact.Portal</code> component to represent a portal. In React Lua, we align with upstream and export the <code>ReactRoblox.createPortal</code> function.</p>
+<p>Portals are considered to be a feature with renderer-specific functionality since they attach directly to a host instance. Any APIs that interact directly with Roblox Instances will be exported via <code>ReactRoblox</code> in order to maintain the renderer abstraction.</p>
+<h4 id="legacy-roact_4">Legacy Roact<a class="headerlink" href="#legacy-roact_4" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">PlayerGui</span> <span class="o">=</span> <span class="n">game</span><span class="p">:</span><span class="n">GetService</span><span class="p">(</span><span class="s2">&quot;Players&quot;</span><span class="p">).</span><span class="n">LocalPlayer</span><span class="p">.</span><span class="n">PlayerGui</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">Modal</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">Roact</span><span class="p">.</span><span class="n">Portal</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">PlayerGui</span><span class="p">,</span>
+    <span class="p">},</span> <span class="p">{</span>
+        <span class="n">Modal</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ScreenGui&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span>
+            <span class="n">Label</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Click me to close!&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">onClose</span><span class="p">,</span>
+            <span class="p">})</span>
+        <span class="p">})</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h4 id="react-lua_4">React Lua<a class="headerlink" href="#react-lua_4" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">PlayerGui</span> <span class="o">=</span> <span class="n">game</span><span class="p">:</span><span class="n">GetService</span><span class="p">(</span><span class="s2">&quot;Players&quot;</span><span class="p">).</span><span class="n">LocalPlayer</span><span class="p">.</span><span class="n">PlayerGui</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">Modal</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+<span class="hll">    <span class="kr">return</span> <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">createPortal</span><span class="p">({</span>
+</span>        <span class="n">Modal</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;ScreenGui&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span>
+            <span class="n">Label</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Click me to close!&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">onClose</span><span class="p">,</span>
+            <span class="p">})</span>
+        <span class="p">})</span>
+<span class="hll">    <span class="p">},</span> <span class="n">PlayerGui</span><span class="p">)</span>
+</span><span class="kr">end</span>
+</code></pre></div>
+<h3 id="roactonechild">Roact.oneChild<a class="headerlink" href="#roactonechild" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact provides an infrequently-used utility function called <code>oneChild</code> that guarantees that the argument provided to it is a table with only one child Roact element. If the provided table contains zero elements or two or more elements, <code>oneChild</code> will throw an error.</p>
+<p>React Lua inherits a somewhat similar function from React JS: <code>React.Children.only</code>. This function will throw an error if the provided argument is not <em>itself</em> a single child element. In other words, it expects a single child instead of a table containing only one child. This can be converted by unwrapping the provided children manually before passing them along to <code>React.Children.only</code>.</p>
+<p>Limiting a component to a single child isn't always necessary. Consider whether your component is capable of supporting an arbitrary number of children after all. In that case, you can simply remove the call to <code>Roact.oneChild</code>.</p>
+<h2 id="eliminating-roactcompat">Eliminating RoactCompat<a class="headerlink" href="#eliminating-roactcompat" title="Permanent link">&para;</a></h2>
+<p>Once you've completed all of the above conversions, you should no longer need to rely on the <code>RoactCompat</code> package in your module. Congratulations, your migration is complete!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1216 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jsdotlua.github.io/react-lua/migrating-from-legacy/adopt-new-features/">
+      
+      
+        <link rel="prev" href="../upgrading-to-react-lua/">
+      
+      
+        <link rel="next" href="../convert-legacy-conventions/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Adopt New Features - React Lua Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adopt-new-features" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="React Lua Documentation" class="md-header__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            React Lua Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Adopt New Features
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="React Lua Documentation" class="md-nav__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    React Lua Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deviations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deviations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Migrating From Legacy Roact
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Migrating From Legacy Roact
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../minimum-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Minimum Requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrading-to-react-lua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Add React Lua Dependency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Adopt New Features
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Adopt New Features
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#asynchronous-rendering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Asynchronous Rendering
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Asynchronous Rendering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactrobloxcreateroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReactRoblox.createRoot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactrobloxact" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReactRoblox.act
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReactRoblox.act">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-use-act" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Use act
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hooks-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hooks Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilities
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactmemo" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.memo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-only-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lua-Only Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lua-Only Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usebinding-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      useBinding Hook
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reacttag" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Tag
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convert-legacy-conventions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Convert Legacy Conventions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/react/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    React
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/react-roblox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReactRoblox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/roact-compat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RoactCompat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/additional-libraries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Additional Libraries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bench/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmarks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#asynchronous-rendering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Asynchronous Rendering
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Asynchronous Rendering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactrobloxcreateroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReactRoblox.createRoot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactrobloxact" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReactRoblox.act
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReactRoblox.act">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-use-act" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Use act
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hooks-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hooks Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilities
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactmemo" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.memo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Children
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-only-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lua-Only Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lua-Only Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usebinding-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      useBinding Hook
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reacttag" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Tag
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="adopt-new-features">Adopt New Features<a class="headerlink" href="#adopt-new-features" title="Permanent link">&para;</a></h1>
+<p>React Lua ships with a number of features new to Roact that have been ported from React JS, in addition to a couple of new capabilities unique to the React in Lua ecosystem.</p>
+<h2 id="asynchronous-rendering">Asynchronous Rendering<a class="headerlink" href="#asynchronous-rendering" title="Permanent link">&para;</a></h2>
+<p>React Lua introduces a paradigm shift to the underlying rendering behavior that allows it to divide work across multiple frames and preserve high framerate and interactivity.</p>
+<p>This behavior is called <a href="https://17.reactjs.org/docs/concurrent-mode-intro.html#what-is-concurrent-mode">Concurrent Mode</a> rendering.</p>
+<p><strong>React Lua will use Concurrent Mode by default in its <code>mount</code> compatibility layer.</strong></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>React Lua is aligned to React JS 17.0.1, which means that it has not inherited any <a href="https://reactjs.org/blog/2022/03/29/react-v18.html#gradually-adopting-concurrent-features">changes to Concurrent Mode described in the React 18 documentation</a>. As we begin to build <em>React Lua</em> 18, we may shift our distinctions similarly. For now, <strong>opting into Concurrent Mode is the best way to get the latest optimizations and ensure that your components are robust.</strong></p>
+</div>
+<h3 id="reactrobloxcreateroot"><code>ReactRoblox.createRoot</code><a class="headerlink" href="#reactrobloxcreateroot" title="Permanent link">&para;</a></h3>
+<p>In legacy Roact, the <a href="https://roblox.github.io/roact/api-reference/#roactmount"><code>Roact.mount</code></a> function is used to render a component tree. In React JS 17 and older, the primary entry-point for rendering a component tree is <a href="https://reactjs.org/docs/react-dom.html#render"><code>ReactDOM.render</code></a>, while the experimental <code>ReactDOM.createRoot</code> API is used to adopt Concurrent Mode.</p>
+<p>React Lua skips introducing the top-level <code>render</code> function from earlier versions of React JS, and instead provides the following for mounting Roact UI elements:</p>
+<ul>
+<li>The <code>createRoot</code>, <code>createBlockingRoot</code>, and <code>createLegacyRoot</code> APIs from React JS 17</li>
+<li>A <a href="../../api-reference/roact-compat/#roactcompatmount">compatibility layer</a> that exports a <code>mount</code> function aligned with legacy Roact's API</li>
+</ul>
+<p>In new code, you should always use <a href="https://reactjs.org/docs/concurrent-mode-reference.html#createroot"><code>ReactRoblox.createRoot</code></a>. The vast majority of existing Roact code should be compatible with <code>createRoot</code>, which enables Concurrent Mode and can greatly improve responsiveness for complex applications.</p>
+<p>If you run into problems with Concurrent Mode that are difficult to address, you may be interested in considering <a href="https://reactjs.org/docs/concurrent-mode-reference.html#createblockingroot"><code>ReactRoblox.createBlockingRoot</code> or <code>ReactRoblox.createLegacyRoot</code></a> at a cost to overall app responsiveness.</p>
+<h3 id="reactrobloxact"><code>ReactRoblox.act</code><a class="headerlink" href="#reactrobloxact" title="Permanent link">&para;</a></h3>
+<p>When Concurrent Mode is enabled, React will attempt to schedule work evenly across rendering frames to keep the application running smoothly, even when UI rendering work has been queued up.</p>
+<p>However, this means that tests relying on synchronous rendering behavior will no longer function correctly. To fix this, use the <a href="../../api-reference/react-roblox/#reactrobloxact"><code>ReactRoblox.act</code></a> function to play scheduler logic forward (also re-exported as <a href="../../api-reference/roact-compat/#roactcompatact"><code>RoactCompat.act</code></a>).</p>
+<h4 id="how-to-use-act">How to Use <code>act</code><a class="headerlink" href="#how-to-use-act" title="Permanent link">&para;</a></h4>
+<p>The <code>ReactRoblox.act</code> utility works by:</p>
+<ol>
+<li>Running the provided function</li>
+<li>Performing queued work by playing forward React's internal scheduler</li>
+<li>Repeating step 2 until the queue is empty</li>
+</ol>
+<p>When running tests using the mock scheduler, the following scenarios will need to be wrapped in an <code>act</code> call:</p>
+<ul>
+<li>Rendering an initial tree with the <code>render</code> method of a React root or the <code>RoactCompat.mount</code> compatibility function (if the <a href="../../configuration/#__roact_17_inline_act__"><code>__ROACT_17_INLINE_ACT__</code></a> global is set to true, this will happen <strong>automatically</strong> for <code>mount</code>, <code>update</code>, and <code>unmount</code>)</li>
+<li>Rendering updates with the <code>render</code> method of a React root</li>
+<li>Unmounting a tree by passing <code>nil</code> to the <code>render</code> method of a React root</li>
+<li>Calling <code>task.wait</code> or other yielding functions to allow engine callbacks to fire</li>
+<li>Triggering behavior that causes a component to update its state, including firing signals that your component has subscribed to</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>In order to enable the <code>act</code> function, you'll need React to use the mocked version of its internal scheduler. To do this, set the <a href="../../configuration/#__roact_17_mock_scheduler__"><code>__ROACT_17_MOCK_SCHEDULER__</code></a> global to true in your testing configuration.</p>
+</div>
+<h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
+<p>Many integration tests involve validating various states of a component and interacting with the component via virtual input events or mocked signals.
+The following is a comprehensive example of several of the above scenarios in practice.</p>
+<p>Suppose we have a component called <code>TooltipButton</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="kr">function</span> <span class="nf">TooltipButton</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">showTooltip</span><span class="p">,</span> <span class="n">setShowTooltip</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useState</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;TooltipButton&quot;</span><span class="p">,</span>
+        <span class="n">Size</span> <span class="o">=</span> <span class="n">UDim2</span><span class="p">.</span><span class="n">fromScale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">},</span> <span class="p">{</span>
+        <span class="n">Button</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Show tooltip&quot;</span><span class="p">,</span>
+            <span class="n">Active</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">enabled</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+                <span class="n">setShowTooltip</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+                <span class="n">task</span><span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="n">props</span><span class="p">.</span><span class="n">tooltipFadeDelay</span><span class="p">,</span> <span class="kr">function</span><span class="p">()</span>
+                    <span class="n">setShowTooltip</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+                <span class="kr">end</span><span class="p">)</span>
+            <span class="kr">end</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="n">Tooltip</span> <span class="o">=</span> <span class="kr">if</span> <span class="n">showTooltip</span>
+            <span class="kr">then</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Tooltip text!&quot;</span><span class="p">,</span>
+            <span class="p">})</span>
+            <span class="kr">else</span> <span class="kc">nil</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>We'd like to write a test to validate the tooltip behavior. Here's how we might use <code>act</code> to guarantee that all scheduled work is flushed and our test works as expected:</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This example uses an internal Roblox library called Rhodium. It is used for mocking input events, and cannot be used by external developers. We've kept the example in the react-lua fork because it's still a useful example.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">React</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">React</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">ReactRoblox</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">ReactRoblox</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">container</span><span class="p">,</span> <span class="n">root</span>
+<span class="n">beforeEach</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ScreenGui&quot;</span><span class="p">)</span>
+    <span class="n">container</span><span class="p">.</span><span class="n">Parent</span> <span class="o">=</span> <span class="n">Players</span><span class="p">.</span><span class="n">LocalPlayer</span><span class="p">.</span><span class="n">PlayerGui</span>
+
+    <span class="n">root</span> <span class="o">=</span> <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">createRoot</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="n">afterEach</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+    <span class="n">container</span><span class="p">:</span><span class="n">Destroy</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="n">it</span><span class="p">(</span><span class="s2">&quot;shows a tooltip on click and hides it after a delay&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">()</span>
+    <span class="c1">-- Use `act` for the initial render</span>
+    <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">act</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="c1">-- Render the button in a disabled state</span>
+        <span class="n">root</span><span class="p">:</span><span class="n">render</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">TooltipButton</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">enabled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="n">tooltipFadeDelay</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}))</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Tooltip</span><span class="p">).</span><span class="n">toBeNil</span><span class="p">()</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Button</span><span class="p">.</span><span class="n">Active</span><span class="p">).</span><span class="n">toBe</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+
+    <span class="c1">-- Use `act` to re-render the tree</span>
+    <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">act</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="c1">-- Rerender in the enabled state</span>
+        <span class="n">root</span><span class="p">:</span><span class="n">render</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">TooltipButton</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">enabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="n">tooltipFadeDelay</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}))</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Tooltip</span><span class="p">).</span><span class="n">toBeNil</span><span class="p">()</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Button</span><span class="p">.</span><span class="n">Active</span><span class="p">).</span><span class="n">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+
+    <span class="c1">-- Use `act` to trigger virtual input</span>
+    <span class="kd">local</span> <span class="n">element</span> <span class="o">=</span> <span class="n">Rhodium</span><span class="p">.</span><span class="n">Element</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Button</span><span class="p">)</span>
+    <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">act</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="c1">-- Click the button to trigger the tooltip</span>
+        <span class="n">element</span><span class="p">:</span><span class="n">click</span><span class="p">()</span>
+        <span class="n">Rhodium</span><span class="p">.</span><span class="n">VirtualInput</span><span class="p">.</span><span class="n">waitForInputEventsProcessed</span><span class="p">()</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Tooltip</span><span class="p">).</span><span class="n">never</span><span class="p">.</span><span class="n">toBeNil</span><span class="p">()</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Tooltip</span><span class="p">.</span><span class="n">Text</span><span class="p">).</span><span class="n">toEqual</span><span class="p">(</span><span class="s2">&quot;Tooltip text!&quot;</span><span class="p">)</span>
+
+    <span class="c1">-- Use `act` to resume queued renders after a delayed callback fires</span>
+    <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">act</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="n">task</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">container</span><span class="p">.</span><span class="n">TooltipButton</span><span class="p">.</span><span class="n">Tooltip</span><span class="p">).</span><span class="n">toBeNil</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>For more details and examples, refer to documentation on <a href="https://reactjs.org/docs/test-utils.html#act">the <code>act</code> function in React JS</a>.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>In new test code, consider adopting libraries like <a href="https://github.com/Roblox/dom-testing-library-lua"><code>dom-testing-library-lua</code></a> and <a href="https://github.com/Roblox/react-testing-library-lua"><code>react-testing-library-lua</code></a>, which are ports of JS testing libraries that handle much of the <code>act</code> logic for you.</p>
+</div>
+<h2 id="hooks">Hooks<a class="headerlink" href="#hooks" title="Permanent link">&para;</a></h2>
+<p>While async rendering is a paradigm shift for under-the-hood rendering behavior, hooks are a paradigm shift for component development. They're designed to be a more performant, composable, testable, and ergonomic approach to defining stateful behavior and side effects (relative to to class component lifecycle methods).</p>
+<p>You can access hooks via the <code>React</code> Package. In order to encourage migration to the new package conventions, <code>RoactCompat</code> <strong>does not</strong> export the hooks API. Follow the <a href="../upgrading-to-react-lua/#accessing-new-features">previous section</a> to set up your dependencies appropriately.</p>
+<p>An excellent and comprehensive guide for hooks can be found in the <a href="https://reactjs.org/docs/hooks-intro.html">React JS documentation</a>; the example below will help illustrate what they look like when used in Luau.</p>
+<h3 id="hooks-example">Hooks Example<a class="headerlink" href="#hooks-example" title="Permanent link">&para;</a></h3>
+<p>The following is a simple example that uses two of the most common hooks: <code>useState</code> and <code>useEffect</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">React</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">React</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nf">ClickerComponent</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">count</span><span class="p">,</span> <span class="n">setCount</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="kr">function</span> <span class="nf">onClick</span><span class="p">()</span>
+        <span class="n">setCount</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">oldCount</span><span class="p">)</span>
+             <span class="kr">return</span> <span class="n">oldCount</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="kr">end</span><span class="p">)</span>
+    <span class="kr">end</span>
+
+    <span class="n">React</span><span class="p">.</span><span class="n">useEffect</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;You&#39;ve clicked %d times!&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">count</span><span class="p">),</span>
+        <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="n">onClick</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Check the <a href="../../api-reference/react/#reactusestate">API Reference</a> to see the complete list of hooks supported by React Lua.</p>
+<h2 id="utilities">Utilities<a class="headerlink" href="#utilities" title="Permanent link">&para;</a></h2>
+<h3 id="reactmemo">React.memo<a class="headerlink" href="#reactmemo" title="Permanent link">&para;</a></h3>
+<p>The <code>memo</code> function can be used to memoize a function component, returning the same element if the same props are provided. This may be a helpful optimization in scenarios where a function component frequently re-renders without changes due to its parent re-rendering.</p>
+<p>Refer to the <a href="https://reactjs.org/docs/react-api.html#reactmemo">React JS documentation</a> for more details and examples.</p>
+<h3 id="reactchildren">React.Children<a class="headerlink" href="#reactchildren" title="Permanent link">&para;</a></h3>
+<p><em>Under construction 🔨</em></p>
+<h2 id="lua-only-features">Lua-Only Features<a class="headerlink" href="#lua-only-features" title="Permanent link">&para;</a></h2>
+<p>In addition to the new features provided by aligning with React JS 17, a few new features have been added to extend and improve support for legacy Roact features.</p>
+<h3 id="usebinding-hook"><code>useBinding</code> Hook<a class="headerlink" href="#usebinding-hook" title="Permanent link">&para;</a></h3>
+<p>Legacy Roact introduces a concept called "bindings", a shorthand for the concept of "unidirectional data bindings." You can learn more about bindings in the <a href="https://roblox.github.io/roact/advanced/bindings-and-refs/#bindings">legacy Roact documentation</a>.</p>
+<p>The legacy version of bindings were created similarly to refs, using a <code>createBinding</code> method that would be called in the <code>init</code> method of a class component. So how do we use bindings with function components?</p>
+<p>React Lua introduces, alongside the core hooks from React JS 17, an additional <code>useBinding</code> hook to address this case. You can use it much like a <code>useState</code> hook, except it will follow binding semantics: instead of triggering component re-renders, binding updates will directly update subscribed values.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">React</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">Packages</span><span class="p">.</span><span class="n">React</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nf">ClickerComponent</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">count</span><span class="p">,</span> <span class="n">setCount</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useBinding</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="kr">function</span> <span class="nf">onClick</span><span class="p">()</span>
+        <span class="c1">-- This will only update subscribed host properties, specifically the</span>
+        <span class="c1">-- Text field of the button that&#39;s rendered below</span>
+        <span class="n">setCount</span><span class="p">(</span><span class="n">count</span><span class="p">:</span><span class="n">getValue</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="kr">end</span>
+
+    <span class="n">React</span><span class="p">.</span><span class="n">useEffect</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;You&#39;ve clicked %d times!&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span>
+    <span class="kr">end</span><span class="p">)</span>
+
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="n">count</span><span class="p">:</span><span class="n">map</span><span class="p">(</span><span class="nb">tostring</span><span class="p">),</span>
+        <span class="p">[</span><span class="n">React</span><span class="p">.</span><span class="n">Event</span><span class="p">.</span><span class="n">Activated</span><span class="p">]</span> <span class="o">=</span> <span class="n">onClick</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="reacttag"><code>React.Tag</code><a class="headerlink" href="#reacttag" title="Permanent link">&para;</a></h3>
+<p><em>Under Construction 🔨</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1394 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jsdotlua.github.io/react-lua/deviations/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../configuration/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Deviations - React Lua Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deviations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="React Lua Documentation" class="md-header__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            React Lua Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deviations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="React Lua Documentation" class="md-nav__button md-logo" aria-label="React Lua Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    React Lua Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jsdotlua/react-lua" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jsdotlua/react-lua
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Deviations
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Deviations
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSX
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactusestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useState
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-dependency-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hook Dependency Arrays
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hook Dependency Arrays">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dependency-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependency Arrays
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deviations-for-luau" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deviations for Luau
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stable-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stable Keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactcomponentextend" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Component:extend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-setstate-in-constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling setState in Constructors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calling setState in Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommended-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behavior
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defaultprops" class="md-nav__link">
+    <span class="md-ellipsis">
+      defaultProps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proptypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      propTypes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validateprops" class="md-nav__link">
+    <span class="md-ellipsis">
+      validateProps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bindings-and-refs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bindings and Refs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bindings and Refs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bindings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bindings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-properties-with-instance-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Host Properties with Instance Values
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Migrating From Legacy Roact
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Migrating From Legacy Roact
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/minimum-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Minimum Requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/upgrading-to-react-lua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Add React Lua Dependency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/adopt-new-features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adopt New Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrating-from-legacy/convert-legacy-conventions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Convert Legacy Conventions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/react/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    React
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/react-roblox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ReactRoblox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/roact-compat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RoactCompat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/additional-libraries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Additional Libraries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bench/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmarks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSX
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactusestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.useState
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-dependency-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hook Dependency Arrays
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hook Dependency Arrays">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dependency-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependency Arrays
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deviations-for-luau" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deviations for Luau
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stable-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stable Keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactcomponentextend" class="md-nav__link">
+    <span class="md-ellipsis">
+      React.Component:extend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-setstate-in-constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling setState in Constructors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calling setState in Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommended-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behavior
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Property Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defaultprops" class="md-nav__link">
+    <span class="md-ellipsis">
+      defaultProps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proptypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      propTypes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validateprops" class="md-nav__link">
+    <span class="md-ellipsis">
+      validateProps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bindings-and-refs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bindings and Refs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bindings and Refs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bindings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bindings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-properties-with-instance-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Host Properties with Instance Values
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="deviations">Deviations<a class="headerlink" href="#deviations" title="Permanent link">&para;</a></h1>
+<p>While React Lua has been architected to align with React JS's APIs and idioms, a small number of deviations have been introduced for one or several of the following reasons:</p>
+<ul>
+<li>Differences between JavaScript and Luau</li>
+<li>Differences between Roblox and the HTML DOM</li>
+<li>Supporting features from legacy Roact that are not in React JS</li>
+<li>Easier adoption of React Lua by users of legacy Roact</li>
+</ul>
+<p>The following list attempts to comprehensively describe all of the differences between React Lua and its equivalent upstream version in React JS. It is intended to be a companion to the <a href="../migrating-from-legacy/adopt-new-features/">React Lua adoption guide</a>, which focuses more on the differences between legacy Roact and React Lua.</p>
+<h2 id="jsx">JSX<a class="headerlink" href="#jsx" title="Permanent link">&para;</a></h2>
+<p>The Luau ecosystem does not yet have the tooling to support JSX. Instead, use <code>React.createElement</code> as your primary tool for building UIs with React Lua. Element construction in React Lua is exactly like <a href="https://react.dev/reference/react/createElement#creating-an-element-without-jsx">using React without JSX</a>.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Future support for a JSX-equivalent feature for Luau has been proposed, and will be considered as React Lua is adopted.</p>
+</div>
+<h2 id="reactusestate"><code>React.useState</code><a class="headerlink" href="#reactusestate" title="Permanent link">&para;</a></h2>
+<p><code>React.useState</code> returns two values rather than an array containing two values.</p>
+<p>Luau does not have syntactic sugar for destructuring like javascript:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">setValue</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">React</span><span class="p">.</span><span class="nx">useState</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+</code></pre></div>
+<p>However, it <em>does</em> support multiple return values, so we can support a very similar usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">value</span><span class="p">,</span> <span class="n">setValue</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">useState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="hook-dependency-arrays">Hook Dependency Arrays<a class="headerlink" href="#hook-dependency-arrays" title="Permanent link">&para;</a></h2>
+<h3 id="dependency-arrays">Dependency Arrays<a class="headerlink" href="#dependency-arrays" title="Permanent link">&para;</a></h3>
+<p>In React JS, some hooks <a href="https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects">accept an array of dependency values</a> that determine when they need to be re-invoked:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`You clicked </span><span class="si">${</span><span class="nx">count</span><span class="si">}</span><span class="sb"> times`</span><span class="p">;</span>
+<span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">count</span><span class="p">]);</span><span class="w"> </span><span class="c1">// Only re-run the effect if count changes</span>
+</code></pre></div>
+<p>The dependency array should always be specified inline rather than composed dynamically to ensure that it accurately reflects all values relevant to the hook, whatever their state may be during a given render.</p>
+<p>React JS provides warnings in DEV mode when a dependency array changes length between renders, an indication that the feature isn't being used correctly. It additionally provides a linter plugin that can help enforce these rules and prevent mistakes during development: https://www.npmjs.com/package/eslint-plugin-react-hooks</p>
+<h3 id="deviations-for-luau">Deviations for Luau<a class="headerlink" href="#deviations-for-luau" title="Permanent link">&para;</a></h3>
+<p>Hooks in React Lua aim to treat dependency arrays exactly like React JS. However, arrays in luau that contain nil-able values might be indistinguishable from similar arrays that simply have different lengths.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}</span> <span class="o">==</span> <span class="o">#</span><span class="p">{</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span> <span class="p">})</span> <span class="c1">-- prints: true</span>
+</code></pre></div>
+<p>This means that, if we align behavior directly with React JS, we introduce a possible scenario in which a correctly-specified dependency array triggers warnings about differences in length:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">root</span> <span class="o">=</span> <span class="n">ReactRoblox</span><span class="p">.</span><span class="n">createRoot</span><span class="p">(</span><span class="n">someContainer</span><span class="p">)</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">Component</span><span class="p">(</span><span class="n">props</span><span class="p">:</span> <span class="p">{</span> <span class="n">A</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="n">number</span><span class="err">?</span> <span class="p">})</span>
+    <span class="n">React</span><span class="p">.</span><span class="n">useEffect</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+        <span class="c1">-- Trigger some effect</span>
+    <span class="kr">end</span><span class="p">,</span> <span class="p">{</span> <span class="n">props</span><span class="p">.</span><span class="n">A</span><span class="p">,</span> <span class="n">props</span><span class="p">.</span><span class="n">B</span> <span class="p">})</span>
+
+    <span class="kr">return</span> <span class="kc">nil</span>
+<span class="kr">end</span>
+
+<span class="c1">-- does not warn:</span>
+<span class="n">root</span><span class="p">:</span><span class="n">render</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">Component</span><span class="p">,</span> <span class="p">{</span> <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">}))</span>
+<span class="c1">-- subsequent render warns about different length arrays:</span>
+<span class="n">root</span><span class="p">:</span><span class="n">render</span><span class="p">(</span><span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">Component</span><span class="p">,</span> <span class="p">{</span> <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">}))</span>
+</code></pre></div>
+<p>To address this and support the same API as React JS, React Lua introduces two minor deviations:</p>
+<ul>
+<li>If a dependency array changes in length, <strong>a re-render will always be triggered</strong> (in React JS, the comparison is short-circuited in production with the assumption that warnings had been ignored or addressed)</li>
+<li>If a dependency array changes in length, we assume the developer provided an array ending with one or more nil-able values, and we <strong>suppress the warning</strong></li>
+</ul>
+<p>Hooks affected:</p>
+<ul>
+<li><code>useEffect</code></li>
+<li><code>useLayoutEffect</code></li>
+<li><code>useMemo</code></li>
+<li><code>useCallback</code></li>
+</ul>
+<h2 id="stable-keys">Stable Keys<a class="headerlink" href="#stable-keys" title="Permanent link">&para;</a></h2>
+<p>In React JS, the reserved "key" prop is used to provide stable identities to DOM elements. This improves performance when list-like data is reordered by helping React understand which elements are which, instead of simply modifying the element at each position to line up with the new ordering (more info in the <a href="https://reactjs.org/docs/lists-and-keys.html">React documentation</a>).</p>
+<p>Since order has no inherent meaning in Roblox's DOM, legacy Roact generally expected children to be provided as a <em>map</em> instead of an array, where the keys to the map are the stable keys associated with the elements. This behavior was used instead of a reserved "key" prop (more info in the <a href="https://roblox.github.io/roact/performance/reduce-reconciliation/#stable-keys">Roact documentation</a>).</p>
+<p>React Lua supports <em>both</em> methods for providing keys. Both of the following examples are valid and equivalent.</p>
+<p>With table keys:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Returns a fragment of items in an ordered list</span>
+<span class="kr">function</span> <span class="nf">NumberList</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">numbers</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">numbers</span>
+    <span class="kr">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">number</span> <span class="kr">in</span> <span class="n">numbers</span> <span class="kr">do</span>
+        <span class="kd">local</span> <span class="n">key</span> <span class="o">=</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">listItems</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="n">key</span><span class="p">,</span>
+            <span class="n">LayoutOrder</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="kr">end</span><span class="p">);</span>
+    <span class="kr">return</span> <span class="n">listItems</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Using the special "key" prop:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Returns a fragment of items in an ordered list</span>
+<span class="kr">function</span> <span class="nf">NumberList</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">numbers</span> <span class="o">=</span> <span class="n">props</span><span class="p">.</span><span class="n">numbers</span>
+    <span class="kr">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">number</span> <span class="kr">in</span> <span class="n">numbers</span> <span class="kr">do</span>
+        <span class="kd">local</span> <span class="n">key</span> <span class="o">=</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="kd">local</span> <span class="n">element</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">,</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="n">key</span><span class="p">,</span>
+            <span class="n">LayoutOrder</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="nb">table.insert</span><span class="p">(</span><span class="n">listItems</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+    <span class="kr">end</span><span class="p">);</span>
+    <span class="kr">return</span> <span class="n">listItems</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>If your component provides keys using both methods at the same time, Roact will consider this a mistake and print a warning. The following code would result in a warning:
+<div class="highlight"><pre><span></span><code><span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">Label</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;label1&quot;</span><span class="p">,</span>
+        <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Hello&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="p">})</span>
+</code></pre></div></p>
+<p>In the above example, React doesn't know whether you wanted to use "label1" or "Label" as the key, so it falls back to the explicitly provided key ("label1"). In <a href="../configuration/#dev">Dev Mode</a>, it will output an appropriate warning as well.</p>
+<h2 id="class-components">Class Components<a class="headerlink" href="#class-components" title="Permanent link">&para;</a></h2>
+<p>Luau does not currently have ES6's <code>class</code> semantics. For class components, Roact exposes an <code>extend</code> method to provide equivalent behavior.</p>
+<h3 id="reactcomponentextend"><code>React.Component:extend</code><a class="headerlink" href="#reactcomponentextend" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">React</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">string</span><span class="p">):</span> <span class="n">ReactComponent</span>
+</code></pre></div>
+<p>The <code>extend</code> method on components replaces the <code>extend</code> behavior used in ES6's class components. It returns a React component definition, which can then be used to define lifecycle methods.</p>
+<p>For example, a class component in React Lua can be created like this:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">MyComponent</span> <span class="o">=</span> <span class="n">React</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;MyComponent&quot;</span><span class="p">)</span>
+
+<span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="kr">return</span> <span class="n">React</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextLabel&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">Text</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">.</span><span class="n">text</span><span class="p">})</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">MyComponent</span><span class="p">:</span><span class="nf">componentDidMount</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rendered with text &quot;</span> <span class="o">..</span> <span class="n">self</span><span class="p">.</span><span class="n">props</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Equivalently, <code>React.PureComponent:extend</code> is used to define PureComponents.</p>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link">&para;</a></h3>
+<p>Since Luau currently lacks a <code>class</code> feature, there are also no inheritable constructors; instead, React Lua provides a lifecycle method called <code>init</code> that takes the place of the constructor, running immediately after an instance of that class is created.</p>
+<p>For all intents and purposes, this should behave exactly like a constructor for a class component in React JS, except that there is no <code>super</code> logic needed.</p>
+<h3 id="calling-setstate-in-constructors">Calling <code>setState</code> in Constructors<a class="headerlink" href="#calling-setstate-in-constructors" title="Permanent link">&para;</a></h3>
+<p>In React JS, <code>setState</code> is not allowed inside component constructors. Instead, React documentation suggests that <code>this.state</code> should be assigned to directly, but <em>never anywhere else</em>.</p>
+<p>Legacy Roact opts to allow <code>setState</code> inside of the <code>init</code> method (equivalent to a constructor), because it allows documentation to consistently warn against assigning directly to <code>self.state</code>. However, for backwards compatibility, it still supports direct assignments to <code>self.state</code> in <code>init</code>.</p>
+<h4 id="recommended-use">Recommended Use<a class="headerlink" href="#recommended-use" title="Permanent link">&para;</a></h4>
+<p>As with legacy Roact, React Lua allows both direct assignment and use of <code>setState</code>. This allows guidance from legacy Roact documentation and common practice to remain accurate.</p>
+<p>In React Lua, it is still recommended to use <code>setState</code> inside of component <code>init</code> methods. This means that you will <em>always</em> avoid assigning directly to <code>self.state</code>.</p>
+<h4 id="behavior">Behavior<a class="headerlink" href="#behavior" title="Permanent link">&para;</a></h4>
+<p>When used in a constructor, <code>setState</code> will treat the <code>updater</code> argument exactly as it does elsewhere.</p>
+<ul>
+<li>If <code>setState</code> is called multiple times in a constructor, each subsequent update will be merged into previous state</li>
+<li>The <code>updater</code> argument can be a function that accepts previous state and returns a new table that will be merged into any previous state</li>
+<li>The <code>updater</code> argument can be a table that will be merged into any previous state</li>
+</ul>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>When using <code>setState</code> in a constructor, the optional <code>callback</code> argument will not be used. Instead, consider putting the desired behavior in a <code>componentDidMount</code> implementation.</p>
+</div>
+<h3 id="error-boundaries">Error Boundaries<a class="headerlink" href="#error-boundaries" title="Permanent link">&para;</a></h3>
+<p>Error boundaries are not yet fully supported due to a limitation in Luau around recursive <code>pcall</code> depth. Future updates to React will unravel the recursive traversal and enable these features.</p>
+<h3 id="property-validation">Property Validation<a class="headerlink" href="#property-validation" title="Permanent link">&para;</a></h3>
+<p>The legacy api <code>validateProps</code> is still present and has a backwards-compatible API.</p>
+<h2 id="function-components">Function Components<a class="headerlink" href="#function-components" title="Permanent link">&para;</a></h2>
+<p>In JavaScript, functions are also objects, which means that they can have member fields defined on them. Luau does not allow this, so some features are not available on function components.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>With the introduction of Hooks, function components are the preferred style of component definition. Giving up features like <code>defaultProps</code> and prop validation is not ideal, so future API additions may provide a way to create smarter function components.</p>
+</div>
+<h3 id="defaultprops"><code>defaultProps</code><a class="headerlink" href="#defaultprops" title="Permanent link">&para;</a></h3>
+<p>For the time being, function components do not support the <code>defaultProps</code> feature. In the future, we may want to re-implement it in terms of hooks to make sure that function components with hooks are as appealing and feature-rich as possible.</p>
+<h3 id="proptypes"><code>propTypes</code><a class="headerlink" href="#proptypes" title="Permanent link">&para;</a></h3>
+<p>For the time being, function components do not support the <code>propTypes</code> feature. While propTypes is less often used and can in many cases be superseded by static type checking, we may want to, in the future, re-implement it in terms of hooks to make sure that function components with hooks are as appealing and feature-rich as possible.</p>
+<h3 id="validateprops"><code>validateProps</code><a class="headerlink" href="#validateprops" title="Permanent link">&para;</a></h3>
+<p>In React Lua, we continue to support legacy Roact's <code>validateProps</code>. Prior Roact documentation on this method can be found <a href="https://roblox.github.io/roact/api-reference/#validateprops">here</a>.</p>
+<h2 id="bindings-and-refs">Bindings and Refs<a class="headerlink" href="#bindings-and-refs" title="Permanent link">&para;</a></h2>
+<p>Roact supports callback refs, refs created using <code>React.createRef</code>, and refs using the <code>React.useRef</code> hook. However, under the hood, Refs are built on top of a concept called Bindings.</p>
+<h3 id="bindings">Bindings<a class="headerlink" href="#bindings" title="Permanent link">&para;</a></h3>
+<p>Roact introduces a bindings feature that provides a unidirectional data binding that can be updated outside of the render cycle (much like refs could).</p>
+<p>For now, bindings are documented in more detail <a href="https://roblox.github.io/roact/advanced/bindings-and-refs/#bindings">here</a>.</p>
+<h3 id="host-properties-with-instance-values">Host Properties with Instance Values<a class="headerlink" href="#host-properties-with-instance-values" title="Permanent link">&para;</a></h3>
+<p>The Roblox API exposes certain host properties that must be assigned <em>Instance references</em> as values. Effectively, there are native APIs that expect a <code>ref.current</code> value as a value.</p>
+<p>The logic of bindings is a perfect fit for this scenario. Consider the following example:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">PopupButtons</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">Component</span><span class="p">:</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;PopupButtons&quot;</span><span class="p">)</span>
+<span class="kr">function</span> <span class="nc">PopupButtons</span><span class="p">:</span><span class="nf">init</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">confirmRef</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createRef</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">cancelRef</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createRef</span><span class="p">()</span>
+<span class="kr">end</span>
+<span class="kr">function</span> <span class="nc">PopupButtons</span><span class="p">:</span><span class="nf">render</span><span class="p">()</span>
+    <span class="cm">--[[</span>
+<span class="cm">            &quot;Some Description&quot;</span>
+<span class="cm">        [ Confirm ]    [ Cancel ]</span>
+<span class="cm">    ]]</span>
+    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="n">ConfirmButton</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Ref</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">confirmRef</span><span class="p">,</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Confirm&quot;</span><span class="p">,</span>
+            <span class="n">NextSelectionRight</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">cancelRef</span><span class="p">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">CancelButton</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Ref</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">cancelRef</span><span class="p">,</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Confirm&quot;</span><span class="p">,</span>
+            <span class="n">NextSelectionLeft</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">confirmRef</span><span class="p">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">}),</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>This example poses a problem. Since children will be rendered in an arbitrary order, one of the following will happen:</p>
+<ol>
+<li>Confirm Button renders first and its ref is assigned</li>
+<li>Confirm Button's NextSelectionRight property is set to the Cancel Button's ref, <strong>which is currently nil</strong></li>
+<li>Cancel Button renders and its ref is assigned</li>
+<li>Cancel Button's NextSelectionLeft property is properly set to the Confirm Button's ref</li>
+</ol>
+<p>Or:</p>
+<ol>
+<li>Cancel Button renders first and its ref is assigned</li>
+<li>Cancel Button's NextSelectionLeft property is set to the Confirm Button's ref, <strong>which is currently nil</strong></li>
+<li>Confirm Button renders and its ref is assigned</li>
+<li>Confirm Button's NextSelectionRight property is properly set to the Cancel Button's ref</li>
+</ol>
+<p>Thus, it would require much more trickery to make even a simple gamepad neighbor assignment work correctly. However <em>with refs implemented as bindings</em>, the above scenario can be solved pretty simply:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- ...</span>
+    <span class="kr">return</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="n">ConfirmButton</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Ref</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">confirmRef</span><span class="p">,</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Confirm&quot;</span><span class="p">,</span>
+            <span class="c1">-- pass the ref itself, which is a binding</span>
+            <span class="n">NextSelectionRight</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">cancelRef</span><span class="p">,</span>
+        <span class="p">}),</span>
+        <span class="n">CancelButton</span> <span class="o">=</span> <span class="n">Roact</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;TextButton&quot;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">Roact</span><span class="p">.</span><span class="n">Ref</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">cancelRef</span><span class="p">,</span>
+            <span class="n">Text</span> <span class="o">=</span> <span class="s2">&quot;Confirm&quot;</span><span class="p">,</span>
+            <span class="c1">-- pass the ref itself, which is a binding</span>
+            <span class="n">NextSelectionLeft</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">confirmRef</span><span class="p">,</span>
+        <span class="p">}),</span>
+    <span class="p">})</span>
+<span class="c1">-- ...</span>
+</code></pre></div>
+<p>With the above implementation, something like the following happens:</p>
+<ol>
+<li>Confirm Button renders first and its ref is assigned</li>
+<li>Confirm Button's NextSelectionRight property is set to the Cancel Button's ref, <strong>which is currently nil</strong></li>
+<li>Cancel Button renders and its ref is assigned<ul>
+<li>The binding value updates, and the Confirm button's NextSelectionRight property is assigned to the Cancel Button's new ref value</li>
+</ul>
+</li>
+<li>Cancel Button's NextSelectionLeft property is properly set to the Confirm Button's ref</li>
+</ol>
+<p>...or the inverse, with the Cancel Button rendering first. Either way, both refs are assigned, and both neighbor properties are assigned by the time the render is complete.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>
