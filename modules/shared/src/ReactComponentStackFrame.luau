@@ -16,7 +16,7 @@ local ReactElementType = require("./ReactElementType")
 type Source = ReactElementType.Source
 
 -- ROBLOX deviation: Needed to properly type class components
-local flowtypes = require("./flowtypes.roblox.lua")
+local flowtypes = require("./flowtypes.roblox.luau")
 type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<
 	P
 >
@@ -35,7 +35,7 @@ local REACT_MEMO_TYPE = ReactSymbols.REACT_MEMO_TYPE
 local REACT_BLOCK_TYPE = ReactSymbols.REACT_BLOCK_TYPE
 local REACT_LAZY_TYPE = ReactSymbols.REACT_LAZY_TYPE
 
-local ConsolePatchingDev = require("./ConsolePatchingDev.roblox.lua")
+local ConsolePatchingDev = require("./ConsolePatchingDev.roblox.luau")
 local disableLogs = ConsolePatchingDev.disableLogs
 local reenableLogs = ConsolePatchingDev.reenableLogs
 

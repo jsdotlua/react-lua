@@ -993,7 +993,7 @@ it("should update portal context if it changes due to setState", function()
 end)
 
 it("should update portal context if it changes due to re-render", function()
-	-- ROBLOX TODO: This test is essentially duplicated in RobloxRenderer.roblox.spec.lua. Where do we want it?
+	-- ROBLOX TODO: This test is essentially duplicated in RobloxRenderer.roblox.spec.luau. Where do we want it?
 	local portalContainer = Instance.new("Folder")
 
 	local Context = React.createContext(1)

@@ -19,7 +19,7 @@ local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
-local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.luau")
 type UpdateQueue<State> = ReactInternalTypes.UpdateQueue<State>
 
 local ReactTypes = require("@pkg/@jsdotlua/shared")
@@ -41,7 +41,7 @@ local enableSchedulingProfiler = ReactFeatureFlags.enableSchedulingProfiler
 local warnAboutDeprecatedLifecycles = ReactFeatureFlags.warnAboutDeprecatedLifecycles
 local enableDoubleInvokingEffects = ReactFeatureFlags.enableDoubleInvokingEffects
 
-local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.lua")
+local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.luau")
 local isMounted = require("./ReactFiberTreeReflection").isMounted
 local ReactInstanceMap = require("@pkg/@jsdotlua/shared").ReactInstanceMap
 local getInstance = ReactInstanceMap.get
@@ -56,7 +56,7 @@ local REACT_CONTEXT_TYPE = ReactSymbols.REACT_CONTEXT_TYPE
 local REACT_PROVIDER_TYPE = ReactSymbols.REACT_PROVIDER_TYPE
 
 local resolveDefaultProps =
-	require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
+	require("./ReactFiberLazyComponent.new.luau").resolveDefaultProps
 local ReactTypeOfMode = require("./ReactTypeOfMode")
 local DebugTracingMode = ReactTypeOfMode.DebugTracingMode
 local StrictMode = ReactTypeOfMode.StrictMode
@@ -74,17 +74,17 @@ local initializeUpdateQueue = ReactUpdateQueue.initializeUpdateQueue
 local cloneUpdateQueue = ReactUpdateQueue.cloneUpdateQueue
 local NoLanes = ReactFiberLane.NoLanes
 
-local ReactFiberContext = require("./ReactFiberContext.new.lua")
+local ReactFiberContext = require("./ReactFiberContext.new.luau")
 local cacheContext = ReactFiberContext.cacheContext
 local getMaskedContext = ReactFiberContext.getMaskedContext
 local getUnmaskedContext = ReactFiberContext.getUnmaskedContext
 local hasContextChanged = ReactFiberContext.hasContextChanged
 local emptyContextObject = ReactFiberContext.emptyContextObject
 
-local ReactFiberNewContext = require("./ReactFiberNewContext.new.lua")
+local ReactFiberNewContext = require("./ReactFiberNewContext.new.luau")
 local readContext = ReactFiberNewContext.readContext
 
--- local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
+-- local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau")
 -- local requestEventTime = ReactFiberWorkLoop.requestEventTime
 -- local requestUpdateLane = ReactFiberWorkLoop.requestUpdateLane
 -- local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber
@@ -242,7 +242,7 @@ end
 -- deviation: lazy initialize this to avoid cycles
 local classComponentUpdater = nil
 local function initializeClassComponentUpdater()
-	local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
+	local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau")
 	local requestEventTime = ReactFiberWorkLoop.requestEventTime
 	local requestUpdateLane = ReactFiberWorkLoop.requestUpdateLane
 	local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber

@@ -11,7 +11,7 @@ local ReactFiberStack
 describe("ReactFiberStack", function()
 	beforeEach(function()
 		jest.resetModules()
-		ReactFiberStack = require("./ReactFiberStack.new.lua")
+		ReactFiberStack = require("./ReactFiberStack.new.luau")
 	end)
 
 	it("creates a cursor with the given default value", function()

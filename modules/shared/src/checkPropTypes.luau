@@ -24,7 +24,7 @@ local describeUnknownElementTypeFrameInDEV =
 
 local ReactSharedInternals = require("./ReactSharedInternals")
 
-local describeError = require("./ErrorHandling.roblox.lua").describeError
+local describeError = require("./ErrorHandling.roblox.luau").describeError
 
 local ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame
 

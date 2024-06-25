@@ -9,7 +9,7 @@
  * @flow
 ]]
 
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type Container = ReactRobloxHostTypes.Container
 type RootType = ReactRobloxHostTypes.RootType
 type RootOptions = ReactRobloxHostTypes.RootOptions
@@ -38,7 +38,7 @@ local unmarkContainerAsRoot = ReactRobloxComponentTree.unmarkContainerAsRoot
 -- local ensureListeningTo = require("@pkg/ReactDOMComponent").ensureListeningTo
 
 -- ROBLOX deviation: Use the config-injecting entry point for the reconciler
-local ReactFiberReconciler = require("../ReactReconciler.roblox.lua")
+local ReactFiberReconciler = require("../ReactReconciler.roblox.luau")
 local createContainer = ReactFiberReconciler.createContainer
 local updateContainer = ReactFiberReconciler.updateContainer
 -- local findHostInstanceWithNoPortals = ReactFiberReconciler.findHostInstanceWithNoPortals
@@ -200,16 +200,18 @@ exports.createRoot = function(container: Container, options: RootOptions?): Root
 	return ReactRobloxRoot.new(container, options)
 end
 
-exports.createBlockingRoot =
-	function(container: Container, options: RootOptions?): RootType
-		invariant(
-			isValidContainer(container),
-			-- ROBLOX deviation: Use roblox engine terminology
-			"createRoot(...): Target container is not a Roblox Instance."
-		)
-		warnIfReactDOMContainerInDEV(container)
-		return createBlockingRoot(container, BlockingRoot, options)
-	end
+exports.createBlockingRoot = function(
+	container: Container,
+	options: RootOptions?
+): RootType
+	invariant(
+		isValidContainer(container),
+		-- ROBLOX deviation: Use roblox engine terminology
+		"createRoot(...): Target container is not a Roblox Instance."
+	)
+	warnIfReactDOMContainerInDEV(container)
+	return createBlockingRoot(container, BlockingRoot, options)
+end
 
 exports.createLegacyRoot = function(container: Container, options: RootOptions?): RootType
 	return createBlockingRoot(container, LegacyRoot, options)

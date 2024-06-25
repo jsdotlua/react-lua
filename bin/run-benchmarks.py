@@ -9,7 +9,7 @@
 #	Pass --runs or -r to set how many time each benchmark is run (ex: -r 5)
 #	Pass --dev or -d to run tests in DEV and COMPAT_WARNINGS mode (ex: --dev)
 
-BENCHMARK_FILES = "bin/run-*-benchmark.lua"
+BENCHMARK_FILES = "bin/run-*-benchmark.luau"
 PROJECT_JSON = "tests.project.json"
 OUTPUT_PATTERN = r"(.+) x ([\d\.]+) ([/\w]+) ±([\d\.]+)\% \((\d+) runs sampled\)"
 

@@ -107,18 +107,18 @@ local isSubsetOfLanes = ReactFiberLane.isSubsetOfLanes
 local mergeLanes = ReactFiberLane.mergeLanes
 
 -- ROBLOX deviation: lazy instantiate to avoid circular require
-local ReactFiberNewContext --= require("./ReactFiberNewContext.new.lua")
+local ReactFiberNewContext --= require("./ReactFiberNewContext.new.luau")
 -- local enterDisallowedContextReadInDEV = ReactFiberNewContext.enterDisallowedContextReadInDEV
 -- local exitDisallowedContextReadInDEV = ReactFiberNewContext.exitDisallowedContextReadInDEV
 local function enterDisallowedContextReadInDEV()
 	if not ReactFiberNewContext then
-		ReactFiberNewContext = require("./ReactFiberNewContext.new.lua") :: any
+		ReactFiberNewContext = require("./ReactFiberNewContext.new.luau") :: any
 	end
 	ReactFiberNewContext.enterDisallowedContextReadInDEV()
 end
 local function exitDisallowedContextReadInDEV()
 	if not ReactFiberNewContext then
-		ReactFiberNewContext = require("./ReactFiberNewContext.new.lua") :: any
+		ReactFiberNewContext = require("./ReactFiberNewContext.new.luau") :: any
 	end
 	ReactFiberNewContext.exitDisallowedContextReadInDEV()
 end
@@ -133,7 +133,7 @@ local debugRenderPhaseSideEffectsForStrictMode =
 
 local ReactTypeOfMode = require("./ReactTypeOfMode")
 local StrictMode = ReactTypeOfMode.StrictMode
--- local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
+-- local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau")
 local markSkippedUpdateLanes =
 	require("./ReactFiberWorkInProgress").markSkippedUpdateLanes
 

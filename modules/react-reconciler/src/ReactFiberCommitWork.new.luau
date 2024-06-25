@@ -62,13 +62,13 @@ type UpdatePayload = Array<any>
 local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
-local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.luau")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
-local ReactUpdateQueueModule = require("./ReactUpdateQueue.new.lua")
+local ReactUpdateQueueModule = require("./ReactUpdateQueue.new.luau")
 type UpdateQueue<T> = ReactInternalTypes.UpdateQueue<T>
 
--- local ReactFiberHooks = require("./ReactFiberHooks.new.lua")
+-- local ReactFiberHooks = require("./ReactFiberHooks.new.luau")
 -- type FunctionComponentUpdateQueue = ReactFiberHooks.FunctionComponentUpdateQueue
 -- ROBLOX deviation: inline the typedef here to avoid circular dependency
 type Effect = {
@@ -144,10 +144,10 @@ local ReactCurrentFiber = require("./ReactCurrentFiber")
 local currentDebugFiberInDEV = ReactCurrentFiber.current
 local resetCurrentDebugFiberInDEV = ReactCurrentFiber.resetCurrentFiber
 local setCurrentDebugFiberInDEV = ReactCurrentFiber.setCurrentFiber
-local onCommitUnmount = require("./ReactFiberDevToolsHook.new.lua").onCommitUnmount
+local onCommitUnmount = require("./ReactFiberDevToolsHook.new.luau").onCommitUnmount
 local resolveDefaultProps =
-	require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
-local ReactProfilerTimer = require("./ReactProfilerTimer.new.lua")
+	require("./ReactFiberLazyComponent.new.luau").resolveDefaultProps
+local ReactProfilerTimer = require("./ReactProfilerTimer.new.luau")
 local startLayoutEffectTimer = ReactProfilerTimer.startLayoutEffectTimer
 local recordPassiveEffectDuration = ReactProfilerTimer.recordPassiveEffectDuration
 local recordLayoutEffectDuration = ReactProfilerTimer.recordLayoutEffectDuration
@@ -189,14 +189,14 @@ local ReactFiberWorkLoop
 
 local function resolveRetryWakeable(boundaryFiber: Fiber, wakeable: Wakeable): ()
 	if not ReactFiberWorkLoop then
-		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau") :: any
 	end
 	ReactFiberWorkLoop.resolveRetryWakeable(boundaryFiber, wakeable)
 end
 
 local function markCommitTimeOfFallback(): ()
 	if not ReactFiberWorkLoop then
-		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau") :: any
 	end
 	ReactFiberWorkLoop.markCommitTimeOfFallback()
 end
@@ -231,7 +231,7 @@ local didWarnAboutReassigningPropsRef
 local didWarnAboutReassigningProps = function()
 	if not didWarnAboutReassigningPropsRef then
 		didWarnAboutReassigningPropsRef =
-			require("./ReactFiberBeginWork.new.lua").didWarnAboutReassigningProps
+			require("./ReactFiberBeginWork.new.luau").didWarnAboutReassigningProps
 	end
 	return didWarnAboutReassigningPropsRef
 end

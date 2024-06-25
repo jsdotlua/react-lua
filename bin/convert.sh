@@ -2,10 +2,10 @@
 
 for file in *.js
 do
-  mv "$file" "${file/.js/.lua}"
+  mv "$file" "${file/.js/.luau}"
 done
 
-for file in *.lua
+for file in *.luau
 do
   sed -i '' -e "s/\/\*/--[[/g" "$file"
   sed -i '' -e "s/\*\//]]/g" "$file"

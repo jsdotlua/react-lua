@@ -323,7 +323,7 @@ This would be a simple compatibility layer that should require very little maint
 
 #### Implemented Alignment
 
-The `createFragment` function described above was added to React.lua in [#92](https://github.com/Roblox/roact-alignment/pull/92/files).
+The `createFragment` function described above was added to React.luau in [#92](https://github.com/Roblox/roact-alignment/pull/92/files).
 </details>
 
 ### Ref Forwarding

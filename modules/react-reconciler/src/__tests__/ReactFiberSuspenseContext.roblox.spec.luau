@@ -5,14 +5,14 @@ local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local ReactFiber = require("./ReactFiber.new.lua")
+local ReactFiber = require("./ReactFiber.new.luau")
 
 local ReactFiberSuspenseContext
 
 describe("ReactFiberSuspenseContext", function()
 	beforeEach(function()
 		jest.resetModules()
-		ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
+		ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.luau")
 	end)
 
 	describe("suspense context stack", function()

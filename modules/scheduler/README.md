@@ -8,10 +8,10 @@ Source: https://github.com/facebook/react/tree/master/packages/scheduler
 ---
 
 ### ✏️ Notes
-* The upstream implementation of min-heap does not include tests. To validate the port, `src/__tests__/SchedulerMinHeap.spec.lua` was added
+* The upstream implementation of min-heap does not include tests. To validate the port, `src/__tests__/SchedulerMinHeap.spec.luau` was added
 * The scheduler contains two sets of tests
 	* A small, basic set of tests using the real scheduler and mock timers.
-	* A more thorough test suite that uses `MockSchedulerHostConfig.lua`, which mocks the entire HostConfig interface and provides functionality to manipulate it within tests.
+	* A more thorough test suite that uses `MockSchedulerHostConfig.luau`, which mocks the entire HostConfig interface and provides functionality to manipulate it within tests.
 
 #### Profiling
 

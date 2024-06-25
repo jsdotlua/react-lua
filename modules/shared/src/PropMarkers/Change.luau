@@ -25,7 +25,7 @@
 		})
 ]]
 
-local Type = require("../Type.roblox.lua")
+local Type = require("../Type.roblox.luau")
 
 local Change = {}
 

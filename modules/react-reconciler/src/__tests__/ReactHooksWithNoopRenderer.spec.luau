@@ -470,7 +470,7 @@ describe("updates during the render phase", function()
 		local function ScrollView(props)
 			-- ROBLOX LUAU FIXME: without annotation, generates the
 			-- following error:
-			-- roact-alignment\modules\react-reconciler\src\__tests__\ReactHooksWithNoopRenderer.spec.lua:473:53-63: (E001) TypeError: Type '{ row: number }' could not be converted into 'any?'
+			-- roact-alignment\modules\react-reconciler\src\__tests__\ReactHooksWithNoopRenderer.spec.luau:473:53-63: (E001) TypeError: Type '{ row: number }' could not be converted into 'any?'
 			-- caused by:
 			--   None of the union options are compatible. For example: Type '{ row: number }' could not be converted into '{+ row: never +}'
 			-- caused by:
@@ -1296,7 +1296,9 @@ describe("useEffect", function()
 				ReactNoop.render(React.createElement(Counter, { count = 0 }), function()
 					Scheduler.unstable_yieldValue("Sync effect")
 				end)
-				jestExpect(Scheduler).toFlushAndYieldThrough({ 0, "Sync effect" } :: Array<any>)
+				jestExpect(Scheduler).toFlushAndYieldThrough(
+					{ 0, "Sync effect" } :: Array<any>
+				)
 				jestExpect(ReactNoop.getChildren()).toEqual({ span(0) })
 				-- Before the effects have a chance to flush, schedule another update
 				ReactNoop.render(React.createElement(Counter, { count = 1 }), function()
@@ -4047,15 +4049,18 @@ describe("useRef", function()
 					end
 				end
 			end, {})
-			local debouncedCallback = useCallback(function(...)
-				if typeof(timeoutID.current) == "table" then
-					clearTimeout(timeoutID.current)
-				end
-				timeoutID.current = setTimeout(callback, ms, ...)
-			end, {
-				callback,
-				ms,
-			} :: Array<any>)
+			local debouncedCallback = useCallback(
+				function(...)
+					if typeof(timeoutID.current) == "table" then
+						clearTimeout(timeoutID.current)
+					end
+					timeoutID.current = setTimeout(callback, ms, ...)
+				end,
+				{
+					callback,
+					ms,
+				} :: Array<any>
+			)
 			return useCallback(debouncedCallback, inputs)
 		end
 
@@ -4136,15 +4141,18 @@ describe("useBinding", function()
 					end
 				end
 			end, {})
-			local debouncedCallback = useCallback(function(...)
-				if typeof(timeoutID:getValue()) == "table" then
-					clearTimeout(timeoutID:getValue())
-				end
-				updateTimeout(setTimeout(callback, ms, ...))
-			end, {
-				callback,
-				ms,
-			} :: Array<any>)
+			local debouncedCallback = useCallback(
+				function(...)
+					if typeof(timeoutID:getValue()) == "table" then
+						clearTimeout(timeoutID:getValue())
+					end
+					updateTimeout(setTimeout(callback, ms, ...))
+				end,
+				{
+					callback,
+					ms,
+				} :: Array<any>
+			)
 			return useCallback(debouncedCallback, inputs)
 		end
 

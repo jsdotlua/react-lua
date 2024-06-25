@@ -11,7 +11,7 @@ describe("ReactFiberSuspenseComponent", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactFiberSuspenseComponent = require("../ReactFiberSuspenseComponent.new.lua")
+		ReactFiberSuspenseComponent = require("../ReactFiberSuspenseComponent.new.luau")
 	end)
 
 	describe("shouldCaptureSuspense", function()

@@ -80,9 +80,9 @@ local OffscreenComponent = ReactWorkTags.OffscreenComponent
 local LegacyHiddenComponent = ReactWorkTags.LegacyHiddenComponent
 local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 
-local ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.lua")
+local ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.luau")
 local isDevToolsPresent = ReactFiberDevToolsHook.isDevToolsPresent
-local ReactFiberHotReloading = require("./ReactFiberHotReloading.new.lua")
+local ReactFiberHotReloading = require("./ReactFiberHotReloading.new.luau")
 local resolveClassForHotReloading = ReactFiberHotReloading.resolveClassForHotReloading
 local resolveFunctionForHotReloading =
 	ReactFiberHotReloading.resolveFunctionForHotReloading

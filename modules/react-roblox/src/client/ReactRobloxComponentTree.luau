@@ -10,7 +10,7 @@
  * @flow
 ]]
 
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 type TextInstance = ReactRobloxHostTypes.TextInstance
 type SuspenseInstance = ReactRobloxHostTypes.SuspenseInstance
@@ -61,16 +61,19 @@ local internalContainerInstanceKey = "__reactContainer$" .. randomKey
 -- local internalEventHandlerListenersKey = '__reactListeners$' + randomKey
 -- local internalEventHandlesSetKey = '__reactHandles$' + randomKey
 
-exports.precacheFiberNode =
-	function(hostInst: Fiber, node: HostInstance | SuspenseInstance | ReactScopeInstance)
-		instanceToFiber[node] = hostInst
-	end
+exports.precacheFiberNode = function(
+	hostInst: Fiber,
+	node: HostInstance | SuspenseInstance | ReactScopeInstance
+)
+	instanceToFiber[node] = hostInst
+end
 
-exports.uncacheFiberNode =
-	function(node: HostInstance | SuspenseInstance | ReactScopeInstance)
-		instanceToFiber[node] = nil
-		instanceToProps[node] = nil
-	end
+exports.uncacheFiberNode = function(
+	node: HostInstance | SuspenseInstance | ReactScopeInstance
+)
+	instanceToFiber[node] = nil
+	instanceToProps[node] = nil
+end
 
 exports.markContainerAsRoot = function(hostRoot: Fiber, node: Container)
 	-- deviation: Use our module-level map
@@ -185,7 +188,7 @@ end
 exports.getInstanceFromNode = function(node): Fiber?
 	-- ROBLOX deviation: lazy initialize to avoid circular dependency
 	if ReactWorkTags == nil then
-		local ReactReconciler = require("../ReactReconciler.roblox.lua") :: any
+		local ReactReconciler = require("../ReactReconciler.roblox.luau") :: any
 		ReactWorkTags = ReactReconciler.ReactWorkTags
 
 		HostComponent = ReactWorkTags.HostComponent
@@ -229,10 +232,11 @@ exports.getNodeFromInstance = function(inst: Fiber): Instance | TextInstance
 	error("getNodeFromInstance: Invalid argument.")
 end
 
-exports.getFiberCurrentPropsFromNode =
-	function(node: Instance | TextInstance | SuspenseInstance): Props
-		return instanceToProps[node]
-	end
+exports.getFiberCurrentPropsFromNode = function(
+	node: Instance | TextInstance | SuspenseInstance
+): Props
+	return instanceToProps[node]
+end
 
 exports.updateFiberProps = function(node: Instance | SuspenseInstance, props: Props)
 	instanceToProps[node] = props

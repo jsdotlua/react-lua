@@ -26,7 +26,7 @@ local ReactFiberDevToolsHook, ReactDevtoolsShared
 beforeEach(function()
 	jest.resetModules()
 
-	ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.lua")
+	ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.luau")
 	ReactDevtoolsShared = require("@dev-packages/ReactDevtoolsShared")
 end)
 

@@ -13,11 +13,11 @@ local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
-local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.luau")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
 local resetMutableSourceWorkInProgressVersions =
-	require("./ReactMutableSource.new.lua").resetWorkInProgressVersions
+	require("./ReactMutableSource.new.luau").resetWorkInProgressVersions
 local ReactWorkTags = require("./ReactWorkTags")
 -- local {ReactFiberFlags.DidCapture, ReactFiberFlags.NoFlags, ReactFiberFlags.ShouldCapture} = require("./ReactFiberFlags")
 local ReactFiberFlags = require("./ReactFiberFlags")
@@ -27,28 +27,28 @@ local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableSuspenseServerRenderer = ReactFeatureFlags.enableSuspenseServerRenderer
 local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 
-local ReactFiberHostContext = require("./ReactFiberHostContext.new.lua")
+local ReactFiberHostContext = require("./ReactFiberHostContext.new.luau")
 local popHostContainer = ReactFiberHostContext.popHostContainer
 local popHostContext = ReactFiberHostContext.popHostContext
 local popSuspenseContext =
-	require("./ReactFiberSuspenseContext.new.lua").popSuspenseContext
+	require("./ReactFiberSuspenseContext.new.luau").popSuspenseContext
 local resetHydrationState =
-	require("./ReactFiberHydrationContext.new.lua").resetHydrationState
-local ReactFiberContext = require("./ReactFiberContext.new.lua")
+	require("./ReactFiberHydrationContext.new.luau").resetHydrationState
+local ReactFiberContext = require("./ReactFiberContext.new.luau")
 local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local popLegacyContext = ReactFiberContext.popContext
 local popTopLevelLegacyContextObject = ReactFiberContext.popTopLevelContextObject
-local popProvider = require("./ReactFiberNewContext.new.lua").popProvider
+local popProvider = require("./ReactFiberNewContext.new.luau").popProvider
 -- ROBLOX FIXME: this causes a circular require
 local popRenderLanesRef
 local popRenderLanes = function(...)
 	if not popRenderLanesRef then
-		popRenderLanesRef = require("./ReactFiberWorkLoop.new.lua").popRenderLanes
+		popRenderLanesRef = require("./ReactFiberWorkLoop.new.luau").popRenderLanes
 	end
 	return popRenderLanesRef(...)
 end
 local transferActualDuration =
-	require("./ReactProfilerTimer.new.lua").transferActualDuration
+	require("./ReactProfilerTimer.new.luau").transferActualDuration
 
 local invariant = require("@pkg/@jsdotlua/shared").invariant
 

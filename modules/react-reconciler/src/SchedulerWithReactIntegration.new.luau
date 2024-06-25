@@ -47,7 +47,7 @@ local Scheduler_IdlePriority = Scheduler.unstable_IdlePriority
 -- with _just_ these constant definitions; it helps us avoid a circular require
 -- issue with `ReactFiberLanes`
 local ReactFiberSchedulerPriorities =
-	require("./ReactFiberSchedulerPriorities.roblox.lua")
+	require("./ReactFiberSchedulerPriorities.roblox.luau")
 local ImmediatePriority = ReactFiberSchedulerPriorities.ImmediatePriority
 local UserBlockingPriority = ReactFiberSchedulerPriorities.UserBlockingPriority
 local NormalPriority = ReactFiberSchedulerPriorities.NormalPriority

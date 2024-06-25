@@ -19,7 +19,7 @@ local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 
 local ReactFiberSchedulerPriorities =
-	require("../ReactFiberSchedulerPriorities.roblox.lua")
+	require("../ReactFiberSchedulerPriorities.roblox.luau")
 local ImmediatePriority = ReactFiberSchedulerPriorities.ImmediatePriority
 local NormalPriority = ReactFiberSchedulerPriorities.NormalPriority
 local NoPriority = ReactFiberSchedulerPriorities.NoPriority

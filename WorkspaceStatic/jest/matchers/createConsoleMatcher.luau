@@ -61,7 +61,7 @@ local function normalizeCodeLocInfo(str)
 
 	-- ROBLOX deviation: In roblox/luau, we're using the stack frame from luau,
 	-- which looks like:
-	--     in Component (at ModulePath.FileName.lua:123)
+	--     in Component (at ModulePath.FileName.luau:123)
 	return (string.gsub(str, "\n    in ([%w%-%._]+)[^\n]*", "\n    in %1 (at **)"))
 end
 
