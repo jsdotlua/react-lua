@@ -7,8 +7,8 @@ Original source: https://github.com/facebook/react/tree/master/packages/react-no
 
 ### Ported
 Files:
-* `src/createReactNoop.js` -> `src/createReactNoop.lua`
-* `src/ReactNoop.js` -> `src/ReactNoop.lua`
+* `src/createReactNoop.js` -> `src/createReactNoop.luau`
+* `src/ReactNoop.js` -> `src/ReactNoop.luau`
 
 The entire implementation of the NoopRenderer, plus an entry point that exports all the relevant members.
 
@@ -26,4 +26,4 @@ Files:
 A version of the NoopRenderer that's created with `useMutation = false`. If this is needed at some point, it'll be trivial to port.
 
 ### Intentional Deviations
-Currently, we're not supporting JSX or an equivalent markup syntax. Select parts of `createReactNoop.lua` are only partially translated and are commented out.
+Currently, we're not supporting JSX or an equivalent markup syntax. Select parts of `createReactNoop.luau` are only partially translated and are commented out.

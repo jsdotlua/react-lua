@@ -10,7 +10,7 @@
 ]]
 local ReactTypes = require("@pkg/@jsdotlua/shared")
 type ReactNodeList = ReactTypes.ReactNodeList
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type Container = ReactRobloxHostTypes.Container
 
 -- local '../shared/checkReact'
@@ -30,7 +30,7 @@ local isValidContainer = ReactRobloxRoot.isValidContainer
 -- local createEventHandle = require("./ReactDOMEventHandle").createEventHandle
 
 -- ROBLOX deviation: Use the config-injecting entry point for the reconciler
-local ReactReconciler = require("../ReactReconciler.roblox.lua")
+local ReactReconciler = require("../ReactReconciler.roblox.luau")
 -- local batchedEventUpdates = ReactReconciler.batchedEventUpdates
 local batchedUpdates = ReactReconciler.batchedUpdates
 -- local discreteUpdates = ReactReconciler.discreteUpdates

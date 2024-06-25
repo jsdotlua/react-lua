@@ -62,7 +62,7 @@ local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 local enableLazyElements = ReactFeatureFlags.enableLazyElements
 local enableBlocksAPI = ReactFeatureFlags.enableBlocksAPI
 
-local ReactFiber = require("./ReactFiber.new.lua")
+local ReactFiber = require("./ReactFiber.new.luau")
 local createWorkInProgress = ReactFiber.createWorkInProgress
 local resetWorkInProgress = ReactFiber.resetWorkInProgress
 local createFiberFromElement = ReactFiber.createFiberFromElement
@@ -71,8 +71,8 @@ local createFiberFromText = ReactFiber.createFiberFromText
 local createFiberFromPortal = ReactFiber.createFiberFromPortal
 -- ROBLOX deviation: we do not support string refs
 -- local emptyRefsObject =
--- 	require("./ReactFiberClassComponent.new.lua").emptyRefsObject
--- local ReactFiberHotReloading = require("./ReactFiberHotReloading.new.lua")
+-- 	require("./ReactFiberClassComponent.new.luau").emptyRefsObject
+-- local ReactFiberHotReloading = require("./ReactFiberHotReloading.new.luau")
 -- local isCompatibleFamilyForHotReloading =
 -- 	ReactFiberHotReloading.isCompatibleFamilyForHotReloading
 -- ROBLOX deviation: we do not support string refs, which removes our use of StrictMode

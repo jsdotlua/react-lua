@@ -899,7 +899,7 @@ describe("Store", function()
 		end)
 		-- ROBLOX TODO: Tests using multiple roots don't currently work, because rootA and rootB
 		-- do not use the SyncLane which is checked in ReactFiberWorkLoop:680 upstream which proceeds
-		-- to call handleCommitFiberRoot in devtools renderer.lua for the two separate roots.
+		-- to call handleCommitFiberRoot in devtools renderer.luau for the two separate roots.
 		--  The upstream tests use a blocking root, which has a different path through the React
 		-- codebase. Using concurrent roots, rootB is placed in lane 512 (rather than 1)
 		-- Using blocking roots, rootB is placed in lane 2 (rather than 1) so is not registered.

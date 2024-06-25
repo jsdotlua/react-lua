@@ -97,30 +97,30 @@ describe("with enableComponentStackLocations to false", function()
 			["Bar\\Foo"] = "Foo",
 			["Baz/Bar/Foo"] = "Foo",
 			["Baz\\Bar\\Foo"] = "Foo",
-			["Foo.lua"] = "Foo.lua",
-			["/Foo.lua"] = "Foo.lua",
-			["\\Foo.lua"] = "Foo.lua",
-			["Bar/Foo.lua"] = "Foo.lua",
-			["Bar\\Foo.lua"] = "Foo.lua",
-			["/Bar/Foo.lua"] = "Foo.lua",
-			["\\Bar\\Foo.lua"] = "Foo.lua",
-			["Bar/Baz/Foo.lua"] = "Foo.lua",
-			["Bar\\Baz\\Foo.lua"] = "Foo.lua",
-			["/Bar/Baz/Foo.lua"] = "Foo.lua",
-			["\\Bar\\Baz\\Foo.lua"] = "Foo.lua",
-			["C:\\funny long (path)/Foo.lua"] = "Foo.lua",
-			["init.lua"] = "init.lua",
-			["/init.lua"] = "init.lua",
-			["\\init.lua"] = "init.lua",
-			["Bar/init.lua"] = "Bar/init.lua",
-			["Bar\\init.lua"] = "Bar/init.lua",
-			["/Bar/init.lua"] = "Bar/init.lua",
-			["\\Bar\\init.lua"] = "Bar/init.lua",
-			["Bar/Baz/init.lua"] = "Baz/init.lua",
-			["Bar\\Baz\\init.lua"] = "Baz/init.lua",
-			["/Bar/Baz/init.lua"] = "Baz/init.lua",
-			["\\Bar\\Baz\\init.lua"] = "Baz/init.lua",
-			["C:\\funny long (path)/init.lua"] = "funny long (path)/init.lua",
+			["Foo.luau"] = "Foo.luau",
+			["/Foo.luau"] = "Foo.luau",
+			["\\Foo.luau"] = "Foo.luau",
+			["Bar/Foo.luau"] = "Foo.luau",
+			["Bar\\Foo.luau"] = "Foo.luau",
+			["/Bar/Foo.luau"] = "Foo.luau",
+			["\\Bar\\Foo.luau"] = "Foo.luau",
+			["Bar/Baz/Foo.luau"] = "Foo.luau",
+			["Bar\\Baz\\Foo.luau"] = "Foo.luau",
+			["/Bar/Baz/Foo.luau"] = "Foo.luau",
+			["\\Bar\\Baz\\Foo.luau"] = "Foo.luau",
+			["C:\\funny long (path)/Foo.luau"] = "Foo.luau",
+			["init.luau"] = "init.luau",
+			["/init.luau"] = "init.luau",
+			["\\init.luau"] = "init.luau",
+			["Bar/init.luau"] = "Bar/init.luau",
+			["Bar\\init.luau"] = "Bar/init.luau",
+			["/Bar/init.luau"] = "Bar/init.luau",
+			["\\Bar\\init.luau"] = "Bar/init.luau",
+			["Bar/Baz/init.luau"] = "Baz/init.luau",
+			["Bar\\Baz\\init.luau"] = "Baz/init.luau",
+			["/Bar/Baz/init.luau"] = "Baz/init.luau",
+			["\\Bar\\Baz\\init.luau"] = "Baz/init.luau",
+			["C:\\funny long (path)/init.luau"] = "funny long (path)/init.luau",
 		}
 
 		local lineNumber = 0
@@ -215,7 +215,7 @@ describe("DEV warning stack trace", function()
 		end
 
 		local source = {
-			fileName = "TestDev-file.lua",
+			fileName = "TestDev-file.luau",
 			lineNumber = 20,
 		}
 
@@ -231,7 +231,7 @@ describe("DEV warning stack trace", function()
 
 		if _G.__DEV__ then
 			jestExpect(description).toEqual(
-				"\n    in TestDevStackComponent (at TestDev-file.lua:20)"
+				"\n    in TestDevStackComponent (at TestDev-file.luau:20)"
 			)
 		else
 			jestExpect(description).toEqual("")
@@ -247,7 +247,7 @@ describe("DEV warning stack trace", function()
 			end
 
 			local source = {
-				fileName = "TestDevFunction-file.lua",
+				fileName = "TestDevFunction-file.luau",
 				lineNumber = 15,
 			}
 
@@ -263,7 +263,7 @@ describe("DEV warning stack trace", function()
 
 			if _G.__DEV__ then
 				jestExpect(description).toEqual(
-					"\n    in DevStackFunctionComponent (at TestDevFunction-file.lua:15)"
+					"\n    in DevStackFunctionComponent (at TestDevFunction-file.luau:15)"
 				)
 			else
 				jestExpect(description).toEqual("")

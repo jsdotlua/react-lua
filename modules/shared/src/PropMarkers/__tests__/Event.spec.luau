@@ -17,7 +17,7 @@ local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local it = JestGlobals.it
 
-local Type = require("../../Type.roblox.lua")
+local Type = require("../../Type.roblox.luau")
 local Event = require("../Event")
 
 it("should yield event objects when indexed", function()

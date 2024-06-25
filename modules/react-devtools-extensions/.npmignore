@@ -9,14 +9,14 @@ rotriever.toml
 .luaurc
 default.project.json
 
-/globalTypes.d.lua
+/globalTypes.d.luau
 **/sourcemap.json
 **/*.project.json
 
 **/__tests__
-**/*.test.lua
-**/*.spec.lua
-**/jest.config.lua
+**/*.test.luau
+**/*.spec.luau
+**/jest.config.luau
 
 **/*.rbxl
 **/*.rbxlx

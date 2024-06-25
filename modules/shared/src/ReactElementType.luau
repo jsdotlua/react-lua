@@ -10,7 +10,7 @@
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
-local flowtypes = require("./flowtypes.roblox.lua")
+local flowtypes = require("./flowtypes.roblox.luau")
 type React_Element<ElementType> = flowtypes.React_Element<ElementType>
 type React_StatelessFunctionalComponent<P> = flowtypes.React_StatelessFunctionalComponent<
 	P

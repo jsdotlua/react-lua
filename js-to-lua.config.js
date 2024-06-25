@@ -13,7 +13,7 @@ module.exports = {
         repo: "react-lua",
         primaryBranch: "main",
         patterns: [
-            "**/*.lua"
+            "**/*.luau"
         ],
         ignorePatterns: [
             "Packages/**/*"
@@ -31,37 +31,37 @@ module.exports = {
 
         ],
         [
-            (filename) => filename.includes("modules/react/src/ReactSharedInternals.lua"),
-            (filename) => filename.replace("modules/react/src/ReactSharedInternals.lua", "modules/shared/src/ReactSharedInternals/init.lua")
+            (filename) => filename.includes("modules/react/src/ReactSharedInternals.luau"),
+            (filename) => filename.replace("modules/react/src/ReactSharedInternals.luau", "modules/shared/src/ReactSharedInternals/init.luau")
         ],
         [
-            (filename) => filename.includes("modules/react/src/ReactCurrentDispatcher.lua") || filename.includes("modules/react/src/ReactCurrentBatchConfig.lua") || filename.includes("modules/react/src/ReactCurrentActQueue.lua") || filename.includes("modules/react/src/ReactCurrentOwner.lua") || filename.includes("modules/react/src/ReactDebugCurrentFrame.lua"),
+            (filename) => filename.includes("modules/react/src/ReactCurrentDispatcher.luau") || filename.includes("modules/react/src/ReactCurrentBatchConfig.luau") || filename.includes("modules/react/src/ReactCurrentActQueue.luau") || filename.includes("modules/react/src/ReactCurrentOwner.luau") || filename.includes("modules/react/src/ReactDebugCurrentFrame.luau"),
             (filename) => filename.replace("modules/react/src/", "modules/shared/src/ReactSharedInternals/")
         ],
         [
-            (filename) => filename.includes("modules/react-reconciler/src/ReactFiberHostConfigWithNoHydration.lua"),
-            (filename) => filename.replace("modules/react-reconciler/src/ReactFiberHostConfigWithNoHydration.lua", "modules/shared/src/ReactFiberHostConfig/WithNoHydration.lua")
+            (filename) => filename.includes("modules/react-reconciler/src/ReactFiberHostConfigWithNoHydration.luau"),
+            (filename) => filename.replace("modules/react-reconciler/src/ReactFiberHostConfigWithNoHydration.luau", "modules/shared/src/ReactFiberHostConfig/WithNoHydration.luau")
         ],
         [
-            (filename) => filename.includes("modules/react-reconciler/src/ReactFiberHostConfigWithNoPersistence.lua"),
-            (filename) => filename.replace("modules/react-reconciler/src/ReactFiberHostConfigWithNoPersistence.lua", "modules/shared/src/ReactFiberHostConfig/WithNoPersistence.lua")
+            (filename) => filename.includes("modules/react-reconciler/src/ReactFiberHostConfigWithNoPersistence.luau"),
+            (filename) => filename.replace("modules/react-reconciler/src/ReactFiberHostConfigWithNoPersistence.luau", "modules/shared/src/ReactFiberHostConfig/WithNoPersistence.luau")
         ],
         [
-            (filename) => filename.includes("modules/react-reconciler/src/ReactFiberHostConfigWithNoTestSelectors.lua"),
-            (filename) => filename.replace("modules/react-reconciler/src/ReactFiberHostConfigWithNoTestSelectors.lua", "modules/shared/src/ReactFiberHostConfig/WithNoTestSelectors.lua")
+            (filename) => filename.includes("modules/react-reconciler/src/ReactFiberHostConfigWithNoTestSelectors.luau"),
+            (filename) => filename.replace("modules/react-reconciler/src/ReactFiberHostConfigWithNoTestSelectors.luau", "modules/shared/src/ReactFiberHostConfig/WithNoTestSelectors.luau")
         ],
         [
             (filename) => filename.includes("__tests__/") && !filename.includes("src/__tests__/") && !filename.includes("PropMarkers/__tests__/") && !filename.includes("client/__tests__/"),
             (filename) => filename.replace("__tests__/", "src/__tests__/")
         ],
         [
-            (filename) => filename.endsWith("-test.lua"),
-            (filename) => filename.replace("-test.lua", ".spec.lua")
+            (filename) => filename.endsWith("-test.luau"),
+            (filename) => filename.replace("-test.luau", ".spec.luau")
 
         ],
         [
-            (filename) => filename.endsWith("-test.internal.lua"),
-            (filename) => filename.replace("-test.internal.lua", "-internal.spec.lua")
+            (filename) => filename.endsWith("-test.internal.luau"),
+            (filename) => filename.replace("-test.internal.luau", "-internal.spec.luau")
 
         ],
         [
@@ -69,8 +69,8 @@ module.exports = {
             (filename) => filename.replace("scripts/jest/matchers", "WorkspaceStatic/jest/matchers")
         ],
         [
-            (filename) => filename.endsWith("fixtures/legacy-jsx-runtimes/setupTests.lua"),
-            (filename) => filename.replace("fixtures/legacy-jsx-runtimes/setupTests.lua", "WorkspaceStatic/jest/matchers/createConsoleMatcher.lua")
+            (filename) => filename.endsWith("fixtures/legacy-jsx-runtimes/setupTests.luau"),
+            (filename) => filename.replace("fixtures/legacy-jsx-runtimes/setupTests.luau", "WorkspaceStatic/jest/matchers/createConsoleMatcher.luau")
         ],
     ],
 }

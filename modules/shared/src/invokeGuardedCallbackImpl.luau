@@ -9,7 +9,7 @@
  * @flow
  ]]
 -- local invariant = require("./invariant")
-local describeError = require("./ErrorHandling.roblox.lua").describeError
+local describeError = require("./ErrorHandling.roblox.luau").describeError
 
 -- deviation: with flow types stripped, it's easier to use varargs directly
 local function invokeGuardedCallbackProd(reporter, name, func, context, ...)

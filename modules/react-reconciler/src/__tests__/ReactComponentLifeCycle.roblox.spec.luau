@@ -1,4 +1,4 @@
--- Copy of ReactComponentLifeCycle.spec.lua that instead tests old Roact lifecycle method names (which we'll support temporarily)
+-- Copy of ReactComponentLifeCycle.spec.luau that instead tests old Roact lifecycle method names (which we'll support temporarily)
 
 --[[
  * Copyright (c) Facebook, Inc. and its affiliates.

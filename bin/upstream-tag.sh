@@ -21,14 +21,14 @@ target_folder:
 fi
 
 count=0
-for file in $(find * -name "*.lua")
+for file in $(find * -name "*.luau")
 do
   if [[ "$file" == *"roblox-jest"* ]] || [[ "$file" == *"roblox-js-polyfill"* ]]; then
     echo "SKIP: $file is Roblox-only"
     continue
   fi
 
-  if [[ "$file" == *".roblox."*"lua" ]]; then
+  if [[ "$file" == *".roblox."*"luau" ]]; then
     echo "SKIP: $file is Roblox-only"
     continue
   fi
@@ -40,7 +40,7 @@ do
 
   targetFileName="${file/-internal.spec/-test.internal}"
   targetFileName="${targetFileName/.spec/-test}"
-  targetFileName="${targetFileName/.lua/.js}"
+  targetFileName="${targetFileName/.luau/.js}"
   targetFile="$EQUIVALENT_FOLDER/$targetFileName"
 
   if [[ ! -f "$REACT_PATH/$targetFile" ]]; then

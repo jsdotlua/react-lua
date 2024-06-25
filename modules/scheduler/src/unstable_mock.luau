@@ -11,7 +11,7 @@ local TracingSubscriptions = require("./TracingSubscriptions")
 export type Interaction = Tracing.Interaction
 
 local initializeScheduler = require("./Scheduler")
-local HostConfig = require("./forks/SchedulerHostConfig.mock.lua")
+local HostConfig = require("./forks/SchedulerHostConfig.mock.luau")
 
 local Scheduler = initializeScheduler(HostConfig)
 

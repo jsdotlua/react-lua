@@ -8,9 +8,9 @@ Source: https://github.com/facebook/react/tree/master/packages/shared
 ---
 
 ### ✏️ Notes
-* `ReactTypes.js` contains a number of complex flow-type definitions that are not yet possible with Luau, so it's been simplified to a stub called `ReactTypes.roblox.lua`
-* `ReactComponentStackFrame.js` is replaced by a partially-ported stub (`ReactComponentStackFrame.roblox.lua`) since it contains logic for parsing/navigating JS-specific stack structure. This needs to be ported to the equivalent functionality in Luau.
-* Some slight changes to `isValidElement.lua` that account for the divergent shape of Component and PureComponent objects in our port (for `react`, they're functions; for us, they're tables)
+* `ReactTypes.js` contains a number of complex flow-type definitions that are not yet possible with Luau, so it's been simplified to a stub called `ReactTypes.roblox.luau`
+* `ReactComponentStackFrame.js` is replaced by a partially-ported stub (`ReactComponentStackFrame.roblox.luau`) since it contains logic for parsing/navigating JS-specific stack structure. This needs to be ported to the equivalent functionality in Luau.
+* Some slight changes to `isValidElement.luau` that account for the divergent shape of Component and PureComponent objects in our port (for `react`, they're functions; for us, they're tables)
 
 ### ❌ Excluded
 

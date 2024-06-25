@@ -7,7 +7,7 @@
     "directory": "modules/react-test-renderer"
   },
   "license": "MIT",
-  "main": "src/init.lua",
+  "main": "src/init.luau",
   "scripts": {
     "prepare": "npmluau"
   },

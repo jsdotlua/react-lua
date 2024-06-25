@@ -47,11 +47,11 @@ type Lanes = ReactFiberLane.Lanes
 -- type Lane = ReactFiberLane.Lane;
 -- local type {MutableSource} = require(Packages.Shared.ReactTypes)
 
-local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.luau")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 type SuspenseListRenderState = ReactFiberSuspenseComponent.SuspenseListRenderState
 type SuspenseListTailMode = ReactFiberSuspenseComponent.SuspenseListTailMode
-local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
+local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.luau")
 type SuspenseContext = ReactFiberSuspenseContext.SuspenseContext
 
 local ReactFiberOffscreenComponent = require("./ReactFiberOffscreenComponent")
@@ -116,12 +116,12 @@ local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
 local ReactSymbols = require("@pkg/@jsdotlua/shared").ReactSymbols
 local REACT_LAZY_TYPE = ReactSymbols.REACT_LAZY_TYPE
 local _getIteratorFn = ReactSymbols.getIteratorFn
-local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.lua")
+local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.luau")
 local ReactCurrentFiber = require("./ReactCurrentFiber")
 local getCurrentFiberOwnerNameInDevOrNull =
 	ReactCurrentFiber.getCurrentFiberOwnerNameInDevOrNull
 local setIsRendering = ReactCurrentFiber.setIsRendering
-local ReactFiberHotReloadingModule = require("./ReactFiberHotReloading.new.lua")
+local ReactFiberHotReloadingModule = require("./ReactFiberHotReloading.new.luau")
 local resolveFunctionForHotReloading =
 	ReactFiberHotReloadingModule.resolveFunctionForHotReloading
 local resolveForwardRefForHotReloading =
@@ -129,11 +129,11 @@ local resolveForwardRefForHotReloading =
 local resolveClassForHotReloading =
 	ReactFiberHotReloadingModule.resolveClassForHotReloading
 
-local ReactChildFiber = require("./ReactChildFiber.new.lua") :: any
+local ReactChildFiber = require("./ReactChildFiber.new.luau") :: any
 local mountChildFibers = ReactChildFiber.mountChildFibers
 local reconcileChildFibers = ReactChildFiber.reconcileChildFibers
 local cloneChildFibers = ReactChildFiber.cloneChildFibers
-local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.luau")
 local processUpdateQueue = ReactUpdateQueue.processUpdateQueue
 local cloneUpdateQueue = ReactUpdateQueue.cloneUpdateQueue
 local initializeUpdateQueue = ReactUpdateQueue.initializeUpdateQueue
@@ -151,7 +151,7 @@ local registerSuspenseInstanceRetry = ReactFiberHostConfig.registerSuspenseInsta
 local supportsHydration = ReactFiberHostConfig.supportsHydration
 type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
 
-local ReactFiberHostContext = require("./ReactFiberHostContext.new.lua")
+local ReactFiberHostContext = require("./ReactFiberHostContext.new.luau")
 local pushHostContext = ReactFiberHostContext.pushHostContext
 local pushHostContainer = ReactFiberHostContext.pushHostContainer
 local suspenseStackCursor = ReactFiberSuspenseContext.suspenseStackCursor
@@ -167,7 +167,7 @@ local setDefaultShallowSuspenseContext =
 -- local {findFirstSuspended} = require("./ReactFiberSuspenseComponent/new")
 -- local {
 --   ,
-local ReactFiberNewContext = require("./ReactFiberNewContext.new.lua")
+local ReactFiberNewContext = require("./ReactFiberNewContext.new.luau")
 local propagateContextChange = ReactFiberNewContext.propagateContextChange
 local readContext = ReactFiberNewContext.readContext
 local calculateChangedBits = ReactFiberNewContext.calculateChangedBits
@@ -191,7 +191,7 @@ end
 
 -- ROBLOX deviation: collective lazy init methods from ReactFiberHooks
 local function initReactFiberHooks()
-	local ReactFiberHooks = require("./ReactFiberHooks.new.lua")
+	local ReactFiberHooks = require("./ReactFiberHooks.new.luau")
 	lazyRefs.renderWithHooksRef = ReactFiberHooks.renderWithHooks
 	lazyRefs.bailoutHooksRef = ReactFiberHooks.bailoutHooks
 end
@@ -213,8 +213,8 @@ local function bailoutHooks(...)
 end
 
 local stopProfilerTimerIfRunning =
-	require("./ReactProfilerTimer.new.lua").stopProfilerTimerIfRunning
-local ReactFiberContext = require("./ReactFiberContext.new.lua")
+	require("./ReactProfilerTimer.new.luau").stopProfilerTimerIfRunning
+local ReactFiberContext = require("./ReactFiberContext.new.luau")
 local getMaskedContext = ReactFiberContext.getMaskedContext
 local getUnmaskedContext = ReactFiberContext.getUnmaskedContext
 local hasLegacyContextChanged = ReactFiberContext.hasContextChanged
@@ -223,7 +223,7 @@ local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local pushTopLevelContextObject = ReactFiberContext.pushTopLevelContextObject
 local invalidateContextProvider = ReactFiberContext.invalidateContextProvider
 
-local ReactFiberHydrationContext = require("./ReactFiberHydrationContext.new.lua")
+local ReactFiberHydrationContext = require("./ReactFiberHydrationContext.new.luau")
 local resetHydrationState = ReactFiberHydrationContext.resetHydrationState
 local enterHydrationState = ReactFiberHydrationContext.enterHydrationState
 local reenterHydrationStateFromDehydratedSuspenseInstance =
@@ -231,7 +231,7 @@ local reenterHydrationStateFromDehydratedSuspenseInstance =
 local tryToClaimNextHydratableInstance =
 	ReactFiberHydrationContext.tryToClaimNextHydratableInstance
 local warnIfHydrating = ReactFiberHydrationContext.warnIfHydrating
-local ReactFiberClassComponent = require("./ReactFiberClassComponent.new.lua") :: any
+local ReactFiberClassComponent = require("./ReactFiberClassComponent.new.luau") :: any
 local adoptClassInstance = ReactFiberClassComponent.adoptClassInstance
 local applyDerivedStateFromProps = ReactFiberClassComponent.applyDerivedStateFromProps
 local constructClassInstance = ReactFiberClassComponent.constructClassInstance
@@ -240,8 +240,8 @@ local resumeMountClassInstance = ReactFiberClassComponent.resumeMountClassInstan
 local updateClassInstance = ReactFiberClassComponent.updateClassInstance
 
 local resolveDefaultProps =
-	require("./ReactFiberLazyComponent.new.lua").resolveDefaultProps
-local ReactFiber = require("./ReactFiber.new.lua")
+	require("./ReactFiberLazyComponent.new.luau").resolveDefaultProps
+local ReactFiber = require("./ReactFiber.new.luau")
 local resolveLazyComponentTag = ReactFiber.resolveLazyComponentTag
 local createFiberFromFragment = ReactFiber.createFiberFromFragment
 local createFiberFromOffscreen = ReactFiber.createFiberFromOffscreen
@@ -249,7 +249,7 @@ local createFiberFromOffscreen = ReactFiber.createFiberFromOffscreen
 local createFiberFromTypeAndProps = ReactFiber.createFiberFromTypeAndProps
 local isSimpleFunctionComponent = ReactFiber.isSimpleFunctionComponent
 local createWorkInProgress = ReactFiber.createWorkInProgress
-local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
+local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau") :: any
 local pushRenderLanes = ReactFiberWorkLoop.pushRenderLanes
 local markSpawnedWork = ReactFiberWorkLoop.markSpawnedWork
 local retryDehydratedSuspenseBoundary = ReactFiberWorkLoop.retryDehydratedSuspenseBoundary
@@ -262,7 +262,7 @@ local NoContext = ReactFiberWorkLoop.NoContext
 
 local Schedule_tracing_wrap
 local setWorkInProgressVersion =
-	require("./ReactMutableSource.new.lua").setWorkInProgressVersion
+	require("./ReactMutableSource.new.luau").setWorkInProgressVersion
 local markSkippedUpdateLanes =
 	require("./ReactFiberWorkInProgress").markSkippedUpdateLanes
 local ConsolePatchingDev = require("@pkg/@jsdotlua/shared").ConsolePatchingDev
@@ -485,7 +485,7 @@ local function updateMemoComponent(
 			-- ROBLOX deviation: adds support for legacy Roact's validateProps()
 			local innerPropTypes
 			local validateProps
-			-- ROBLOX deviation: avoid accessing propTypes on a function, Lua doesn't support fields on functions
+			-- ROBLOX deviation: avoid accessing propTypes on a function, Luau doesn't support fields on functions
 			if type(type_) == "table" then
 				innerPropTypes = type_.propTypes
 				validateProps = type_.validateProps
@@ -524,7 +524,7 @@ local function updateMemoComponent(
 		-- ROBLOX deviation: adds support for legacy Roact's validateProps()
 		local innerPropTypes
 		local validateProps
-		-- ROBLOX deviation: only check for propTypes on class components, Lua doesn't support fields on functions
+		-- ROBLOX deviation: only check for propTypes on class components, Luau doesn't support fields on functions
 		if type(type_) == "table" then
 			innerPropTypes = type_.propTypes
 			validateProps = type_.validateProps
@@ -599,7 +599,7 @@ function updateSimpleMemoComponent(
 				-- ROBLOX deviation: adds support for legacy Roact's validateProps()
 				local outerPropTypes
 				local validateProps
-				-- ROBLOX deviation: avoid accessing propTypes on a function, Lua doesn't support fields on functions
+				-- ROBLOX deviation: avoid accessing propTypes on a function, Luau doesn't support fields on functions
 				if outerMemoType ~= nil and type(outerMemoType) == "table" then
 					outerPropTypes = (outerMemoType :: any).propTypes
 					-- ROBLOX deviation: support legacy Roact's equivalent of propTypes

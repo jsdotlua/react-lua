@@ -27,7 +27,7 @@ type Lanes = ReactFiberLane.Lanes
 type Lane = ReactFiberLane.Lane
 local ReactCapturedValue = require("./ReactCapturedValue")
 type CapturedValue<T> = ReactCapturedValue.CapturedValue<T>
-local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.luau")
 type Update<T> = ReactInternalTypes.Update<T>
 
 local ReactTypes = require("@pkg/@jsdotlua/shared")
@@ -35,7 +35,7 @@ type React_Component<Props, State> = ReactTypes.React_Component<Props, State>
 type Thenable<T> = ReactTypes.Thenable<T>
 type Wakeable = ReactTypes.Wakeable
 
-local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
+local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.luau")
 type SuspenseContext = ReactFiberSuspenseContext.SuspenseContext
 
 local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
@@ -54,7 +54,7 @@ local ShouldCapture = ReactFiberFlags.ShouldCapture
 local LifecycleEffectMask = ReactFiberFlags.LifecycleEffectMask
 local ForceUpdateForLegacySuspense = ReactFiberFlags.ForceUpdateForLegacySuspense
 local shouldCaptureSuspense =
-	require("./ReactFiberSuspenseComponent.new.lua").shouldCaptureSuspense
+	require("./ReactFiberSuspenseComponent.new.luau").shouldCaptureSuspense
 local ReactTypeOfMode = require("./ReactTypeOfMode")
 local NoMode = ReactTypeOfMode.NoMode
 local BlockingMode = ReactTypeOfMode.BlockingMode
@@ -86,7 +86,7 @@ local markLegacyErrorBoundaryAsFailedRef, isAlreadyFailedLegacyErrorBoundaryRef,
 -- ROBLOX deviation: lazy initialize ReactFiberWorkLoop to prevent cyclic module dependency
 local markLegacyErrorBoundaryAsFailed = function(...)
 	if not markLegacyErrorBoundaryAsFailedRef then
-		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau")
 		markLegacyErrorBoundaryAsFailedRef =
 			ReactFiberWorkLoop.markLegacyErrorBoundaryAsFailed
 	end
@@ -101,14 +101,14 @@ end
 -- } = require(Packages../ReactFiberWorkLoop.new'
 local pingSuspendedRoot = function(...)
 	if ReactFiberWorkLoop == nil then
-		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau")
 	end
 	pingSuspendedRootRef = ReactFiberWorkLoop.pingSuspendedRoot
 	return pingSuspendedRootRef(...)
 end
 local isAlreadyFailedLegacyErrorBoundary = function(...)
 	if ReactFiberWorkLoop == nil then
-		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua")
+		ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau")
 	end
 	isAlreadyFailedLegacyErrorBoundaryRef =
 		ReactFiberWorkLoop.isAlreadyFailedLegacyErrorBoundary

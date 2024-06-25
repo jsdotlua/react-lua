@@ -14,7 +14,7 @@ local Object = LuauPolyfill.Object
 
 local RobloxComponentProps = require("./roblox/RobloxComponentProps")
 
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 
 -- deviation: Essentially a placeholder for dom-specific logic, taking the place
@@ -34,7 +34,7 @@ local function diffProperties(
 	lastRawProps: Object,
 	nextRawProps: Object,
 	rootContainerElement: HostInstance
-): (nil | Array<any>)
+): nil | Array<any>
 	-- if _G.__DEV__ then
 	--   validatePropertiesInDevelopment(tag, nextRawProps)
 	-- end

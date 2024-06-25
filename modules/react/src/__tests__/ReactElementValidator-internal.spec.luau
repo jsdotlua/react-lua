@@ -611,7 +611,7 @@ describe("ReactElementValidator", function()
 		jestExpect(function()
 			React.createElement(Foo, {
 				__source = {
-					fileName = "fileName.lua",
+					fileName = "fileName.luau",
 					lineNumber = 100,
 				},
 			}, { React.createElement("Frame") })
