@@ -1,0 +1,17 @@
+{
+  "name": "ReactLua",
+  "tree": {
+    "$className": "DataModel",
+    "TestService": {
+      "ReactLua": {
+        "$path": "roblox-model",
+        "WorkspaceStatic": {
+          "$path": "WorkspaceStatic"
+        },
+        "node_modules": {
+          "$path": "node_modules"
+        }
+      }
+    }
+  }
+}

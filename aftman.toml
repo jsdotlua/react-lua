@@ -2,3 +2,5 @@
 rojo = "rojo-rbx/rojo@7.3.0"
 selene = "Kampfkarren/selene@0.26.1"
 stylua = "JohnnyMorganz/StyLua@0.19.1"
+lune = "filiptibell/lune@0.7.11"
+darklua = "seaofvoices/darklua@0.12.1"

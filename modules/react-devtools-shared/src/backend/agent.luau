@@ -243,7 +243,7 @@ function Agent.new(bridge: BackendBridge)
 		sessionStorageGetItem(SESSION_STORAGE_LAST_SELECTION_KEY)
 
 	if persistedSelectionString ~= nil then
-		self._persistedSelection = JSON.JSONDecode(persistedSelectionString)
+		self._persistedSelection = JSON:JSONDecode(persistedSelectionString)
 	end
 
 	local function wrapSelf(method: Function)
