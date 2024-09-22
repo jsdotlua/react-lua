@@ -7,7 +7,7 @@
     "directory": "modules/scheduler"
   },
   "license": "MIT",
-  "main": "src/init.lua",
+  "main": "src/init.luau",
   "scripts": {
     "prepare": "npmluau"
   },
