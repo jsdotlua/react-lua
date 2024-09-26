@@ -821,4 +821,6 @@ exports.injectIntoDevTools = function(devToolsConfig: DevToolsConfig): boolean
 	})
 end
 
+exports.robloxReactProfiling = require(script.Parent.RobloxReactProfiling)
+
 return exports
