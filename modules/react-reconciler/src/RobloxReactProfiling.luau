@@ -26,12 +26,7 @@ type FiberRoot = ReactInternalTypes.FiberRoot
 local LEVEL_ROOTS = 1 -- Level 1: Roots + Commit time
 local LEVEL_FIBERS = 10 -- Level 10: Individual Fiber "units of work"
 
-local loadedFlag, ReactMicroprofilerLevel = pcall(function()
-	return game:DefineFastInt("ReactMicroprofilerLevel", 0)
-end)
-if not loadedFlag then
-	ReactMicroprofilerLevel = 0
-end
+local ReactMicroprofilerLevel = _G.__REACT_MICROPROFILER_LEVEL or 0
 
 export type Marker = {
 	id: string,
