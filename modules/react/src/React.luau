@@ -27,9 +27,9 @@ local ReactLazy = require("./ReactLazy")
 type LazyComponent<T, P> = ReactLazy.LazyComponent<T, P>
 
 -- ROBLOX DEVIATION: Bindings
-local ReactBinding = require("./ReactBinding.roblox.lua")
+local ReactBinding = require("./ReactBinding.roblox.luau")
 -- ROBLOX DEVIATION: Re-export `None` marker
-local ReactNone = require("./None.roblox.lua")
+local ReactNone = require("./None.roblox.luau")
 
 local SharedModule = require("@pkg/@jsdotlua/shared")
 local ReactSymbols = SharedModule.ReactSymbols

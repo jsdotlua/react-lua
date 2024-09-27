@@ -8,7 +8,7 @@ local it = JestGlobals.it
 local ReactTypes = require("@pkg/@jsdotlua/shared")
 type Binding<T> = ReactTypes.ReactBinding<T>
 
-local Binding = require("../ReactBinding.roblox.lua")
+local Binding = require("../ReactBinding.roblox.luau")
 local ReactCreateRef = require("../ReactCreateRef")
 
 describe("Binding.create", function()

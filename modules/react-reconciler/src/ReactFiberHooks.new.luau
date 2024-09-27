@@ -79,7 +79,7 @@ local markRootMutableRead = ReactFiberLane.markRootMutableRead
 -- local setCurrentUpdateLanePriority = ReactFiberLane.setCurrentUpdateLanePriority
 -- local higherLanePriority = ReactFiberLane.higherLanePriority
 -- local DefaultLanePriority = ReactFiberLane.DefaultLanePriority
-local ReactFiberNewContext = require("./ReactFiberNewContext.new.lua")
+local ReactFiberNewContext = require("./ReactFiberNewContext.new.luau")
 local readContext = ReactFiberNewContext.readContext
 local ReactFiberFlags = require("./ReactFiberFlags")
 local UpdateEffect = ReactFiberFlags.Update
@@ -90,7 +90,7 @@ local MountPassiveDevEffect = ReactFiberFlags.MountPassiveDev
 local HookHasEffect = ReactHookEffectTags.HasEffect
 local HookLayout = ReactHookEffectTags.Layout
 local HookPassive = ReactHookEffectTags.Passive
-local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
+local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau") :: any
 local warnIfNotCurrentlyActingUpdatesInDEV =
 	ReactFiberWorkLoop.warnIfNotCurrentlyActingUpdatesInDEV
 local scheduleUpdateOnFiber = ReactFiberWorkLoop.scheduleUpdateOnFiber
@@ -115,14 +115,14 @@ local function is(x: any, y: any)
 	return x == y and (x ~= 0 or 1 / x == 1 / y) or x ~= x and y ~= y -- eslint-disable-line no-self-compare
 end
 local markWorkInProgressReceivedUpdate =
-	require("./ReactFiberBeginWork.new.lua").markWorkInProgressReceivedUpdate :: any
+	require("./ReactFiberBeginWork.new.luau").markWorkInProgressReceivedUpdate :: any
 -- local {
 --   UserBlockingPriority,
 --   NormalPriority,
 --   runWithPriority,
 --   getCurrentPriorityLevel,
 -- } = require("./SchedulerWithReactIntegration/new")
-local getIsHydrating = require("./ReactFiberHydrationContext.new.lua").getIsHydrating
+local getIsHydrating = require("./ReactFiberHydrationContext.new.luau").getIsHydrating
 -- local {
 --   makeClientId,
 --   makeClientIdInDEV,
@@ -132,7 +132,7 @@ local makeClientId = ReactFiberHostConfig.makeClientId
 -- local makeOpaqueHydratingObject = ReactFiberHostConfig.makeOpaqueHydratingObject
 -- local makeClientIdInDEV = ReactFiberHostConfig.makeClientIdInDEV
 
-local ReactMutableSource = require("./ReactMutableSource.new.lua")
+local ReactMutableSource = require("./ReactMutableSource.new.luau")
 local warnAboutMultipleRenderersDEV = ReactMutableSource.warnAboutMultipleRenderersDEV
 local getWorkInProgressVersion = ReactMutableSource.getWorkInProgressVersion
 local setWorkInProgressVersion = ReactMutableSource.setWorkInProgressVersion

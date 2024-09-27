@@ -22,7 +22,7 @@ local ReactRootTags
 beforeEach(function()
 	jest.resetModules()
 
-	ReactFiberRoot = require("./ReactFiberRoot.new.lua")
+	ReactFiberRoot = require("./ReactFiberRoot.new.luau")
 	ReactRootTags = require("./ReactRootTags")
 end)
 

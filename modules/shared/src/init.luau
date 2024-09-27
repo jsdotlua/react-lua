@@ -20,11 +20,11 @@ local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Object = LuauPolyfill.Object
 
 local ReactTypes = require("./ReactTypes")
-local flowtypes = require("./flowtypes.roblox.lua")
+local flowtypes = require("./flowtypes.roblox.luau")
 local ReactElementType = require("./ReactElementType")
 local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 local ReactSharedInternals = require("./ReactSharedInternals")
-local ErrorHandling = require("./ErrorHandling.roblox.lua")
+local ErrorHandling = require("./ErrorHandling.roblox.luau")
 
 -- Re-export all top-level public types
 export type ReactEmpty = ReactTypes.ReactEmpty
@@ -94,9 +94,9 @@ export type React_Key = flowtypes.React_Key
 return {
 	checkPropTypes = require("./checkPropTypes"),
 	console = require("./console"),
-	ConsolePatchingDev = require("./ConsolePatchingDev.roblox.lua"),
+	ConsolePatchingDev = require("./ConsolePatchingDev.roblox.luau"),
 	consoleWithStackDev = require("./consoleWithStackDev"),
-	enqueueTask = require("./enqueueTask.roblox.lua"),
+	enqueueTask = require("./enqueueTask.roblox.luau"),
 	ExecutionEnvironment = require("./ExecutionEnvironment"),
 	formatProdErrorMessage = require("./formatProdErrorMessage"),
 	getComponentName = require("./getComponentName"),
@@ -120,7 +120,7 @@ return {
 	ReactSymbols = require("./ReactSymbols"),
 	ReactVersion = require("./ReactVersion"),
 	shallowEqual = require("./shallowEqual"),
-	UninitializedState = require("./UninitializedState.roblox.lua"),
+	UninitializedState = require("./UninitializedState.roblox.luau"),
 	ReactTypes = ReactTypes,
 
 	-- ROBLOX DEVIATION: export error-stack-preserving utilities for use in
@@ -130,8 +130,8 @@ return {
 	parseReactError = ErrorHandling.parseReactError,
 
 	-- ROBLOX DEVIATION: export Symbol and Type from Shared
-	Symbol = require("./Symbol.roblox.lua"),
-	Type = require("./Type.roblox.lua"),
+	Symbol = require("./Symbol.roblox.luau"),
+	Type = require("./Type.roblox.luau"),
 
 	-- ROBLOX DEVIATION: export propmarkers from Shared
 	Change = require("./PropMarkers/Change"),

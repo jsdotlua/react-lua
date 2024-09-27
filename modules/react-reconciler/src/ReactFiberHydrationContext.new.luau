@@ -30,7 +30,7 @@ type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
 type Container = ReactFiberHostConfig.Container
 type HostContext = ReactFiberHostConfig.HostContext
 
-local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.luau")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
 local ReactWorkTags = require("./ReactWorkTags")
@@ -45,7 +45,7 @@ local Hydrating = ReactFiberFlags.Hydrating
 
 local invariant = require("@pkg/@jsdotlua/shared").invariant
 
-local ReactFiber = require("./ReactFiber.new.lua")
+local ReactFiber = require("./ReactFiber.new.luau")
 -- local createFiberFromHostInstanceForDeletion = ReactFiber.createFiberFromHostInstanceForDeletion
 local createFiberFromDehydratedFragment = ReactFiber.createFiberFromDehydratedFragment
 

@@ -26,7 +26,7 @@ local SingleEventManager = require("./SingleEventManager")
 type EventManager = SingleEventManager.EventManager
 local Type = require("@pkg/@jsdotlua/shared").Type
 local getDefaultInstanceProperty = require("./getDefaultInstanceProperty")
-local ReactRobloxHostTypes = require("../ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("../ReactRobloxHostTypes.roblox.luau")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 local Tag = require("@pkg/@jsdotlua/react").Tag
 

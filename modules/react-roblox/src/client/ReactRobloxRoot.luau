@@ -9,7 +9,7 @@
  * @flow
 ]]
 
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type Container = ReactRobloxHostTypes.Container
 type RootType = ReactRobloxHostTypes.RootType
 type RootOptions = ReactRobloxHostTypes.RootOptions
@@ -38,7 +38,7 @@ local unmarkContainerAsRoot = ReactRobloxComponentTree.unmarkContainerAsRoot
 -- local ensureListeningTo = require("@pkg/ReactDOMComponent").ensureListeningTo
 
 -- ROBLOX deviation: Use the config-injecting entry point for the reconciler
-local ReactFiberReconciler = require("../ReactReconciler.roblox.lua")
+local ReactFiberReconciler = require("../ReactReconciler.roblox.luau")
 local createContainer = ReactFiberReconciler.createContainer
 local updateContainer = ReactFiberReconciler.updateContainer
 -- local findHostInstanceWithNoPortals = ReactFiberReconciler.findHostInstanceWithNoPortals

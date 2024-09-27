@@ -15,11 +15,10 @@
 
 -- Targeted performance insights for Roblox Microprofiler
 
-local Packages = script.Parent.Parent
-local getComponentName = require(Packages.Shared).getComponentName
-local ReactWorkTags = require(script.Parent.ReactWorkTags)
+local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
+local ReactWorkTags = require("./ReactWorkTags")
 
-local ReactInternalTypes = require(script.Parent.ReactInternalTypes)
+local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type FiberRoot = ReactInternalTypes.FiberRoot
 

@@ -39,7 +39,7 @@ type ChildSet = ReactFiberHostConfig.ChildSet
 local ReactFiberOffscreenComponent = require("./ReactFiberOffscreenComponent")
 type OffscreenState = ReactFiberOffscreenComponent.OffscreenState
 
-local ReactMutableSource = require("./ReactMutableSource.new.lua")
+local ReactMutableSource = require("./ReactMutableSource.new.luau")
 local resetMutableSourceWorkInProgressVersions =
 	ReactMutableSource.resetWorkInProgressVersions
 
@@ -70,7 +70,7 @@ local ScopeComponent = ReactWorkTags.ScopeComponent
 local Block = ReactWorkTags.Block
 local OffscreenComponent = ReactWorkTags.OffscreenComponent
 local LegacyHiddenComponent = ReactWorkTags.LegacyHiddenComponent
-local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.luau")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 type SuspenseListRenderState = ReactFiberSuspenseComponent.SuspenseState
 
@@ -116,13 +116,13 @@ local finalizeContainerChildren = ReactFiberHostConfig.finalizeContainerChildren
 -- local shouldUpdateFundamentalComponent = ReactFiberHostConfig.shouldUpdateFundamentalComponent
 local preparePortalMount = ReactFiberHostConfig.preparePortalMount
 -- local prepareScopeUpdate = ReactFiberHostConfig.prepareScopeUpdate
-local ReactFiberHostContext = require("./ReactFiberHostContext.new.lua")
+local ReactFiberHostContext = require("./ReactFiberHostContext.new.luau")
 local getRootHostContainer = ReactFiberHostContext.getRootHostContainer
 local popHostContext = ReactFiberHostContext.popHostContext
 local getHostContext = ReactFiberHostContext.getHostContext
 local popHostContainer = ReactFiberHostContext.popHostContainer
 
-local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.lua")
+local ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.luau")
 local popSuspenseContext = ReactFiberSuspenseContext.popSuspenseContext
 local suspenseStackCursor = ReactFiberSuspenseContext.suspenseStackCursor
 local InvisibleParentSuspenseContext =
@@ -135,13 +135,13 @@ type SuspenseContext = ReactFiberSuspenseContext.SuspenseContext
 -- local setDefaultShallowSuspenseContext = ReactFiberSuspenseContext.setDefaultShallowSuspenseContext
 
 -- local {findFirstSuspended} = require("./ReactFiberSuspenseComponent/new")
-local ReactFiberContext = require("./ReactFiberContext.new.lua")
+local ReactFiberContext = require("./ReactFiberContext.new.luau")
 local isLegacyContextProvider = ReactFiberContext.isContextProvider
 local popLegacyContext = ReactFiberContext.popContext
 local popTopLevelLegacyContextObject = ReactFiberContext.popTopLevelContextObject
-local popProvider = require("./ReactFiberNewContext.new.lua").popProvider
+local popProvider = require("./ReactFiberNewContext.new.luau").popProvider
 
-local ReactFiberHydrationContext = require("./ReactFiberHydrationContext.new.lua")
+local ReactFiberHydrationContext = require("./ReactFiberHydrationContext.new.luau")
 local prepareToHydrateHostSuspenseInstance =
 	ReactFiberHydrationContext.prepareToHydrateHostSuspenseInstance
 local popHydrationState = ReactFiberHydrationContext.popHydrationState
@@ -159,7 +159,7 @@ local enableFundamentalAPI = ReactFeatureFlags.enableFundamentalAPI
 -- local enableScopeAPI = ReactFeatureFlags.enableScopeAPI
 local enableProfilerTimer = ReactFeatureFlags.enableProfilerTimer
 
-local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.lua") :: any
+local ReactFiberWorkLoop = require("./ReactFiberWorkLoop.new.luau") :: any
 
 local popRenderLanes = ReactFiberWorkLoop.popRenderLanes
 -- ROBLOX deviation: this is a live value in WorkLoop's module state, so it must be accessed directly and not 'cached'
@@ -179,7 +179,7 @@ local includesSomeLane = ReactFiberLane.includesSomeLane
 local mergeLanes = ReactFiberLane.mergeLanes
 -- local {resetChildFibers} = require("./ReactChildFiber/new")
 -- local {createScopeInstance} = require("./ReactFiberScope/new")
-local ReactProfilerTimer = require("./ReactProfilerTimer.new.lua")
+local ReactProfilerTimer = require("./ReactProfilerTimer.new.luau")
 local transferActualDuration = ReactProfilerTimer.transferActualDuration
 
 local function markUpdate(workInProgress: Fiber)

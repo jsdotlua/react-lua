@@ -9,6 +9,6 @@
  * @flow
 ]]
 
-local HostTypes = require("./client/ReactRobloxHostTypes.roblox.lua")
+local HostTypes = require("./client/ReactRobloxHostTypes.roblox.luau")
 export type RootType = HostTypes.RootType
 return require("./client/ReactRoblox")

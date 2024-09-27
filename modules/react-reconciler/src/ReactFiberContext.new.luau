@@ -21,7 +21,7 @@ local console = require("@pkg/@jsdotlua/shared").console
 
 local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
-local ReactFiberStack = require("./ReactFiberStack.new.lua")
+local ReactFiberStack = require("./ReactFiberStack.new.luau")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
 
 local isFiberMounted = require("./ReactFiberTreeReflection").isFiberMounted

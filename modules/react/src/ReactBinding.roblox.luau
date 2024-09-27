@@ -22,7 +22,7 @@ type Binding<T> = ReactTypes.ReactBinding<T>
 type BindingUpdater<T> = ReactTypes.ReactBindingUpdater<T>
 
 local Symbol = LuauPolyfill.Symbol
-local createSignal = require("./createSignal.roblox.lua")
+local createSignal = require("./createSignal.roblox.luau")
 
 local BindingImpl = Symbol("BindingImpl")
 

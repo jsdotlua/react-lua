@@ -1,4 +1,4 @@
-local createSignal = require("../createSignal.roblox.lua")
+local createSignal = require("../createSignal.roblox.luau")
 
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect

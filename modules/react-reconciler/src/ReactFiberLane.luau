@@ -14,7 +14,7 @@ type ReactPriorityLevel = ReactInternalTypes.ReactPriorityLevel
 local console = require("@pkg/@jsdotlua/shared").console
 
 local ReactFiberSchedulerPriorities =
-	require("./ReactFiberSchedulerPriorities.roblox.lua")
+	require("./ReactFiberSchedulerPriorities.roblox.luau")
 
 -- deviation: Instead of defining these here, and and re-exporting in
 -- `ReactInternalTypes`, we depend on and re-export them here to avoid cyclical

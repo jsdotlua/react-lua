@@ -22,11 +22,11 @@ local ReactInternalTypes = require("./ReactInternalTypes")
 type Fiber = ReactInternalTypes.Fiber
 type ContextDependency<T> = ReactInternalTypes.ContextDependency<T>
 
-local ReactFiberStack = require("./ReactFiberStack.new.lua")
+local ReactFiberStack = require("./ReactFiberStack.new.luau")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
 local ReactFiberLane = require("./ReactFiberLane")
 type Lanes = ReactFiberLane.Lanes
-local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.luau")
 type SharedQueue<T> = ReactUpdateQueue.SharedQueue<T>
 
 local ReactFiberHostConfig = require("./ReactFiberHostConfig")
@@ -50,7 +50,7 @@ local is = require("@pkg/@jsdotlua/shared").objectIs
 local createUpdate = ReactUpdateQueue.createUpdate
 local ForceUpdate = ReactUpdateQueue.ForceUpdate
 -- deviation: passed in as an arg to eliminate cycle
--- local markWorkInProgressReceivedUpdate = require("./ReactFiberBeginWork.new.lua").markWorkInProgressReceivedUpdate
+-- local markWorkInProgressReceivedUpdate = require("./ReactFiberBeginWork.new.luau").markWorkInProgressReceivedUpdate
 -- local enableSuspenseServerRenderer = require("@pkg/@jsdotlua/shared").ReactFeatureFlags.enableSuspenseServerRenderer
 
 local exports = {}

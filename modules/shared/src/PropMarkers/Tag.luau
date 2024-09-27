@@ -15,7 +15,7 @@
 --[[
 	Special value for assigning tags to roblox instances via Roact
 ]]
-local Symbol = require("../Symbol.roblox.lua")
+local Symbol = require("../Symbol.roblox.luau")
 
 local Tag = Symbol.named("RobloxTag")
 

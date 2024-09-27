@@ -10,4 +10,4 @@
  ]]
 
 -- deviation: old version of reconciler not ported
-return require("./ReactFiberReconciler.new.lua")
+return require("./ReactFiberReconciler.new.luau")
