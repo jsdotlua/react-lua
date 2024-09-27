@@ -35,7 +35,7 @@ local ReactReconciler = require("../ReactReconciler.roblox.lua")
 local batchedUpdates = ReactReconciler.batchedUpdates
 -- local discreteUpdates = ReactReconciler.discreteUpdates
 -- local flushDiscreteUpdates = ReactReconciler.flushDiscreteUpdates
--- local flushSync = ReactReconciler.flushSync
+local flushSync = ReactReconciler.flushSync
 -- local flushControlled = ReactReconciler.flushControlled
 local injectIntoDevTools = ReactReconciler.injectIntoDevTools
 local flushPassiveEffects = ReactReconciler.flushPassiveEffects
@@ -214,7 +214,7 @@ local Internals = {
 local exports = {
 	createPortal = createPortal,
 	unstable_batchedUpdates = batchedUpdates,
-	-- flushSync = flushSync,
+	flushSync = flushSync,
 	__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = Internals,
 	version = ReactVersion,
 	-- Disabled behind disableLegacyReactDOMAPIs
@@ -303,5 +303,7 @@ if _G.__DEV__ then
 	--   end
 	-- end
 end
+
+exports.robloxReactProfiling = ReactReconciler.robloxReactProfiling
 
 return exports
