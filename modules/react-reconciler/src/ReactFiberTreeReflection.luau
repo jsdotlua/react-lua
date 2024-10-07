@@ -17,7 +17,7 @@ type Fiber = ReactInternalTypes.Fiber
 local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 type Container = ReactFiberHostConfig.Container
 type SuspenseInstance = ReactFiberHostConfig.SuspenseInstance
-local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.luau")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
 
 local invariant = require("@pkg/@jsdotlua/shared").invariant

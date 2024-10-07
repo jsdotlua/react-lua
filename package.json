@@ -16,5 +16,5 @@
     "commander": "^11.1.0",
     "npmluau": "^0.1.1"
   },
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.5.0"
 }

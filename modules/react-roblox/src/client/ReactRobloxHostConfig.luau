@@ -32,7 +32,7 @@ local clearTimeout = LuauPolyfill.clearTimeout
 --   IntersectionObserverOptions,
 --   ObserveVisibleRectsCallback,
 -- } = require(Packages.react-reconciler/src/ReactTestSelectors')
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type RootType = ReactRobloxHostTypes.RootType
 type Container = ReactRobloxHostTypes.Container
 type HostInstance = ReactRobloxHostTypes.HostInstance

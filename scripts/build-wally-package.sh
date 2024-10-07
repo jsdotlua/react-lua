@@ -6,7 +6,7 @@ rm -rf roblox/node_modules
 
 mkdir -p roblox
 
-cp -rL node_modules/ roblox/
+cp -rL node_modules/ roblox/node_modules/
 
 ./scripts/remove-tests.sh roblox/node_modules
 

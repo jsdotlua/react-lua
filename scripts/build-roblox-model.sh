@@ -11,8 +11,8 @@ build_with_darklua_config () {
 
     mkdir -p roblox
 
-    cp -rL node_modules/ roblox
-    cp -r roblox-model/ roblox/
+    cp -rL node_modules/ roblox/node_modules/
+    cp -r roblox-model/ roblox/roblox-model/
 
     for module_path in roblox/roblox-model/*; do
         module_name=$(basename $module_path)

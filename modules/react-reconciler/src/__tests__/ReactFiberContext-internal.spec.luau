@@ -25,8 +25,8 @@ local ReactFeatureFlags
 beforeEach(function()
 	jest.resetModules()
 
-	ReactFiberContext = require("./ReactFiberContext.new.lua")
-	ReactFiber = require("./ReactFiber.new.lua")
+	ReactFiberContext = require("./ReactFiberContext.new.luau")
+	ReactFiber = require("./ReactFiber.new.luau")
 	ReactRootTags = require("./ReactRootTags")
 	ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 	ReactFeatureFlags.disableLegacyContext = false

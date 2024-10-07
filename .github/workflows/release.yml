@@ -24,14 +24,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Enable corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v3
         with:
           node-version: "latest"
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
-
-      - name: Update yarn
-        run: yarn set version stable
 
       - name: Install packages
         run: yarn install --immutable
@@ -61,14 +61,14 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Enable corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v3
         with:
           node-version: "latest"
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
-
-      - name: Update yarn
-        run: yarn set version stable
 
       - name: Install packages
         run: yarn install --immutable
@@ -177,14 +177,14 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Enable corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v3
         with:
           node-version: "latest"
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
-
-      - name: Update yarn
-        run: yarn set version stable
 
       - name: Install packages
         run: yarn install --immutable

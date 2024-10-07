@@ -13,7 +13,7 @@ type Object = LuauPolyfill.Object
 type void = nil
 type NonMaybeType<T> = T
 
-local flowtypes = require("./flowtypes.roblox.lua")
+local flowtypes = require("./flowtypes.roblox.luau")
 type React_Element<T> = flowtypes.React_Element<T>
 type React_Node = flowtypes.React_Node
 type SimpleMap<K, V> = { [K]: V }

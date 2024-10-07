@@ -1,6 +1,6 @@
 [tools]
-rojo = "rojo-rbx/rojo@7.3.0"
-selene = "Kampfkarren/selene@0.26.1"
-stylua = "JohnnyMorganz/StyLua@0.19.1"
-lune = "filiptibell/lune@0.7.11"
-darklua = "seaofvoices/darklua@0.12.1"
+rojo = "rojo-rbx/rojo@7.4.4"
+selene = "Kampfkarren/selene@0.27.1"
+stylua = "JohnnyMorganz/StyLua@0.20.0"
+lune = "filiptibell/lune@0.8.8"
+darklua = "seaofvoices/darklua@0.13.1"

@@ -23,7 +23,7 @@ type RootTag = ReactRootTags.RootTag
 local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 local noTimeout = ReactFiberHostConfig.noTimeout
 local supportsHydration = ReactFiberHostConfig.supportsHydration
-local ReactFiber = require("./ReactFiber.new.lua")
+local ReactFiber = require("./ReactFiber.new.luau")
 local createHostRootFiber = ReactFiber.createHostRootFiber
 local ReactFiberLane = require("./ReactFiberLane")
 local NoLanes = ReactFiberLane.NoLanes
@@ -36,7 +36,7 @@ local enableSuspenseCallback = ReactFeatureFlags.enableSuspenseCallback
 -- ROBLOX deviation: import from tracing from Scheduler export to avoid direct file access
 local Scheduler = require("@pkg/@jsdotlua/scheduler").tracing
 local unstable_getThreadID = Scheduler.unstable_getThreadID
-local ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
+local ReactUpdateQueue = require("./ReactUpdateQueue.new.luau")
 local initializeUpdateQueue = ReactUpdateQueue.initializeUpdateQueue
 local LegacyRoot = ReactRootTags.LegacyRoot
 local BlockingRoot = ReactRootTags.BlockingRoot

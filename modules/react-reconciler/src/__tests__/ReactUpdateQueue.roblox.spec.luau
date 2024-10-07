@@ -24,8 +24,8 @@ beforeEach(function()
 	jest.resetModules()
 
 	React = require("@pkg/@jsdotlua/react")
-	ReactUpdateQueue = require("./ReactUpdateQueue.new.lua")
-	Fiber = require("./ReactFiber.new.lua")
+	ReactUpdateQueue = require("./ReactUpdateQueue.new.luau")
+	Fiber = require("./ReactFiber.new.luau")
 	FiberLane = require("./ReactFiberLane")
 
 	component = React.Component:extend("fundamental")

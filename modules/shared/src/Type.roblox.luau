@@ -23,7 +23,7 @@
 		}
 ]]
 
-local Symbol = require("./Symbol.roblox.lua")
+local Symbol = require("./Symbol.roblox.luau")
 
 local Type = newproxy(true)
 

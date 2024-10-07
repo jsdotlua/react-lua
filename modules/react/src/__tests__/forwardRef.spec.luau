@@ -468,7 +468,7 @@ describe("forwardRef", function()
 		ReactNoop.render(
 			React.createElement(
 				RefForwardingComponent,
-				{ ref = ref, a = "0", b = "0", c = "1" }
+				{ ref = ref, a = 0, b = 0, c = 1 }
 			)
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
@@ -480,7 +480,7 @@ describe("forwardRef", function()
 		ReactNoop.render(
 			React.createElement(
 				RefForwardingComponent,
-				{ ref = ref, a = "0", b = "1", c = "1" }
+				{ ref = ref, a = 0, b = 1, c = 1 }
 			)
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
@@ -490,7 +490,7 @@ describe("forwardRef", function()
 		ReactNoop.render(
 			React.createElement(
 				RefForwardingComponent,
-				{ ref = ref, a = "0", b = "1", c = "2" }
+				{ ref = ref, a = 0, b = 1, c = 2 }
 			)
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
@@ -504,28 +504,28 @@ describe("forwardRef", function()
 		)
 
 		ReactNoop.render(
-			React.createElement(ComposedMemo, { ref = ref, a = "0", b = "0", c = "0" })
+			React.createElement(ComposedMemo, { ref = ref, a = 0, b = 0, c = 0 })
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
 		jestExpect(renderCount).toBe(_G.__DEV__ and 6 or 3)
 
 		-- Changing just b no longer updates
 		ReactNoop.render(
-			React.createElement(ComposedMemo, { ref = ref, a = "0", b = "1", c = "0" })
+			React.createElement(ComposedMemo, { ref = ref, a = 0, b = 1, c = 0 })
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
 		jestExpect(renderCount).toBe(_G.__DEV__ and 6 or 3)
 
 		-- Changing just a and c updates
 		ReactNoop.render(
-			React.createElement(ComposedMemo, { ref = ref, a = "2", b = "2", c = "2" })
+			React.createElement(ComposedMemo, { ref = ref, a = 2, b = 2, c = 2 })
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
 		jestExpect(renderCount).toBe(_G.__DEV__ and 8 or 4)
 
 		-- Changing just c does not update
 		ReactNoop.render(
-			React.createElement(ComposedMemo, { ref = ref, a = "2", b = "2", c = "3" })
+			React.createElement(ComposedMemo, { ref = ref, a = 2, b = 2, c = 3 })
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
 		jestExpect(renderCount).toBe(_G.__DEV__ and 8 or 4)
@@ -534,10 +534,7 @@ describe("forwardRef", function()
 		local differentRef = React.createRef()
 
 		ReactNoop.render(
-			React.createElement(
-				ComposedMemo,
-				{ ref = differentRef, a = "2", b = "2", c = "3" }
-			)
+			React.createElement(ComposedMemo, { ref = differentRef, a = 2, b = 2, c = 3 })
 		)
 		jestExpect(Scheduler).toFlushWithoutYielding()
 		jestExpect(renderCount).toBe(_G.__DEV__ and 10 or 5)

@@ -1,13 +1,13 @@
 {
   "name": "@jsdotlua/roact-compat",
-  "version": "17.1.0",
+  "version": "17.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsdotlua/react-lua.git",
     "directory": "modules/roact-compat"
   },
   "license": "MIT",
-  "main": "src/init.lua",
+  "main": "src/init.luau",
   "scripts": {
     "prepare": "npmluau"
   },

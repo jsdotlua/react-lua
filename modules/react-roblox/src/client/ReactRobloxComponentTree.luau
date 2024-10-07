@@ -10,7 +10,7 @@
  * @flow
 ]]
 
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 type TextInstance = ReactRobloxHostTypes.TextInstance
 type SuspenseInstance = ReactRobloxHostTypes.SuspenseInstance
@@ -185,7 +185,7 @@ end
 exports.getInstanceFromNode = function(node): Fiber?
 	-- ROBLOX deviation: lazy initialize to avoid circular dependency
 	if ReactWorkTags == nil then
-		local ReactReconciler = require("../ReactReconciler.roblox.lua") :: any
+		local ReactReconciler = require("../ReactReconciler.roblox.luau") :: any
 		ReactWorkTags = ReactReconciler.ReactWorkTags
 
 		HostComponent = ReactWorkTags.HostComponent

@@ -37,9 +37,9 @@ local Scheduler = require("@pkg/@jsdotlua/scheduler")
 
 type Interaction = Scheduler.Interaction
 
-local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.lua")
+local ReactFiberSuspenseComponent = require("./ReactFiberSuspenseComponent.new.luau")
 type SuspenseState = ReactFiberSuspenseComponent.SuspenseState
-local ReactFiberStack = require("./ReactFiberStack.new.lua")
+local ReactFiberStack = require("./ReactFiberStack.new.luau")
 type StackCursor<T> = ReactFiberStack.StackCursor<T>
 
 local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
@@ -60,7 +60,7 @@ local describeError = require("@pkg/@jsdotlua/shared").describeError
 local ReactSharedInternals = ReactShared.ReactSharedInternals
 local invariant = ReactShared.invariant
 
-local SchedulerWithReactIntegration = require("./SchedulerWithReactIntegration.new.lua")
+local SchedulerWithReactIntegration = require("./SchedulerWithReactIntegration.new.luau")
 local scheduleCallback = SchedulerWithReactIntegration.scheduleCallback
 local cancelCallback = SchedulerWithReactIntegration.cancelCallback
 local getCurrentPriorityLevel = SchedulerWithReactIntegration.getCurrentPriorityLevel
@@ -113,7 +113,7 @@ local ReactFiberHostConfig = require("./ReactFiberHostConfig")
 -- local afterActiveInstanceBlur = ReactFiberHostConfig.afterActiveInstanceBlur
 -- local clearContainer = ReactFiberHostConfig.clearContainer
 
-local ReactFiber = require("./ReactFiber.new.lua")
+local ReactFiber = require("./ReactFiber.new.luau")
 -- deviation: Use properties directly instead of localizing to avoid 200 limit
 -- local createWorkInProgress = ReactFiber.createWorkInProgress
 -- local assignFiberPropertiesInDEV = ReactFiber.assignFiberPropertiesInDEV
@@ -185,14 +185,14 @@ local ReactFiberTransition = require("./ReactFiberTransition")
 -- local requestCurrentTransition = ReactFiberTransition.requestCurrentTransition
 -- local NoTransition = ReactFiberTransition.NoTransition
 
-local ReactFiberUnwindWork = require("./ReactFiberUnwindWork.new.lua") :: any
+local ReactFiberUnwindWork = require("./ReactFiberUnwindWork.new.luau") :: any
 local unwindWork = ReactFiberUnwindWork.unwindWork
 local unwindInterruptedWork = ReactFiberUnwindWork.unwindInterruptedWork
-local ReactFiberThrow = require("./ReactFiberThrow.new.lua") :: any
+local ReactFiberThrow = require("./ReactFiberThrow.new.luau") :: any
 local throwException = ReactFiberThrow.throwException
 local createRootErrorUpdate = ReactFiberThrow.createRootErrorUpdate
 local createClassErrorUpdate = ReactFiberThrow.createClassErrorUpdate
-local ReactFiberCommitWork = require("./ReactFiberCommitWork.new.lua")
+local ReactFiberCommitWork = require("./ReactFiberCommitWork.new.luau")
 local commitBeforeMutationEffectOnFiber =
 	ReactFiberCommitWork.commitBeforeMutationLifeCycles
 local commitPlacement = ReactFiberCommitWork.commitPlacement
@@ -215,10 +215,13 @@ local recursivelyCommitLayoutEffects = ReactFiberCommitWork.recursivelyCommitLay
 
 local Promise = require("@pkg/@jsdotlua/promise")
 
-local enqueueUpdate = require("./ReactUpdateQueue.new.lua").enqueueUpdate
+local enqueueUpdate = require("./ReactUpdateQueue.new.luau").enqueueUpdate
 
 local resetContextDependencies =
-	require("./ReactFiberNewContext.new.lua").resetContextDependencies
+	require("./ReactFiberNewContext.new.luau").resetContextDependencies
+
+-- ROBLOX deviation: RobloxReactProfiling
+local RobloxReactProfiling = require(script.Parent.RobloxReactProfiling)
 
 -- ROBLOX deviation: Pre-declare function
 local ensureRootIsScheduled
@@ -237,7 +240,7 @@ local originalBeginWork =
 	function(current: Fiber | nil, workInProgress: Fiber, renderLanes: Lanes): Fiber | nil
 		if not lazyInitRefs.originalBeginWorkRef then
 			lazyInitRefs.originalBeginWorkRef =
-				require("./ReactFiberBeginWork.new.lua").beginWork
+				require("./ReactFiberBeginWork.new.luau").beginWork
 		end
 		return lazyInitRefs.originalBeginWorkRef(current, workInProgress, renderLanes)
 	end
@@ -246,7 +249,7 @@ local completeWork =
 	function(current: Fiber | nil, workInProgress: Fiber, renderLanes: Lanes): Fiber | nil
 		if not lazyInitRefs.completeWorkRef then
 			lazyInitRefs.completeWorkRef =
-				require("./ReactFiberCompleteWork.new.lua").completeWork
+				require("./ReactFiberCompleteWork.new.luau").completeWork
 		end
 		return (lazyInitRefs.completeWorkRef :: any)(current, workInProgress, renderLanes)
 	end
@@ -254,7 +257,7 @@ local completeWork =
 local ReactFiberHooks
 -- ROBLOX deviation: lazy init for functions from ReactFiberHooks
 local function initReactFiberHooks()
-	ReactFiberHooks = require("./ReactFiberHooks.new.lua")
+	ReactFiberHooks = require("./ReactFiberHooks.new.luau")
 	lazyInitRefs.resetHooksAfterThrowRef = ReactFiberHooks.resetHooksAfterThrow
 	lazyInitRefs.ContextOnlyDispatcherRef = ReactFiberHooks.ContextOnlyDispatcher
 	lazyInitRefs.getIsUpdatingOpaqueValueInRenderPhaseInDEVRef =
@@ -290,11 +293,11 @@ local pushToStack = ReactFiberStack.push
 local popFromStack = ReactFiberStack.pop
 local createCursor = ReactFiberStack.createCursor
 
-local ReactProfilerTimer = require("./ReactProfilerTimer.new.lua")
+local ReactProfilerTimer = require("./ReactProfilerTimer.new.luau")
 
 -- DEV stuff
 local getComponentName = require("@pkg/@jsdotlua/shared").getComponentName
-local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.lua")
+local ReactStrictModeWarnings = require("./ReactStrictModeWarnings.new.luau")
 local ReactCurrentFiber = require("./ReactCurrentFiber")
 -- deviation: these two properties would be captured as values instead of bound
 -- local ReactCurrentDebugFiberIsRenderingInDEV = ReactCurrentFiber.isRendering
@@ -305,7 +308,7 @@ local ReactErrorUtils = require("@pkg/@jsdotlua/shared").ReactErrorUtils
 local invokeGuardedCallback = ReactErrorUtils.invokeGuardedCallback
 local hasCaughtError = ReactErrorUtils.hasCaughtError
 local clearCaughtError = ReactErrorUtils.clearCaughtError
-local onCommitRootDevTools = require("./ReactFiberDevToolsHook.new.lua").onCommitRoot
+local onCommitRootDevTools = require("./ReactFiberDevToolsHook.new.luau").onCommitRoot
 local onCommitRootTestSelector = require("./ReactTestSelectors").onCommitRoot
 
 -- Used by `act`
@@ -820,17 +823,29 @@ ensureRootIsScheduled = function(root: FiberRoot, currentTime: number)
 		-- Special case: Sync React callbacks are scheduled on a special
 		-- internal queue
 		newCallbackNode = scheduleSyncCallback(function()
-			return mod.performSyncWorkOnRoot(root)
+			-- ROBLOX deviation: RobloxReactProfiling
+			local profileRunning = RobloxReactProfiling.profileRootBeforeUnitOfWork(root)
+			local ret = mod.performSyncWorkOnRoot(root)
+			RobloxReactProfiling.profileRootAfterYielding(profileRunning)
+			return ret
 		end)
 	elseif newCallbackPriority == ReactFiberLane.SyncBatchedLanePriority then
 		newCallbackNode = scheduleCallback(ImmediateSchedulerPriority, function()
-			return mod.performSyncWorkOnRoot(root)
+			-- ROBLOX deviation: RobloxReactProfiling
+			local profileRunning = RobloxReactProfiling.profileRootBeforeUnitOfWork(root)
+			local ret = mod.performSyncWorkOnRoot(root)
+			RobloxReactProfiling.profileRootAfterYielding(profileRunning)
+			return ret
 		end)
 	else
 		local schedulerPriorityLevel =
 			lanePriorityToSchedulerPriority(newCallbackPriority)
 		newCallbackNode = scheduleCallback(schedulerPriorityLevel, function()
-			return mod.performConcurrentWorkOnRoot(root)
+			-- ROBLOX deviation: RobloxReactProfiling
+			local profileRunning = RobloxReactProfiling.profileRootBeforeUnitOfWork(root)
+			local ret = mod.performConcurrentWorkOnRoot(root)
+			RobloxReactProfiling.profileRootAfterYielding(profileRunning)
+			return ret
 		end)
 	end
 
@@ -1923,6 +1938,9 @@ mod.workLoopConcurrent = function()
 end
 
 mod.performUnitOfWork = function(unitOfWork: Fiber): ()
+	-- ROBLOX deviation: RobloxReactProfiling
+	local profileRunning = RobloxReactProfiling.profileUnitOfWorkBefore(unitOfWork)
+
 	-- The current, flushed, state of this fiber is the alternate. Ideally
 	-- nothing should rely on this, but relying on it here means that we don't
 	-- need an additional field on the work in progress.
@@ -1952,6 +1970,9 @@ mod.performUnitOfWork = function(unitOfWork: Fiber): ()
 	end
 
 	ReactCurrentOwner.current = nil
+
+	-- ROBLOX deviation: RobloxReactProfiling
+	RobloxReactProfiling.profileUnitOfWorkAfter(profileRunning)
 end
 
 mod.completeUnitOfWork = function(unitOfWork: Fiber)
@@ -2065,7 +2086,11 @@ end
 mod.commitRoot = function(root)
 	local renderPriorityLevel = getCurrentPriorityLevel()
 	runWithPriority(ImmediateSchedulerPriority, function()
-		return mod.commitRootImpl(root, renderPriorityLevel)
+		-- ROBLOX deviation: RobloxReactProfiling
+		RobloxReactProfiling.profileCommitBefore()
+		local ret = mod.commitRootImpl(root, renderPriorityLevel)
+		RobloxReactProfiling.profileCommitAfter()
+		return ret
 	end)
 	return nil
 end

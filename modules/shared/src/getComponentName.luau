@@ -35,7 +35,7 @@ local ReactTypes = require("./ReactTypes")
 type ReactContext<T> = ReactTypes.ReactContext<T>
 type ReactProviderType<T> = ReactTypes.ReactProviderType<T>
 
-local describeError = require("./ErrorHandling.roblox.lua").describeError
+local describeError = require("./ErrorHandling.roblox.luau").describeError
 
 local function getWrappedName(outerType: any, innerType: any, wrapperName: string): string
 	-- deviation: Account for indexing into function

@@ -11,7 +11,7 @@
 
 -- ROBLOX deviation: simulates `index.js` and exports React's public interface
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
-type Object = LuauPolyfill.Object
+export type Object = LuauPolyfill.Object
 
 local React = require("./React")
 -- ROBLOX deviation START: bindings support
@@ -66,6 +66,9 @@ export type React_AbstractComponent<Props, Instance> = SharedModule.React_Compon
 	Props,
 	Instance
 >
+export type React_FowardRefComponent<Props, Instance> =
+	SharedModule.React_ForwardRefComponent<Props, Instance>
+export type React_MemoComponent<Config, T> = SharedModule.React_MemoComponent<Config, T>
 export type React_Component<Props, State> = SharedModule.React_Component<Props, State>
 export type React_ComponentType<P> = SharedModule.React_ComponentType<P>
 export type React_Context<T> = SharedModule.React_Context<T>

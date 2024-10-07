@@ -14,7 +14,7 @@ local Object = LuauPolyfill.Object
 
 local RobloxComponentProps = require("./roblox/RobloxComponentProps")
 
-local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.lua")
+local ReactRobloxHostTypes = require("./ReactRobloxHostTypes.roblox.luau")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 
 -- deviation: Essentially a placeholder for dom-specific logic, taking the place
