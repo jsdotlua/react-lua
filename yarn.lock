@@ -2,15 +2,15 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
-  cacheKey: 10c0
+  version: 6
+  cacheKey: 8
 
 "@jsdotlua/boolean@npm:^1.2.7":
   version: 1.2.7
   resolution: "@jsdotlua/boolean@npm:1.2.7"
   dependencies:
     "@jsdotlua/number": "npm:^1.2.7"
-  checksum: 10c0/a7342b8a5c5764a99446b91cf91e0e41ec789f468acdb5e657d33eb3c6c207b9c94590d318496466520cb8590b7f4c1baea0aca89798c7f88749f8d237e15c2f
+  checksum: 42378426a1585a37260557b8ec2976904d6a5507da80112bc369a0a2b5ab7b6c7511715b549bcc7d7f9c843271199a54722a999c08191feaf924e3b8bbeb7985
   languageName: node
   linkType: hard
 
@@ -20,7 +20,7 @@ __metadata:
   dependencies:
     "@jsdotlua/es7-types": "npm:^1.2.7"
     "@jsdotlua/instance-of": "npm:^1.2.7"
-  checksum: 10c0/ee4dc2129bdfb2c07a81027738335292f5a37329bd6b34d2be11589384fc6d37d0cdb2bf198d794ad764b188b2441c49d21eea2eedcbf27c8214f4a432164122
+  checksum: c08a49c36faf14cc7a96f9376fa6bb94aca90bd36cc76fd7e5e6a7e26cc553a071ccffa9fc4a9877958189cf6a2bb9c7469433a086ba0c1df5ca2ed7151f0917
   languageName: node
   linkType: hard
 
@@ -29,21 +29,21 @@ __metadata:
   resolution: "@jsdotlua/console@npm:1.2.7"
   dependencies:
     "@jsdotlua/collections": "npm:^1.2.7"
-  checksum: 10c0/0ea98ef96d23a78fadbcf365fe4f0fd6fc04c753305ed180550396ebb7084120c9224d18b323cea35f9261de94c6b29855cadb1d91c1961f3cdc888c4a319413
+  checksum: 822d5a7826dd9b125c22b540dae5be0b08da20e40f0d13346589dc612df4e88856515780c8e6d37a8ce7cf7553c38528ffddf836d0abdc2cad646fa55ae079df
   languageName: node
   linkType: hard
 
 "@jsdotlua/es7-types@npm:^1.2.7":
   version: 1.2.7
   resolution: "@jsdotlua/es7-types@npm:1.2.7"
-  checksum: 10c0/c639dfb8b6039a385424e24b6636cc12607ba1ff09da046ec37bd1af47b55a95f7a4b3ae8f4bdbd2f0b7bed08316e00e32debbc11afc0acf252182afe06a8f71
+  checksum: 28a8123cfa7b8202b5ee99c445d104b5216668c53d0cb2f55c4525ba0c785e5c0fb0746ac8c04a8b2fda7293cd67b474d481d44e096a92d04e42cdce11ce8d12
   languageName: node
   linkType: hard
 
 "@jsdotlua/instance-of@npm:^1.2.7":
   version: 1.2.7
   resolution: "@jsdotlua/instance-of@npm:1.2.7"
-  checksum: 10c0/a3ebb3fd7750fb23afb26338eaa0e4c0dfe7badfd9180b4a72749a0d910269d484ce93c53bdb3219318576a87c175932bbe87466dbff870141b66541c5943eda
+  checksum: 55e769685c97a756855d634657d4b7ca838be0b4220a55dc5ae4432c623e4fedd859f014078dda6ffb423b298010f743bf317c103340b8cb1c7065d81b08bce2
   languageName: node
   linkType: hard
 
@@ -61,28 +61,28 @@ __metadata:
     "@jsdotlua/string": "npm:^1.2.7"
     "@jsdotlua/timers": "npm:^1.2.7"
     symbol-luau: "npm:^1.0.0"
-  checksum: 10c0/1f98940c9f7cff669c9202370e2faa1e577ec2c7fd32c85773fcf20a00a6255dc99dd49f8962799db30526f436b08af4d9710c86b2d2d30b9184da4b60620c5c
+  checksum: 9ffc2f84f7d40b948701e9c69a2310897f49394ee394ae1456b53a67edef6e0194de256ce829d6eb5663347e95a7d3bf46a58280356926b7d6fe22e0afac46e6
   languageName: node
   linkType: hard
 
 "@jsdotlua/math@npm:^1.2.7":
   version: 1.2.7
   resolution: "@jsdotlua/math@npm:1.2.7"
-  checksum: 10c0/4e622511789a89d6c92c7c03856ac18763b402c1638b482df29dee43e56edd662b1131f27945919eb9a3960c26196767ca9e12bea118aa6c9781d2b10807291f
+  checksum: 37d335a1f35d2a751e0d58916b38b60b04dbb51b8b1cbbf6eae24c72ba1690615c759e59d21f1c264667e2a124e8c39645c18fa86d9080418c9163a223406780
   languageName: node
   linkType: hard
 
 "@jsdotlua/number@npm:^1.2.7":
   version: 1.2.7
   resolution: "@jsdotlua/number@npm:1.2.7"
-  checksum: 10c0/ffb9ee335508f90f381419616e066bed3b294d3d77bbda73378fcabf3ccd1881b9f69364d1f4ed979e8b870c478a860a79921e12f7efbeb4b310e4208b75edfd
+  checksum: 7d523a94ccd8b15f5fc21647afe11416355dc6fc0d5eb3deeb0d4cb498f31e37d4ad07be4901ad5758e84d9ad176d4b183ef20d1786302cc8430114ed34b69ee
   languageName: node
   linkType: hard
 
 "@jsdotlua/promise@npm:^3.5.0":
   version: 3.5.0
   resolution: "@jsdotlua/promise@npm:3.5.0"
-  checksum: 10c0/8771dac525b8d608ad319040b742cdde8f4cbbd4a075ae02dad4d510c8ab739dabf7de40ae1b15211e3890331cf3e7d9454fdcb3ec9a08471663436c0e9ec977
+  checksum: 64a7bb576126dd3702d91f542793b52f43e83c051a422b4b4a63f0225a4c8fea4d416c52bf5e344093dfd18936e46f55f3c75c82a4c805f7662086ddd12efb42
   languageName: node
   linkType: hard
 
@@ -90,11 +90,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-cache@workspace:modules/react-cache"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/scheduler": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -102,10 +102,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-debug-tools@workspace:modules/react-debug-tools"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react-reconciler": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -113,12 +113,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-devtools-extensions@workspace:modules/react-devtools-extensions"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/react-devtools-shared": "workspace:^"
     "@jsdotlua/react-roblox": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -126,14 +126,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-devtools-shared@workspace:modules/react-devtools-shared"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/react-debug-tools": "workspace:^"
     "@jsdotlua/react-is": "workspace:^"
     "@jsdotlua/react-reconciler": "workspace:^"
     "@jsdotlua/react-roblox": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -142,7 +142,7 @@ __metadata:
   resolution: "@jsdotlua/react-is@workspace:modules/react-is"
   dependencies:
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -150,12 +150,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-reconciler@workspace:modules/react-reconciler"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
-    "@jsdotlua/promise": "npm:^3.5.0"
+    "@jsdotlua/luau-polyfill": ^1.2.6
+    "@jsdotlua/promise": ^3.5.0
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/scheduler": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -163,12 +163,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-roblox@workspace:modules/react-roblox"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/react-reconciler": "workspace:^"
     "@jsdotlua/scheduler": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -176,11 +176,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-shallow-renderer@workspace:modules/react-shallow-renderer"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/react-is": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -188,12 +188,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-test-renderer@workspace:modules/react-test-renderer"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/react-reconciler": "workspace:^"
     "@jsdotlua/scheduler": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -201,9 +201,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react@workspace:modules/react"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -211,11 +211,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/roact-compat@workspace:modules/roact-compat"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/react": "workspace:^"
     "@jsdotlua/react-roblox": "workspace:^"
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -223,9 +223,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/scheduler@workspace:modules/scheduler"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
+    "@jsdotlua/luau-polyfill": ^1.2.6
     "@jsdotlua/shared": "workspace:^"
-    npmluau: "npm:^0.1.0"
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -233,8 +233,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@jsdotlua/shared@workspace:modules/shared"
   dependencies:
-    "@jsdotlua/luau-polyfill": "npm:^1.2.6"
-    npmluau: "npm:^0.1.0"
+    "@jsdotlua/luau-polyfill": ^1.2.6
+    npmluau: ^0.1.0
   languageName: unknown
   linkType: soft
 
@@ -244,7 +244,7 @@ __metadata:
   dependencies:
     "@jsdotlua/es7-types": "npm:^1.2.7"
     "@jsdotlua/number": "npm:^1.2.7"
-  checksum: 10c0/2a4fea39734748f5b0e188b143cd178f460e32998745faf3b99364cb51fdd354d77c9c2a2138f28a71c5dad2cf10112a4368017aa2c9b12c36d198b84ccb079c
+  checksum: 407f927ae6f6290430ca8e6f8b14d7e77ebc7a4fd5438be3e59bc879712053aa85bd3f764e3e8e9e3f8b17735e5554a1429ad5fdca22b435ef5ed49df5dae498
   languageName: node
   linkType: hard
 
@@ -253,14 +253,14 @@ __metadata:
   resolution: "@jsdotlua/timers@npm:1.2.7"
   dependencies:
     "@jsdotlua/collections": "npm:^1.2.7"
-  checksum: 10c0/ce7c1aeb0278436319325f45c6866f3a580453ca1e094ca9641421083268283b8e896a90e249108d89b8700fdd0571d39e687e94e2f27561628d5c83b33db673
+  checksum: 7a86b575674f1abd85b5a373969395664fb1e806127a129fa3f2b360cb96d6f9094b6dfb0919e8f7cb2a7d6a2a80b1e2778231a58a15a53b6d6fdedc9eccb548
   languageName: node
   linkType: hard
 
 "commander@npm:^11.0.0, commander@npm:^11.1.0":
   version: 11.1.0
   resolution: "commander@npm:11.1.0"
-  checksum: 10c0/13cc6ac875e48780250f723fb81c1c1178d35c5decb1abb1b628b3177af08a8554e76b2c0f29de72d69eef7c864d12613272a71fabef8047922bc622ab75a179
+  checksum: fd1a8557c6b5b622c89ecdfde703242ab7db3b628ea5d1755784c79b8e7cb0d74d65b4a262289b533359cd58e1bfc0bf50245dfbcd2954682a6f367c828b79ef
   languageName: node
   linkType: hard
 
@@ -272,21 +272,21 @@ __metadata:
     walkdir: "npm:^0.4.1"
   bin:
     npmluau: main.js
-  checksum: 10c0/9ae22c0dcff9e85c90b4da4e8c17bc51e9b567b4a417c9767d355ff68faca4f99a2934b581743ebc8729f6851d1ba5b64597312151747252e040517d1794fbca
+  checksum: b0d2acd5ce126257119b9af306cdfc2b40ea5a4de0cec9b033d623425fba6976dabb75d138bc73abadef61ab4de2d271d1cfeddef961d1b573e2a9d7cdaf9b8e
   languageName: node
   linkType: hard
 
 "symbol-luau@npm:^1.0.0":
   version: 1.0.1
   resolution: "symbol-luau@npm:1.0.1"
-  checksum: 10c0/ab51a77331b2d5e4666528bada17e67b26aea355257bba9e97351016cd1836bd19f372355a14cf5bef2f4d5bc6b32fe91aeb09698d7bdc079d2c61330bedf251
+  checksum: c857ff15c59201012ab5d409cf1ea61689e1347d5ce8c6379850ece8db3ad6a1d241c73f21a0452dd6a21cfdbd1451fc9516563632900a39ea0b566c81df7f31
   languageName: node
   linkType: hard
 
 "walkdir@npm:^0.4.1":
   version: 0.4.1
   resolution: "walkdir@npm:0.4.1"
-  checksum: 10c0/88e635aa9303e9196e4dc15013d2bd4afca4c8c8b4bb27722ca042bad213bb882d3b9141b3b0cca6bfb274f7889b30cf58d6374844094abec0016f335c5414dc
+  checksum: 71045c21dc19aae3321f897b6e9e507cf8039202665c35a0b908eecccaf25636aab769b31cbd61ef8267237fe22fc316923a691ecc2d9d38840a15c59c0f2594
   languageName: node
   linkType: hard
 
@@ -294,7 +294,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace@workspace:."
   dependencies:
-    commander: "npm:^11.1.0"
-    npmluau: "npm:^0.1.1"
+    commander: ^11.1.0
+    npmluau: ^0.1.1
   languageName: unknown
   linkType: soft

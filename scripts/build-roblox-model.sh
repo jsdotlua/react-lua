@@ -11,8 +11,8 @@ build_with_darklua_config () {
 
     mkdir -p roblox
 
-    cp -rL node_modules/ roblox/node_modules/
-    cp -r roblox-model/ roblox/roblox-model/
+    cp -rL node_modules roblox/
+    cp -r roblox-model roblox/
 
     for module_path in roblox/roblox-model/*; do
         module_name=$(basename $module_path)
@@ -26,6 +26,7 @@ build_with_darklua_config () {
     done
 
     ./scripts/remove-tests.sh roblox
+    ./scripts/remove-node-modules.sh roblox/node_modules/@jsdotlua
 
     cp default.project.json roblox
 
@@ -33,8 +34,8 @@ build_with_darklua_config () {
 
     cp $DARKLUA_CONFIG roblox
 
-    darklua process --config roblox/$DARKLUA_CONFIG roblox/node_modules roblox/node_modules
     darklua process --config roblox/$DARKLUA_CONFIG roblox/roblox-model roblox/roblox-model
+    darklua process --config roblox/$DARKLUA_CONFIG roblox/node_modules roblox/node_modules
 
     mkdir -p $(dirname $OUTPUT)
 
