@@ -109,6 +109,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@jsdotlua/react-devtools-core@workspace:modules/react-devtools-core":
+  version: 0.0.0-use.local
+  resolution: "@jsdotlua/react-devtools-core@workspace:modules/react-devtools-core"
+  languageName: unknown
+  linkType: soft
+
 "@jsdotlua/react-devtools-extensions@workspace:modules/react-devtools-extensions":
   version: 0.0.0-use.local
   resolution: "@jsdotlua/react-devtools-extensions@workspace:modules/react-devtools-extensions"
