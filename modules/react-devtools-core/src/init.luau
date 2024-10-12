@@ -35,16 +35,16 @@ local function debug(methodName: string, ...: any)
 	end
 end
 
-local function connectToDevtools(options: ConnectOptions?)
+local function connectToDevtools(options_: ConnectOptions?)
 	if hook == nil then
 		-- Devtools wasn't injected into this context
 		return
 	end
 
-	local options: ConnectOptions = options or {}
+	local options: ConnectOptions = options_ or {}
 	local host = options.host or "localhost"
 	local useHttps = if options.useHttps == nil then false else options.useHttps
-	local port = options.port or 8097
+	local port = options.port or 8001
 	local isAppActive = options.isAppActive or function()
 		return true
 	end

@@ -34,7 +34,7 @@ local invariant = require("@pkg/@jsdotlua/shared").invariant
 -- ROBLOX deviation: we don't currently need semver, as we only support one version of React
 -- local semver = require(semver)
 -- local gte = semver.gte
-local types = require("./types")
+local types = require("../types")
 local ComponentFilterDisplayName = types.ComponentFilterDisplayName
 local ComponentFilterElementType = types.ComponentFilterElementType
 local ComponentFilterHOC = types.ComponentFilterHOC
@@ -50,7 +50,7 @@ local ElementTypeProfiler = types.ElementTypeProfiler
 local ElementTypeRoot = types.ElementTypeRoot
 local ElementTypeSuspense = types.ElementTypeSuspense
 local ElementTypeSuspenseList = types.ElementTypeSuspenseList
-local utils = require("./utils")
+local utils = require("../utils")
 local deletePathInObject = utils.deletePathInObject
 local getDisplayName = utils.getDisplayName
 local getDefaultComponentFilters = utils.getDefaultComponentFilters
@@ -1150,7 +1150,7 @@ exports.attach = function(
 		if global.__DEV__ then
 			if not Number.isInteger(op) then
 				console.error(
-					"pushOperation() was called but the value is not an integer.",
+					"pushOperation() was called but the value is not an integer." :: any,
 					op
 				)
 			end
@@ -2591,7 +2591,7 @@ exports.attach = function(
 
 			-- Temporarily disable all console logging before re-running the hook.
 			-- ROBLOX TODO: Is iterating over console methods be sensible here?
-			for method, _ in console do
+			for method, _ in pairs(console) do
 				pcall(function()
 					originalConsoleMethods[method] = console[method]
 					console[method] = function() end
@@ -2603,7 +2603,7 @@ exports.attach = function(
 			end)
 
 			-- Restore original console functionality.
-			for method, _ in console do
+			for method, _ in pairs(console) do
 				pcall(function()
 					console[method] = originalConsoleMethods[method]
 				end)

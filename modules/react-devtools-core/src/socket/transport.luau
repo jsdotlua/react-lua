@@ -45,6 +45,7 @@ function Transport:Read()
 
 				self:Read()
 			else
+				warn("Error reading from transport:", response)
 				self:Emit("error", response)
 			end
 		end)
@@ -71,6 +72,7 @@ function Transport:Flush(force)
 
 				self:Flush()
 			else
+				warn("Error writing to transport:", response)
 				self:Emit("error", response)
 			end
 		end)
