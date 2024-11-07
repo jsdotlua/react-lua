@@ -58,8 +58,7 @@ local getInObject = utils.getInObject
 local getUID = utils.getUID
 local renamePathInObject = utils.renamePathInObject
 local setInObject = utils.setInObject
--- ROBLOX deviation: Don't encode strings
--- local utfEncodeString = utils.utfEncodeString
+local utfEncodeString = utils.utfEncodeString
 local storage = require("../storage")
 local sessionStorageGetItem = storage.sessionStorageGetItem
 local backendUtils = require("./utils")
@@ -1214,24 +1213,13 @@ exports.attach = function(
 
 		-- Now fill in the string table.
 		-- [stringTableLength, str1Length, ...str1, str2Length, ...str2, ...]
-		-- ROBLOX deviation: [stringCount, str1, str2, ...]
 		operations[POSTFIX_INCREMENT()] = pendingStringTableLength
-
-		-- ROBLOX deviation: insert operations in pendingStringTable value-order
-		local stringTableStartIndex = #operations
-
-		pendingStringTable:forEach(function(value, key)
-			-- ROBLOX deviation: Don't encode strings
-			-- operations[POSTFIX_INCREMENT()] = #key
-			-- local encodedKey = utfEncodeString(key)
-			-- for j = 1, #encodedKey do
-			-- 	operations[i + j] = encodedKey[j]
-			-- end
-			-- i = i + #key
-			operations[stringTableStartIndex + value] = key
-
-			-- ROBLOX deviation: ensure increment is still called
-			POSTFIX_INCREMENT()
+		pendingStringTable:forEach(function(_value, key)
+			operations[POSTFIX_INCREMENT()] = utf8.len(key) or 0
+			local encodedKey = utfEncodeString(key)
+			for j = 1, #encodedKey do
+				operations[POSTFIX_INCREMENT()] = encodedKey[j]
+			end
 		end)
 
 		if numUnmountIDs > 0 then
@@ -1301,23 +1289,22 @@ exports.attach = function(
 		end
 
 		-- ROBLOX FIXME Luau: needs type states to not need manual cast
-		local existingID = pendingStringTable:get(str :: string)
-
-		if existingID ~= nil then
-			return existingID
+		local existingEntry = pendingStringTable:get(str :: string)
+		if existingEntry ~= nil then
+			return existingEntry
 		end
 
-		local stringID = pendingStringTable.size + 1
+		local id = pendingStringTable.size + 1
+		local encodedString = utfEncodeString(str)
 
 		-- ROBLOX FIXME Luau: needs type states to not need cast
-		pendingStringTable:set(str :: string, stringID)
+		pendingStringTable:set(str :: string, id)
+
 		-- The string table total length needs to account
 		-- both for the string length, and for the array item
 		-- that contains the length itself. Hence + 1.
-		-- ROBLOX deviation: Don't encode strings, so just count one for the single string entry
-		-- pendingStringTableLength = pendingStringTableLength + (#str + 1)
-		pendingStringTableLength += 1
-		return stringID
+		pendingStringTableLength += #encodedString + 1
+		return id
 	end
 
 	local function recordMount(fiber: Fiber, parentFiber: Fiber | nil)

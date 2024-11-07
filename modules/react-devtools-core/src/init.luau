@@ -16,6 +16,7 @@ type ComponentFilter = ReactDevtoolsShared.ComponentFilter
 type DevtoolsHook = ReactDevtoolsShared.DevtoolsHook
 
 local Socket = require("./socket")
+local serializeTable = require("./utils/serialize-table")
 
 type Array<T> = { T }
 
@@ -29,7 +30,7 @@ export type ConnectOptions = {
 local hook = installHook(_G)
 local savedComponentFilters: Array<ComponentFilter> = getDefaultComponentFilters()
 
-local function debug(methodName: string, ...: any)
+local function debugPrint(methodName: string, ...: any)
 	if __DEBUG__ then
 		print(`[core/backend] {methodName}`, ...)
 	end
@@ -72,7 +73,7 @@ local function connectToDevtools(options_: ConnectOptions?)
 	local uri = `{protocol}://{host}:{port}`
 
 	local function handleClose()
-		debug("Socket.on('close')")
+		debugPrint("Socket.on('close')")
 
 		if bridge ~= nil then
 			bridge:emit("shutdown")
@@ -82,7 +83,7 @@ local function connectToDevtools(options_: ConnectOptions?)
 	end
 
 	local function handleFailed()
-		debug("Socket.on('error')")
+		debugPrint("Socket.on('error')")
 		scheduleRetry()
 	end
 
@@ -90,7 +91,7 @@ local function connectToDevtools(options_: ConnectOptions?)
 		local success, data = pcall(function()
 			if type(event) == "string" then
 				local data = HttpService:JSONDecode(event)
-				debug("Socket.on('message')", event)
+				debugPrint("Socket.on('message')", event)
 				return data
 			else
 				error(`Bad data received from socket: {event} (of type {typeof(event)})`)
@@ -130,7 +131,12 @@ local function connectToDevtools(options_: ConnectOptions?)
 			end,
 			send = function(event: string, payload: any, transferable: Array<any>?)
 				-- TODO: Check if the Socket is open. Our socket impl doesn't support this right now.
-				debug("wall.send()", event, payload)
+				debugPrint("wall.send()", event, payload)
+
+				local canSerializePayload = pcall(HttpService.JSONEncode, HttpService, payload)
+				if not canSerializePayload then
+					payload = serializeTable(payload)
+				end
 
 				socket:Send(HttpService:JSONEncode({
 					event = event,
@@ -144,19 +150,19 @@ local function connectToDevtools(options_: ConnectOptions?)
 		bridge:addListener(
 			"inspectElement",
 			function(data: { id: number, rendererId: number })
-				local id = data.id
-				local rendererId = data.rendererId
+				-- local id = data.id
+				-- local rendererId = data.rendererId
 
-				if agent then
-					local renderer = agent.rendererInterfaces[rendererId]
-					if renderer ~= nil then
-						local nodes = renderer:findNativeNodesForFiberID(id)
-						if nodes ~= nil and next(nodes) ~= nil then
-							local node = nodes[1]
-							agent:emit("showNativeHighlight", node)
-						end
-					end
-				end
+				-- if agent then
+				-- 	local renderer = agent.rendererInterfaces[rendererId]
+				-- 	if renderer ~= nil then
+				-- 		local nodes = renderer:findNativeNodesForFiberID(id)
+				-- 		if nodes ~= nil and next(nodes) ~= nil then
+				-- 			local node = nodes[1]
+				-- 			agent:emit("showNativeHighlight", node)
+				-- 		end
+				-- 	end
+				-- end
 			end
 		)
 

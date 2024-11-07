@@ -274,7 +274,7 @@ local _foundDevTools = injectIntoDevTools({
 	findFiberByHostInstance = getClosestInstanceFromNode,
 	bundleType = if _G.__DEV__ then 1 else 0,
 	version = ReactVersion,
-	rendererPackageName = "ReactRoblox",
+	rendererPackageName = "react-roblox",
 })
 
 if _G.__DEV__ then

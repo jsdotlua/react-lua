@@ -133,8 +133,30 @@ end
 -- ROBLOX deviation: string encoding not required
 -- exports.utfDecodeString = function(str): string
 -- end
--- exports.utfEncodeString = function(str): string
--- end
+
+-- Credit for this encoding approach goes to Tim Down:
+-- https://stackoverflow.com/questions/4877326/how-can-i-tell-if-a-string-contains-multibyte-characters-in-javascript
+exports.utfEncodeString = function(str): Array<number>
+	local codepoints = {}
+	local i = 1
+	while i <= #str do
+		local char = string.byte(str, i)
+		if char >= 0xF0 then
+			table.insert(codepoints, string.byte(str, i, i + 3))
+			i = i + 4
+		elseif char >= 0xE0 then
+			table.insert(codepoints, string.byte(str, i, i + 2))
+			i = i + 3
+		elseif char >= 0xC0 then
+			table.insert(codepoints, string.byte(str, i, i + 1))
+			i = i + 2
+		else
+			table.insert(codepoints, char)
+			i = i + 1
+		end
+	end
+	return codepoints
+end
 
 -- ROBLOX deviation: don't binary encode strings, so operations Array can include strings
 exports.printOperationsArray = function(operations: Array<number | string>)
