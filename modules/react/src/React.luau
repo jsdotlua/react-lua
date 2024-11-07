@@ -141,10 +141,11 @@ return {
 	-- the renderer in order to update properly
 	__subscribeToBinding = ReactBinding.subscribe,
 
-	-- ROBLOX DEVIATION: export Change, Event, and Tag from React
+	-- ROBLOX DEVIATION: export Change, Event, Tag and Attributes from React
 	Event = require("@pkg/@jsdotlua/shared").Event,
 	Change = require("@pkg/@jsdotlua/shared").Change,
 	Tag = require("@pkg/@jsdotlua/shared").Tag,
+	Attributes = require("@pkg/@jsdotlua/shared").Attributes,
 
 	-- ROBLOX DEVIATION: used by error reporters to parse caught errors. React
 	-- stringifies at its boundaries to maintain compatibility with
