@@ -9,7 +9,6 @@
  * @jest-environment node
 ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
@@ -26,8 +25,8 @@ local ReactFiberDevToolsHook, ReactDevtoolsShared
 beforeEach(function()
 	jest.resetModules()
 
-	ReactFiberDevToolsHook = require("./ReactFiberDevToolsHook.new.luau")
-	ReactDevtoolsShared = require("@dev-packages/ReactDevtoolsShared")
+	ReactFiberDevToolsHook = require("../ReactFiberDevToolsHook.new.luau")
+	ReactDevtoolsShared = require("@pkg/@jsdotlua/react-devtools-shared")
 end)
 
 describe("DevTools hook detection", function()

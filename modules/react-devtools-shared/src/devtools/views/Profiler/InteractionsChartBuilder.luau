@@ -16,7 +16,7 @@ type Array<K> = LuauPolyfill.Array<K>
 
 local exports = {}
 
-local devtoolsTypes = require("./types")
+local devtoolsTypes = require("../../types")
 type ProfilerStore = devtoolsTypes.ProfilerStore
 local typesModule = require("./types")
 type Interaction = typesModule.Interaction

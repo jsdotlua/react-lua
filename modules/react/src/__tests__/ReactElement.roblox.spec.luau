@@ -1,8 +1,7 @@
 --!strict
 -- ROBLOX upstream: https://github.com/facebook/react/blob/702fad4b1b48ac8f626ed3f35e8f86f5ea728084/packages/react/src/__tests__/ReactElement-test.js
 
-local Packages = script.Parent.Parent.Parent
-local ReactElement = require("./ReactElement")
+local ReactElement = require("../ReactElement")
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe

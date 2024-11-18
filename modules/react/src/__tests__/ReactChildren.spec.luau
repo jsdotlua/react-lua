@@ -9,7 +9,6 @@
 	*
 	* @emails react-core
 ]]
-local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 type Array<T> = LuauPolyfill.Array<T>
@@ -29,7 +28,7 @@ local xit = JestGlobals.xit
 describe("ReactChildren", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(".")
+		React = require("..")
 		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 		ReactTestUtils = {
 			renderIntoDocument = function(element)

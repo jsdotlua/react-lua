@@ -10,7 +10,6 @@
 -- ROBLOX FIXME Luau: this doesn't play nicely with Object.assign
 --!nonstrict
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
@@ -30,7 +29,7 @@ beforeEach(function()
 	ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 
 	ReactFeatureFlags.replayFailedUnitOfWorkWithInvokeGuardedCallback = false
-	React = require(".")
+	React = require("..")
 	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 	Scheduler = require("@pkg/@jsdotlua/scheduler")
 end)

@@ -9,7 +9,6 @@
  * @jest-environment node
 ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
@@ -22,8 +21,8 @@ local ReactRootTags
 beforeEach(function()
 	jest.resetModules()
 
-	ReactFiberRoot = require("./ReactFiberRoot.new.luau")
-	ReactRootTags = require("./ReactRootTags")
+	ReactFiberRoot = require("../ReactFiberRoot.new.luau")
+	ReactRootTags = require("../ReactRootTags")
 end)
 
 it("should properly initialize a fiber created with createFiberRoot", function()

@@ -5,7 +5,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
 ]]
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local it = JestGlobals.it
@@ -19,7 +18,7 @@ describe("bridge", function()
 	beforeEach(function()
 		jest.resetModules()
 		jest.useFakeTimers()
-		Bridge = require("./bridge")
+		Bridge = require("../bridge")
 	end)
 
 	it("should shutdown properly", function()

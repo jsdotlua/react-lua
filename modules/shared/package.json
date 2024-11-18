@@ -15,6 +15,11 @@
     "@jsdotlua/luau-polyfill": "^1.2.6"
   },
   "devDependencies": {
+    "@jsdotlua/jest-globals": "^3.6.1-rc.2",
+    "@jsdotlua/jest-react": "workspace:^",
+    "@jsdotlua/react": "workspace:^",
+    "@jsdotlua/react-noop-renderer": "workspace:^",
+    "@jsdotlua/scheduler": "workspace:^",
     "npmluau": "^0.1.0"
   }
 }

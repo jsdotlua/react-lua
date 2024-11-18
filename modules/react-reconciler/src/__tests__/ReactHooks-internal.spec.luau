@@ -15,7 +15,6 @@ local ReactTestRenderer
 local Scheduler
 -- local ReactDOMServer
 local act
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach

@@ -21,13 +21,13 @@ type Function = (...any) -> any?
 local global = _G
 local exports = {}
 
-local Bridge = require("./bridge")
+local Bridge = require("../bridge")
 type FrontendBridge = Bridge.FrontendBridge
-local devtoolsTypes = require("./devtools/types")
+local devtoolsTypes = require("../devtools/types")
 type Store = devtoolsTypes.Store
-local ProfilerTypes = require("./devtools/views/Profiler/types")
+local ProfilerTypes = require("../devtools/views/Profiler/types")
 type ProfilingDataFrontend = ProfilerTypes.ProfilingDataFrontend
-local Types = require("./types")
+local Types = require("../types")
 type ElementType = Types.ElementType
 
 exports.act = function(callback: () -> ()): ()
@@ -198,7 +198,7 @@ exports.requireTestRenderer = function(): any
 end
 
 exports.exportImportHelper = function(bridge: FrontendBridge, store: Store): ()
-	local utils = require("./devtools/views/Profiler/utils")
+	local utils = require("../devtools/views/Profiler/utils")
 	local prepareProfilingDataExport = utils.prepareProfilingDataExport
 	local prepareProfilingDataFrontendFromExport =
 		utils.prepareProfilingDataFrontendFromExport

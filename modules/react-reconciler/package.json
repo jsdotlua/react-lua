@@ -19,6 +19,13 @@
     "@jsdotlua/shared": "workspace:^"
   },
   "devDependencies": {
+    "@jsdotlua/jest-globals": "^3.6.1-rc.2",
+    "@jsdotlua/jest-react": "workspace:^",
+    "@jsdotlua/react-cache": "workspace:^",
+    "@jsdotlua/react-devtools-shared": "workspace:^",
+    "@jsdotlua/react-noop-renderer": "workspace:^",
+    "@jsdotlua/react-roblox": "workspace:^",
+    "@jsdotlua/react-test-renderer": "workspace:^",
     "npmluau": "^0.1.0"
   }
 }

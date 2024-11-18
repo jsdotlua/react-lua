@@ -9,7 +9,6 @@
 ]]
 --!strict
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local it = JestGlobals.it
 
@@ -48,7 +47,7 @@ it("numeric values should be unique", function()
 	-- deviation: We don't use symbol anyways, so it's no use to
 	-- override it. We also don't need to filter any values, since
 	-- they're internal-only.
-	local ReactSymbols = require("./ReactSymbols")
+	local ReactSymbols = require("../ReactSymbols")
 	expectToBeUnique(ReactSymbols)
 
 	-- deviation: We comment out this chunk because we're not actually using

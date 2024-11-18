@@ -8,8 +8,6 @@
  *
  * @flow
  ]]
-
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local xdescribe = JestGlobals.xdescribe
@@ -21,13 +19,13 @@ local afterEach = JestGlobals.afterEach
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 
-local Bridge = require("./bridge")
+local Bridge = require("../bridge")
 type FrontendBridge = Bridge.FrontendBridge
 
-local devtoolsTypes = require("./devtools/types")
+local devtoolsTypes = require("../devtools/types")
 type Store = devtoolsTypes.Store
 
-local ProfilerTypes = require("./devtools/views/Profiler/types")
+local ProfilerTypes = require("../devtools/views/Profiler/types")
 type ProfilingDataFrontend = ProfilerTypes.ProfilingDataFrontend
 
 local global = _G

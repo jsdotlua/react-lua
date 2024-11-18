@@ -1,5 +1,4 @@
 -- ROBLOX upstream: https://github.com/facebook/react/blob/v17.0.1/packages/react/src/__tests__/ReactProfilerDevToolsIntegration-test.internal.js
-local Packages = script.Parent.Parent.Parent
 local React
 local Scheduler
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
@@ -38,7 +37,7 @@ describe("ReactProfiler DevTools integration", function()
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		-- ROBLOX deviation: import tracing from top-level Scheduler export to avoid direct file access
 		SchedulerTracing = Scheduler.tracing
-		React = require("@pkg/@jsdotlua/react")
+		React = require("..")
 		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")
 
 		AdvanceTime = React.Component:extend("AdvanceTime")

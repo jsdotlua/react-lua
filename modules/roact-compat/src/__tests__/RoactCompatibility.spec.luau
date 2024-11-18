@@ -13,8 +13,6 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
@@ -34,8 +32,8 @@ local UNSUPPORTED = {
 }
 beforeEach(function()
 	jest.resetModules()
-	Roact = require("@dev-packages/Roact")
-	RoactCompat = require(".")
+	Roact = require("@pkg/@jsdotlua/roact")
+	RoactCompat = require("..")
 end)
 
 it("has all interface members that old Roact exposes", function()

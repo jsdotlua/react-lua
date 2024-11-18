@@ -37,12 +37,12 @@ beforeEach(function()
 	-- rather than imported at the head of the module.
 	-- That's because we reset modules between tests,
 	-- which disconnects the DevTool's cache from the current dispatcher ref.
-	local Agent = require("./backend/agent")
-	local initBackend = require("./backend").initBackend
-	local Bridge = require("./bridge")
-	local Store = require("./devtools/store")
-	local installHook = require("./hook").installHook
-	local utils = require("./utils")
+	local Agent = require("../backend/agent")
+	local initBackend = require("../backend").initBackend
+	local Bridge = require("../bridge")
+	local Store = require("../devtools/store")
+	local installHook = require("../hook").installHook
+	local utils = require("../utils")
 	local getDefaultComponentFilters = utils.getDefaultComponentFilters
 	local saveComponentFilters = utils.saveComponentFilters
 

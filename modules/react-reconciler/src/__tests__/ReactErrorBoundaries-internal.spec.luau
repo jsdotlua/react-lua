@@ -7,7 +7,6 @@
 --  * @emails react-core
 --  */
 --!strict
-local Packages = script.Parent.Parent.Parent
 
 -- local PropTypes
 local React

@@ -3,7 +3,6 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local beforeEach = JestGlobals.beforeEach
@@ -24,9 +23,9 @@ beforeEach(function()
 	jest.resetModules()
 
 	React = require("@pkg/@jsdotlua/react")
-	ReactUpdateQueue = require("./ReactUpdateQueue.new.luau")
-	Fiber = require("./ReactFiber.new.luau")
-	FiberLane = require("./ReactFiberLane")
+	ReactUpdateQueue = require("../ReactUpdateQueue.new.luau")
+	Fiber = require("../ReactFiber.new.luau")
+	FiberLane = require("../ReactFiberLane")
 
 	component = React.Component:extend("fundamental")
 	fundamentalFiber = Fiber.createFiberFromFundamental(component)
@@ -159,7 +158,7 @@ describe("enqueueCapturedUpdate", function()
 		update.lane = lane
 		ReactUpdateQueue.initializeUpdateQueue(fundamentalFiber)
 		workInProgress = Fiber.createWorkInProgress(fundamentalFiber, nextProps)
-		local ReactFiberFlags = require("./ReactFiberFlags")
+		local ReactFiberFlags = require("../ReactFiberFlags")
 		workInProgress.flags = bit32.bor(0, ReactFiberFlags.ShouldCapture)
 	end)
 

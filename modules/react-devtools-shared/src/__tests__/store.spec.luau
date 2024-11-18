@@ -16,7 +16,6 @@ local fill = function(count, value)
 	return output
 end
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
@@ -36,7 +35,7 @@ type Array<T> = { [number]: T }
 local ReactRoblox
 local React
 -- ROBLOX deviation: bring in the Agent type
-local Agent = require("./backend/agent")
+local Agent = require("../backend/agent")
 type Agent = Agent.Agent
 
 describe("Store", function()
@@ -54,8 +53,8 @@ describe("Store", function()
 		React = require("@pkg/@jsdotlua/react")
 		jest.resetModules()
 		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
-		devtoolsUtils = require("./devtools/utils")
-		constants = require("./constants")
+		devtoolsUtils = require("../devtools/utils")
+		constants = require("../constants")
 
 		jest.useFakeTimers()
 

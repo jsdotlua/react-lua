@@ -15,7 +15,7 @@
  * some cases. Better to just block all updates in initialization.
  ]]
 local HttpService = game:GetService("HttpService")
-local Packages = script.Parent.Parent.Parent
+
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect

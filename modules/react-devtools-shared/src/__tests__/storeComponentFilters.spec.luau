@@ -10,7 +10,6 @@
  ]]
 
 type Function = (...any) -> ...any
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local describe = JestGlobals.describe
@@ -20,9 +19,9 @@ local jestExpect = JestGlobals.expect
 
 local global = _G
 
-local bridgeModule = require("./bridge")
+local bridgeModule = require("../bridge")
 type FrontendBridge = bridgeModule.FrontendBridge
-local devtoolsTypes = require("./devtools/types")
+local devtoolsTypes = require("../devtools/types")
 type Store = devtoolsTypes.Store
 
 describe("Store component filters", function()
@@ -55,9 +54,9 @@ describe("Store component filters", function()
 
 		React = require("@pkg/@jsdotlua/react")
 		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
-		Types = require("./types")
+		Types = require("../types")
 		utils = require("./utils")
-		devtoolsUtils = require("./devtools/utils")
+		devtoolsUtils = require("../devtools/utils")
 	end)
 
 	it("should throw if filters are updated while profiling", function()

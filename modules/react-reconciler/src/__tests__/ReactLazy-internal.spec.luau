@@ -6,8 +6,6 @@ local ReactFeatureFlags
 local Suspense
 local lazy
 
-local Packages = script.Parent.Parent.Parent
-
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local setTimeout = LuauPolyfill.setTimeout

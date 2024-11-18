@@ -8,8 +8,6 @@
  * @flow
 ]]
 
-local Packages = script.Parent.Parent.Parent.Parent
-
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
@@ -32,7 +30,7 @@ beforeEach(function()
 	React = require("@pkg/@jsdotlua/react")
 	ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
 	Scheduler = require("@pkg/@jsdotlua/scheduler")
-	ReactRobloxComponentTree = require("./ReactRobloxComponentTree")
+	ReactRobloxComponentTree = require("../ReactRobloxComponentTree")
 	parent = Instance.new("Folder")
 	reactRobloxRoot = ReactRoblox.createRoot(parent)
 end)

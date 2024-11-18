@@ -36,7 +36,7 @@ describe("forwardRef", function()
 		jest.resetModules()
 
 		-- PropTypes = require('prop-types')
-		React = require("@pkg/@jsdotlua/react")
+		React = require("..")
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 	end)

@@ -1,6 +1,5 @@
 --!strict
 
-local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local String = LuauPolyfill.String
@@ -26,7 +25,7 @@ describe("describeNativeComponentFrame", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		ReactComponentStackFrame = require("./ReactComponentStackFrame")
+		ReactComponentStackFrame = require("../ReactComponentStackFrame")
 		describeNativeComponentFrame =
 			ReactComponentStackFrame.describeNativeComponentFrame
 	end)
@@ -51,7 +50,7 @@ describe("with enableComponentStackLocations to false", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		local ReactFeatureFlags = require("./ReactFeatureFlags")
+		local ReactFeatureFlags = require("../ReactFeatureFlags")
 
 		-- ROBLOX FIXME: Calling mock after require won't work
 		jest.mock(script.Parent.Parent.ReactFeatureFlags :: any, function()
@@ -60,7 +59,7 @@ describe("with enableComponentStackLocations to false", function()
 			})
 		end)
 
-		ReactComponentStackFrame = require("./ReactComponentStackFrame")
+		ReactComponentStackFrame = require("../ReactComponentStackFrame")
 	end)
 
 	describe("describeBuiltInComponentFrame", function()
@@ -164,7 +163,7 @@ describe("with enableComponentStackLocations to true", function()
 	beforeEach(function()
 		jest.resetModules()
 
-		local ReactFeatureFlags = require("./ReactFeatureFlags")
+		local ReactFeatureFlags = require("../ReactFeatureFlags")
 
 		-- ROBLOX FIXME: Calling mock after require won't work
 		jest.mock(script.Parent.Parent.ReactFeatureFlags :: any, function()
@@ -173,7 +172,7 @@ describe("with enableComponentStackLocations to true", function()
 			})
 		end)
 
-		ReactComponentStackFrame = require("./ReactComponentStackFrame")
+		ReactComponentStackFrame = require("../ReactComponentStackFrame")
 		describeBuiltInComponentFrame =
 			ReactComponentStackFrame.describeBuiltInComponentFrame
 	end)

@@ -10,7 +10,6 @@
 ]]
 
 --[[ eslint-disable no-func-assign ]]
-local Packages = script.Parent.Parent.Parent
 local React
 
 local ReactNoop

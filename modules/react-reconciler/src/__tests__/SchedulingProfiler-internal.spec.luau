@@ -8,7 +8,6 @@
 --  * @emails react-core
 --  * @jest-environment node
 --  */
-local Packages = script.Parent.Parent.Parent
 local ReactVersion = require("@pkg/@jsdotlua/shared").ReactVersion
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect

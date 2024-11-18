@@ -9,7 +9,6 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect
@@ -17,7 +16,7 @@ local xdescribe = JestGlobals.xdescribe
 local it = JestGlobals.it
 local beforeEach = JestGlobals.beforeEach
 
-local devtoolsTypes = require("./devtools/types")
+local devtoolsTypes = require("../devtools/types")
 type Store = devtoolsTypes.Store
 
 local global = _G

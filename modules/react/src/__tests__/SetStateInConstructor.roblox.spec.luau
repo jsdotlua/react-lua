@@ -1,6 +1,5 @@
 -- ROBLOX: tests deviant logic for Roblox react which permits use of setState() in component constructor
 
-local Packages = script.Parent.Parent.Parent
 local React, Shared, ReactNoop
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
@@ -12,7 +11,7 @@ local beforeEach = JestGlobals.beforeEach
 beforeEach(function()
 	jest.resetModules()
 	ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
-	React = require(".")
+	React = require("..")
 	Shared = require("@pkg/@jsdotlua/shared")
 end)
 

@@ -8,7 +8,6 @@
  * @emails react-core
  * @jest-environment node
  ]]
-local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 -- ROBLOX deviation START: not needed
 -- local Boolean = LuauPolyfill.Boolean

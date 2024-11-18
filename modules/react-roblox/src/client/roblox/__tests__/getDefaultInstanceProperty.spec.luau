@@ -14,11 +14,10 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local it = JestGlobals.it
-local getDefaultInstanceProperty = require("./getDefaultInstanceProperty")
+local getDefaultInstanceProperty = require("../getDefaultInstanceProperty")
 
 it("should get default name string values", function()
 	local _, defaultName = getDefaultInstanceProperty("StringValue", "Name")

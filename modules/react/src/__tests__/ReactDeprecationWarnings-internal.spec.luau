@@ -4,7 +4,6 @@ local ReactFeatureFlags
 local ReactNoop
 local Scheduler
 -- local JSXDEVRuntime
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -17,7 +16,7 @@ local xit = JestGlobals.xit
 describe("ReactDeprecationWarnings", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(".")
+		React = require("..")
 		ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		Scheduler = require("@pkg/@jsdotlua/scheduler")

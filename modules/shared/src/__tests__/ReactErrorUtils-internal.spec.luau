@@ -8,7 +8,6 @@
  * @emails react-core
 ]]
 
-local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Error = LuauPolyfill.Error
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
@@ -22,7 +21,7 @@ local ReactErrorUtils
 beforeEach(function()
 	-- TODO: can we express this test with only public API?
 	jest.resetModules()
-	ReactErrorUtils = require("./ReactErrorUtils")
+	ReactErrorUtils = require("../ReactErrorUtils")
 end)
 
 afterEach(function()
@@ -111,9 +110,9 @@ it("handles nested errors", function()
 end)
 
 it("handles nested errors in separate renderers", function()
-	local ReactErrorUtils1 = require("./ReactErrorUtils")
+	local ReactErrorUtils1 = require("../ReactErrorUtils")
 	jest.resetModules()
-	local ReactErrorUtils2 = require("./ReactErrorUtils")
+	local ReactErrorUtils2 = require("../ReactErrorUtils")
 	jestExpect(ReactErrorUtils1).never.toEqual(ReactErrorUtils2)
 
 	local ops = {}
@@ -159,7 +158,7 @@ it("can be shimmed", function()
 			end
 		end
 	end)
-	ReactErrorUtils = require("./ReactErrorUtils")
+	ReactErrorUtils = require("../ReactErrorUtils")
 
 	-- deviation: no need to wrap in try/finally since we don't need to
 	-- undo the mock like we would with jest
