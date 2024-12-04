@@ -1,4 +1,3 @@
-local Packages = script.Parent.Parent.Parent
 local React
 
 local ReactNoop
@@ -16,7 +15,7 @@ local Error = LuauPolyfill.Error
 describe("tests propTypes and validateProps behavior", function()
 	beforeEach(function()
 		jest.resetModules()
-		ReactNoop = require("@dev-packages/ReactNoop")
+		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		Scheduler = require("@pkg/@jsdotlua/scheduler")
 		React = require("@pkg/@jsdotlua/react")
 	end)

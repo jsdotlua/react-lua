@@ -14,8 +14,6 @@
 	* limitations under the License.
 ]]
 
-local Packages = script.Parent.Parent.Parent
-
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
@@ -25,7 +23,7 @@ local warnOnce
 
 beforeEach(function()
 	jest.resetModules()
-	warnOnce = require("./warnOnce")
+	warnOnce = require("../warnOnce")
 end)
 
 it("warns exactly once", function()

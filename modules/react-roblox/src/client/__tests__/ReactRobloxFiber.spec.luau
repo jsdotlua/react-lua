@@ -9,8 +9,6 @@
  ]]
 
 -- 'use strict'
-local Packages = script.Parent.Parent.Parent.Parent
-
 local React
 local ReactRoblox
 local reactRobloxRoot

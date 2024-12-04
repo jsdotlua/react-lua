@@ -8,7 +8,6 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -18,7 +17,7 @@ local beforeEach = JestGlobals.beforeEach
 describe("profiling utils", function()
 	local utils
 	beforeEach(function()
-		utils = require("./devtools/views/Profiler/utils")
+		utils = require("../devtools/views/Profiler/utils")
 	end)
 	it("should throw if importing older/unsupported data", function()
 		jestExpect(function()

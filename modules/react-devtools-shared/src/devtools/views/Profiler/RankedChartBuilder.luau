@@ -18,10 +18,10 @@ type Set<T> = LuauPolyfill.Set<T>
 
 local exports = {}
 
-local devtoolsTypes = require("./types")
+local devtoolsTypes = require("../../types")
 type ProfilerStore = devtoolsTypes.ProfilerStore
 
-local typesModule = require("./types")
+local typesModule = require("../../../types")
 local ElementTypeForwardRef = typesModule.ElementTypeForwardRef
 local ElementTypeMemo = typesModule.ElementTypeMemo
 local formatDuration = require("./utils").formatDuration

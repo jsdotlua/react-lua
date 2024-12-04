@@ -1,10 +1,10 @@
 {
-  "name": "@jsdotlua/react-is",
-  "version": "17.2.1",
+  "name": "@jsdotlua/jest-react",
+  "version": "17.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsdotlua/react-lua.git",
-    "directory": "modules/react-is"
+    "directory": "modules/jest-react"
   },
   "license": "MIT",
   "main": "src/init.luau",
@@ -12,14 +12,11 @@
     "prepare": "npmluau"
   },
   "dependencies": {
+    "@jsdotlua/jest-globals": "^3.6.1-rc.2",
+    "@jsdotlua/luau-polyfill": "^1.2.6",
     "@jsdotlua/shared": "workspace:^"
   },
   "devDependencies": {
-    "@jsdotlua/jest-globals": "^3.6.1-rc.2",
-    "@jsdotlua/luau-polyfill": "^1.2.6",
-    "@jsdotlua/promise": "^3.5.0",
-    "@jsdotlua/react": "workspace:^",
-    "@jsdotlua/react-roblox": "workspace:^",
     "npmluau": "^0.1.0"
   }
 }

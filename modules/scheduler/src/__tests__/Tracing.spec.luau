@@ -8,7 +8,6 @@
 --  * @jest-environment node
 --  */
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe

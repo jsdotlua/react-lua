@@ -7,7 +7,6 @@
 --  * @emails react-core
 --!strict
 
-local Packages = script.Parent.Parent.Parent
 local React
 local ReactNoop
 -- local ReactDOM
@@ -32,7 +31,7 @@ describe("ReactStrictMode", function()
 		-- ROBLOX deviation: workaround because our flag is currently always set to false
 		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = true
-		React = require(".")
+		React = require("..")
 
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
@@ -405,7 +404,7 @@ end)
 describe("Concurrent Mode", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(".")
+		React = require("..")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
@@ -663,7 +662,7 @@ end)
 describe("symbol checks", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(".")
+		React = require("..")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
@@ -821,7 +820,7 @@ end)
 describe("string refs", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(".")
+		React = require("..")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')
@@ -914,7 +913,7 @@ end)
 describe("context legacy", function()
 	beforeEach(function()
 		jest.resetModules()
-		React = require(".")
+		React = require("..")
 		-- ROBLOX deviation: using ReactNoop in place of ReactDOM
 		ReactNoop = require("@pkg/@jsdotlua/react-noop-renderer")
 		-- ReactDOM = require('react-dom')

@@ -9,7 +9,6 @@
 ]]
 --!strict
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
@@ -19,7 +18,7 @@ local formatProdErrorMessage
 
 beforeEach(function()
 	jest.resetModules()
-	formatProdErrorMessage = require("./formatProdErrorMessage")
+	formatProdErrorMessage = require("../formatProdErrorMessage")
 end)
 
 it("should throw with the correct number of `%s`s in the URL", function()

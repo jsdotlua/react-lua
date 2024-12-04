@@ -29,7 +29,6 @@
 -- 	originalObjects = nil
 -- end
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local describe = JestGlobals.describe
 local beforeEach = JestGlobals.beforeEach

@@ -15,7 +15,7 @@ local jest = JestGlobals.jest
 describe("TestRenderer Tag Support", function()
 	beforeEach(function()
 		jest.resetModules()
-		RobloxComponentProps = require("./roblox/RobloxComponentProps")
+		RobloxComponentProps = require("../roblox/RobloxComponentProps")
 		setInitialTags = RobloxComponentProps.setInitialTags
 		updateTags = RobloxComponentProps.updateTags
 		removeTags = RobloxComponentProps.removeTags

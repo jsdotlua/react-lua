@@ -9,7 +9,6 @@
 ]]
 
 -- local Dependencies = script.Parent.Parent.Parent.Parent.Packages
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
@@ -26,7 +25,7 @@ local createRenderer
 beforeEach(function()
 	UninitializedState = require("@pkg/@jsdotlua/shared").UninitializedState
 	React = require("@pkg/@jsdotlua/react")
-	ReactShallowRenderer = require(".")
+	ReactShallowRenderer = require("..")
 	createRenderer = ReactShallowRenderer.createRenderer
 end)
 

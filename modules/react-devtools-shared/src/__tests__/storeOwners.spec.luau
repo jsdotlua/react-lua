@@ -9,7 +9,6 @@
  * @flow
  ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
@@ -38,7 +37,7 @@ describeIfDev("Store owners list", function()
 		Boolean = LuauPolyfill.Boolean
 		React = require("@pkg/@jsdotlua/react")
 		ReactRoblox = require("@pkg/@jsdotlua/react-roblox")
-		devtoolsUtils = require("./devtools/utils")
+		devtoolsUtils = require("../devtools/utils")
 		printOwnersList = devtoolsUtils.printOwnersList
 
 		local utils = require("./utils")

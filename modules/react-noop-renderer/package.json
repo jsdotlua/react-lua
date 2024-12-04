@@ -12,6 +12,7 @@
     "prepare": "npmluau"
   },
   "dependencies": {
+    "@jsdotlua/jest-globals": "^3.6.1-rc.2",
     "@jsdotlua/luau-polyfill": "^1.2.6",
     "@jsdotlua/react-reconciler": "workspace:^",
     "@jsdotlua/scheduler": "workspace:^",

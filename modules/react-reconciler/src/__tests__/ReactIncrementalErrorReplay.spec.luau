@@ -10,7 +10,6 @@
  --]]
 --!strict
 
-local Packages = script.Parent.Parent.Parent
 local React
 local ReactNoop
 local Scheduler

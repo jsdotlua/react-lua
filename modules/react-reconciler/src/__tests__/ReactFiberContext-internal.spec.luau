@@ -9,7 +9,6 @@
  * @jest-environment node
 ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
@@ -25,9 +24,9 @@ local ReactFeatureFlags
 beforeEach(function()
 	jest.resetModules()
 
-	ReactFiberContext = require("./ReactFiberContext.new.luau")
-	ReactFiber = require("./ReactFiber.new.luau")
-	ReactRootTags = require("./ReactRootTags")
+	ReactFiberContext = require("../ReactFiberContext.new.luau")
+	ReactFiber = require("../ReactFiber.new.luau")
+	ReactRootTags = require("../ReactRootTags")
 	ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 	ReactFeatureFlags.disableLegacyContext = false
 end)

@@ -1,18 +1,17 @@
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
 local beforeEach = JestGlobals.beforeEach
 local describe = JestGlobals.describe
 local it = JestGlobals.it
-local ReactFiber = require("./ReactFiber.new.luau")
+local ReactFiber = require("../ReactFiber.new.luau")
 
 local ReactFiberSuspenseContext
 
 describe("ReactFiberSuspenseContext", function()
 	beforeEach(function()
 		jest.resetModules()
-		ReactFiberSuspenseContext = require("./ReactFiberSuspenseContext.new.luau")
+		ReactFiberSuspenseContext = require("../ReactFiberSuspenseContext.new.luau")
 	end)
 
 	describe("suspense context stack", function()

@@ -16,8 +16,6 @@ local resourcePromise
 local setTimeout
 local Set
 
-local Packages = script.Parent.Parent.Parent
-
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest

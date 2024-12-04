@@ -13,6 +13,8 @@
     "clean": "rm -rf roblox build node_modules"
   },
   "devDependencies": {
+    "@jsdotlua/jest": "^3.6.1-rc.2",
+    "@jsdotlua/jest-globals": "^3.6.1-rc.2",
     "commander": "^11.1.0",
     "npmluau": "^0.1.1"
   },

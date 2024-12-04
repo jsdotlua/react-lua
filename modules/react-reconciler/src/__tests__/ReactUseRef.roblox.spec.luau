@@ -1,4 +1,3 @@
-local Packages = script.Parent.Parent.Parent
 local React
 local ReactRoblox
 local Scheduler

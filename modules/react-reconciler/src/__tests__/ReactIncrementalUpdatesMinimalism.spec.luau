@@ -11,7 +11,6 @@
 --!strict
 local React
 local ReactNoop
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jest = JestGlobals.jest
 local jestExpect = JestGlobals.expect

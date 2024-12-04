@@ -7,7 +7,6 @@
 --  *
 --  * @emails react-core
 
-local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Array = LuauPolyfill.Array
 local Boolean = LuauPolyfill.Boolean
@@ -38,7 +37,7 @@ describe("ReactUpdates", function()
 		-- ROBLOX deviation: workaround because our flag is currently always set to false
 		local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags
 		ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = true
-		React = require(".")
+		React = require("..")
 
 		-- ROBLOX deviation: using React Test Renderer in place of ReactDOM
 		ReactTestRenderer = require("@pkg/@jsdotlua/react-test-renderer")

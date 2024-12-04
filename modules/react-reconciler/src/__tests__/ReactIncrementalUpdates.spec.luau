@@ -8,7 +8,6 @@
 --  * @jest-environment node
 --  */
 
-local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 local Object = LuauPolyfill.Object
 local ReactFeatureFlags = require("@pkg/@jsdotlua/shared").ReactFeatureFlags

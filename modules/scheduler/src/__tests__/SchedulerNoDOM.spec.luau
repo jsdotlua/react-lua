@@ -8,7 +8,6 @@
 * @emails react-core
 ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local beforeEach = JestGlobals.beforeEach
 local jestExpect = JestGlobals.expect
@@ -23,7 +22,7 @@ local NormalPriority
 beforeEach(function()
 	jest.resetModules()
 	jest.useFakeTimers()
-	local Scheduler = require("./Scheduler")()
+	local Scheduler = require("../Scheduler")()
 
 	scheduleCallback = Scheduler.unstable_scheduleCallback
 	ImmediatePriority = Scheduler.unstable_ImmediatePriority

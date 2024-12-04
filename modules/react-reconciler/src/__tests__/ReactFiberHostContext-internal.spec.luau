@@ -9,7 +9,6 @@
  * @jest-environment node
  ]]
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local jest = JestGlobals.jest
@@ -25,8 +24,8 @@ describe("ReactFiberHostContext", function()
 	beforeEach(function()
 		jest.resetModules()
 		React = require("@pkg/@jsdotlua/react")
-		ReactFiberReconciler = require(".")
-		ConcurrentRoot = require("./ReactRootTags")
+		ReactFiberReconciler = require("..")
+		ConcurrentRoot = require("../ReactRootTags")
 	end)
 
 	it("works with nil host context", function()

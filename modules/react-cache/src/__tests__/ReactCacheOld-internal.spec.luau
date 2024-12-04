@@ -52,7 +52,7 @@ describe("ReactCache", function()
 		Suspense = React.Suspense
 		-- ROBLOX deviation START: fix require
 		-- ReactCache = require_("react-cache")
-		ReactCache = require(".")
+		ReactCache = require("..")
 		-- ROBLOX deviation END
 		createResource = ReactCache.unstable_createResource
 		-- ROBLOX deviation START: fix requires

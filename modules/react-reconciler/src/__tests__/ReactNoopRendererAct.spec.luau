@@ -10,7 +10,6 @@
 
 -- sanity tests for ReactNoop.act()
 
-local Packages = script.Parent.Parent.Parent
 local React
 local ReactNoop
 local Scheduler

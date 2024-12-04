@@ -1,5 +1,5 @@
 {
-  "process": [
+  "rules": [
     {
       "rule": "inject_global_value",
       "identifier": "__DEV__",

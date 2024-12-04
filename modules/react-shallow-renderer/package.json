@@ -18,6 +18,7 @@
     "@jsdotlua/shared": "workspace:^"
   },
   "devDependencies": {
+    "@jsdotlua/jest-globals": "^3.6.1-rc.2",
     "npmluau": "^0.1.0"
   }
 }

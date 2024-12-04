@@ -337,7 +337,7 @@ local function cleanupHostComponent(domElement: HostInstance)
 		if instanceToEventManager[descElement] ~= nil then
 			instanceToEventManager[descElement] = nil
 		end
-		
+
 		cleanupBindings(descElement)
 		removeAllTags(domElement)
 	end

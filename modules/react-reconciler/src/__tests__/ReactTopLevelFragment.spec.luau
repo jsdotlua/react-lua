@@ -10,7 +10,6 @@
 ]]
 --!strict
 
-local Packages = script.Parent.Parent.Parent
 local LuauPolyfill = require("@pkg/@jsdotlua/luau-polyfill")
 type Array<T> = LuauPolyfill.Array<T>
 local React

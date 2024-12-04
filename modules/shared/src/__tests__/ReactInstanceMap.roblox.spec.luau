@@ -1,7 +1,6 @@
 -- ROBLOX deviation: we have a crash in production this deviant logic will help catch
 -- ROBLOX TODO: make this only pass in __DEV__
 
-local Packages = script.Parent.Parent.Parent
 local JestGlobals = require("@pkg/@jsdotlua/jest-globals")
 local jestExpect = JestGlobals.expect
 local describe = JestGlobals.describe
