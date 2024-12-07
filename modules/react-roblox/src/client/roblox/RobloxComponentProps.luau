@@ -29,12 +29,25 @@ local getDefaultInstanceProperty = require("./getDefaultInstanceProperty")
 local ReactRobloxHostTypes = require("../ReactRobloxHostTypes.roblox.luau")
 type HostInstance = ReactRobloxHostTypes.HostInstance
 local Tag = require("@pkg/@jsdotlua/react").Tag
+local Attributes = require("@pkg/@jsdotlua/react").Attributes
 
 -- ROBLOX deviation: Essentially a placeholder for dom-specific logic, taking the place
 -- of ReactDOMComponent. Most of the logic will differ pretty dramatically
 
 type Array<T> = { [number]: T }
 type Object = { [any]: any }
+type AcceptableAttributeType =
+	string
+	| boolean
+	| number
+	| UDim
+	| UDim2
+	| BrickColor
+	| Color3
+	| Vector2
+	| Vector3
+	| EnumItem
+type AttributesDictionary = { [string]: AcceptableAttributeType }
 
 -- deviation: Can't assign attributes to Roblox instances, so we use maps to
 -- store associated data for host instance features like binding and event
@@ -168,6 +181,40 @@ local function removeAllTags(hostInstance: Instance)
 	end
 end
 
+local function applyAttributes(
+	hostInstance: Instance,
+	oldAttributes: AttributesDictionary,
+	newAttributes: AttributesDictionary
+)
+	if __DEV__ then
+		if newAttributes ~= nil then
+			if typeof(newAttributes) ~= "table" then
+				console.error(
+					"Type provided for ReactRoblox.Attributes is invalid - attributes should be "
+						.. "specified as a dictionary, where the key-value pairs represent the "
+						.. "attribute names and their respective values. Instead received:\n%s",
+					inspect(newAttributes)
+				)
+			end
+			return
+		end
+	end
+
+	if oldAttributes then
+		for attributeName in oldAttributes do
+			if newAttributes == nil or newAttributes[attributeName] == nil then
+				hostInstance:SetAttribute(attributeName, nil)
+			end
+		end
+	end
+
+	if newAttributes then
+		for attributeName, value in newAttributes do
+			hostInstance:SetAttribute(attributeName, value)
+		end
+	end
+end
+
 local function applyProp(hostInstance: Instance, key, newValue, oldValue): ()
 	-- ROBLOX performance: gets checked in applyProps so we can assume the key is valid
 	-- if key == "ref" or key == "children" then
@@ -208,6 +255,8 @@ local function applyProp(hostInstance: Instance, key, newValue, oldValue): ()
 		attachBinding(hostInstance, key, newValue)
 	elseif key == Tag then
 		applyTags(hostInstance, oldValue, newValue)
+	elseif key == Attributes then
+		applyAttributes(hostInstance, oldValue, newValue)
 	else
 		setRobloxInstanceProperty(hostInstance, key, newValue)
 	end

@@ -137,4 +137,5 @@ return {
 	Change = require("./PropMarkers/Change"),
 	Event = require("./PropMarkers/Event"),
 	Tag = require("./PropMarkers/Tag"),
+	Attributes = require("./PropMarkers/Attributes"),
 }

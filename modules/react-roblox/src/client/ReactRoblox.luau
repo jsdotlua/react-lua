@@ -80,6 +80,7 @@ local getClosestInstanceFromNode = ReactRobloxComponentTree.getClosestInstanceFr
 local Event = require("@pkg/@jsdotlua/shared").Event
 local Change = require("@pkg/@jsdotlua/shared").Change
 local Tag = require("@pkg/@jsdotlua/shared").Tag
+local Attributes = require("@pkg/@jsdotlua/shared").Attributes
 
 -- setAttemptSynchronousHydration(attemptSynchronousHydration)
 -- setAttemptUserBlockingHydration(attemptUserBlockingHydration)
@@ -248,6 +249,7 @@ local exports = {
 	Event = Event,
 	Change = Change,
 	Tag = Tag,
+	Attributes = Attributes,
 	unstable_isNewReconciler = enableNewReconciler,
 
 	-- ROBLOX deviation: Export `act` function for testing purposes; in
