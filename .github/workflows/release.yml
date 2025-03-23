@@ -121,6 +121,11 @@ jobs:
       - name: Publish react-devtools-extensions to wally
         run: wally publish --project-path build/wally/react-devtools-extensions
 
+      - name: Publish jest-react to wally
+        run: wally publish --project-path build/wally/jest-react
+
+      - name: Publish react-noop-renderer
+        run: wally publish --project-path build/wally/react-noop-renderer
 
   create-release:
     needs: publish-package
