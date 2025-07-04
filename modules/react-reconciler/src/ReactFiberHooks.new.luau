@@ -1870,6 +1870,12 @@ function dispatchAction<S, A>(fiber: Fiber, queue: UpdateQueue<S, A>, action: A,
 					-- It's still possible that we'll need to rebase this update later,
 					-- if the component re-renders for a different reason and by that
 					-- time the reducer has changed.
+					if pending == nil then
+						queue.pending = nil
+					else
+						pending.next = update.next
+						queue.pending = pending
+					end
 					return
 				end
 				-- ROBLOX catch
